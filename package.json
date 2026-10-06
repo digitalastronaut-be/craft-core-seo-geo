@@ -1,0 +1,13 @@
+{
+  "name": "craft-core-seo-geo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "plugin:dev": "vite",
+    "plugin:build": "vite build"
+  },
+  "devDependencies": {
+    "sass": "^1.98.0",
+    "vite": "^8.0.0"
+  }
+}

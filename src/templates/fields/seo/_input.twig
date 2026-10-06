@@ -1,0 +1,97 @@
+{# @var field \digitalastronaut\craftcoreseogeo\fields\SeoField #}
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var element \craft\base\ElementInterface|null #}
+{# @var id string #}
+{# @var name string #}
+{# @var image \craft\elements\Asset|null #}
+
+{% import '_includes/forms.twig' as forms %}
+
+<div class="pane">
+    <div class="flex-fields">
+        {{ forms.elementSelectField({
+            id: "#{id}-image",
+            name: "#{name}[imageId]",
+            label: 'Image'|t('core-seo-geo'),
+            elementType: 'craft\\elements\\Asset',
+            elements: image ? [image] : [],
+            criteria: {kind: 'image'},
+            single: true,
+            viewMode: 'thumbs',
+            selectionLabel: 'Choose an image'|t('core-seo-geo'),
+        }) }}
+
+        {% if field.titleFormatRows is not empty %}
+            <div class="field">
+                <div class="heading">
+                    <label>{{ 'Title'|t('core-seo-geo') }}</label>
+                </div> 
+
+                <div style="display: flex; flex-wrap: wrap; gap: var(--s);">
+                    {% for i, row in field.titleFormatRows %}
+                        {% set editable = row.editable ?? false %}
+                        {% set resolved = element ? renderObjectTemplate(row.template, element) : row.template %}
+                        {% set rowValue = (editable ? (value.titleRows[i] ?? resolved) : resolved)|default('') %}
+
+                        <div style="flex: 0 1 auto; min-width: 0; max-width: 100%;">
+                            {{ forms.textField({
+                                id: "#{id}-titleRows-#{i}",
+                                name: "#{name}[titleRows][#{i}]",
+                                value: rowValue,
+                                disabled: not editable,
+                                placeholder: row.label ?? null,
+                                inputAttributes: {style: {width: 'auto', 'max-width': '100%', 'box-sizing': 'border-box', 'field-sizing': 'content'}},
+                            }) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if field.descriptionFormatRows is not empty %}
+            <div class="field">
+                <div class="heading">
+                    <label>{{ 'Description'|t('core-seo-geo') }}</label>
+                </div> 
+
+                <div style="display: flex; flex-wrap: wrap; gap: var(--s);">
+                    {% for i, row in field.descriptionFormatRows %}
+                        {% set editable = row.editable ?? false %}
+                        {% set resolved = element ? renderObjectTemplate(row.template, element) : row.template %}
+                        {% set rowValue = (editable ? (value.descriptionRows[i] ?? resolved) : resolved)|default('') %}
+
+                        <div style="flex: 0 1 auto; min-width: 0; max-width: 100%;">
+                            {{ forms.textField({
+                                id: "#{id}-descriptionRows-#{i}",
+                                name: "#{name}[descriptionRows][#{i}]",
+                                value: rowValue,
+                                disabled: not editable,
+                                placeholder: row.label ?? null,
+                                inputAttributes: {style: {width: 'auto', 'max-width': '100%', 'box-sizing': 'border-box', 'field-sizing': 'content'}},
+                            }) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if field.showCanonicalField %}
+            {{ forms.textField({
+                id: "#{id}-canonicalUrl",
+                name: "#{name}[canonicalUrl]",
+                label: 'Canonical URL'|t('core-seo-geo'),
+                value: value.canonicalUrl,
+                type: 'url',
+            }) }}
+        {% endif %}
+
+        {{ forms.selectizeField({
+            id: "#{id}-robots",
+            name: "#{name}[robots]",
+            multi: true,
+            label: 'Robots/AI Visibility'|t('core-seo-geo'),
+            values: value.robots,
+            options: field.getRobotsOptions(),
+        }) }}
+    </div>
+</div>

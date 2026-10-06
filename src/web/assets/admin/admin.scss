@@ -1,1 +1,14 @@
 // Core SEO/GEO control panel styles
+
+// Structured Data field settings: "Properties" editable table.
+.core-seo-geo-properties-table {
+    // Lets the table scroll on its own instead of squeezing columns (or the
+    // whole admin layout) when the viewport is too narrow for all of them.
+    overflow-x: auto;
+
+    // Keeps a property's label and its info-icon tooltip from wrapping onto
+    // separate lines once the icon replaces the inline instructions text.
+    th.core-seo-geo-field-heading {
+        white-space: nowrap;
+    }
+}

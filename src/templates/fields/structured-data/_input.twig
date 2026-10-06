@@ -1,22 +1,15 @@
-{# @var field \digitalastronaut\craftcoreseogeo\fields\StructuredDataField #}
-{# @var value \digitalastronaut\craftcoreseogeo\models\StructuredData #}
-{# @var element \craft\base\ElementInterface|null #}
 {# @var id string #}
 {# @var name string #}
+{# @var json string #}
+{# @var rows int #}
 
 {% import '_includes/forms.twig' as forms %}
 
-<div class="pane">
-    <div class="flex-fields">
-        {{ forms.textareaField({
-            id: "#{id}-raw",
-            name: "#{name}[raw]",
-            label: 'JSON-LD'|t('core-seo-geo'),
-            instructions: 'The raw JSON-LD object for this page, without the surrounding script tag.'|t('core-seo-geo'),
-            value: value.raw,
-            rows: 12,
-            class: ['code'],
-            errors: element ? element.getErrors(field.handle) : [],
-        }) }}
-    </div>
-</div>
+{{ forms.textarea({
+    id: id,
+    name: name,
+    value: json,
+    disabled: true,
+    class: ['code'],
+    rows: rows,
+}) }}

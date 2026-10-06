@@ -11,6 +11,8 @@
 namespace digitalastronaut\craftcoreseogeo\models;
 
 use craft\base\Model;
+use craft\elements\Asset;
+use craft\elements\db\AssetQuery;
 
 /**
  * Class SeoData
@@ -20,9 +22,6 @@ use craft\base\Model;
  * @since       v1.0.0
  */
 class SeoData extends Model {
-    // Const Properties
-    // =========================================================================
-
     /**
      * @since v1.0.0
     */
@@ -40,8 +39,6 @@ class SeoData extends Model {
     public const string ROBOTS_NOIMAGEAI = 'noimageai';
 
     /**
-     * @var string[] Every directive the `robots` property accepts.
-     *
      * @since v1.0.0
      */
     public const array ROBOTS_DIRECTIVES = [
@@ -58,45 +55,62 @@ class SeoData extends Model {
     /**
      * @since v1.0.0
      */
+    private ?int $_imageId = null;
     public ?string $metaTitle = null;
     public ?string $metaDescription = null;
     public ?string $canonicalUrl = null;
+    public array $titleRows = [];
+    public array $descriptionRows = [];
     public array $robots = [];
 
     /**
-     * @var int|null The ID of the general-purpose asset for this page, used for things like
-     * the `og:image` meta tag.
+     * @return AssetQuery
      *
      * @since v1.0.0
      */
-    public ?int $imageId = null;
+    public function getImage(): AssetQuery {
+        return Asset::find()->andWhere(['elements.id' => $this->_imageId]);
+    }
 
     /**
-     * @var string[] Raw per-row override text for the field's `titleFormatRows`, aligned by
-     * index, so the CP input can be repopulated on the next edit. The computed `metaTitle`
-     * is what everything else should read.
+     * @param Asset|int|string|null $value
+     * @return void
      *
      * @since v1.0.0
      */
-    public array $titleRows = [];
+    public function setImage(Asset|int|string|null $value): void {
+        $this->_imageId = $value instanceof Asset ? $value->id : (is_numeric($value) ? (int)$value : null);
+    }
 
     /**
-     * @var string[] Raw per-row override text for the field's `descriptionFormatRows`. See
-     * {@see SeoData::$titleRows}.
+     * @inheritdoc
+     * @return array
      *
      * @since v1.0.0
      */
-    public array $descriptionRows = [];
+    public function fields(): array {
+        return [...parent::fields(), 'image' => fn(): ?int => $this->_imageId];
+    }
 
     /**
      * @return bool
      * @since       v1.0.0
      */
     public function isEmpty(): bool {
-        return $this->metaTitle === null
-            && $this->metaDescription === null
-            && $this->canonicalUrl === null
-            && $this->robots === []
-            && $this->imageId === null;
+        return 
+            $this->metaTitle === null && 
+            $this->metaDescription === null && 
+            $this->canonicalUrl === null && 
+            $this->robots === [] && 
+            $this->_imageId === null;
+    }
+
+    /**
+     * @return array
+     *
+     * @since v1.0.0
+     */
+    public function __debugInfo(): array {
+        return ['image' => $this->getImage()];
     }
 }

@@ -15,33 +15,49 @@ use craft\base\Model;
 /**
  * Class StructuredData
  *
+ * The computed structured data for one element: `type` and `data` are derived entirely from
+ * the field's `properties` settings rendered against the element, there's nothing left here
+ * that a content editor can type into directly.
+ *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
  * @since       v1.0.0
  */
 class StructuredData extends Model {
     /**
-     * @var array<string, mixed> The decoded JSON-LD object, keyed by its own properties (e.g.
-     * `@type`, `name`, `description`). This is what whoever renders the field's `<script
-     * type="application/ld+json">` tag should read.
+     * @var string|null The schema.org type this object represents, e.g. `WebPage`.
+     *
+     * @since v1.0.0
+     */
+    public ?string $type = null;
+
+    /**
+     * @var array<string, mixed> The computed value for each of the type's configured
+     * properties, keyed by property name.
      *
      * @since v1.0.0
      */
     public array $data = [];
 
     /**
-     * @var string|null The raw JSON-LD text as typed in the CP input, kept alongside `data` so
-     * the textarea can be repopulated verbatim, even when it fails to parse as JSON.
-     *
-     * @since v1.0.0
-     */
-    public ?string $raw = null;
-
-    /**
      * @return bool
      * @since       v1.0.0
      */
     public function isEmpty(): bool {
-        return $this->data === [] && ($this->raw === null || trim($this->raw) === '');
+        return $this->data === [];
+    }
+
+    /**
+     * Returns the full JSON-LD object: `@context`, `@type`, and every computed property.
+     *
+     * @return array<string, mixed>
+     *
+     * @since v1.0.0
+     */
+    public function toJsonLd(): array {
+        return array_merge([
+            '@context' => 'https://schema.org',
+            '@type' => $this->type,
+        ], $this->data);
     }
 }

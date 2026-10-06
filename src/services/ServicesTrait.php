@@ -41,6 +41,9 @@ trait ServicesTrait {
                     'devServerPublic' => App::env('PRIMARY_SITE_URL') . ':3005',
                     'errorEntry' => 'src/web/assets/admin/admin.js',
                 ],
+                'structuredData' => [
+                    'class' => StructuredDataService::class,
+                ],
             ],
         ];
     }
@@ -50,5 +53,12 @@ trait ServicesTrait {
      */
     public function getVite(): VitePluginService {
         return $this->get('vite');
+    }
+
+    /**
+     * @return StructuredDataService
+     */
+    public function getStructuredData(): StructuredDataService {
+        return $this->get('structuredData');
     }
 }

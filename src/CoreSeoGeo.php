@@ -13,6 +13,7 @@ namespace digitalastronaut\craftcoreseogeo;
 use Craft;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\helpers\UrlHelper;
 
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\services\ServicesTrait;
@@ -30,8 +31,9 @@ class CoreSeoGeo extends Plugin {
     use ServicesTrait;
     use PluginTrait;
 
-    public string $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.0.1';
     public bool $hasCpSettings = true;
+    public bool $hasCpSection = true;
 
     /**
      * @return void
@@ -40,6 +42,34 @@ class CoreSeoGeo extends Plugin {
         parent::init();
 
         $this->registerEvents();
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return array|null
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.0
+     */
+    public function getCpNavItem(): ?array {
+        $item = parent::getCpNavItem();
+
+        $item['label'] = Craft::t('core-seo-geo', 'SEO/GEO');
+        $item['url'] = 'structured-data';
+        $item['icon'] = '@digitalastronaut/craftcoreseogeo/web/assets/icons/seo-geo-field-icon.svg';
+        $item['subnav'] = [
+            'structured-data' => [
+                'label' => Craft::t('core-seo-geo', 'Structured Data'),
+                'url' => 'structured-data',
+            ],
+            'settings' => [
+                'label' => Craft::t('core-seo-geo', 'Settings'),
+                'url' => UrlHelper::cpUrl('settings/plugins/core-seo-geo'),
+            ],
+        ];
+
+        return $item;
     }
 
     /**

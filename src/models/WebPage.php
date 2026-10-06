@@ -17,7 +17,7 @@ use craft\base\Model;
  *
  * @see         https://schema.org/WebPage
  * @author      Digitalastronaut
- * @package     CoreSeoGeo
+ * @pack
  * @since       v1.0.0
  */
 class WebPage extends Model {

@@ -218,7 +218,8 @@ class SeoField extends Field {
             'descriptionRows' => $descriptionRows,
             'canonicalUrl' => $this->_normalizeString($value['canonicalUrl'] ?? null),
             'robots' => $this->_normalizeRobots($value['robots'] ?? []),
-            'imageId' => $this->_normalizeAssetId($value['imageId'] ?? null),
+            // `imageId` is the pre-rename key: existing stored/posted content may still use it.
+            'image' => $this->_normalizeAssetId($value['image'] ?? $value['imageId'] ?? null),
         ]);
     }
 
@@ -309,9 +310,7 @@ class SeoField extends Field {
         $view = Craft::$app->getView();
         $id = $view->namespaceInputId(Html::id($this->handle));
 
-        $image = $value instanceof SeoData && $value->imageId !== null
-            ? Craft::$app->getAssets()->getAssetById($value->imageId)
-            : null;
+        $image = $value instanceof SeoData ? $value->getImage()->one() : null;
 
         return $view->renderTemplate('core-seo-geo/fields/seo/_input', [
             'field' => $this,

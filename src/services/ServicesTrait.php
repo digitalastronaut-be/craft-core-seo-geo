@@ -44,6 +44,9 @@ trait ServicesTrait {
                 'structuredData' => [
                     'class' => StructuredDataService::class,
                 ],
+                'schemaOrg' => [
+                    'class' => SchemaOrgService::class,
+                ],
             ],
         ];
     }
@@ -60,5 +63,12 @@ trait ServicesTrait {
      */
     public function getStructuredData(): StructuredDataService {
         return $this->get('structuredData');
+    }
+
+    /**
+     * @return SchemaOrgService
+     */
+    public function getSchemaOrg(): SchemaOrgService {
+        return $this->get('schemaOrg');
     }
 }

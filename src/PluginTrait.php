@@ -14,6 +14,7 @@ use Craft;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\TemplateEvent;
+use craft\helpers\Json;
 use craft\services\Elements;
 use craft\services\Fields;
 use craft\web\UrlManager;
@@ -27,6 +28,7 @@ use digitalastronaut\craftcoreseogeo\fields\SeoField;
 use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
 use digitalastronaut\craftcoreseogeo\variables\CoreSeoGeoVariable;
 use digitalastronaut\craftcoreseogeo\web\assets\admin\AdminAssetBundle;
+use digitalastronaut\craftcoreseogeo\web\assets\schema\SchemaAssetBundle;
 
 /**
  * Class PluginTrait
@@ -43,6 +45,7 @@ trait PluginTrait {
         $this->registerSharedEvents();
 
         if (Craft::$app->request->isCpRequest) $this->registerCpEvents();
+        if (Craft::$app->request->isConsoleRequest) $this->controllerNamespace = 'digitalastronaut\\craftcoreseogeo\\console\\controllers';
     }
 
     /**
@@ -158,7 +161,29 @@ trait PluginTrait {
                 $view->registerAssetBundle(AdminAssetBundle::class);
 
                 CoreSeoGeo::getInstance()->getVite()->register('src/web/assets/admin/admin.js');
+
+                $this->registerSchemaRegistryAsset($view);
             }
+        );
+    }
+
+    /**
+     * Publishes `registry.json` and exposes its published URL as `window.CoreSeoGeoSchemaRegistryUrl`,
+     * so CP JS can `fetch()` the schema.org vocabulary on demand rather than it being inlined
+     * into every CP page.
+     *
+     * @param View $view
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.0
+     */
+    protected function registerSchemaRegistryAsset(View $view): void {
+        $bundle = $view->registerAssetBundle(SchemaAssetBundle::class);
+
+        $view->registerJs(
+            'window.CoreSeoGeoSchemaRegistryUrl = ' . Json::encode("{$bundle->baseUrl}/registry.json", JSON_UNESCAPED_SLASHES) . ';',
+            View::POS_HEAD,
         );
     }
 }

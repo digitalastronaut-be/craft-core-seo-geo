@@ -129,8 +129,19 @@ trait PluginTrait {
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function(RegisterUrlRulesEvent $event) {
-                $event->rules['structured-data'] = ['template' => 'core-seo-geo/structured-data/_index.twig'];
-                $event->rules['structured-data/<elementId:\d+>'] = 'elements/edit';
+                $event->rules['core-seo-geo'] = ['template' => 'core-seo-geo/structured-data/_index.twig'];
+                $event->rules['core-seo-geo/structured-data'] = ['template' => 'core-seo-geo/structured-data/_index.twig'];
+                $event->rules['core-seo-geo/structured-data/<elementId:\d+>'] = 'elements/edit';
+
+                $event->rules['core-seo-geo/sitemap'] = ['template' => 'core-seo-geo/sitemap/_index.twig'];
+                $event->rules['core-seo-geo/redirects'] = ['template' => 'core-seo-geo/redirects/_index.twig'];
+
+                $event->rules['core-seo-geo/settings'] = ['template' => 'core-seo-geo/settings/global-seo.twig'];
+                $event->rules['core-seo-geo/settings/global-seo'] = ['template' => 'core-seo-geo/settings/global-seo.twig'];
+                $event->rules['core-seo-geo/settings/global-geo'] = ['template' => 'core-seo-geo/settings/global-geo.twig'];
+                $event->rules['core-seo-geo/settings/tracking-scripts'] = ['template' => 'core-seo-geo/settings/tracking-scripts.twig'];
+                $event->rules['core-seo-geo/settings/plugin'] = ['template' => 'core-seo-geo/settings/plugin.twig'];
+                $event->rules['core-seo-geo/settings/structured-data'] = ['template' => 'core-seo-geo/settings/structured-data.twig'];
             }
         );
     }

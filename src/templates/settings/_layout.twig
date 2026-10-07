@@ -1,0 +1,29 @@
+{% requireAdmin false %}
+
+{% extends '_layouts/cp.twig' %}
+
+{% set selectedSubnavItem = 'settings' %}
+{% set sectionTitle = 'SEO/GEO Settings'|t('core-seo-geo') %}
+
+{% set navItems = {
+    'global-seo': { label: 'Global SEO'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    'global-geo': { label: 'Global GEO'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-geo') },
+    'tracking-scripts': { label: 'Tracking Scripts'|t('core-seo-geo'), url: url('core-seo-geo/settings/tracking-scripts') },
+    'plugin': { label: 'Plugin'|t('core-seo-geo'), url: url('core-seo-geo/settings/plugin') },
+    'structured-data': { label: 'Structured Data'|t('core-seo-geo'), url: url('core-seo-geo/settings/structured-data') },
+} %}
+
+{% set title = navItems[selectedNavItem].label %}
+{% set docTitle = title ~ ' - ' ~ sectionTitle %}
+
+{% set crumbs = [
+    { label: 'SEO/GEO'|t('core-seo-geo'), url: url('core-seo-geo/structured-data') },
+] %}
+
+{% block sidebar %}
+    {% include '_includes/nav.twig' with {
+        label: sectionTitle,
+        items: navItems,
+        selectedItem: selectedNavItem,
+    } only %}
+{% endblock %}

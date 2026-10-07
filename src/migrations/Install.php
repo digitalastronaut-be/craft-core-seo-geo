@@ -32,15 +32,22 @@ class Install extends Migration {
     public function safeUp(): bool {
         $this->createTable(Table::STRUCTUREDDATA, [
             'id' => $this->integer()->notNull(),
+            'fieldId' => $this->integer(),
+            'ownerId' => $this->integer(),
+            'siteId' => $this->integer()->notNull(),
             'type' => $this->string()->notNull(),
             'properties' => $this->json()->notNull(),
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),
             'uid' => $this->uid(),
-            'PRIMARY KEY(id)',
+            'PRIMARY KEY(id, siteId)',
         ]);
 
         $this->addForeignKey(null, Table::STRUCTUREDDATA, ['id'], CraftTable::ELEMENTS, ['id'], 'CASCADE', null);
+        $this->addForeignKey(null, Table::STRUCTUREDDATA, ['fieldId'], CraftTable::FIELDS, ['id'], 'CASCADE', null);
+        $this->addForeignKey(null, Table::STRUCTUREDDATA, ['ownerId'], CraftTable::ELEMENTS, ['id'], 'CASCADE', null);
+        $this->addForeignKey(null, Table::STRUCTUREDDATA, ['siteId'], CraftTable::SITES, ['id'], 'CASCADE', null);
+        $this->createIndex(null, Table::STRUCTUREDDATA, ['fieldId', 'ownerId', 'siteId'], true);
 
         return true;
     }

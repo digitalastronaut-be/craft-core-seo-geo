@@ -24,6 +24,8 @@ use digitalastronaut\craftcoreseogeo\db\Table;
  */
 class StructuredDataQuery extends ElementQuery {
     public string|array|null $type = null;
+    public mixed $fieldId = null;
+    public mixed $ownerId = null;
 
     /**
      * @param string|string[]|null $value
@@ -36,20 +38,54 @@ class StructuredDataQuery extends ElementQuery {
     }
 
     /**
+     * @param mixed $value an id, array of ids, or the `:empty:`/`:notempty:` shorthand
+     * @return static
+     */
+    public function fieldId(mixed $value): static {
+        $this->fieldId = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value an id, array of ids, or the `:empty:`/`:notempty:` shorthand
+     * @return static
+     */
+    public function ownerId(mixed $value): static {
+        $this->ownerId = $value;
+
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
-    protected function beforePrepare(): bool {
-        $this->joinElementTable(Table::STRUCTUREDDATA);
+    protected function afterPrepare(): bool {
+        $alias = 'coreseogeo_structureddata';
+        $condition = "[[$alias.id]] = [[elements.id]] AND [[$alias.siteId]] = [[elements_sites.siteId]]";
+
+        $this->subQuery->innerJoin([$alias => Table::STRUCTUREDDATA], $condition);
+        $this->query->innerJoin([$alias => Table::STRUCTUREDDATA], $condition);
 
         $this->query->addSelect([
-            'coreseogeo_structureddata.type',
-            'coreseogeo_structureddata.properties',
+            "$alias.fieldId",
+            "$alias.ownerId",
+            "$alias.type",
+            "$alias.properties",
         ]);
 
-        if ($this->type) {
-            $this->subQuery->andWhere(Db::parseParam('coreseogeo_structureddata.type', $this->type));
+        if ($this->type !== null) {
+            $this->subQuery->andWhere(Db::parseParam("$alias.type", $this->type));
         }
 
-        return parent::beforePrepare();
+        if ($this->fieldId !== null) {
+            $this->subQuery->andWhere(Db::parseParam("$alias.fieldId", $this->fieldId));
+        }
+
+        if ($this->ownerId !== null) {
+            $this->subQuery->andWhere(Db::parseParam("$alias.ownerId", $this->ownerId));
+        }
+
+        return parent::afterPrepare();
     }
 }

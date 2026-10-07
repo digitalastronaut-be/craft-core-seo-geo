@@ -7,7 +7,7 @@
 
 {% import '_includes/forms.twig' as forms %}
 
-<div class="pane">
+<div class="pane hairline">
     <div class="flex-fields">
         {{ forms.elementSelectField({
             id: "#{id}-image",
@@ -18,80 +18,85 @@
             criteria: {kind: 'image'},
             single: true,
             viewMode: 'thumbs',
+            fieldClass: 'width-25',
             selectionLabel: 'Choose an image'|t('core-seo-geo'),
         }) }}
 
-        {% if field.titleFormatRows is not empty %}
-            <div class="field">
-                <div class="heading">
-                    <label>{{ 'Title'|t('core-seo-geo') }}</label>
-                </div> 
+        <div class="field width-75">
+            {% if field.titleFormatRows is not empty %}
+                <div class="field">
+                    <div class="heading">
+                        <label>{{ 'Title'|t('core-seo-geo') }}</label>
+                    </div>
 
-                <div style="display: flex; flex-wrap: wrap; gap: var(--s);">
-                    {% for i, row in field.titleFormatRows %}
-                        {% set editable = row.editable ?? false %}
-                        {% set resolved = element ? renderObjectTemplate(row.template, element) : row.template %}
-                        {% set rowValue = (editable ? (value.titleRows[i] ?? resolved) : resolved)|default('') %}
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--s);">
+                        {% for i, row in field.titleFormatRows %}
+                            {% set editable = row.editable ?? false %}
+                            {% set resolved = element ? renderObjectTemplate(row.template, element) : row.template %}
+                            {% set rowValue = (editable ? (value.titleRows[i] ?? resolved) : resolved)|default('') %}
 
-                        <div style="flex: 0 1 auto; min-width: 0; max-width: 100%;">
-                            {{ forms.textField({
-                                id: "#{id}-titleRows-#{i}",
-                                name: "#{name}[titleRows][#{i}]",
-                                value: rowValue,
-                                disabled: not editable,
-                                placeholder: row.label ?? null,
-                                inputAttributes: {style: {width: 'auto', 'max-width': '100%', 'box-sizing': 'border-box', 'field-sizing': 'content'}},
-                            }) }}
-                        </div>
-                    {% endfor %}
+                            <div style="flex: 0 1 auto; min-width: 0; max-width: 100%;">
+                                {{ forms.textareaField({
+                                    id: "#{id}-titleRows-#{i}",
+                                    name: "#{name}[titleRows][#{i}]",
+                                    value: rowValue,
+                                    disabled: not editable,
+                                    placeholder: row.label ?? null,
+                                    rows: 1,
+                                    inputAttributes: {style: {width: 'auto', 'max-width': '100%', 'box-sizing': 'border-box', 'field-sizing': 'content', resize: 'none'}},
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-        {% if field.descriptionFormatRows is not empty %}
-            <div class="field">
-                <div class="heading">
-                    <label>{{ 'Description'|t('core-seo-geo') }}</label>
-                </div> 
+            {% if field.descriptionFormatRows is not empty %}
+                <div class="field">
+                    <div class="heading">
+                        <label>{{ 'Description'|t('core-seo-geo') }}</label>
+                    </div>
 
-                <div style="display: flex; flex-wrap: wrap; gap: var(--s);">
-                    {% for i, row in field.descriptionFormatRows %}
-                        {% set editable = row.editable ?? false %}
-                        {% set resolved = element ? renderObjectTemplate(row.template, element) : row.template %}
-                        {% set rowValue = (editable ? (value.descriptionRows[i] ?? resolved) : resolved)|default('') %}
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--s);">
+                        {% for i, row in field.descriptionFormatRows %}
+                            {% set editable = row.editable ?? false %}
+                            {% set resolved = element ? renderObjectTemplate(row.template, element) : row.template %}
+                            {% set rowValue = (editable ? (value.descriptionRows[i] ?? resolved) : resolved)|default('') %}
 
-                        <div style="flex: 0 1 auto; min-width: 0; max-width: 100%;">
-                            {{ forms.textField({
-                                id: "#{id}-descriptionRows-#{i}",
-                                name: "#{name}[descriptionRows][#{i}]",
-                                value: rowValue,
-                                disabled: not editable,
-                                placeholder: row.label ?? null,
-                                inputAttributes: {style: {width: 'auto', 'max-width': '100%', 'box-sizing': 'border-box', 'field-sizing': 'content'}},
-                            }) }}
-                        </div>
-                    {% endfor %}
+                            <div style="flex: 0 1 auto; min-width: 0; max-width: 100%;">
+                                {{ forms.textareaField({
+                                    id: "#{id}-descriptionRows-#{i}",
+                                    name: "#{name}[descriptionRows][#{i}]",
+                                    value: rowValue,
+                                    disabled: not editable,
+                                    placeholder: row.label ?? null,
+                                    rows: 1,
+                                    inputAttributes: {style: {width: 'auto', 'max-width': '100%', 'box-sizing': 'border-box', 'field-sizing': 'content', resize: 'none'}},
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-        {% if field.showCanonicalField %}
-            {{ forms.textField({
-                id: "#{id}-canonicalUrl",
-                name: "#{name}[canonicalUrl]",
-                label: 'Canonical URL'|t('core-seo-geo'),
-                value: value.canonicalUrl,
-                type: 'url',
+            {% if field.showCanonicalField %}
+                {{ forms.textField({
+                    id: "#{id}-canonicalUrl",
+                    name: "#{name}[canonicalUrl]",
+                    label: 'Canonical URL'|t('core-seo-geo'),
+                    value: value.canonicalUrl,
+                    type: 'url',
+                }) }}
+            {% endif %}
+
+            {{ forms.selectizeField({
+                id: "#{id}-robots",
+                name: "#{name}[robots]",
+                multi: true,
+                label: 'Robots/AI Visibility'|t('core-seo-geo'),
+                values: value.robots,
+                options: field.getRobotsOptions(),
             }) }}
-        {% endif %}
-
-        {{ forms.selectizeField({
-            id: "#{id}-robots",
-            name: "#{name}[robots]",
-            multi: true,
-            label: 'Robots/AI Visibility'|t('core-seo-geo'),
-            values: value.robots,
-            options: field.getRobotsOptions(),
-        }) }}
+        </div>
     </div>
 </div>

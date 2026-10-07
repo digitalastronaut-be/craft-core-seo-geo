@@ -18,6 +18,7 @@ use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\helpers\Json;
 
+use digitalastronaut\craftcoreseogeo\elements\StructuredData as StructuredDataElement;
 use digitalastronaut\craftcoreseogeo\models\StructuredData;
 use digitalastronaut\craftcoreseogeo\structureddata\StructuredDataTypeFieldsInterface;
 use digitalastronaut\craftcoreseogeo\structureddata\WebPageFields;
@@ -205,7 +206,7 @@ class StructuredDataField extends Field {
             $template = $this->properties[$property]['template'] ?? $fieldDefinition['default'] ?? null;
 
             $rows[$property] = [
-                'field' => Html::tag('strong', Html::encode($fieldDefinition['label'])) . ' ' .
+                'field' => Html::encode($fieldDefinition['label']) . ' ' .
                     Html::tag('span', Cp::parseMarkdown($fieldDefinition['instructions']), ['class' => ['info']]),
                 'template' => $template,
                 'preview' => $this->_renderPreview($template),
@@ -221,19 +222,18 @@ class StructuredDataField extends Field {
                 'field' => [
                     'heading' => Craft::t('core-seo-geo', 'Property'),
                     'type' => 'heading',
-                    'width' => '20%',
                     'class' => 'core-seo-geo-field-heading',
                 ],
                 'template' => [
                     'heading' => Craft::t('core-seo-geo', 'Value'),
                     'type' => 'multiline',
-                    'rows' => 2,
-                    'width' => '40%',
+                    'rows' => 1,
+                    'width' => '50%',
                 ],
                 'preview' => [
                     'heading' => Craft::t('core-seo-geo', 'Calculated Value'),
                     'type' => 'heading',
-                    'width' => '40%',
+                    'width' => '50%',
                     'info' => Craft::t('core-seo-geo', 'Rendered against the Preview Entry above, or generic placeholder data when none is picked - not a real page render, so Twig errors and typos (e.g. a wrong attribute name) show up here even though they wouldn\'t affect a real entry the same way.'),
                 ],
             ],
@@ -248,9 +248,9 @@ class StructuredDataField extends Field {
     /**
      * @inheritdoc
      *
-     * Ignores `$value` entirely: a `StructuredData` instance is always rebuilt by rendering
-     * `properties` against `$element`, the same way `SeoField` recomputes `metaTitle`. There's
-     * nothing left here a content editor can type into, so there's nothing to read back.
+     * Ignores `$value` entirely: a `StructuredData` instance is always rebuilt from `$element`,
+     * the same way `SeoField` recomputes `metaTitle`. There's nothing left here a content
+     * editor can type into, so there's nothing to read back.
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
@@ -260,7 +260,7 @@ class StructuredDataField extends Field {
 
         return new StructuredData([
             'type' => $this->type,
-            'data' => $this->_renderProperties($element),
+            'data' => $this->_resolveData($element),
         ]);
     }
 
@@ -308,6 +308,33 @@ class StructuredDataField extends Field {
         $this->previewElementId = $this->_previewElementId();
 
         return parent::beforeSave($isNew);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Persists this field's computed output for `$element` as a `StructuredData` element, so
+     * `normalizeValue()` can read it back instead of re-rendering `properties` against `$element`
+     * on every single page view. Runs on every save, drafts included: a draft gets its own
+     * persisted row (keyed by `$element->id`, which differs from the canonical entry's id), and
+     * it's cleaned up automatically ({@see StructuredDataElement::afterSave()}'s FK, `ON DELETE
+     * CASCADE`) once the draft itself is deleted.
+     *
+     * Revisions are skipped entirely, unlike drafts: every save of a live entry creates a brand
+     * new revision element with its own id, kept forever per the project's revision retention,
+     * not cleaned up the way an abandoned draft is. Persisting for revisions too would leak one
+     * more orphaned row per save, indefinitely, for data nothing ever reads back (a revision is
+     * a historical snapshot, never rendered as the live page).
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.0
+     */
+    public function afterElementSave(ElementInterface $element, bool $isNew): void {
+        if (!$element->getIsRevision()) {
+            $this->_persistComputedData($element);
+        }
+
+        parent::afterElementSave($element, $isNew);
     }
 
     // Protected Methods
@@ -405,6 +432,70 @@ class StructuredDataField extends Field {
     }
 
     /**
+     * The data `normalizeValue()` hands off to its `StructuredData` model: the persisted
+     * `StructuredDataElement` row for `$element`'s own site (keyed by `$this->id` +
+     * `$element->id` + `$element->siteId`), when one exists, falling back to a live
+     * `_renderProperties()` render otherwise - a brand new, never-saved `$element` has no id to
+     * key by yet, and an already-saved one might not have a row for this particular site yet if
+     * nobody's saved it there before, or this field was only just added to its layout. Either
+     * way, the fallback means display never goes blank just because the persisted copy hasn't
+     * caught up.
+     *
+     * @param ElementInterface|null $element
+     * @return array<string, mixed>
+     *
+     * @since v1.0.0
+     */
+    private function _resolveData(?ElementInterface $element): array {
+        if ($element?->id === null) return $this->_renderProperties($element);
+
+        $persisted = StructuredDataElement::find()
+            ->fieldId($this->id)
+            ->ownerId($element->id)
+            ->siteId($element->siteId)
+            ->status(null)
+            ->one();
+
+        return $persisted?->properties ?? $this->_renderProperties($element);
+    }
+
+    /**
+     * Finds or creates the `StructuredDataElement` row for `$element`'s own site, overwrites it
+     * with a fresh `_renderProperties()` render, and saves it. Called from
+     * `afterElementSave()`, once per save, rather than from `normalizeValue()`, which runs on
+     * every read. Scoped by `$element->siteId` so a multi-site entry gets one persisted row per
+     * language it's actually been saved in, instead of every site clobbering a single row.
+     *
+     * @param ElementInterface $element
+     * @return void
+     *
+     * @since v1.0.0
+     */
+    private function _persistComputedData(ElementInterface $element): void {
+        $structuredData = StructuredDataElement::find()
+            ->fieldId($this->id)
+            ->ownerId($element->id)
+            ->siteId($element->siteId)
+            ->status(null)
+            ->one() ?? new StructuredDataElement([
+                'fieldId' => $this->id,
+                'ownerId' => $element->id,
+                'siteId' => $element->siteId,
+            ]);
+
+        $structuredData->title = Craft::t('core-seo-geo', '{element} ({type})', [
+            'element' => (string)$element,
+            'type' => $this->type,
+        ]);
+        $structuredData->type = $this->type;
+        $structuredData->properties = $this->_renderProperties($element);
+
+        if (!Craft::$app->getElements()->saveElement($structuredData)) {
+            Craft::warning("Couldn't persist structured data for field \"{$this->handle}\" on element #{$element->id}: " . Json::encode($structuredData->getErrors()), __METHOD__);
+        }
+    }
+
+    /**
      * Renders `$template` against `_previewElement()`, for the settings table's "Calculated
      * Value" column - this exists purely to catch Twig errors and typos (e.g. a wrong attribute
      * name resolving to nothing) before a dev ever opens a real entry. Without a Preview Entry
@@ -441,7 +532,7 @@ class StructuredDataField extends Field {
             $rendered = Json::encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
 
-        return $this->_collapsible($rendered);
+        return self::_collapsible($rendered);
     }
 
     /**
@@ -515,12 +606,34 @@ class StructuredDataField extends Field {
     }
 
     /**
+     * Renders an already-computed property value (as stored on a `StructuredData` element,
+     * decoded, not re-rendered against any template) the same way `_renderPreview()` renders a
+     * freshly-rendered one: JSON-encoded if it's not a plain scalar, then collapsed.
+     *
+     * @param mixed $value
+     * @return string
+     *
+     * @since v1.0.0
+     */
+    public static function formatPropertyValueHtml(mixed $value): string {
+        if ($value === null || $value === '') {
+            return Html::tag('span', Craft::t('core-seo-geo', '(empty)'), ['class' => ['light']]);
+        }
+
+        $display = \is_scalar($value)
+            ? (string)$value
+            : Json::encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        return self::_collapsible($display);
+    }
+
+    /**
      * @param string $value
      * @return string
      *
      * @since v1.0.0
      */
-    private function _collapsible(string $value): string {
+    private static function _collapsible(string $value): string {
         $collapseAt = 50;
         $encoded = Html::encode($value);
 

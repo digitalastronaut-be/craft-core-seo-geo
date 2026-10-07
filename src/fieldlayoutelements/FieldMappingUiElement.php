@@ -44,12 +44,11 @@ class FieldMappingUiElement extends BaseUiElement {
 
         $rows = [];
 
-        foreach ($field->getTypeFields() as $fieldDefinition) {
-            $property = $fieldDefinition['property'];
-            $template = $field->properties[$property]['template'] ?? $fieldDefinition['default'] ?? '';
+        foreach ($field->properties as $property => $propertyData) {
+            $template = $propertyData['template'] ?? '';
 
             $rows[$property] = [
-                'field' => Html::tag('strong', Html::encode($fieldDefinition['label'])),
+                'field' => Html::tag('strong', Html::encode($property)),
                 'template' => Html::tag('code', Html::encode($template), ['style' => ['word-break' => 'break-all']]),
                 'value' => StructuredDataField::formatPropertyValueHtml($element->properties[$property] ?? null),
             ];

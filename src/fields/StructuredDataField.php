@@ -18,10 +18,9 @@ use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\helpers\Json;
 
+use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 use digitalastronaut\craftcoreseogeo\elements\StructuredData as StructuredDataElement;
 use digitalastronaut\craftcoreseogeo\models\StructuredData;
-use digitalastronaut\craftcoreseogeo\structureddata\StructuredDataTypeFieldsInterface;
-use digitalastronaut\craftcoreseogeo\structureddata\WebPageFields;
 
 use yii\db\Schema;
 
@@ -37,30 +36,11 @@ class StructuredDataField extends Field {
     // =========================================================================
 
     /**
+     * The default `type` for a brand new field, before anyone's picked a schema.org type.
+     *
      * @since v1.0.0
      */
     public const string TYPE_WEBPAGE = 'WebPage';
-
-    /**
-     * @var string[] Every structured data type this field can be configured as. More types
-     * will be added here over time.
-     *
-     * @since v1.0.0
-     */
-    public const array TYPES = [
-        self::TYPE_WEBPAGE,
-    ];
-
-    /**
-     * @var array<string, class-string<StructuredDataTypeFieldsInterface>> The settings-page
-     * field definitions for each type, keyed by its `TYPES` value. Add an entry here whenever
-     * a new type is added to `TYPES`.
-     *
-     * @since v1.0.0
-     */
-    public const array TYPE_FIELD_DEFINITIONS = [
-        self::TYPE_WEBPAGE => WebPageFields::class,
-    ];
 
     // Public Properties
     // =========================================================================
@@ -74,11 +54,11 @@ class StructuredDataField extends Field {
     public string $type = self::TYPE_WEBPAGE;
 
     /**
-     * @var array<string, array{template: string}> Raw Twig template text, keyed by the
-     * selected type's property name (see `TYPE_FIELD_DEFINITIONS`) and then by the editable
-     * table's `template` column id, configured by whoever adds this field to a layout, in
-     * Settings → Fields. Each property's template is rendered against the element at render
-     * time, so a dev can specify things like `{{ title }}`.
+     * @var array<string, array{template: string}> Raw Twig template text, keyed by whichever
+     * schema.org property it's for (one entry per row added via the settings page's "Add
+     * Property" picker) and then by the editable table's `template` column id, configured by
+     * whoever adds this field to a layout, in Settings → Fields. Each property's template is
+     * rendered against the element at render time, so a dev can specify things like `{{ title }}`.
      *
      * @since v1.0.0
      */
@@ -141,50 +121,50 @@ class StructuredDataField extends Field {
     }
 
     /**
-     * @return array<int, array{label: string, value: string}>
-     *
-     * @author      Digitalastronaut
-     * @since       v1.0.0
-     */
-    public function getTypeOptions(): array {
-        return [
-            [
-                'label' => Craft::t('core-seo-geo', 'Web Page'),
-                'value' => self::TYPE_WEBPAGE,
-            ],
-        ];
-    }
-
-    /**
-     * Returns the settings-page field definitions for the currently selected `type`, so only
-     * that type's properties ever get rendered or saved.
-     *
-     * @return array<int, array{property: string, label: string, instructions: string, default?: string}>
-     *
-     * @author      Digitalastronaut
-     * @since       v1.0.0
-     */
-    public function getTypeFields(): array {
-        $class = self::TYPE_FIELD_DEFINITIONS[$this->type] ?? null;
-
-        return $class !== null ? $class::fields() : [];
-    }
-
-    /**
      * @inheritdoc
+     *
+     * The properties table is built entirely from whichever properties are already in
+     * `$this->properties` - rows are added by picking one from the "Add Property" field below
+     * the table, not by enumerating a fixed per-type list (schema.org types range from a
+     * handful of properties to 130+, too many to ever render as fixed rows). admin.js owns
+     * adding/removing rows and keeping the "Add Property" options in sync with both the
+     * selected type and whichever properties already have a row; this method only renders the
+     * initial state.
+     *
+     * `fieldClass` marks each field's outer wrapper (not the `<select>`/table itself) so
+     * admin.js can find these reliably via a plain class selector - the field settings UI can
+     * namespace raw `id`s depending on where/how it's rendered, but it never rewrites classes.
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
     public function getSettingsHtml(): ?string {
-        $html = Cp::selectFieldHtml([
-            'label' => Craft::t('core-seo-geo', 'Type'),
-            'instructions' => Craft::t('core-seo-geo', 'The type of structured data this field represents.'),
+        $schemaOrg = CoreSeoGeo::getInstance()->getSchemaOrg();
+        $typeProperties = $schemaOrg->getType($this->type)['properties'] ?? [];
+
+        $html = Cp::selectizeFieldHtml([
+            'label' => Craft::t('core-seo-geo', 'Schema.org Type'),
+            'instructions' => Craft::t('core-seo-geo', 'The schema.org type this field represents.'),
             'id' => 'type',
             'name' => 'type',
-            'options' => $this->getTypeOptions(),
+            'fieldClass' => 'core-seo-geo-schema-type-field',
+            'options' => $schemaOrg->getTypeOptions(),
             'value' => $this->type,
             'errors' => $this->getErrors('type'),
+        ]);
+
+        // Options start as the current type's properties minus whichever already have a row
+        // below - admin.js takes over repopulating this (by type, and by what's already added)
+        // from here on.
+        $availableProperties = array_diff($typeProperties, array_keys($this->properties));
+
+        $html .= Cp::selectizeFieldHtml([
+            'label' => Craft::t('core-seo-geo', 'Add Property'),
+            'instructions' => Craft::t('core-seo-geo', 'Pick a property to add it to the table below.'),
+            'id' => 'addProperty',
+            'fieldClass' => 'core-seo-geo-add-property-field',
+            'options' => array_combine($availableProperties, $availableProperties),
+            'value' => '',
         ]);
 
         $previewEntry = $this->_previewEntry();
@@ -201,18 +181,25 @@ class StructuredDataField extends Field {
 
         $rows = [];
 
-        foreach ($this->getTypeFields() as $fieldDefinition) {
-            $property = $fieldDefinition['property'];
-            $template = $this->properties[$property]['template'] ?? $fieldDefinition['default'] ?? null;
+        foreach ($this->properties as $property => $data) {
+            $template = $data['template'] ?? null;
 
             $rows[$property] = [
-                'field' => Html::encode($fieldDefinition['label']) . ' ' .
-                    Html::tag('span', Cp::parseMarkdown($fieldDefinition['instructions']), ['class' => ['info']]),
+                'field' => Html::encode($property),
                 'template' => $template,
                 'preview' => $this->_renderPreview($template),
+                'remove' => $this->_removeButtonHtml($property),
             ];
         }
 
+        // allowAdd/allowDelete/allowReorder all stay false - rows are added/removed entirely by
+        // admin.js (via the "Add Property" field above and each row's own remove button), not
+        // Craft's own editable-table JS, so there's no dependency on its internal row-management
+        // API for a dynamically-sized, registry-driven table. `initJs: false` is required, not
+        // just allowAdd/Delete/Reorder being false - Craft.EditableTable still watches the
+        // table's rows even with all three disabled, and throws trying to process a row it
+        // didn't create itself (confirmed: it threw reading an internal property its own
+        // createRowObj() expects, the moment admin.js removed a hand-added row).
         return $html . Html::tag('div', Cp::editableTableFieldHtml([
             'label' => Craft::t('core-seo-geo', 'Properties'),
             'instructions' => Craft::t('core-seo-geo', 'A Twig template for each property, rendered against the element. For example, `{{ title }}` for the page title.'),
@@ -236,11 +223,17 @@ class StructuredDataField extends Field {
                     'width' => '50%',
                     'info' => Craft::t('core-seo-geo', 'Rendered against the Preview Entry above, or generic placeholder data when none is picked - not a real page render, so Twig errors and typos (e.g. a wrong attribute name) show up here even though they wouldn\'t affect a real entry the same way.'),
                 ],
+                'remove' => [
+                    'heading' => '',
+                    'type' => 'heading',
+                    'width' => '1%',
+                ],
             ],
             'rows' => $rows,
             'allowAdd' => false,
             'allowDelete' => false,
             'allowReorder' => false,
+            'initJs' => false,
             'errors' => $this->getErrors('properties'),
         ]), ['class' => ['core-seo-geo-properties-table']]);
     }
@@ -302,7 +295,7 @@ class StructuredDataField extends Field {
      * @since       v1.0.0
      */
     public function beforeSave(bool $isNew): bool {
-        $allowedProperties = array_column($this->getTypeFields(), 'property');
+        $allowedProperties = CoreSeoGeo::getInstance()->getSchemaOrg()->getType($this->type)['properties'] ?? [];
 
         $this->properties = array_intersect_key($this->properties, array_flip($allowedProperties));
         $this->previewElementId = $this->_previewElementId();
@@ -375,7 +368,13 @@ class StructuredDataField extends Field {
     protected function defineRules(): array {
         $rules = parent::defineRules();
 
-        $rules[] = [['type'], 'in', 'range' => self::TYPES];
+        $rules[] = [['type'], function(string $attribute) {
+            if (CoreSeoGeo::getInstance()->getSchemaOrg()->getType($this->$attribute) === null) {
+                $this->addError($attribute, Craft::t('core-seo-geo', '{value} isn\'t a known schema.org type.', [
+                    'value' => $this->$attribute,
+                ]));
+            }
+        }];
 
         return $rules;
     }
@@ -410,9 +409,8 @@ class StructuredDataField extends Field {
         $data = [];
         $view = Craft::$app->getView();
 
-        foreach ($this->getTypeFields() as $fieldDefinition) {
-            $property = $fieldDefinition['property'];
-            $template = $this->properties[$property]['template'] ?? $fieldDefinition['default'] ?? null;
+        foreach ($this->properties as $property => $propertyData) {
+            $template = $propertyData['template'] ?? null;
 
             if ($template === null || trim($template) === '') continue;
 
@@ -493,6 +491,29 @@ class StructuredDataField extends Field {
         if (!Craft::$app->getElements()->saveElement($structuredData)) {
             Craft::warning("Couldn't persist structured data for field \"{$this->handle}\" on element #{$element->id}: " . Json::encode($structuredData->getErrors()), __METHOD__);
         }
+    }
+
+    /**
+     * A row's "remove" cell - visually matches Craft's own `.delete.icon` button, but doesn't
+     * rely on Craft's editable-table JS to handle the click (this table's `allowDelete` is
+     * always `false`): `core-seo-geo-remove-property` is admin.js's own marker class, bound via
+     * its own click handler, so it works identically whether the row was rendered here or
+     * added client-side by the "Add Property" picker.
+     *
+     * @param string $property
+     * @return string
+     *
+     * @since v1.0.0
+     */
+    private function _removeButtonHtml(string $property): string {
+        return Html::tag('button', '', [
+            'type' => 'button',
+            'class' => ['delete', 'icon', 'core-seo-geo-remove-property'],
+            'title' => Craft::t('core-seo-geo', 'Remove'),
+            'aria' => [
+                'label' => Craft::t('core-seo-geo', 'Remove {property}', ['property' => $property]),
+            ],
+        ]);
     }
 
     /**

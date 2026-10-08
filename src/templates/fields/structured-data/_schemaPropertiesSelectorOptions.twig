@@ -1,0 +1,24 @@
+{# @var propertyOptions array<string, string> #}
+
+<ul class="core-seo-geo-type-list core-seo-geo-property-options">
+    {% for value, label in propertyOptions %}
+        {% set syncPropertyAction = actionUrl('core-seo-geo/structured-data-field/sync-property', { name: value }) %}
+        {% set templateEditorId = ('core-seo-geo-property-template-' ~ value|kebab)|namespaceInputId %}
+        <li
+            class="core-seo-geo-type-option"
+            data-on:mousedown="evt.preventDefault()"
+            data-on:click="
+                if ('{{ value }}' in $properties) {
+                    window.coreSeoGeoDisposeEditor('{{ templateEditorId }}');
+                    delete $properties['{{ value }}'];
+                } else {
+                    $properties['{{ value }}'] = {template: ''};
+                }
+                @get('{{ syncPropertyAction }}')
+            "
+            data-class:sel="'{{ value }}' in $properties"
+        >
+            {{ label }}
+        </li>
+    {% endfor %}
+</ul>

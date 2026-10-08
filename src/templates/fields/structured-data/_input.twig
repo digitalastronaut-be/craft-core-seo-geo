@@ -3,13 +3,23 @@
 {# @var json string #}
 {# @var rows int #}
 
-{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
 
-{{ forms.textarea({
+{{ codeEditor.textarea({
     id: id,
     name: name,
     value: json,
     disabled: true,
     class: ['code'],
     rows: rows,
+}, 'CodeEditor', {
+    theme: 'vs',
+    language: 'json',
+    domReadOnly: true,
+    readOnly: true,
+    lineNumbers: 'on',
+    lineNumbersMinChars: 3,
+    lineDecorationsWidth: 16,
+}, {
+    wrapperClass: 'monaco-editor-background-frame',
 }) }}

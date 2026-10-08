@@ -23,10 +23,10 @@ use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
 
+use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 use digitalastronaut\craftcoreseogeo\db\Table;
 use digitalastronaut\craftcoreseogeo\elements\conditions\StructuredDataCondition;
 use digitalastronaut\craftcoreseogeo\elements\db\StructuredDataQuery;
-use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
 use digitalastronaut\craftcoreseogeo\fieldlayoutelements\FieldMappingUiElement;
 use digitalastronaut\craftcoreseogeo\fieldlayoutelements\JsonLdPreviewUiElement;
 
@@ -47,10 +47,10 @@ class StructuredData extends Element {
     public const string TYPE_PERSON = 'Person';
 
     /**
-     * @var string[] Every structured data type this element can represent: the standalone,
-     * site-wide ones it owns, plus `StructuredDataField::TYPE_WEBPAGE` - a `StructuredData`
-     * row is also where that field persists its own computed per-entry output (see `$fieldId`,
-     * `$ownerId`), so its type has to validate here too.
+     * @var string[] The standalone, site-wide types this element owns. A field-backed row (see
+     * `$fieldId`, `$ownerId`) isn't restricted to this list - `StructuredDataField::$type` is a
+     * free-form schema.org type the field's own settings picked, so `defineRules()` validates
+     * those against the full schema.org vocabulary instead.
      *
      * @since v1.0.0
      */
@@ -59,7 +59,6 @@ class StructuredData extends Element {
         self::TYPE_WEBSITE,
         self::TYPE_LOCAL_BUSINESS,
         self::TYPE_PERSON,
-        StructuredDataField::TYPE_WEBPAGE,
     ];
 
     /**
@@ -104,10 +103,7 @@ class StructuredData extends Element {
      * @since v1.0.0
      */
     public function toJsonLd(): array {
-        return array_merge([
-            '@context' => 'https://schema.org',
-            '@type' => $this->type,
-        ], $this->properties);
+        return CoreSeoGeo::getInstance()->getStructuredData()->toJsonLd($this->type, $this->properties);
     }
 
     public static function displayName(): string { return Craft::t('core-seo-geo', 'Structured Data'); }
@@ -167,8 +163,6 @@ class StructuredData extends Element {
      * @return bool
      */
     public function canDelete(User $user): bool {
-        if ($this->ownerId !== null) return false;
-        if (parent::canDelete($user)) return true;
         return $user->can('deleteStructuredData');
     }
 
@@ -289,7 +283,14 @@ class StructuredData extends Element {
      */
     protected function defineRules(): array {
         return array_merge(parent::defineRules(), [
-            [['type'], 'in', 'range' => self::TYPES],
+            [['type'], 'in', 'range' => self::TYPES, 'when' => fn(): bool => $this->fieldId === null],
+            [['type'], function(string $attribute): void {
+                if (CoreSeoGeo::getInstance()->getSchemaOrg()->getType($this->$attribute) === null) {
+                    $this->addError($attribute, Craft::t('core-seo-geo', '{value} isn\'t a known schema.org type.', [
+                        'value' => $this->$attribute,
+                    ]));
+                }
+            }, 'when' => fn(): bool => $this->fieldId !== null],
             [['properties', 'fieldId', 'ownerId'], 'safe'],
         ]);
     }

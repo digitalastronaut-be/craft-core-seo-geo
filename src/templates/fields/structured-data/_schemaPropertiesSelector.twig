@@ -1,0 +1,19 @@
+{# @var propertyOptions array<string, string> #}
+{# @var propertyDescriptions array<string, string> #}
+
+{% set searchPropertiesAction = actionUrl('core-seo-geo/structured-data-field/search-properties') %}
+
+<div class="core-seo-geo-property-selector">
+    <input
+        type="text"
+        id="core-seo-geo-property-search"
+        class="clearable text fullwidth"
+        autocomplete="off"
+        placeholder="{{ 'Search schema properties'|t('app') }}"
+        data-show="$type"
+        data-bind:property-search
+        data-on:input__debounce.300ms="@get('{{ searchPropertiesAction }}')"
+    >
+
+    {% include 'core-seo-geo/fields/structured-data/_schemaPropertiesSelectorOptions.twig' %}
+</div>

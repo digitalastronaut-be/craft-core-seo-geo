@@ -10,16 +10,18 @@
 
 namespace digitalastronaut\craftcoreseogeo\variables;
 
-use craft\helpers\Json;
+use yii\base\InvalidArgumentException;
+
+use Spatie\SchemaOrg\BaseType;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 
 /**
  * Class CoreSeoGeoVariable
  *
- * Every method here returns an already-encoded JSON string (compact, unescaped slashes), not
- * a PHP array, so a dev can drop it straight into a property's template with no `|json_encode`
- * of their own, e.g. `{{ craft.coreSeoGeo.createWebPageElement('main') }}`.
+ * `schema()` returns the live `spatie/schema-org` builder object itself, not JSON, so Twig's
+ * attribute resolution can chain further property calls onto it (e.g.
+ * `craft.coreSeoGeo.schema('Rating').ratingValue(5)`).
  *
  * A `StructuredDataField` property's own template is rendered via `renderObjectTemplate()`,
  * which exposes the element's own attributes as bare variables (`title`, `url`, ...), not
@@ -34,45 +36,25 @@ class CoreSeoGeoVariable {
     // =========================================================================
 
     /**
-     * Builds a schema.org `BreadcrumbList` object, usable as-is for the `breadcrumb` property,
-     * e.g. `craft.coreSeoGeo.createBreadcrumbs([{ label: title, href: url }])` inside a
-     * `StructuredDataField` property's template.
+     * Constructs a `spatie/schema-org` builder for a schema.org type, for properties whose
+     * expected value is itself a nested schema.org object rather than a plain string, e.g.
+     * `craft.coreSeoGeo.schema('Rating').ratingValue(5).bestRating(5)` for a `Review`'s
+     * `reviewRating` property.
      *
-     * @param array<int, array{label: string, href: string}> $items The breadcrumbs, from the
-     * one right under "Home" to the current page, in order.
-     * @param string|null $homeUrl The "Home" crumb's URL. Defaults to the current site's base
-     * URL.
-     * @param string|null $homeLabel The "Home" crumb's label.
-     * @return string The `BreadcrumbList` object, JSON-encoded.
+     * The type name is validated against our own vendored schema.org registry before
+     * dispatching, so a typo or unsupported type raises a clear error instead of Twig's
+     * generic "undefined method" when the chained property call fails.
      *
-     * @see \digitalastronaut\craftcoreseogeo\services\StructuredDataService::createBreadcrumbs()
+     * @param string $type a schema.org type name, e.g. `Rating`
+     * @return BaseType
+     * @throws InvalidArgumentException if `$type` isn't a known schema.org type, or has no
+     * corresponding `spatie/schema-org` builder
+     *
+     * @see \digitalastronaut\craftcoreseogeo\services\SchemaOrgService::build()
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
-    public function createBreadcrumbs(array $items, ?string $homeUrl = null, ?string $homeLabel = null): string {
-        return Json::encode(
-            CoreSeoGeo::getInstance()->getStructuredData()->createBreadcrumbs($items, $homeUrl, $homeLabel),
-            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
-        );
-    }
-
-    /**
-     * Builds a schema.org `WebPageElement` object, usable as-is for the `mainContentOfPage`
-     * property, e.g. `craft.coreSeoGeo.createWebPageElement('main')`.
-     *
-     * @param string|null $cssSelector A CSS selector identifying the element, e.g. `main` or
-     * `#content`.
-     * @param string|null $xpath An XPath identifying the element.
-     * @return string The `WebPageElement` object, JSON-encoded.
-     *
-     * @see \digitalastronaut\craftcoreseogeo\services\StructuredDataService::createWebPageElement()
-     * @author      Digitalastronaut
-     * @since       v1.0.0
-     */
-    public function createWebPageElement(?string $cssSelector = null, ?string $xpath = null): string {
-        return Json::encode(
-            CoreSeoGeo::getInstance()->getStructuredData()->createWebPageElement($cssSelector, $xpath),
-            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
-        );
+    public function schema(string $type): BaseType {
+        return CoreSeoGeo::getInstance()->getSchemaOrg()->build($type);
     }
 }

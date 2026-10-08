@@ -1,0 +1,17 @@
+{# @var typeOptions array<string, string> #}
+{# @var selectedType string #}
+
+{% set searchTypesAction = actionUrl('core-seo-geo/structured-data-field/search-types') %}
+
+<div class="core-seo-geo-type-selector">
+    <input
+        type="text"
+        id="core-seo-geo-type-search"
+        class="clearable text fullwidth"
+        placeholder="{{ 'Search type'|t('app') }}"
+        data-bind:search
+        data-on:input__debounce.300ms="@get('{{ searchTypesAction }}')"
+    >
+
+    {% include 'core-seo-geo/fields/structured-data/_schemaTypeSelectorOptions.twig' %}
+</div>

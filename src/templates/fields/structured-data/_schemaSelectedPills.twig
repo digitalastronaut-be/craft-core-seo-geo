@@ -1,0 +1,35 @@
+{# @var typeName string #}
+{# @var typeLabel string #}
+{# @var names string[] #}
+
+{% set clearRowsAction = actionUrl('core-seo-geo/structured-data-field/clear-rows') %}
+
+<div data-show="$type" class="core-seo-geo-structured-data-selectors-bottom">
+    {% if typeName %}
+        <div class="core-seo-geo-pill core-seo-geo-pill--type">
+            <span class="core-seo-geo-pill-label">{{ typeLabel }}</span>
+            <a
+                class="delete icon"
+                title="{{ 'Remove'|t('app') }}"
+                aria-label="{{ 'Remove'|t('app') }}"
+                role="button"
+                data-on:click="window.coreSeoGeoDisposeAllPropertyEditors(); $type = ''; $properties = {}; @get('{{ clearRowsAction }}')"
+            ></a>
+        </div>
+    {% endif %}
+
+    {% for name in names %}
+        {% set syncPropertyAction = actionUrl('core-seo-geo/structured-data-field/sync-property', { name: name }) %}
+        {% set templateEditorId = ('core-seo-geo-property-template-' ~ name|kebab)|namespaceInputId %}
+        <div class="core-seo-geo-pill">
+            <code class="core-seo-geo-pill-label">{{ name }}</code>
+            <a
+                class="delete icon"
+                title="{{ 'Remove'|t('app') }}"
+                aria-label="{{ 'Remove'|t('app') }}"
+                role="button"
+                data-on:click="window.coreSeoGeoDisposeEditor('{{ templateEditorId }}'); delete $properties['{{ name }}']; @get('{{ syncPropertyAction }}')"
+            ></a>
+        </div>
+    {% endfor %}
+</div>

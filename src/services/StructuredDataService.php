@@ -13,9 +13,16 @@ namespace digitalastronaut\craftcoreseogeo\services;
 use Craft;
 
 use craft\base\Component;
+use craft\base\ElementInterface;
+use craft\helpers\Json;
 
 /**
  * Class StructuredDataService
+ *
+ * Builds the structured data `StructuredDataField` (and the standalone `StructuredData`
+ * element) expose: each configured property is a Twig template string, stored per schema.org
+ * property name; `renderProperties()` renders every one against the owning element and
+ * `toJsonLd()` assembles the final, emittable object from the result.
  *
  * {@see \digitalastronaut\craftcoreseogeo\variables\CoreSeoGeoVariable}).
  *
@@ -25,96 +32,112 @@ use craft\base\Component;
  */
 class StructuredDataService extends Component {
     /**
-     * Builds a schema.org `BreadcrumbList` object. A "Home" crumb pointing at the current
-     * site's base URL is always put first; `item` (the crumb's URL) is omitted from the last
-     * crumb, since that's the current page.
+     * Renders every configured property's Twig template against `$element` and decodes each
+     * result, producing the data half of a structured data object (everything but
+     * `@context`/`@type`; see `toJsonLd()`).
      *
-     * @param array<int, array{label: string, href: string}> $items The breadcrumbs, from the
-     * one right under "Home" to the current page, in order.
-     * @param string|null $homeUrl The "Home" crumb's URL. Defaults to the site's domain itself
-     * (scheme + host), not its base URL, since the domain root is what "Home" means even when
-     * the current site is set up under a subpath.
-     * @param string|null $homeLabel The "Home" crumb's label.
-     * @return array{'@context': string, '@type': string, itemListElement: array<int, array<string, mixed>>}
+     * A template rendering to an empty string is omitted entirely (an unset property), rather
+     * than being kept as `""`. A render that throws (e.g. a typo'd filter) is logged and
+     * skipped the same way, rather than failing the whole object over one bad property. Each
+     * surviving result is decoded by `_decodeRenderedProperty()`, which lets a template return
+     * a plain string (the common case, e.g. a `name`) or a nested object (e.g.
+     * `craft.coreSeoGeo.schema(...)`) without the template needing to say which; a result
+     * that isn't valid JSON is kept as the plain string it already is.
+     *
+     * @param ElementInterface $element the element the property templates render against
+     * @param array<string, array{template?: string|null}> $properties keyed by schema.org
+     * property name
+     * @return array<string, mixed>
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
-    public function createBreadcrumbs(array $items, ?string $homeUrl = null, ?string $homeLabel = null): array {
-        $homeUrl ??= $this->_domainUrl();
-        $homeLabel ??= Craft::t('core-seo-geo', 'Home');
+    public function renderProperties(ElementInterface $element, array $properties): array {
+        $data = [];
+        $view = Craft::$app->getView();
 
-        $itemListElement = [
-            [
-                '@type' => 'ListItem',
-                'position' => 1,
-                'name' => $homeLabel,
-                'item' => $homeUrl,
-            ],
-        ];
+        foreach ($properties as $property => $propertyData) {
+            $template = $propertyData['template'] ?? null;
 
-        $lastIndex = \count($items) - 1;
+            if ($template === null || trim($template) === '') continue;
 
-        foreach ($items as $index => $item) {
-            $listItem = [
-                '@type' => 'ListItem',
-                'position' => $index + 2,
-                'name' => (string)($item['label'] ?? ''),
-            ];
-
-            if ($index !== $lastIndex) {
-                $listItem['item'] = (string)($item['href'] ?? '');
+            try {
+                $rendered = trim($view->renderObjectTemplate($template, $element, ['entry' => $element]));
+            } catch (\Throwable $e) {
+                Craft::warning("Couldn't render the \"{$property}\" structured data property: {$e->getMessage()}", __METHOD__);
+                continue;
             }
 
-            $itemListElement[] = $listItem;
+            if ($rendered === '') continue;
+
+            $data[$property] = $this->_decodeRenderedProperty($rendered);
         }
 
-        return [
-            '@context' => 'https://schema.org',
-            '@type' => 'BreadcrumbList',
-            'itemListElement' => $itemListElement,
-        ];
+        return $data;
     }
 
     /**
-     * Builds a schema.org `WebPageElement` object identifying one element on the page, e.g.
-     * for the `mainContentOfPage` property. Pass whichever of `cssSelector`/`xpath` identifies
-     * the element; schema.org allows either, or both.
+     * Assembles the final, emittable JSON-LD object from a schema.org type and its
+     * already-rendered property data (see `renderProperties()`).
      *
-     * @param string|null $cssSelector A CSS selector identifying the element, e.g. `main` or
-     * `#content`.
-     * @param string|null $xpath An XPath identifying the element.
-     * @return array{'@type': string, cssSelector?: string, xpath?: string}
+     * @param string $type a schema.org type name, e.g. `WebPage`
+     * @param array<string, mixed> $data the rendered property data, keyed by property name
+     * @return array{'@context': string, '@type': string}
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
-    public function createWebPageElement(?string $cssSelector = null, ?string $xpath = null): array {
-        return array_filter([
-            '@type' => 'WebPageElement',
-            'cssSelector' => $cssSelector,
-            'xpath' => $xpath,
-        ], static fn(mixed $value): bool => $value !== null);
+    public function toJsonLd(string $type, array $data): array {
+        return array_merge([
+            '@context' => 'https://schema.org',
+            '@type' => $type,
+        ], $data);
+    }
+
+    // Private Methods
+    // =========================================================================
+
+    /**
+     * Decodes one rendered property template's output. Handles three shapes a template can
+     * produce: a plain string (the common case, kept as-is), hand-written JSON (an object or
+     * array literal typed directly into the template), and a `craft.coreSeoGeo.schema(...)`
+     * builder chain, whose nested object needs two corrections before it fits as a property
+     * value rather than a document of its own.
+     *
+     * @param string $rendered
+     * @return mixed
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.0
+     */
+    private function _decodeRenderedProperty(string $rendered): mixed {
+        $decoded = Json::decodeIfJson($this->_unwrapJsonLdScript($rendered));
+
+        if (\is_array($decoded)) unset($decoded['@context']);
+
+        return $decoded;
     }
 
     /**
-     * Returns the current site's domain root (scheme + host, no path), e.g.
-     * `https://example.com/`. Used as the default "Home" URL, since a site's own base URL can
-     * sit under a subpath (e.g. `https://example.com/en/`) that "Home" shouldn't be scoped to.
+     * A bare `{{ craft.coreSeoGeo.schema(...) }}` doesn't render to JSON: Twig stringifies the
+     * `spatie/schema-org` builder object via PHP's own `__toString()`, which that library
+     * defines as `toScript()` - a full `<script type="application/ld+json">...</script>` tag,
+     * meant for dropping straight into page HTML, not for nesting inside another object's
+     * property. Unwrapping it here, in the one place responsible for interpreting a rendered
+     * property template, keeps the `schema()` builder itself
+     * ({@see SchemaOrgService::build()}) a thin, unmodified pass-through to the library.
      *
-     * @return string
+     * @param string $rendered
+     * @return string the script tag's inner JSON, or `$rendered` unchanged if it isn't one
      *
-     * @since v1.0.0
+     * @author      Digitalastronaut
+     * @since       v1.0.0
      */
-    private function _domainUrl(): string {
-        $baseUrl = (string)Craft::$app->getSites()->getCurrentSite()->getBaseUrl();
-        $host = parse_url($baseUrl, PHP_URL_HOST);
+    private function _unwrapJsonLdScript(string $rendered): string {
+        if (preg_match('/^<script\b[^>]*>(.*)<\/script>$/is', $rendered, $matches) === 1) {
+            return trim($matches[1]);
+        }
 
-        if ($host === null) return $baseUrl;
-
-        $scheme = parse_url($baseUrl, PHP_URL_SCHEME) ?? 'https';
-        $port = parse_url($baseUrl, PHP_URL_PORT);
-
-        return "{$scheme}://{$host}" . ($port !== null ? ":{$port}" : '') . '/';
+        return $rendered;
     }
 }

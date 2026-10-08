@@ -72,10 +72,6 @@ trait PluginTrait {
     }
 
     /**
-     * Registered unconditionally, not just on CP requests: `getAllElementTypes()` is also
-     * consulted from console/queue contexts (e.g. garbage collection), so gating this behind
-     * `isCpRequest` would silently stop trashed `StructuredData` rows from ever being purged.
-     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -92,10 +88,6 @@ trait PluginTrait {
     }
 
     /**
-     * Exposes `craft.coreSeoGeo` in Twig, so devs can call things like
-     * `craft.coreSeoGeo.createBreadcrumbs(...)` from anywhere templates render, including
-     * inside a `StructuredDataField` property's own template text.
-     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -168,10 +160,6 @@ trait PluginTrait {
     }
 
     /**
-     * Publishes `registry.json` and exposes its published URL as `window.CoreSeoGeoSchemaRegistryUrl`,
-     * so CP JS can `fetch()` the schema.org vocabulary on demand rather than it being inlined
-     * into every CP page.
-     *
      * @param View $view
      * @return void
      *

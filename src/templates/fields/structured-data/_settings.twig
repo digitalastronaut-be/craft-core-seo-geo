@@ -1,0 +1,65 @@
+{# @var field \digitalastronaut\craftcoreseogeo\fields\StructuredDataField #}
+{# @var fieldId int|null #}
+{# @var typeOptions array<string, string> #}
+{# @var typeLabel string #}
+{# @var propertyOptions array<string, string> #}
+{# @var propertyDescriptions array<string, string> #}
+{# @var propertyTooltips array<string, string> #}
+
+{% js %}
+    window.coreSeoGeoDisposeEditor = function(id) {
+        var instances = window.monacoEditorInstances || {};
+        var editor = instances[id];
+        if (!editor) return;
+
+        editor.dispose();
+        delete instances[id];
+    };
+
+    window.coreSeoGeoDisposeAllPropertyEditors = function() {
+        var instances = window.monacoEditorInstances || {};
+        Object.keys(instances).forEach(function(id) {
+            if (id.indexOf('core-seo-geo-property-template-') === -1) return;
+            window.coreSeoGeoDisposeEditor(id);
+        });
+    };
+{% endjs %}
+
+<div
+    class="core-seo-geo-structured-data-settings" 
+    data-signals="{
+        fieldId: {{ fieldId|default(null) }},
+        typeSearch: '', 
+        propertySearch: '', 
+        type: '{{ field.type|default("") }}',
+        properties: {{ field.properties|json_encode(constant('JSON_FORCE_OBJECT')) }}
+    }">
+
+    <input type="hidden" name="type" data-bind:type>
+
+    <div class="core-seo-geo-structured-data-selectors pane hairline">
+        <div class="core-seo-geo-structured-data-selectors-top">
+            {% include 'core-seo-geo/fields/structured-data/_schemaTypeSelector.twig' with {
+                typeOptions: typeOptions,
+            } only %}
+
+            {% include 'core-seo-geo/fields/structured-data/_schemaPropertiesSelector.twig' with {
+                propertyOptions: propertyOptions,
+            } only %}
+        </div>
+
+        {% include 'core-seo-geo/fields/structured-data/_schemaSelectedPills.twig' with {
+            typeName: field.type|default(''),
+            typeLabel: typeLabel|default(''),
+            names: field.properties|default({})|keys,
+        } only %}
+    </div>
+
+    <div class="core-seo-geo-mapping-section">
+        {% include 'core-seo-geo/fields/structured-data/_schemaPropertiesTable.twig' with {
+            names: field.properties|keys,
+            properties: field.properties,
+            propertyTooltips: propertyTooltips,
+        } only %}
+    </div>
+</div>

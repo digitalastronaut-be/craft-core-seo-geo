@@ -118,16 +118,36 @@ standalone `StructuredData` element's type) and render one row per property.
 - How the row list behaves for very large types (pagination, search/filter
   within the property list).
 
-## Step 5 — Bind `spatie/schema-org` into Twig
+## Step 5 — Bind `spatie/schema-org` into Twig ✅ done
 
-Add `craft.coreSeoGeo.schema(type)` (via `CoreSeoGeoVariable`), returning
-`Spatie\SchemaOrg\Schema::{$type}()`. Twig's native attribute resolution handles
-the rest of the chaining (`.ratingValue().bestRating()`) for free — no custom
-Twig extension needed beyond this one entry point.
+Added `spatie/schema-org` (`^4.0.2`, the last line compatible with the
+project's pinned PHP 8.2 platform; v5 requires PHP 8.4) to the plugin's
+`composer.json`. `craft.coreSeoGeo.schema(type)` (via `CoreSeoGeoVariable`)
+dispatches to `Spatie\SchemaOrg\Schema::{$method}()` through a new
+`SchemaOrgService::build()`. Twig's native attribute resolution handles the
+rest of the chaining (`.ratingValue().bestRating()`) for free, no custom Twig
+extension needed beyond this one entry point. `schema()` returns the live
+builder object itself (not JSON-encoded like this variable's other methods),
+since it needs to support further chained property calls; turning the final
+result into JSON is Step 6's job.
 
-**Decide:**
-- Validate the type name against our own registry before dispatching (friendlier
-  error than a raw "undefined method").
+- **Type name to spatie class name:** confirmed by diffing every installed
+  class's `getType()` literal against its class name that they're identical
+  for all 921 shipped types except one: `3DModel`, renamed to
+  `ThreeDimensionalModel` since PHP class names can't start with a digit.
+  `SchemaOrgService::TYPE_CLASS_OVERRIDES` holds just that one exception
+  rather than a general slugify pass. `Schema`'s static factory method name
+  is `lcfirst()` of the class name.
+- **Validated the type name against our own registry before dispatching**,
+  as this step's "Decide" called for: `build()` throws a
+  `yii\base\InvalidArgumentException` naming the type if it's not in our
+  registry at all, and a second, distinct message if it's a registry type
+  with no corresponding spatie builder (confirmed 29 such gaps: the scalar
+  `DataType`s we deliberately keep in the registry per Step 2, like `Text`/
+  `Number`/`Boolean`, plus a handful of schema.org types newer than the
+  schema.org version the installed spatie package was generated from, e.g.
+  `DigitalProductPassport`). Both are friendlier than Twig's generic
+  "undefined method" once a chained property call fails.
 
 ## Step 6 — Define the template-value evaluation convention
 

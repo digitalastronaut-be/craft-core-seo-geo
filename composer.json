@@ -13,7 +13,10 @@
   "require": {
     "php": ">=8.2",
     "craftcms/cms": "^5.11.0",
-    "nystudio107/craft-plugin-vite": "^5.0.0"
+    "nystudio107/craft-code-editor": "^1.0.30",
+    "nystudio107/craft-plugin-vite": "^5.0.0",
+    "spatie/schema-org": "^4.0.2",
+    "starfederation/datastar-php": "^1.0"
   },
   "require-dev": {
     "craftcms/ecs": "dev-main",

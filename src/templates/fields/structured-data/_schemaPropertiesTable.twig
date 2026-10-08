@@ -1,0 +1,31 @@
+{# @var names string[] #}
+{# @var properties array<string, array{template: string}> #}
+{# @var propertyTooltips array<string, string> #}
+
+{% import "codeeditor/codeEditor" as codeEditor %}
+
+{{ codeEditor.includeJs('core-seo-geo-codeeditor-bundle-preload') }}
+
+<table class="data core-seo-geo-mapping-table-options">
+    <thead>
+        <tr>
+            <th>{{ 'Property'|t('core-seo-geo') }}</th>
+            <th>{{ 'Template'|t('core-seo-geo') }}</th>
+            <th>{{ 'Calculated Value'|t('core-seo-geo') }}</th>
+            <th class="thin"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name in names %}
+            {% include 'core-seo-geo/fields/structured-data/_schemaPropertyRow.twig' with {
+                name: name,
+                template: properties[name].template ?? '',
+                tooltip: propertyTooltips[name] ?? '',
+            } only %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<p class="zilch small core-seo-geo-mapping-table-options" data-show="Object.keys($properties).length === 0">
+    {{ 'Select a type and properties above to map them.'|t('core-seo-geo') }}
+</p>

@@ -1,0 +1,47 @@
+{# @var name string #}
+{# @var template string #}
+{# @var tooltip string #}
+
+{% import "codeeditor/codeEditor" as codeEditor %}
+
+{% set syncPropertyAction = actionUrl('core-seo-geo/structured-data-field/sync-property', { name: name }) %}
+{% set templateEditorId = ('core-seo-geo-property-template-' ~ name|kebab)|namespaceInputId %}
+
+<tr id="core-seo-geo-property-row-{{ name|kebab }}">
+    <td>
+        <code>{{ name }}</code>
+        {% if tooltip %}
+            <span class="core-seo-geo-info-icon-wrap">
+                <span class="info"></span>
+                <span class="core-seo-geo-info-icon-popup">{{ tooltip|raw }}</span>
+            </span>
+        {% endif %}
+    </td>
+
+    <td data-ignore-morph>
+        {{ codeEditor.textarea({
+            id: 'core-seo-geo-property-template-' ~ name|kebab,
+            name: 'properties[' ~ name ~ '][template]',
+            value: template,
+            class: ['text', 'code', 'fullwidth'],
+            rows: 1,
+            inputAttributes: {
+                data: { bind: 'properties.' ~ name ~ '.template' },
+            },
+        }, 'CodeEditor', { theme: 'vs', language: 'twig' }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        }) }}
+    </td>
+
+    <td><code>{{ 'Save to see the calculated value.'|t('core-seo-geo') }}</code></td>
+
+    <td class="thin">
+        <a
+            class="delete icon"
+            title="{{ 'Remove'|t('core-seo-geo') }}"
+            aria-label="{{ 'Remove'|t('core-seo-geo') }}"
+            role="button"
+            data-on:click="window.coreSeoGeoDisposeEditor('{{ templateEditorId }}'); delete $properties['{{ name }}']; @get('{{ syncPropertyAction }}')"
+        ></a>
+    </td>
+</tr>

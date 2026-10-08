@@ -1,0 +1,21 @@
+{% set clearRowsAction = actionUrl('core-seo-geo/structured-data-field/clear-rows') %}
+
+<ul class="core-seo-geo-type-list core-seo-geo-type-options">
+    {% for value, label in typeOptions %}
+        <li
+            role="option"
+            class="core-seo-geo-type-option"
+            data-on:mousedown="evt.preventDefault()"
+            data-on:click="
+                window.coreSeoGeoDisposeAllPropertyEditors();
+                $type = '{{ value }}';
+                $properties = {};
+                $propertySearch = '';
+                @get('{{ clearRowsAction }}')
+            "
+            data-class:sel="$type === '{{ value }}'"
+        >
+            {{ label }}
+        </li>
+    {% endfor %}
+</ul>

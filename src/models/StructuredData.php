@@ -12,6 +12,8 @@ namespace digitalastronaut\craftcoreseogeo\models;
 
 use craft\base\Model;
 
+use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
+
 /**
  * Class StructuredData
  *
@@ -55,9 +57,6 @@ class StructuredData extends Model {
      * @since v1.0.0
      */
     public function toJsonLd(): array {
-        return array_merge([
-            '@context' => 'https://schema.org',
-            '@type' => $this->type,
-        ], $this->data);
+        return CoreSeoGeo::getInstance()->getStructuredData()->toJsonLd((string)$this->type, $this->data);
     }
 }

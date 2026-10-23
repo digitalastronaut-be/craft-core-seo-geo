@@ -1,0 +1,211 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'trust.txt'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'trust.txt'|t('core-seo-geo'), url: url('core-seo-geo/settings/txt/trust') },
+] %}
+
+{% set fullPageForm = true %}
+{% set specUrl = 'https://journallist.net/trust-txt/' %}
+
+{% set trustDomainCols = {
+    value: {
+        heading: 'Domain'|t('core-seo-geo'),
+        type: 'singleline',
+    },
+} %}
+
+{% set trustUrlCols = {
+    value: {
+        heading: 'URL'|t('core-seo-geo'),
+        type: 'singleline',
+    },
+} %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/txt-files/save') }}
+    {{ redirectInput('core-seo-geo/settings/txt/trust') }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.lightswitchField({
+                label: 'Serve trust.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until at least one field below is filled in. Note: trust.txt is a far less formal, less universally adopted spec than the other files here (no RFC, maintained by a single organization). [View trust.txt]({url}) · Spec: [journallist.net]({specUrl})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/trust/index'),
+                    specUrl: specUrl,
+                }),
+                id: 'enable-trust-txt',
+                name: 'enableTrustTxt',
+                on: settings.enableTrustTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Belongs To'|t('core-seo-geo'),
+                instructions: 'Domain(s) of the organization/network this site belongs to.'|t('core-seo-geo'),
+                id: 'trust-txt-belong-to',
+                name: 'trustTxtBelongTo',
+                addRowLabel: 'Add a domain'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustDomainCols,
+                rows: settings.trustTxtBelongTo,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Control'|t('core-seo-geo'),
+                instructions: 'Domain(s) that control (own) this site.'|t('core-seo-geo'),
+                id: 'trust-txt-control',
+                name: 'trustTxtControl',
+                addRowLabel: 'Add a domain'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustDomainCols,
+                rows: settings.trustTxtControl,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Member'|t('core-seo-geo'),
+                instructions: 'Domain(s) that are members of this site/organization - the reverse of Belongs To, used by a network\'s own trust.txt to list its members.'|t('core-seo-geo'),
+                id: 'trust-txt-member',
+                name: 'trustTxtMember',
+                addRowLabel: 'Add a domain'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustDomainCols,
+                rows: settings.trustTxtMember,
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Social'|t('core-seo-geo'),
+                instructions: 'Official social media profile URL(s).'|t('core-seo-geo'),
+                id: 'trust-txt-social',
+                name: 'trustTxtSocial',
+                addRowLabel: 'Add a profile'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustUrlCols,
+                rows: settings.trustTxtSocial,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Contact'|t('core-seo-geo'),
+                instructions: 'Contact URI(s) for questions about this file/organization.'|t('core-seo-geo'),
+                id: 'trust-txt-contact',
+                name: 'trustTxtContact',
+                addRowLabel: 'Add a contact'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustUrlCols,
+                rows: settings.trustTxtContact,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Disclosure'|t('core-seo-geo'),
+                instructions: 'Link(s) to an ownership/disclosure page.'|t('core-seo-geo'),
+                id: 'trust-txt-disclosure',
+                name: 'trustTxtDisclosure',
+                addRowLabel: 'Add a link'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustUrlCols,
+                rows: settings.trustTxtDisclosure,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Credential'|t('core-seo-geo'),
+                instructions: 'Link(s) to a credential verifying this organization (e.g. a press association or Trust Project membership page).'|t('core-seo-geo'),
+                id: 'trust-txt-credential',
+                name: 'trustTxtCredential',
+                addRowLabel: 'Add a link'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustUrlCols,
+                rows: settings.trustTxtCredential,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Copyright'|t('core-seo-geo'),
+                instructions: 'Link(s) to the licensing/copyright terms for this site\'s content.'|t('core-seo-geo'),
+                id: 'trust-txt-copyright',
+                name: 'trustTxtCopyright',
+                addRowLabel: 'Add a link'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: trustUrlCols,
+                rows: settings.trustTxtCopyright,
+            }) }}
+
+            <hr>
+
+            {{ forms.selectField({
+                label: 'AI Training Allowed'|t('core-seo-geo'),
+                instructions: 'Whether this organization permits its content to be used for AI training, at the organizational level - separate from the per-page "noai" directive in the SEO/GEO field. Leave as "Not asserted" to omit the line entirely.'|t('core-seo-geo'),
+                id: 'trust-txt-data-training-allowed',
+                name: 'trustTxtDataTrainingAllowed',
+                value: settings.trustTxtDataTrainingAllowed,
+                options: trustTxtDataTrainingAllowedOptions,
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ codeEditor.textareaField({
+                label: 'Extra Raw Text'|t('core-seo-geo'),
+                instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
+                id: 'trust-txt-extra',
+                name: 'trustTxtExtra',
+                value: settings.trustTxtExtra,
+                class: ['code'],
+                rows: 4,
+            }, 'CodeEditor', {
+                theme: 'vs',
+                language: 'plaintext',
+                lineNumbers: 'on',
+                lineNumbersMinChars: 3,
+                lineDecorationsWidth: 16,
+            }, {
+                wrapperClass: 'monaco-editor-background-frame',
+                displayLanguageIcon: false,
+            }) }}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    {{ codeEditor.textareaField({
+        label: 'Preview'|t('core-seo-geo'),
+        instructions: 'The trust.txt that would be served right now, from the settings above.'|t('core-seo-geo'),
+        id: 'trust-txt-preview',
+        value: trustTxtPreview,
+        readonly: true,
+        class: ['code'],
+        rows: 8,
+    }, 'CodeEditor', {
+        theme: 'vs',
+        language: 'plaintext',
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 16,
+        readOnly: true,
+    }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        displayLanguageIcon: false,
+    }) }}
+{% endblock %}

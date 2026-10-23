@@ -47,6 +47,66 @@ trait ServicesTrait {
                 'schemaOrg' => [
                     'class' => SchemaOrgService::class,
                 ],
+                'seoScore' => [
+                    'class' => SeoScoreService::class,
+                ],
+                'botDetection' => [
+                    'class' => BotDetectionService::class,
+                ],
+                'markdown' => [
+                    'class' => MarkdownService::class,
+                ],
+                'hreflang' => [
+                    'class' => HreflangService::class,
+                ],
+                'favicon' => [
+                    'class' => FaviconService::class,
+                ],
+                'sitemap' => [
+                    'class' => SitemapService::class,
+                ],
+                'contentSeo' => [
+                    'class' => ContentSeoService::class,
+                ],
+                'structuredDataMappings' => [
+                    'class' => StructuredDataMappingService::class,
+                ],
+                'globalStructuredData' => [
+                    'class' => GlobalStructuredDataService::class,
+                ],
+                'jsonLdGraph' => [
+                    'class' => JsonLdGraphService::class,
+                ],
+                'trackingScripts' => [
+                    'class' => TrackingScriptsService::class,
+                ],
+                'txtFiles' => [
+                    'class' => TxtFilesService::class,
+                ],
+                'robots' => [
+                    'class' => RobotsService::class,
+                ],
+                'humans' => [
+                    'class' => HumansService::class,
+                ],
+                'ads' => [
+                    'class' => AdsService::class,
+                ],
+                'security' => [
+                    'class' => SecurityService::class,
+                ],
+                'trust' => [
+                    'class' => TrustService::class,
+                ],
+                'llms' => [
+                    'class' => LlmsService::class,
+                ],
+                'llmsFull' => [
+                    'class' => LlmsFullService::class,
+                ],
+                'redirects' => [
+                    'class' => RedirectsService::class,
+                ],
             ],
         ];
     }
@@ -70,5 +130,145 @@ trait ServicesTrait {
      */
     public function getSchemaOrg(): SchemaOrgService {
         return $this->get('schemaOrg');
+    }
+
+    /**
+     * @return SeoScoreService
+     */
+    public function getSeoScore(): SeoScoreService {
+        return $this->get('seoScore');
+    }
+
+    /**
+     * @return BotDetectionService
+     */
+    public function getBotDetection(): BotDetectionService {
+        return $this->get('botDetection');
+    }
+
+    /**
+     * @return MarkdownService
+     */
+    public function getMarkdown(): MarkdownService {
+        return $this->get('markdown');
+    }
+
+    /**
+     * @return HreflangService
+     */
+    public function getHreflang(): HreflangService {
+        return $this->get('hreflang');
+    }
+
+    /**
+     * @return FaviconService
+     */
+    public function getFavicon(): FaviconService {
+        return $this->get('favicon');
+    }
+
+    /**
+     * @return SitemapService
+     */
+    public function getSitemap(): SitemapService {
+        return $this->get('sitemap');
+    }
+
+    /**
+     * @return ContentSeoService
+     */
+    public function getContentSeo(): ContentSeoService {
+        return $this->get('contentSeo');
+    }
+
+    /**
+     * @return StructuredDataMappingService
+     */
+    public function getStructuredDataMappings(): StructuredDataMappingService {
+        return $this->get('structuredDataMappings');
+    }
+
+    /**
+     * @return GlobalStructuredDataService
+     */
+    public function getGlobalStructuredData(): GlobalStructuredDataService {
+        return $this->get('globalStructuredData');
+    }
+
+    /**
+     * @return JsonLdGraphService
+     */
+    public function getJsonLdGraph(): JsonLdGraphService {
+        return $this->get('jsonLdGraph');
+    }
+
+    /**
+     * @return TrackingScriptsService
+     */
+    public function getTrackingScripts(): TrackingScriptsService {
+        return $this->get('trackingScripts');
+    }
+
+    /**
+     * @return TxtFilesService
+     */
+    public function getTxtFiles(): TxtFilesService {
+        return $this->get('txtFiles');
+    }
+
+    /**
+     * @return RobotsService
+     */
+    public function getRobots(): RobotsService {
+        return $this->get('robots');
+    }
+
+    /**
+     * @return HumansService
+     */
+    public function getHumans(): HumansService {
+        return $this->get('humans');
+    }
+
+    /**
+     * @return AdsService
+     */
+    public function getAds(): AdsService {
+        return $this->get('ads');
+    }
+
+    /**
+     * @return SecurityService
+     */
+    public function getSecurity(): SecurityService {
+        return $this->get('security');
+    }
+
+    /**
+     * @return TrustService
+     */
+    public function getTrust(): TrustService {
+        return $this->get('trust');
+    }
+
+    /**
+     * @return LlmsService
+     */
+    public function getLlms(): LlmsService {
+        return $this->get('llms');
+    }
+
+    /**
+     * @return LlmsFullService
+     */
+    public function getLlmsFull(): LlmsFullService {
+        return $this->get('llmsFull');
+    }
+
+    /**
+     * @return RedirectsService
+     */
+    public function getRedirects(): RedirectsService {
+        return $this->get('redirects');
     }
 }

@@ -2,28 +2,51 @@
 
 {% extends '_layouts/cp.twig' %}
 
-{% set selectedSubnavItem = 'settings' %}
-{% set sectionTitle = 'SEO/GEO Settings'|t('core-seo-geo') %}
-
-{% set navItems = {
-    'global-seo': { label: 'Global SEO'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
-    'global-geo': { label: 'Global GEO'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-geo') },
-    'tracking-scripts': { label: 'Tracking Scripts'|t('core-seo-geo'), url: url('core-seo-geo/settings/tracking-scripts') },
-    'plugin': { label: 'Plugin'|t('core-seo-geo'), url: url('core-seo-geo/settings/plugin') },
-    'structured-data': { label: 'Structured Data'|t('core-seo-geo'), url: url('core-seo-geo/settings/structured-data') },
-} %}
-
-{% set title = navItems[selectedNavItem].label %}
-{% set docTitle = title ~ ' - ' ~ sectionTitle %}
+{% set title = title ?? 'SEO/GEO'|t('core-seo-geo') %}
+{% set docTitle = docTitle ?? (title ~ ' - SEO/GEO') %}
 
 {% set crumbs = [
-    { label: 'SEO/GEO'|t('core-seo-geo'), url: url('core-seo-geo/structured-data') },
-] %}
+    { label: 'SEO/GEO'|t('core-seo-geo'), url: url('core-seo-geo') },
+]|merge(extraCrumbs ?? []) %}
 
-{% block sidebar %}
-    {% include '_includes/nav.twig' with {
-        label: sectionTitle,
-        items: navItems,
-        selectedItem: selectedNavItem,
-    } only %}
-{% endblock %}
+{% if urlFormat is defined %}
+    {% set siteIds = craft.app.sites.getEditableSiteIds() %}
+
+    {% if siteIds|length > 1 %}
+        {% set groups = craft.app.sites.getAllGroups() %}
+        {% set showGroupHeadings = groups|length > 1 %}
+        {% set siteMenuItems = [] %}
+
+        {% for group in groups %}
+            {% set groupSiteIds = group.getSiteIds()|intersect(siteIds) %}
+
+            {% if groupSiteIds %}
+                {% set groupItems = [] %}
+
+                {% for siteId in groupSiteIds %}
+                    {% set menuSite = craft.app.sites.getSiteById(siteId) %}
+                    {% set groupItems = groupItems|merge([{
+                        label: menuSite.name|t('site'),
+                        url: urlFormat|replace({ '{id}': siteId, '{handle}': menuSite.handle }),
+                        selected: siteId == selectedSiteId,
+                    }]) %}
+                {% endfor %}
+
+                {% set siteMenuItems = siteMenuItems|merge(showGroupHeadings ? [{
+                    heading: group.name|t('site'),
+                    items: groupItems,
+                }] : groupItems) %}
+            {% endif %}
+        {% endfor %}
+
+        {% set crumbs = [{
+            id: 'site-crumb',
+            icon: 'world',
+            label: craft.app.sites.getSiteById(selectedSiteId).name|t('site'),
+            menu: {
+                label: 'Select site'|t('app'),
+                items: siteMenuItems,
+            },
+        }]|merge(crumbs) %}
+    {% endif %}
+{% endif %}

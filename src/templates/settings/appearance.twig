@@ -1,0 +1,26 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'appearance' %}
+{% set title = 'Appearance'|t('core-seo-geo') %}
+
+{% set fullPageForm = true %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/appearance/save') }}
+    {{ redirectInput('core-seo-geo/settings/appearance') }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.textField({
+                label: 'Plugin Name'|t('core-seo-geo'),
+                instructions: 'Overrides the label shown for this plugin\'s own control panel nav item. Leave blank to use the default, "SEO/GEO".'|t('core-seo-geo'),
+                id: 'plugin-name',
+                name: 'pluginName',
+                value: settings.pluginName,
+                placeholder: 'SEO/GEO'|t('core-seo-geo'),
+            }) }}
+        </div>
+    {% endnamespace %}
+{% endblock %}

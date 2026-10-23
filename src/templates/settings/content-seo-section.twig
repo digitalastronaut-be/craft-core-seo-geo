@@ -1,0 +1,169 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'content-seo' %}
+{% set title = section.name %}
+{% set extraCrumbs = [
+    { label: 'Content'|t('core-seo-geo'), url: url('core-seo-geo/settings/content-seo') },
+    { label: section.name, url: url('core-seo-geo/settings/content-seo/' ~ section.handle) },
+] %}
+{% set urlFormat = 'core-seo-geo/settings/content-seo/' ~ section.handle ~ '?site={handle}' %}
+{% set selectedSiteId = site.id %}
+{% set fullPageForm = true %}
+
+{% set rowCols = {
+    label: {
+        heading: 'Label'|t('core-seo-geo'),
+        type: 'singleline',
+    },
+    template: {
+        heading: 'Template'|t('core-seo-geo'),
+        type: 'template',
+    },
+    editable: {
+        heading: 'Editable'|t('core-seo-geo'),
+        type: 'lightswitch',
+    },
+} %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/content-seo/save-section') }}
+    {{ redirectInput('core-seo-geo/settings/content-seo/' ~ section.handle ~ '?site=' ~ site.handle) }}
+    {{ hiddenInput('sectionHandle', section.handle) }}
+    {{ hiddenInput('siteId', site.id) }}
+
+    <div class="flex-fields">
+        <h2>{{ 'SEO settings'|t('core-seo-geo') }}</h2>
+
+        {{ forms.elementSelectField({
+            id: 'image',
+            name: 'image',
+            label: 'Default Social Image'|t('core-seo-geo'),
+            instructions: "Used as the og:image/twitter:image for any entry in this section whose SEO/GEO field has no image of its own. Falls back to the global default image when left empty."|t('core-seo-geo'),
+            elementType: 'craft\\elements\\Asset',
+            elements: image ? [image] : [],
+            criteria: { kind: 'image' },
+            single: true,
+            viewMode: 'thumbs',
+            selectionLabel: 'Choose an image'|t('core-seo-geo'),
+        }) }}
+
+        {{ forms.editableTableField({
+            label: 'Meta Title Config'|t('core-seo-geo'),
+            instructions: "The blocks used to build the meta title, rendered in order and joined together. A block's template accepts {attr} shorthand and full {{ twig }} against the entry being rendered."|t('core-seo-geo'),
+            id: 'titleConfig',
+            name: 'titleConfig',
+            addRowLabel: 'Add a block'|t('core-seo-geo'),
+            allowAdd: true,
+            allowReorder: true,
+            allowDelete: true,
+            cols: rowCols,
+            rows: titleConfig,
+            includeRowId: true,
+        }) }}
+
+        {{ forms.editableTableField({
+            label: 'Meta Description Config'|t('core-seo-geo'),
+            instructions: 'The blocks used to build the meta description. Same rules as the title blocks above.'|t('core-seo-geo'),
+            id: 'descriptionConfig',
+            name: 'descriptionConfig',
+            addRowLabel: 'Add a block'|t('core-seo-geo'),
+            allowAdd: true,
+            allowReorder: true,
+            allowDelete: true,
+            cols: rowCols,
+            rows: descriptionConfig,
+            includeRowId: true,
+        }) }}
+
+        {{ forms.selectizeField({
+            id: 'robots',
+            name: 'robots',
+            multi: true,
+            label: 'Robots/AI Visibility'|t('core-seo-geo'),
+            values: robots,
+            options: robotsOptions,
+        }) }}
+
+        <hr>
+
+        <div class="flex flex-justify">
+            <h2 class="mb-0">{{ 'Structured data mappings'|t('core-seo-geo') }}</h2>
+            <a href="{{ newMappingUrl }}" class="btn add icon">{{ 'New mapping'|t('core-seo-geo') }}</a>
+        </div>
+
+        <div class="field">
+            <table id="mappings-table" class="data fullwidth"{% if not mappingRows|length %} style="display: none;"{% endif %}>
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'Type'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Properties'|t('core-seo-geo') }}</th>
+                        <td class="thin"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in mappingRows %}
+                        <tr data-id="{{ row.id }}">
+                            <td>
+                                <a href="{{ url('core-seo-geo/settings/content-seo/' ~ section.handle ~ '/mappings/' ~ row.id) }}">
+                                    {{ row.typeLabel }}
+                                </a>
+                            </td>
+
+                            <td>{{ row.propertyNames|default('') != '' ? row.propertyNames : '–' }}</td>
+
+                            <td class="thin">
+                                <a class="delete icon mapping-delete-btn" title="{{ 'Delete'|t('core-seo-geo') }}" aria-label="{{ 'Delete'|t('core-seo-geo') }}" role="button" data-id="{{ row.id }}"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div id="mappings-zilch" class="zilch small"{% if mappingRows|length %} style="display: none;"{% endif %}>{{ 'No structured data mappings yet.'|t('core-seo-geo') }}</div>
+        </div>
+
+        <h2>{{ 'Sitemap settings'|t('core-seo-geo') }}</h2>
+
+        {{ forms.lightswitchField({
+            label: 'Sitemap generation'|t('core-seo-geo'),
+            instructions: "Include this section's entries in the sitemap: both its own sub-sitemap and its index entry. Disabling this only affects this section - it's independent of the plugin-wide sitemap setting."|t('core-seo-geo'),
+            id: 'sitemapEnabled',
+            name: 'sitemapEnabled',
+            on: sitemapEnabled,
+            onLabel: 'Enabled'|t('core-seo-geo'),
+            offLabel: 'Disabled'|t('core-seo-geo'),
+        }) }}
+    </div>
+{% endblock %}
+
+{% js %}
+    $('.mapping-delete-btn').on('click', function() {
+        var $btn = $(this);
+
+        if (!confirm({{ "Are you sure you want to delete this structured data mapping?"|t('core-seo-geo')|json_encode|raw }})) {
+            return;
+        }
+
+        $btn.addClass('loading');
+
+        Craft.sendActionRequest('POST', 'core-seo-geo/content-seo/delete-mapping', {
+            data: {
+                sectionHandle: {{ section.handle|json_encode|raw }},
+                id: $btn.data('id'),
+            },
+        }).then(function(response) {
+            Craft.cp.displayNotice(response.data.message);
+            $btn.closest('tr').remove();
+
+            if (!$('#mappings-table tbody tr').length) {
+                $('#mappings-table').hide();
+                $('#mappings-zilch').show();
+            }
+        }).catch(function(error) {
+            $btn.removeClass('loading');
+            Craft.cp.displayError(error?.response?.data?.message);
+        });
+    });
+{% endjs %}

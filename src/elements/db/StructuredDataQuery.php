@@ -24,7 +24,7 @@ use digitalastronaut\craftcoreseogeo\db\Table;
  */
 class StructuredDataQuery extends ElementQuery {
     public string|array|null $type = null;
-    public mixed $fieldId = null;
+    public mixed $mappingId = null;
     public mixed $ownerId = null;
 
     /**
@@ -41,8 +41,8 @@ class StructuredDataQuery extends ElementQuery {
      * @param mixed $value an id, array of ids, or the `:empty:`/`:notempty:` shorthand
      * @return static
      */
-    public function fieldId(mixed $value): static {
-        $this->fieldId = $value;
+    public function mappingId(mixed $value): static {
+        $this->mappingId = $value;
 
         return $this;
     }
@@ -59,6 +59,36 @@ class StructuredDataQuery extends ElementQuery {
 
     /**
      * @inheritdoc
+     *
+     * Only the select columns are added here rather than in `afterPrepare()`: this runs before
+     * Craft's internal `_applySelectParam()`, which matters when Craft itself has restricted the
+     * select to a single column - e.g. the search service's relevance-scoring subquery clones the
+     * query with `->select('elements.id')` so it can embed it in an `IN (...)` condition. Adding
+     * columns in `afterPrepare()` would get merged back in after that restriction is applied,
+     * turning a one-column subquery into a multi-column one and breaking that `IN (...)` condition
+     * with a SQL "Operand should contain 1 column(s)" error. `craft\elements\db\UserQuery`, which
+     * joins its own dedicated table the same way, follows this same convention.
+     *
+     * The join itself can't move here too: its condition needs `elements_sites`, which Craft
+     * doesn't join into `$this->subQuery` until after `beforePrepare()` returns, so it stays in
+     * `afterPrepare()` below where that alias already exists.
+     */
+    protected function beforePrepare(): bool {
+        $alias = 'coreseogeo_structureddata';
+
+        $this->query->addSelect([
+            "$alias.mappingId",
+            "$alias.ownerId",
+            "$alias.type",
+            "$alias.properties",
+            "$alias.sourceData",
+        ]);
+
+        return parent::beforePrepare();
+    }
+
+    /**
+     * @inheritdoc
      */
     protected function afterPrepare(): bool {
         $alias = 'coreseogeo_structureddata';
@@ -67,19 +97,12 @@ class StructuredDataQuery extends ElementQuery {
         $this->subQuery->innerJoin([$alias => Table::STRUCTUREDDATA], $condition);
         $this->query->innerJoin([$alias => Table::STRUCTUREDDATA], $condition);
 
-        $this->query->addSelect([
-            "$alias.fieldId",
-            "$alias.ownerId",
-            "$alias.type",
-            "$alias.properties",
-        ]);
-
         if ($this->type !== null) {
             $this->subQuery->andWhere(Db::parseParam("$alias.type", $this->type));
         }
 
-        if ($this->fieldId !== null) {
-            $this->subQuery->andWhere(Db::parseParam("$alias.fieldId", $this->fieldId));
+        if ($this->mappingId !== null) {
+            $this->subQuery->andWhere(Db::parseParam("$alias.mappingId", $this->mappingId));
         }
 
         if ($this->ownerId !== null) {

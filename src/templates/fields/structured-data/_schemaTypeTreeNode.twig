@@ -1,0 +1,46 @@
+{# @var node array{name: string, label: string, isMatch: bool, children: array} #}
+{# @var expandedTypes string[] #}
+{# @var forceOpen bool #}
+{# @var depth int nesting level (0 = root) #}
+
+{% set clearRowsAction = actionUrl('core-seo-geo/structured-data-field/clear-rows') %}
+{% set hasChildren = node.children is not empty %}
+{# Read by admin.scss to indent this row's own content by depth, instead of indenting via a
+   nested <ul>'s padding - that would also shrink the available width at every level, leaving
+   deeper rows' hover/selected background too narrow to reach the frame's edges. #}
+{% set depthStyle = '--core-seo-geo-depth: ' ~ depth ~ ';' %}
+
+<li class="core-seo-geo-type-node{{ hasChildren ? '' : ' core-seo-geo-type-leaf' }}">
+    {% if hasChildren %}<details{{ (forceOpen or node.name in expandedTypes) ? ' open' : '' }}><summary style="{{ depthStyle }}" data-on:mousedown="evt.preventDefault()">
+        <span class="core-seo-geo-type-chevron">{{ iconSvg('circle-chevron-right') }}</span>
+    {% endif %}
+        <span
+            role="option"
+            class="core-seo-geo-type-option{{ node.isMatch ? '' : ' core-seo-geo-type-context' }}"
+            {% if not hasChildren %}style="{{ depthStyle }}"{% endif %}
+            data-on:mousedown="evt.preventDefault()"
+            data-on:click="
+                evt.preventDefault();
+                window.coreSeoGeoDisposeAllPropertyEditors();
+                $type = '{{ node.name }}';
+                $properties = {};
+                $search = '';
+                $propertySearch = '';
+                @get('{{ clearRowsAction }}');
+                setTimeout(() => el.closest('.core-seo-geo-structured-data-settings')?.querySelector('.core-seo-geo-property-selector input')?.focus())
+            "
+            data-class:sel="$type === '{{ node.name }}'"
+        >{{ node.label|raw }}</span>
+    {% if hasChildren %}</summary>
+        <ul class="core-seo-geo-type-children">
+            {% for child in node.children %}
+                {% include 'core-seo-geo/fields/structured-data/_schemaTypeTreeNode.twig' with {
+                    node: child,
+                    expandedTypes: expandedTypes,
+                    forceOpen: forceOpen,
+                    depth: depth + 1,
+                } only %}
+            {% endfor %}
+        </ul>
+    </details>{% endif %}
+</li>

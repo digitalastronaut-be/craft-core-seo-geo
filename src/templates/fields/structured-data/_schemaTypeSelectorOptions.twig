@@ -1,21 +1,18 @@
-{% set clearRowsAction = actionUrl('core-seo-geo/structured-data-field/clear-rows') %}
+{# @var typeTree array #}
+{# @var expandedTypes string[] #}
+{# @var forceOpen bool #}
 
 <ul class="core-seo-geo-type-list core-seo-geo-type-options">
-    {% for value, label in typeOptions %}
-        <li
-            role="option"
-            class="core-seo-geo-type-option"
-            data-on:mousedown="evt.preventDefault()"
-            data-on:click="
-                window.coreSeoGeoDisposeAllPropertyEditors();
-                $type = '{{ value }}';
-                $properties = {};
-                $propertySearch = '';
-                @get('{{ clearRowsAction }}')
-            "
-            data-class:sel="$type === '{{ value }}'"
-        >
-            {{ label }}
-        </li>
-    {% endfor %}
+    {% if typeTree is empty %}
+        <li class="core-seo-geo-no-results">{{ "No results found"|t('core-seo-geo') }}</li>
+    {% else %}
+        {% for node in typeTree %}
+            {% include 'core-seo-geo/fields/structured-data/_schemaTypeTreeNode.twig' with {
+                node: node,
+                expandedTypes: expandedTypes,
+                forceOpen: forceOpen|default(false),
+                depth: 0,
+            } only %}
+        {% endfor %}
+    {% endif %}
 </ul>

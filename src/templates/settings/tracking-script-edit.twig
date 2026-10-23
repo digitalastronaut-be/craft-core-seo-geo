@@ -1,0 +1,88 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'tracking-scripts' %}
+{% set title = trackingScript.id ? 'Edit tracking script'|t('core-seo-geo') : 'Add tracking script'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Tracking Scripts'|t('core-seo-geo'), url: url('core-seo-geo/settings/tracking-scripts') },
+    { label: title },
+] %}
+{% set fullPageForm = true %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/tracking-scripts/save') }}
+    {{ hiddenInput('id', trackingScript.id ?? '') }}
+    {{ redirectInput('core-seo-geo/settings/tracking-scripts') }}
+
+    <div class="flex-fields">
+        {{ forms.textField({
+            first: true,
+            label: 'Name'|t('core-seo-geo'),
+            instructions: "A label to identify this tracking script by, e.g. “Google Tag Manager” or “Meta Pixel”."|t('core-seo-geo'),
+            id: 'name',
+            name: 'name',
+            value: trackingScript.name,
+            required: true,
+            autofocus: true,
+            fieldClass: "width-50",
+            errors: trackingScript.getErrors('name'),
+        }) }}
+
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            instructions: 'Whether this tracking script is rendered on the front end.'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: trackingScript.enabled ?? true,
+            fieldClass: "width-50",
+            onLabel: 'Enabled'|t('core-seo-geo'),
+            offLabel: 'Disabled'|t('core-seo-geo'),
+        }) }}
+
+        <hr>
+
+        {{ codeEditor.textareaField({
+            label: 'Script'|t('core-seo-geo'),
+            instructions: 'The script rendered at the chosen location below, e.g. a tag manager loader snippet.'|t('core-seo-geo'),
+            id: 'scriptTemplate',
+            name: 'scriptTemplate',
+            value: trackingScript.scriptTemplate,
+            class: ['code'],
+            rows: 6,
+        }, 'CodeEditor', { theme: 'vs', language: 'twig', lineNumbers: 'on', lineNumbersMinChars: 3, lineDecorationsWidth: 16 }, {
+            wrapperClass: 'monaco-editor-background-frame',
+        }) }}
+
+        {{ forms.selectizeField({
+            label: 'Script location'|t('core-seo-geo'),
+            id: 'scriptLocation',
+            name: 'scriptLocation',
+            value: trackingScript.scriptLocation,
+            options: locationOptions,
+        }) }}
+
+        <hr>
+
+        {{ codeEditor.textareaField({
+            label: 'Body script'|t('core-seo-geo'),
+            instructions: 'An optional second script, e.g. a `<noscript>` fallback for the script above.'|t('core-seo-geo'),
+            id: 'bodyScriptTemplate',
+            name: 'bodyScriptTemplate',
+            value: trackingScript.bodyScriptTemplate,
+            class: ['code'],
+            rows: 6,
+        }, 'CodeEditor', { theme: 'vs', language: 'twig', lineNumbers: 'on', lineNumbersMinChars: 3, lineDecorationsWidth: 16 }, {
+            wrapperClass: 'monaco-editor-background-frame',
+        }) }}
+
+        {{ forms.selectizeField({
+            label: 'Body script location'|t('core-seo-geo'),
+            id: 'bodyScriptLocation',
+            name: 'bodyScriptLocation',
+            value: trackingScript.bodyScriptLocation,
+            options: locationOptions,
+        }) }}
+    </div>
+{% endblock %}

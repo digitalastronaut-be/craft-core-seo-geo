@@ -1,0 +1,82 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'llms.txt'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'llms.txt'|t('core-seo-geo'), url: url('core-seo-geo/settings/txt/llms') },
+] %}
+
+{% set fullPageForm = true %}
+{% set specUrl = 'https://llmstxt.org/' %}
+{% set urlFormat = 'core-seo-geo/settings/txt/llms?site={handle}' %}
+{% set selectedSiteId = site.id %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/content-seo/save-llms') }}
+    {{ hiddenInput('siteId', site.id) }}
+    {{ redirectInput('core-seo-geo/settings/txt/llms?site=' ~ site.handle) }}
+
+    <div class="flex-fields">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve llms.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until a title/summary is set below and/or the site has eligible content. [View llms.txt]({url}) · Spec: [llmstxt.org]({specUrl})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/llms/index'),
+                    specUrl: specUrl,
+                }),
+                id: 'enable-llms-txt',
+                name: 'enableLlmsTxt',
+                on: settings.enableLlmsTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+
+        <hr>
+
+        {{ forms.textField({
+            label: 'Title'|t('core-seo-geo'),
+            instructions: 'The `# Title` line llms.txt opens with, for this site. Falls back to the site\'s own name when left blank.'|t('core-seo-geo'),
+            id: 'llms-txt-title',
+            name: 'llmsTxtTitle',
+            value: llmsRow.llmsTxtTitle ?? null,
+            placeholder: site.name,
+            fieldClass: 'width-50',
+        }) }}
+
+        {{ forms.textareaField({
+            label: 'Summary'|t('core-seo-geo'),
+            instructions: 'A one-paragraph summary, rendered as the `> blockquote` right under the title.'|t('core-seo-geo'),
+            id: 'llms-txt-summary',
+            name: 'llmsTxtSummary',
+            value: llmsRow.llmsTxtSummary ?? null,
+            rows: 3,
+        }) }}
+    </div>
+
+    <hr>
+
+    {{ codeEditor.textareaField({
+        label: 'Preview'|t('core-seo-geo'),
+        instructions: 'The llms.txt that would be served right now for this site, from the settings above plus every eligible page\'s title/description.'|t('core-seo-geo'),
+        id: 'llms-txt-preview',
+        value: llmsTxtPreview,
+        readonly: true,
+        class: ['code'],
+        rows: 12,
+    }, 'CodeEditor', {
+        theme: 'vs',
+        language: 'markdown',
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 16,
+        readOnly: true,
+    }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        displayLanguageIcon: false,
+    }) }}
+{% endblock %}

@@ -1,5 +1,5 @@
-{# @var typeOptions array<string, string> #}
-{# @var selectedType string #}
+{# @var typeTree array #}
+{# @var expandedTypes string[] #}
 
 {% set searchTypesAction = actionUrl('core-seo-geo/structured-data-field/search-types') %}
 
@@ -8,10 +8,14 @@
         type="text"
         id="core-seo-geo-type-search"
         class="clearable text fullwidth"
-        placeholder="{{ 'Search type'|t('app') }}"
+        placeholder="{{ 'Search schema types'|t('app') }}"
         data-bind:search
         data-on:input__debounce.300ms="@get('{{ searchTypesAction }}')"
     >
 
-    {% include 'core-seo-geo/fields/structured-data/_schemaTypeSelectorOptions.twig' %}
+    {% include 'core-seo-geo/fields/structured-data/_schemaTypeSelectorOptions.twig' with {
+        typeTree: typeTree,
+        expandedTypes: expandedTypes,
+        forceOpen: false,
+    } only %}
 </div>

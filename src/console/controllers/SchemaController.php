@@ -103,7 +103,7 @@ class SchemaController extends Controller {
      * the old name.
      *
      * @param string $path
-     * @return array<string, array{description: string, expectedTypes: string[]}>
+     * @return array<string, array{description: string, expectedTypes: string[], nativeTypes: string[]}>
      */
     private function parseProperties(string $path): array {
         $properties = [];
@@ -117,6 +117,11 @@ class SchemaController extends Controller {
             $properties[$name] = [
                 'description' => $this->absolutizeLinks(trim($row['comment'])),
                 'expectedTypes' => $this->splitNames($row['rangeIncludes']),
+                // `domainIncludes` - the type(s) a property is natively declared on, e.g.
+                // "reviewBody" -> ["Review"]. Lets the mapping UI group a type's (inheritance-
+                // flattened) property list back into "Properties from X" sections per ancestor,
+                // the way schema.org's own type pages present them.
+                'nativeTypes' => $this->splitNames($row['domainIncludes']),
             ];
         }
 
@@ -125,7 +130,7 @@ class SchemaController extends Controller {
 
     /**
      * @param string $path
-     * @param array<string, array{description: string, expectedTypes: string[]}> $properties
+     * @param array<string, array{description: string, expectedTypes: string[], nativeTypes: string[]}> $properties
      * @return array<string, array{label: string, description: string, parentTypes: string[], properties: string[]}>
      */
     private function parseTypes(string $path, array $properties): array {

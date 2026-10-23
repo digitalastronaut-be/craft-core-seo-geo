@@ -1,0 +1,185 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'ads.txt'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'ads.txt'|t('core-seo-geo'), url: url('core-seo-geo/settings/txt/ads') },
+] %}
+
+{% set fullPageForm = true %}
+{% set specUrl = 'https://iabtechlab.com/ads-txt/' %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/txt-files/save') }}
+    {{ redirectInput('core-seo-geo/settings/txt/ads') }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.lightswitchField({
+                label: 'Serve ads.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until at least one authorized seller record is added below. [View ads.txt]({url}) · Spec: [IAB Tech Lab ads.txt v1.0.3]({specUrl})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/ads/index'),
+                    specUrl: specUrl,
+                }),
+                id: 'enable-ads-txt',
+                name: 'enableAdsTxt',
+                on: settings.enableAdsTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Authorized Sellers'|t('core-seo-geo'),
+                instructions: 'Who\'s authorized to sell this site\'s ad inventory - the ad system\'s domain, your account ID with them, and whether you control that account directly or via a reseller. Certification Authority ID is optional.'|t('core-seo-geo'),
+                id: 'ads-txt-records',
+                name: 'adsTxtRecords',
+                addRowLabel: 'Add a record'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    domain: {
+                        heading: 'Ad System Domain'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '30%',
+                    },
+                    accountId: {
+                        heading: 'Account ID'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '25%',
+                    },
+                    relationship: {
+                        heading: 'Relationship'|t('core-seo-geo'),
+                        type: 'select',
+                        options: adsTxtRelationshipOptions,
+                        width: '20%',
+                    },
+                    certAuthorityId: {
+                        heading: 'Cert Authority ID'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '25%',
+                    },
+                },
+                rows: settings.adsTxtRecords,
+            }) }}
+
+            <hr>
+
+            {{ forms.textField({
+                label: 'Owner Domain'|t('core-seo-geo'),
+                instructions: 'The domain of the entity that owns this site, when that\'s a different legal entity than the one selling the ads.'|t('core-seo-geo'),
+                id: 'ads-txt-owner-domain',
+                name: 'adsTxtOwnerDomain',
+                value: settings.adsTxtOwnerDomain,
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Manager Domains'|t('core-seo-geo'),
+                instructions: 'A sales agent authorized to control the accounts above on your behalf. Leave Country blank for an unconditional grant - the spec allows at most one unconditional row, with the rest scoped to a specific country.'|t('core-seo-geo'),
+                id: 'ads-txt-manager-domains',
+                name: 'adsTxtManagerDomains',
+                addRowLabel: 'Add a manager domain'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    domain: {
+                        heading: 'Domain'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '70%',
+                    },
+                    country: {
+                        heading: 'Country'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '30%',
+                    },
+                },
+                rows: settings.adsTxtManagerDomains,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Contacts'|t('core-seo-geo'),
+                instructions: 'Email or URL a buyer can use to report an issue with this file.'|t('core-seo-geo'),
+                id: 'ads-txt-contacts',
+                name: 'adsTxtContacts',
+                addRowLabel: 'Add a contact'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'Contact'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.adsTxtContacts,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Subdomains'|t('core-seo-geo'),
+                instructions: 'Delegates authority for a subdomain to its own ads.txt file elsewhere - only needed if you centralize declarations for multiple sites/brands under one root domain.'|t('core-seo-geo'),
+                id: 'ads-txt-subdomains',
+                name: 'adsTxtSubdomains',
+                addRowLabel: 'Add a subdomain'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'Subdomain'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.adsTxtSubdomains,
+            }) }}
+
+            {{ codeEditor.textareaField({
+                label: 'Extra Raw Text'|t('core-seo-geo'),
+                instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
+                id: 'ads-txt-extra',
+                name: 'adsTxtExtra',
+                value: settings.adsTxtExtra,
+                class: ['code'],
+                rows: 4,
+            }, 'CodeEditor', {
+                theme: 'vs',
+                language: 'plaintext',
+                lineNumbers: 'on',
+                lineNumbersMinChars: 3,
+                lineDecorationsWidth: 16,
+            }, {
+                wrapperClass: 'monaco-editor-background-frame',
+                displayLanguageIcon: false,
+            }) }}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    {{ codeEditor.textareaField({
+        label: 'Preview'|t('core-seo-geo'),
+        instructions: 'The ads.txt that would be served right now, from the settings above.'|t('core-seo-geo'),
+        id: 'ads-txt-preview',
+        value: adsTxtPreview,
+        readonly: true,
+        class: ['code'],
+        rows: 8,
+    }, 'CodeEditor', {
+        theme: 'vs',
+        language: 'plaintext',
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 16,
+        readOnly: true,
+    }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        displayLanguageIcon: false,
+    }) }}
+{% endblock %}

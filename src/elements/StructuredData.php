@@ -29,6 +29,7 @@ use digitalastronaut\craftcoreseogeo\elements\conditions\StructuredDataCondition
 use digitalastronaut\craftcoreseogeo\elements\db\StructuredDataQuery;
 use digitalastronaut\craftcoreseogeo\fieldlayoutelements\FieldMappingUiElement;
 use digitalastronaut\craftcoreseogeo\fieldlayoutelements\JsonLdPreviewUiElement;
+use digitalastronaut\craftcoreseogeo\records\StructuredDataMapping as StructuredDataMappingRecord;
 
 /**
  * Class StructuredData
@@ -47,9 +48,9 @@ class StructuredData extends Element {
     public const string TYPE_PERSON = 'Person';
 
     /**
-     * @var string[] The standalone, site-wide types this element owns. A field-backed row (see
-     * `$fieldId`, `$ownerId`) isn't restricted to this list - `StructuredDataField::$type` is a
-     * free-form schema.org type the field's own settings picked, so `defineRules()` validates
+     * @var string[] The standalone, site-wide types this element owns. A mapping-backed row (see
+     * `$mappingId`, `$ownerId`) isn't restricted to this list - `StructuredDataMapping::$type` is
+     * a free-form schema.org type the mapping's own settings picked, so `defineRules()` validates
      * those against the full schema.org vocabulary instead.
      *
      * @since v1.0.0
@@ -62,6 +63,20 @@ class StructuredData extends Element {
     ];
 
     /**
+     * @param string $type a `TYPES` constant
+     * @return bool whether a standalone row of this type gets a postal address - see
+     * `GlobalStructuredDataService::getAddress()`. Not a real field on this element at all: the
+     * `Address` is a separately-owned element (`primaryOwnerId` pointed at this row, no
+     * `fieldId`) that `GlobalStructuredDataService` manages directly, rather than something
+     * added to this element's own field layout.
+     *
+     * @since v1.5.0
+     */
+    public static function typeHasAddress(string $type): bool {
+        return in_array($type, [self::TYPE_ORGANIZATION, self::TYPE_LOCAL_BUSINESS], true);
+    }
+
+    /**
      * @var string Which of `TYPES` this object represents.
      *
      * @since v1.0.0
@@ -71,24 +86,36 @@ class StructuredData extends Element {
     /**
      * @var array<string, mixed> This object's computed JSON-LD property values, keyed by
      * property name. For a standalone object this is the final, ready-to-emit data; for a
-     * field-backed row (`$fieldId`/`$ownerId` both set) it's exactly what
-     * `StructuredDataField::_renderProperties()` produced for that entry; no Twig templates
-     * are stored here, those live in the field's own settings.
+     * mapping-backed row (`$mappingId`/`$ownerId` both set) it's exactly what
+     * `StructuredDataService::renderProperties()` produced for that entry against the mapping's
+     * `properties` templates; no Twig templates are stored here, those live on the mapping row.
      *
      * @since v1.0.0
      */
     public array $properties = [];
 
     /**
-     * @var int|null The `StructuredDataField` this row was computed for, when it's not a
-     * standalone object. Null and `$ownerId` null together mean standalone.
+     * @var array<string, mixed> The raw form input a built-in standalone type's settings page
+     * (Organization, WebSite, LocalBusiness, Person) was saved with - e.g. a logo's asset ID or
+     * an address's individual parts - kept separately from `$properties` (the already-rendered
+     * schema.org shape) so re-opening that settings page can repopulate its fields.
+     * {@see \digitalastronaut\craftcoreseogeo\services\GlobalStructuredDataService} is what
+     * reads and writes this. Always empty for a mapping-backed row.
      *
-     * @since v1.0.0
+     * @since v1.5.0
      */
-    public ?int $fieldId = null;
+    public array $sourceData = [];
 
     /**
-     * @var int|null The entry (or other element) `$fieldId` computed this row for.
+     * @var int|null The `StructuredDataMapping` this row was computed for, when it's not a
+     * standalone object. Null and `$ownerId` null together mean standalone.
+     *
+     * @since v1.4.0 (renamed from `$fieldId`)
+     */
+    public ?int $mappingId = null;
+
+    /**
+     * @var int|null The entry (or other element) `$mappingId` computed this row for.
      *
      * @since v1.0.0
      */
@@ -145,7 +172,7 @@ class StructuredData extends Element {
     }
 
     /**
-     * A field-backed row is computed and saved by `StructuredDataField::afterElementSave()`,
+     * A mapping-backed row is computed and saved by `StructuredDataMappingService::syncEntry()`,
      * not edited directly - letting a human save over it would just get overwritten on the
      * owner's next save anyway.
      *
@@ -213,7 +240,7 @@ class StructuredData extends Element {
         return [
             'type' => ['label' => Craft::t('core-seo-geo', 'Type')],
             'owner' => ['label' => Craft::t('core-seo-geo', 'Owner')],
-            'field' => ['label' => Craft::t('core-seo-geo', 'Field')],
+            'mapping' => ['label' => Craft::t('core-seo-geo', 'Mapping')],
             'id' => ['label' => Craft::t('app', 'ID')],
             'uid' => ['label' => Craft::t('app', 'UID')],
             'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
@@ -246,7 +273,8 @@ class StructuredData extends Element {
      * Code-only layout, same reasoning as `StructuredDataField`'s own read-only input: there's
      * nothing here for an editor to configure, just the field mapping (when this row is
      * field-backed) and the computed JSON-LD, both read-only - so no designer route is
-     * registered for it.
+     * registered for it. A standalone `Organization`/`LocalBusiness` row's postal address isn't
+     * here either - see `typeHasAddress()`.
      *
      * @return FieldLayout[]
      *
@@ -273,7 +301,7 @@ class StructuredData extends Element {
     protected function attributeHtml(string $attribute): string {
         return match ($attribute) {
             'owner' => $this->_ownerHtml(),
-            'field' => Html::encode(Craft::$app->getFields()->getFieldById($this->fieldId ?? 0)?->name ?? ''),
+            'mapping' => Html::encode($this->_mappingLabel()),
             default => parent::attributeHtml($attribute),
         };
     }
@@ -283,15 +311,15 @@ class StructuredData extends Element {
      */
     protected function defineRules(): array {
         return array_merge(parent::defineRules(), [
-            [['type'], 'in', 'range' => self::TYPES, 'when' => fn(): bool => $this->fieldId === null],
+            [['type'], 'in', 'range' => self::TYPES, 'when' => fn(): bool => $this->mappingId === null],
             [['type'], function(string $attribute): void {
                 if (CoreSeoGeo::getInstance()->getSchemaOrg()->getType($this->$attribute) === null) {
                     $this->addError($attribute, Craft::t('core-seo-geo', '{value} isn\'t a known schema.org type.', [
                         'value' => $this->$attribute,
                     ]));
                 }
-            }, 'when' => fn(): bool => $this->fieldId !== null],
-            [['properties', 'fieldId', 'ownerId'], 'safe'],
+            }, 'when' => fn(): bool => $this->mappingId !== null],
+            [['properties', 'sourceData', 'mappingId', 'ownerId'], 'safe'],
         ]);
     }
 
@@ -308,15 +336,17 @@ class StructuredData extends Element {
         Db::upsert(Table::STRUCTUREDDATA, [
             'id' => $this->id,
             'siteId' => $this->siteId,
-            'fieldId' => $this->fieldId,
+            'mappingId' => $this->mappingId,
             'ownerId' => $this->ownerId,
             'type' => $this->type,
             'properties' => $this->properties,
+            'sourceData' => $this->sourceData,
         ], [
-            'fieldId' => $this->fieldId,
+            'mappingId' => $this->mappingId,
             'ownerId' => $this->ownerId,
             'type' => $this->type,
             'properties' => $this->properties,
+            'sourceData' => $this->sourceData,
         ]);
 
         parent::afterSave($isNew);
@@ -325,8 +355,23 @@ class StructuredData extends Element {
     /**
      * @return string
      */
+    private function _mappingLabel(): string {
+        if ($this->mappingId === null) return '';
+
+        $mapping = StructuredDataMappingRecord::findOne($this->mappingId);
+
+        if ($mapping === null) return '';
+
+        return $mapping->label ?? ($mapping->sectionHandle !== ''
+            ? Craft::t('core-seo-geo', '{section} ({type})', ['section' => $mapping->sectionHandle, 'type' => $mapping->type])
+            : $mapping->type);
+    }
+
+    /**
+     * @return string
+     */
     private function _ownerHtml(): string {
-        if ($this->ownerId === null) return Html::tag('span', Craft::t('core-seo-geo', 'Standalone'), ['class' => ['light']]);
+        if ($this->ownerId === null) return Html::tag('span', Craft::t('core-seo-geo', 'Global'), ['class' => ['light']]);
 
         $owner = Craft::$app->getElements()->getElementById($this->ownerId);
 

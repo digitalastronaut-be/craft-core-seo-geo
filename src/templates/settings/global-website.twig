@@ -1,0 +1,50 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'Website'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'Website'|t('core-seo-geo'), url: url('core-seo-geo/settings/global/website') },
+] %}
+{% set urlFormat = 'core-seo-geo/settings/global/website?site={handle}' %}
+{% set selectedSiteId = site.id %}
+{% set fullPageForm = true %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/global-structured-data/save') }}
+    {{ hiddenInput('type', 'website') }}
+    {{ hiddenInput('siteId', site.id) }}
+    {{ redirectInput('core-seo-geo/settings/global/website?site=' ~ site.handle) }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.textField({
+                label: 'Name'|t('core-seo-geo'),
+                instructions: "The site's public-facing name."|t('core-seo-geo'),
+                id: 'name',
+                name: 'name',
+                value: model.name,
+                required: true,
+                errors: model.getErrors('name'),
+            }) }}
+
+            {{ forms.autosuggestField({
+                label: 'URL'|t('core-seo-geo'),
+                id: 'url',
+                name: 'url',
+                value: model.url,
+                suggestions: [site.getBaseUrl()],
+                errors: model.getErrors('url'),
+            }) }}
+
+            {{ forms.textareaField({
+                label: 'Description'|t('core-seo-geo'),
+                id: 'description',
+                name: 'description',
+                value: model.description,
+            }) }}
+        </div>
+    {% endnamespace %}
+{% endblock %}

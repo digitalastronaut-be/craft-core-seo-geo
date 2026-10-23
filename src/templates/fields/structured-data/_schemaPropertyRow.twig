@@ -1,6 +1,7 @@
 {# @var name string #}
 {# @var template string #}
 {# @var tooltip string #}
+{# @var calculatedValueHtml string|null #}
 
 {% import "codeeditor/codeEditor" as codeEditor %}
 
@@ -13,7 +14,7 @@
         {% if tooltip %}
             <span class="core-seo-geo-info-icon-wrap">
                 <span class="info"></span>
-                <span class="core-seo-geo-info-icon-popup">{{ tooltip|raw }}</span>
+                <span class="core-seo-geo-info-icon-popup" popover="manual">{{ tooltip|raw }}</span>
             </span>
         {% endif %}
     </td>
@@ -33,7 +34,15 @@
         }) }}
     </td>
 
-    <td><code>{{ 'Save to see the calculated value.'|t('core-seo-geo') }}</code></td>
+    <td>
+        {% if calculatedValueHtml is defined and calculatedValueHtml is not null %}
+            {{ calculatedValueHtml|raw }}
+        {% elseif calculatedValueHtml is defined %}
+            <code>{{ 'Select a preview entry above to see the calculated value.'|t('core-seo-geo') }}</code>
+        {% else %}
+            <code>{{ 'Save to see the calculated value.'|t('core-seo-geo') }}</code>
+        {% endif %}
+    </td>
 
     <td class="thin">
         <a

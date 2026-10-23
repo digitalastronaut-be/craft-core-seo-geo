@@ -1,0 +1,189 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'security.txt'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'security.txt'|t('core-seo-geo'), url: url('core-seo-geo/settings/txt/security') },
+] %}
+
+{% set fullPageForm = true %}
+{% set specUrl = 'https://www.rfc-editor.org/rfc/rfc9116' %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/txt-files/save') }}
+    {{ redirectInput('core-seo-geo/settings/txt/security') }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.lightswitchField({
+                label: 'Serve security.txt'|t('core-seo-geo'),
+                instructions: "Served at both /.well-known/security.txt (what RFC 9116 prefers) and /security.txt (kept for older tooling). Contact and Expires are both required by the spec - the file won't actually be served until at least one Contact and an Expires date are set, even with this on. [View security.txt]({url}) · Spec: [RFC 9116]({specUrl})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/security/index'),
+                    specUrl: specUrl,
+                }),
+                id: 'enable-security-txt',
+                name: 'enableSecurityTxt',
+                on: settings.enableSecurityTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Contact'|t('core-seo-geo'),
+                instructions: 'Required. At least one way for a security researcher to reach you - e.g. “mailto:security@example.com” or “https://example.com/report”.'|t('core-seo-geo'),
+                id: 'security-txt-contacts',
+                name: 'securityTxtContacts',
+                addRowLabel: 'Add a contact'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'Contact'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.securityTxtContacts,
+            }) }}
+
+            {{ forms.dateTimeField({
+                label: 'Expires'|t('core-seo-geo'),
+                instructions: 'Required. When this file should be considered stale. The spec recommends staying within a year, to encourage keeping it current.'|t('core-seo-geo'),
+                id: 'security-txt-expires',
+                name: 'securityTxtExpires',
+                value: settings.securityTxtExpires,
+                fieldClass: 'width-50',
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Encryption'|t('core-seo-geo'),
+                instructions: 'Link(s) to a public key (e.g. PGP) researchers should use for encrypted reports.'|t('core-seo-geo'),
+                id: 'security-txt-encryption',
+                name: 'securityTxtEncryption',
+                addRowLabel: 'Add a key'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'Key URL'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.securityTxtEncryption,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Acknowledgments'|t('core-seo-geo'),
+                instructions: 'Link(s) to a page crediting researchers who\'ve reported vulnerabilities.'|t('core-seo-geo'),
+                id: 'security-txt-acknowledgments',
+                name: 'securityTxtAcknowledgments',
+                addRowLabel: 'Add a link'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'URL'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.securityTxtAcknowledgments,
+            }) }}
+
+            {{ forms.textField({
+                label: 'Preferred Languages'|t('core-seo-geo'),
+                instructions: 'Comma-separated language codes the security team can respond in, e.g. “en, nl”.'|t('core-seo-geo'),
+                id: 'security-txt-preferred-languages',
+                name: 'securityTxtPreferredLanguages',
+                value: settings.securityTxtPreferredLanguages,
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Policy'|t('core-seo-geo'),
+                instructions: 'Link(s) to the vulnerability disclosure policy.'|t('core-seo-geo'),
+                id: 'security-txt-policy',
+                name: 'securityTxtPolicy',
+                addRowLabel: 'Add a link'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'URL'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.securityTxtPolicy,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Hiring'|t('core-seo-geo'),
+                instructions: 'Link(s) to security-related job postings.'|t('core-seo-geo'),
+                id: 'security-txt-hiring',
+                name: 'securityTxtHiring',
+                addRowLabel: 'Add a link'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    value: {
+                        heading: 'URL'|t('core-seo-geo'),
+                        type: 'singleline',
+                    },
+                },
+                rows: settings.securityTxtHiring,
+            }) }}
+
+            {{ codeEditor.textareaField({
+                label: 'Extra Raw Text'|t('core-seo-geo'),
+                instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
+                id: 'security-txt-extra',
+                name: 'securityTxtExtra',
+                value: settings.securityTxtExtra,
+                class: ['code'],
+                rows: 4,
+            }, 'CodeEditor', {
+                theme: 'vs',
+                language: 'plaintext',
+                lineNumbers: 'on',
+                lineNumbersMinChars: 3,
+                lineDecorationsWidth: 16,
+            }, {
+                wrapperClass: 'monaco-editor-background-frame',
+                displayLanguageIcon: false,
+            }) }}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    {{ codeEditor.textareaField({
+        label: 'Preview'|t('core-seo-geo'),
+        instructions: 'The security.txt that would be served right now, from the settings above. Empty means Contact and/or Expires aren\'t both set yet.'|t('core-seo-geo'),
+        id: 'security-txt-preview',
+        value: securityTxtPreview,
+        readonly: true,
+        class: ['code'],
+        rows: 8,
+    }, 'CodeEditor', {
+        theme: 'vs',
+        language: 'plaintext',
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 16,
+        readOnly: true,
+    }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        displayLanguageIcon: false,
+    }) }}
+{% endblock %}

@@ -1,0 +1,62 @@
+{# @var seo \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var element \craft\base\ElementInterface #}
+{# @var image \craft\elements\Asset|null #}
+{# @var hreflangAlternates array<int, array{language: string, url: string}> #}
+{# @var favicon array{pngUrl: string, faviconIcoUrl: string|null, appleTouchIconUrl: string, manifestUrl: string}|null #}
+{# @var settings \digitalastronaut\craftcoreseogeo\models\Settings #}
+
+{% set title = seo.metaTitle ?? element.title ?? null %}
+{% set description = seo.metaDescription %}
+{% set canonicalUrl = seo.canonicalUrl ?? element.url ?? null %}
+{% set robotsContent = seo.robots|join(', ') %}
+{% set siteName = craft.app.sites.currentSite.name %}
+{% set locale = element.site.language|replace({'-': '_'}) %}
+
+<!-- Core SEO/GEO: basic -->
+{% if title %}<title>{{ title }}</title>{% endif %}
+{% if description %}<meta name="description" content="{{ description }}">{% endif %}
+{% if canonicalUrl %}<link rel="canonical" href="{{ canonicalUrl }}">{% endif %}
+{% if robotsContent %}<meta name="robots" content="{{ robotsContent }}">{% endif %}
+
+<!-- Core SEO/GEO: browser -->
+<meta name="referrer" content="{{ settings.referrerPolicy }}">
+{% if settings.themeColor %}<meta name="theme-color" content="{{ settings.themeColor }}">{% endif %}
+
+<!-- Core SEO/GEO: hreflang -->
+{% for alternate in hreflangAlternates ?? [] %}
+    <link rel="alternate" hreflang="{{ alternate.language }}" href="{{ alternate.url }}">
+{% endfor %}
+
+<!-- Core SEO/GEO: favicons -->
+{% if favicon %}<link rel="icon" type="image/png" href="{{ favicon.pngUrl }}">{% endif %}
+{% if favicon and favicon.faviconIcoUrl %}<link rel="icon" href="{{ favicon.faviconIcoUrl }}" sizes="any">{% endif %}
+{% if favicon %}<link rel="apple-touch-icon" href="{{ favicon.appleTouchIconUrl }}">{% endif %}
+{% if favicon %}<link rel="manifest" href="{{ favicon.manifestUrl }}">{% endif %}
+
+<!-- Core SEO/GEO: Open Graph -->
+<meta property="og:type" content="website">
+{% if siteName %}<meta property="og:site_name" content="{{ siteName }}">{% endif %}
+{% if title %}<meta property="og:title" content="{{ title }}">{% endif %}
+{% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
+{% if element.url %}<meta property="og:url" content="{{ element.url }}">{% endif %}
+<meta property="og:locale" content="{{ locale }}">
+{% for alternate in hreflangAlternates ?? [] %}
+    {% if alternate.language != 'x-default' and alternate.language != element.site.language %}
+        <meta property="og:locale:alternate" content="{{ alternate.language|replace({'-': '_'}) }}">
+    {% endif %}
+{% endfor %}
+{% if image %}
+    <meta property="og:image" content="{{ image.url }}">
+    {% if image.width %}<meta property="og:image:width" content="{{ image.width }}">{% endif %}
+    {% if image.height %}<meta property="og:image:height" content="{{ image.height }}">{% endif %}
+    {% if image.alt %}<meta property="og:image:alt" content="{{ image.alt }}">{% endif %}
+{% endif %}
+
+<!-- Core SEO/GEO: Twitter -->
+<meta name="twitter:card" content="{{ image ? 'summary_large_image' : 'summary' }}">
+{% if title %}<meta name="twitter:title" content="{{ title }}">{% endif %}
+{% if description %}<meta name="twitter:description" content="{{ description }}">{% endif %}
+{% if image %}<meta name="twitter:image" content="{{ image.url }}">{% endif %}
+
+<!-- Core SEO/GEO: Tracking scripts -->
+

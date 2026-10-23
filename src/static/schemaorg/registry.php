@@ -14,6 +14,15 @@ return array (
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'CommunicateAction',
+        2 => 'CreativeWork',
+        3 => 'DefinedTerm',
+        4 => 'DefinedTermSet',
+        5 => 'Event',
+      ),
     ),
     'abridged' => 
     array (
@@ -22,6 +31,10 @@ return array (
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Book',
+      ),
     ),
     'abstract' => 
     array (
@@ -29,6 +42,10 @@ return array (
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'accelerationTime' => 
@@ -44,6 +61,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'acceptedAnswer' => 
     array (
@@ -53,6 +74,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
         0 => 'Answer',
         1 => 'ItemList',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Question',
+      ),
     ),
     'acceptedOffer' => 
     array (
@@ -60,6 +85,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Offer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
       ),
     ),
     'acceptedPaymentMethod' => 
@@ -71,6 +100,12 @@ Typical unit code(s): SEC for seconds<br/><br/>
         1 => 'PaymentMethod',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Organization',
+      ),
     ),
     'acceptsReservations' => 
     array (
@@ -81,6 +116,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FoodEstablishment',
+      ),
     ),
     'accessCode' => 
     array (
@@ -88,6 +127,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryEvent',
       ),
     ),
     'accessMode' => 
@@ -97,6 +140,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'accessModeSufficient' => 
     array (
@@ -104,6 +151,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'ItemList',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'accessibilityAPI' => 
@@ -113,6 +164,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'accessibilityControl' => 
     array (
@@ -120,6 +175,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'accessibilityFeature' => 
@@ -129,6 +188,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'accessibilityHazard' => 
     array (
@@ -136,6 +199,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'accessibilitySummary' => 
@@ -145,6 +212,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'accommodationCategory' => 
     array (
@@ -152,6 +223,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
       ),
     ),
     'accommodationFloorPlan' => 
@@ -161,6 +236,11 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'FloorPlan',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'Residence',
+      ),
     ),
     'accountId' => 
     array (
@@ -168,6 +248,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
       ),
     ),
     'accountMinimumInflow' => 
@@ -177,6 +261,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BankAccount',
+      ),
     ),
     'accountOverdraftLimit' => 
     array (
@@ -185,6 +273,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BankAccount',
+      ),
     ),
     'accountablePerson' => 
     array (
@@ -192,6 +284,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'acquireLicensePage' => 
@@ -202,6 +298,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'acquiredFrom' => 
     array (
@@ -211,6 +311,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OwnershipInfo',
+      ),
     ),
     'acrissCode' => 
     array (
@@ -218,6 +322,11 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusOrCoach',
+        1 => 'Car',
       ),
     ),
     'actionAccessibilityRequirement' => 
@@ -227,6 +336,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'ActionAccessSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ConsumeAction',
+      ),
     ),
     'actionApplication' => 
     array (
@@ -234,6 +347,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'SoftwareApplication',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EntryPoint',
       ),
     ),
     'actionOption' => 
@@ -243,6 +360,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'Text',
         1 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ChooseAction',
       ),
     ),
     'actionPlatform' => 
@@ -254,6 +375,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EntryPoint',
+      ),
     ),
     'actionProcess' => 
     array (
@@ -262,6 +387,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'HowTo',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+      ),
     ),
     'actionStatus' => 
     array (
@@ -269,6 +398,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'ActionStatusType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
       ),
     ),
     'actionableFeedbackPolicy' => 
@@ -279,6 +412,11 @@ Typical unit code(s): SEC for seconds<br/><br/>
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
+      ),
     ),
     'activeIngredient' => 
     array (
@@ -286,6 +424,13 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
+        2 => 'DrugStrength',
+        3 => 'Substance',
       ),
     ),
     'activityDuration' => 
@@ -296,6 +441,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
         0 => 'Duration',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
+      ),
     ),
     'activityFrequency' => 
     array (
@@ -304,6 +453,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'QuantitativeValue',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
       ),
     ),
     'actor' => 
@@ -314,11 +467,30 @@ Typical unit code(s): SEC for seconds<br/><br/>
         0 => 'PerformingGroup',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+        1 => 'CreativeWorkSeason',
+        2 => 'Episode',
+        3 => 'Event',
+        4 => 'Movie',
+        5 => 'MovieSeries',
+        6 => 'PodcastSeries',
+        7 => 'RadioSeries',
+        8 => 'TVSeries',
+        9 => 'VideoGame',
+        10 => 'VideoGameSeries',
+        11 => 'VideoObject',
+      ),
     ),
     'addOn' => 
     array (
       'description' => 'An additional offer that can only be obtained in combination with the first base offer (e.g. supplements and extensions that are available for a surcharge).',
       'expectedTypes' => 
+      array (
+        0 => 'Offer',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Offer',
       ),
@@ -330,6 +502,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'additionalNumberOfGuests' => 
     array (
@@ -337,6 +513,10 @@ Typical unit code(s): SEC for seconds<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RsvpAction',
       ),
     ),
     'additionalProperty' => 
@@ -348,6 +528,15 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'PropertyValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'Offer',
+        2 => 'Place',
+        3 => 'Product',
+        4 => 'QualitativeValue',
+        5 => 'QuantitativeValue',
+      ),
     ),
     'additionalType' => 
     array (
@@ -358,6 +547,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'additionalVariable' => 
     array (
@@ -365,6 +558,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
       ),
     ),
     'address' => 
@@ -375,6 +572,14 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'PostalAddress',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoCoordinates',
+        1 => 'GeoShape',
+        2 => 'Organization',
+        3 => 'Person',
+        4 => 'Place',
+      ),
     ),
     'addressCountry' => 
     array (
@@ -384,6 +589,13 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Country',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedRegion',
+        1 => 'GeoCoordinates',
+        2 => 'GeoShape',
+        3 => 'PostalAddress',
+      ),
     ),
     'addressLocality' => 
     array (
@@ -391,6 +603,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PostalAddress',
       ),
     ),
     'addressRegion' => 
@@ -401,6 +617,11 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'AdministrativeArea',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedRegion',
+        1 => 'PostalAddress',
+      ),
     ),
     'administrationRoute' => 
     array (
@@ -408,6 +629,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'advanceBookingRequirement' => 
@@ -417,6 +642,11 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+      ),
     ),
     'adverseOutcome' => 
     array (
@@ -424,6 +654,11 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'MedicalEntity',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalDevice',
+        1 => 'TherapeuticProcedure',
       ),
     ),
     'affectedBy' => 
@@ -433,6 +668,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Drug',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTest',
+      ),
     ),
     'affiliation' => 
     array (
@@ -440,6 +679,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'afterMedia' => 
@@ -450,6 +693,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'MediaObject',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowToDirection',
+      ),
     ),
     'agent' => 
     array (
@@ -459,6 +706,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+      ),
     ),
     'agentInteractionStatistic' => 
     array (
@@ -466,6 +717,11 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'InteractionCounter',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
       ),
     ),
     'aggregateElement' => 
@@ -475,6 +731,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ItemList',
+      ),
     ),
     'aggregateRating' => 
     array (
@@ -482,6 +742,17 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'AggregateRating',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Brand',
+        1 => 'CreativeWork',
+        2 => 'Event',
+        3 => 'Offer',
+        4 => 'Organization',
+        5 => 'Place',
+        6 => 'Product',
+        7 => 'Service',
       ),
     ),
     'aircraft' => 
@@ -492,6 +763,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Text',
         1 => 'Vehicle',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
+      ),
     ),
     'album' => 
     array (
@@ -499,6 +774,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'MusicAlbum',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicGroup',
       ),
     ),
     'albumProductionType' => 
@@ -508,6 +787,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'MusicAlbumProductionType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicAlbum',
+      ),
     ),
     'albumRelease' => 
     array (
@@ -515,6 +798,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'MusicRelease',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicAlbum',
       ),
     ),
     'albumReleaseType' => 
@@ -524,6 +811,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'MusicAlbumReleaseType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicAlbum',
+      ),
     ),
     'alcoholWarning' => 
     array (
@@ -531,6 +822,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'algorithm' => 
@@ -540,6 +835,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalRiskScore',
+      ),
     ),
     'alignmentType' => 
     array (
@@ -547,6 +846,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AlignmentObject',
       ),
     ),
     'alternateName' => 
@@ -556,6 +859,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'alternativeHeadline' => 
     array (
@@ -564,11 +871,19 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'alternativeOf' => 
     array (
       'description' => 'Another gene which is a variation of this one.',
       'expectedTypes' => 
+      array (
+        0 => 'Gene',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Gene',
       ),
@@ -580,6 +895,11 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOrganization',
+        1 => 'Organization',
+      ),
     ),
     'alumniOf' => 
     array (
@@ -589,6 +909,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'EducationalOrganization',
         1 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'amenityFeature' => 
     array (
@@ -596,6 +920,13 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'LocationFeatureSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'FloorPlan',
+        2 => 'LodgingBusiness',
+        3 => 'Place',
       ),
     ),
     'amount' => 
@@ -606,6 +937,14 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'MonetaryAmount',
         1 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DatedMoneySpecification',
+        1 => 'InvestmentOrDeposit',
+        2 => 'LoanOrCredit',
+        3 => 'MonetaryGrant',
+        4 => 'MoneyTransfer',
+      ),
     ),
     'amountOfThisGood' => 
     array (
@@ -613,6 +952,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'TypeAndQuantityNode',
       ),
     ),
     'announcementLocation' => 
@@ -623,6 +966,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'CivicStructure',
         1 => 'LocalBusiness',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'annualPercentageRate' => 
     array (
@@ -632,6 +979,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialProduct',
+      ),
     ),
     'answerCount' => 
     array (
@@ -639,6 +990,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Question',
       ),
     ),
     'answerExplanation' => 
@@ -649,11 +1004,19 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Comment',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Answer',
+      ),
     ),
     'antagonist' => 
     array (
       'description' => 'The muscle whose action counteracts the specified muscle.',
       'expectedTypes' => 
+      array (
+        0 => 'Muscle',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Muscle',
       ),
@@ -665,6 +1028,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Claim',
+      ),
     ),
     'applicableCountry' => 
     array (
@@ -674,6 +1041,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Country',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'applicableLocation' => 
     array (
@@ -682,6 +1053,11 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'AdministrativeArea',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugCost',
+        1 => 'DrugLegalStatus',
+      ),
     ),
     'applicantLocationRequirements' => 
     array (
@@ -689,6 +1065,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'AdministrativeArea',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'applicationCategory' => 
@@ -699,6 +1079,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'applicationContact' => 
     array (
@@ -706,6 +1090,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'ContactPoint',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'applicationDeadline' => 
@@ -716,6 +1104,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Date',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'applicationStartDate' => 
     array (
@@ -723,6 +1115,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
       ),
     ),
     'applicationSubCategory' => 
@@ -733,6 +1129,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'applicationSuite' => 
     array (
@@ -740,6 +1140,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'appliesToDeliveryMethod' => 
@@ -749,6 +1153,11 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'DeliveryMethod',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryChargeSpecification',
+        1 => 'PaymentChargeSpecification',
+      ),
     ),
     'appliesToPaymentMethod' => 
     array (
@@ -756,6 +1165,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'PaymentMethod',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PaymentChargeSpecification',
       ),
     ),
     'archiveHeld' => 
@@ -765,6 +1178,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'ArchiveComponent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ArchiveOrganization',
+      ),
     ),
     'archivedAt' => 
     array (
@@ -773,6 +1190,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'URL',
         1 => 'WebPage',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'areaServed' => 
@@ -785,6 +1206,16 @@ Note: Publishers should be aware that applications designed to use specific sche
         2 => 'Place',
         3 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+        1 => 'DeliveryChargeSpecification',
+        2 => 'Demand',
+        3 => 'FinancialIncentive',
+        4 => 'Offer',
+        5 => 'Organization',
+        6 => 'Service',
+      ),
     ),
     'arrivalAirport' => 
     array (
@@ -793,6 +1224,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Airport',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
+      ),
     ),
     'arrivalBoatTerminal' => 
     array (
@@ -800,6 +1235,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'BoatTerminal',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BoatTrip',
       ),
     ),
     'arrivalBusStop' => 
@@ -810,6 +1249,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'BusStation',
         1 => 'BusStop',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusTrip',
+      ),
     ),
     'arrivalGate' => 
     array (
@@ -817,6 +1260,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'arrivalPlatform' => 
@@ -826,6 +1273,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'TrainTrip',
+      ),
     ),
     'arrivalStation' => 
     array (
@@ -834,6 +1285,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'TrainStation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'TrainTrip',
+      ),
     ),
     'arrivalTerminal' => 
     array (
@@ -841,6 +1296,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'arrivalTime' => 
@@ -851,6 +1310,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Trip',
+      ),
     ),
     'artEdition' => 
     array (
@@ -859,6 +1322,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Integer',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'VisualArtwork',
       ),
     ),
     'artMedium' => 
@@ -869,6 +1336,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VisualArtwork',
+      ),
     ),
     'arterialBranch' => 
     array (
@@ -876,6 +1347,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'AnatomicalStructure',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Artery',
       ),
     ),
     'artform' => 
@@ -886,6 +1361,10 @@ Note: Publishers should be aware that applications designed to use specific sche
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VisualArtwork',
+      ),
     ),
     'articleBody' => 
     array (
@@ -894,6 +1373,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+      ),
     ),
     'articleSection' => 
     array (
@@ -901,6 +1384,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
       ),
     ),
     'artist' => 
@@ -912,6 +1399,12 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ComicIssue',
+        1 => 'ComicStory',
+        2 => 'VisualArtwork',
+      ),
     ),
     'artworkSurface' => 
     array (
@@ -920,6 +1413,10 @@ Note: Publishers should be aware that applications designed to use specific sche
       array (
         0 => 'Text',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'VisualArtwork',
       ),
     ),
     'asin' => 
@@ -933,6 +1430,12 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
+      ),
     ),
     'assemblyVersion' => 
     array (
@@ -940,6 +1443,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'APIReference',
       ),
     ),
     'assesses' => 
@@ -949,6 +1456,12 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'DefinedTerm',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'EducationEvent',
+        2 => 'LearningResource',
       ),
     ),
     'associatedAnatomy' => 
@@ -960,6 +1473,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'AnatomicalSystem',
         2 => 'SuperficialAnatomy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+        1 => 'PhysicalActivity',
+      ),
     ),
     'associatedArticle' => 
     array (
@@ -968,11 +1486,19 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'NewsArticle',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+      ),
     ),
     'associatedClaimReview' => 
     array (
       'description' => 'An associated <a class="localLink" href="https://schema.org/ClaimReview">ClaimReview</a>, related by specific common content, topic or claim. The expectation is that this property would be most typically used in cases where a single activity is conducting both claim reviews and media reviews, in which case <a class="localLink" href="https://schema.org/relatedMediaReview">relatedMediaReview</a> would commonly be used on a <a class="localLink" href="https://schema.org/ClaimReview">ClaimReview</a>, while <a class="localLink" href="https://schema.org/associatedClaimReview">associatedClaimReview</a> would be used on <a class="localLink" href="https://schema.org/MediaReview">MediaReview</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'Review',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Review',
       ),
@@ -986,6 +1512,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'PropertyValue',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'associatedMedia' => 
     array (
@@ -994,11 +1524,21 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'MediaObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'HyperToc',
+        2 => 'HyperTocEntry',
+      ),
     ),
     'associatedMediaReview' => 
     array (
       'description' => 'An associated <a class="localLink" href="https://schema.org/MediaReview">MediaReview</a>, related by specific common content, topic or claim. The expectation is that this property would be most typically used in cases where a single activity is conducting both claim reviews and media reviews, in which case <a class="localLink" href="https://schema.org/relatedMediaReview">relatedMediaReview</a> would commonly be used on a <a class="localLink" href="https://schema.org/ClaimReview">ClaimReview</a>, while <a class="localLink" href="https://schema.org/associatedClaimReview">associatedClaimReview</a> would be used on <a class="localLink" href="https://schema.org/MediaReview">MediaReview</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'Review',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Review',
       ),
@@ -1010,11 +1550,21 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+        1 => 'AnatomicalSystem',
+        2 => 'SuperficialAnatomy',
+      ),
     ),
     'associatedReview' => 
     array (
       'description' => 'An associated <a class="localLink" href="https://schema.org/Review">Review</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'Review',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Review',
       ),
@@ -1026,6 +1576,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsTeam',
+      ),
     ),
     'attendee' => 
     array (
@@ -1035,6 +1589,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'audience' => 
     array (
@@ -1043,6 +1601,15 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Audience',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+        2 => 'LodgingBusiness',
+        3 => 'PlayAction',
+        4 => 'Product',
+        5 => 'Service',
+      ),
     ),
     'audienceType' => 
     array (
@@ -1050,6 +1617,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Audience',
       ),
     ),
     'audio' => 
@@ -1061,6 +1632,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'Clip',
         2 => 'MusicRecording',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'auditDate' => 
     array (
@@ -1070,6 +1645,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+      ),
     ),
     'authenticator' => 
     array (
@@ -1077,6 +1656,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaSubscription',
       ),
     ),
     'author' => 
@@ -1087,6 +1670,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Rating',
+      ),
     ),
     'authorizedRepresentative' => 
     array (
@@ -1096,6 +1684,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Product',
+      ),
     ),
     'availability' => 
     array (
@@ -1103,6 +1696,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'ItemAvailability',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
       ),
     ),
     'availabilityEnds' => 
@@ -1114,6 +1712,12 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'DateTime',
         2 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'Demand',
+        2 => 'Offer',
+      ),
     ),
     'availabilityStarts' => 
     array (
@@ -1124,6 +1728,12 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'DateTime',
         2 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'Demand',
+        2 => 'Offer',
+      ),
     ),
     'availableAtOrFrom' => 
     array (
@@ -1131,6 +1741,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
       ),
     ),
     'availableChannel' => 
@@ -1140,6 +1755,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'ServiceChannel',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Service',
+      ),
     ),
     'availableDeliveryMethod' => 
     array (
@@ -1147,6 +1766,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'DeliveryMethod',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
       ),
     ),
     'availableFrom' => 
@@ -1156,6 +1780,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryEvent',
+      ),
     ),
     'availableIn' => 
     array (
@@ -1163,6 +1791,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'AdministrativeArea',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugStrength',
       ),
     ),
     'availableLanguage' => 
@@ -1173,6 +1805,14 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Language',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+        1 => 'Course',
+        2 => 'LodgingBusiness',
+        3 => 'ServiceChannel',
+        4 => 'TouristAttraction',
+      ),
     ),
     'availableOnDevice' => 
     array (
@@ -1180,6 +1820,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'availableService' => 
@@ -1191,6 +1835,12 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'MedicalTest',
         2 => 'MedicalTherapy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Hospital',
+        1 => 'MedicalClinic',
+        2 => 'Physician',
+      ),
     ),
     'availableStrength' => 
     array (
@@ -1198,6 +1848,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'DrugStrength',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'availableTest' => 
@@ -1207,6 +1861,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'MedicalTest',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DiagnosticLab',
+      ),
     ),
     'availableThrough' => 
     array (
@@ -1215,6 +1873,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryEvent',
+      ),
     ),
     'award' => 
     array (
@@ -1222,6 +1884,14 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Organization',
+        2 => 'Person',
+        3 => 'Product',
+        4 => 'Service',
       ),
     ),
     'awayTeam' => 
@@ -1232,6 +1902,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Person',
         1 => 'SportsTeam',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsEvent',
+      ),
     ),
     'backstory' => 
     array (
@@ -1241,6 +1915,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'CreativeWork',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+      ),
     ),
     'bankAccountType' => 
     array (
@@ -1249,6 +1927,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Text',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BankAccount',
       ),
     ),
     'baseSalary' => 
@@ -1260,6 +1942,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'Number',
         2 => 'PriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EmployeeRole',
+        1 => 'JobPosting',
+      ),
     ),
     'bccRecipient' => 
     array (
@@ -1269,6 +1956,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'ContactPoint',
         1 => 'Organization',
         2 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
       ),
     ),
     'bed' => 
@@ -1281,6 +1972,12 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'BedType',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'HotelRoom',
+        2 => 'Suite',
+      ),
     ),
     'beforeMedia' => 
     array (
@@ -1289,6 +1986,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'MediaObject',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowToDirection',
       ),
     ),
     'beneficiaryBank' => 
@@ -1299,6 +2000,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'BankOrCreditUnion',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MoneyTransfer',
+      ),
     ),
     'benefitsSummaryUrl' => 
     array (
@@ -1306,6 +2011,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
       ),
     ),
     'bestRating' => 
@@ -1316,6 +2025,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Rating',
+      ),
     ),
     'billingAddress' => 
     array (
@@ -1323,6 +2036,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'PostalAddress',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
       ),
     ),
     'billingDuration' => 
@@ -1334,6 +2051,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'Number',
         2 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'UnitPriceSpecification',
+      ),
     ),
     'billingIncrement' => 
     array (
@@ -1341,6 +2062,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UnitPriceSpecification',
       ),
     ),
     'billingPeriod' => 
@@ -1350,6 +2075,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Duration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+      ),
     ),
     'billingStart' => 
     array (
@@ -1358,11 +2087,19 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'UnitPriceSpecification',
+      ),
     ),
     'bioChemInteraction' => 
     array (
       'description' => 'A BioChemEntity that is known to interact with this item.',
       'expectedTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'BioChemEntity',
       ),
@@ -1374,6 +2111,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'BioChemEntity',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'biologicalRole' => 
     array (
@@ -1381,6 +2122,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'DefinedTerm',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
       ),
     ),
     'biomechnicalClass' => 
@@ -1390,6 +2135,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Joint',
+      ),
     ),
     'birthDate' => 
     array (
@@ -1397,6 +2146,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'birthPlace' => 
@@ -1406,6 +2159,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'bitrate' => 
     array (
@@ -1413,6 +2170,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
       ),
     ),
     'blogPost' => 
@@ -1422,6 +2183,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'BlogPosting',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Blog',
+      ),
     ),
     'bloodSupply' => 
     array (
@@ -1429,6 +2194,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Vessel',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Muscle',
       ),
     ),
     'boardingGroup' => 
@@ -1438,6 +2207,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FlightReservation',
+      ),
     ),
     'boardingPolicy' => 
     array (
@@ -1446,6 +2219,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'BoardingPolicyType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Airline',
+        1 => 'Flight',
+      ),
     ),
     'bodyLocation' => 
     array (
@@ -1453,6 +2231,11 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+        1 => 'MedicalProcedure',
       ),
     ),
     'bodyType' => 
@@ -1464,6 +2247,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'bookEdition' => 
     array (
@@ -1471,6 +2258,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Book',
       ),
     ),
     'bookFormat' => 
@@ -1480,6 +2271,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'BookFormatType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Book',
+      ),
     ),
     'bookingTime' => 
     array (
@@ -1487,6 +2282,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
       ),
     ),
     'borrower' => 
@@ -1496,6 +2295,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LendAction',
+      ),
     ),
     'box' => 
     array (
@@ -1503,6 +2306,10 @@ ASINs are most commonly encoded as text strings, but the [asin] property support
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoShape',
       ),
     ),
     'branchCode' => 
@@ -1514,6 +2321,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'brand' => 
     array (
@@ -1522,6 +2333,13 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Brand',
         1 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+        2 => 'Product',
+        3 => 'Service',
       ),
     ),
     'breadcrumb' => 
@@ -1532,6 +2350,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'BreadcrumbList',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
+      ),
     ),
     'breastfeedingWarning' => 
     array (
@@ -1539,6 +2361,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'broadcastAffiliateOf' => 
@@ -1548,6 +2374,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
+      ),
     ),
     'broadcastChannelId' => 
     array (
@@ -1556,6 +2386,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastChannel',
+      ),
     ),
     'broadcastDisplayName' => 
     array (
@@ -1563,6 +2397,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
       ),
     ),
     'broadcastFrequency' => 
@@ -1573,6 +2411,11 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'BroadcastFrequencySpecification',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastChannel',
+        1 => 'BroadcastService',
+      ),
     ),
     'broadcastFrequencyValue' => 
     array (
@@ -1582,6 +2425,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastFrequencySpecification',
+      ),
     ),
     'broadcastOfEvent' => 
     array (
@@ -1590,6 +2437,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Event',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastEvent',
+      ),
     ),
     'broadcastServiceTier' => 
     array (
@@ -1597,6 +2448,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastChannel',
       ),
     ),
     'broadcastSignalModulation' => 
@@ -1607,6 +2462,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'QualitativeValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastFrequencySpecification',
+      ),
     ),
     'broadcastSubChannel' => 
     array (
@@ -1614,6 +2473,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastFrequencySpecification',
       ),
     ),
     'broadcastTimezone' => 
@@ -1623,6 +2486,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
+      ),
     ),
     'broadcaster' => 
     array (
@@ -1630,6 +2497,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
       ),
     ),
     'broker' => 
@@ -1640,6 +2511,13 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+        1 => 'Order',
+        2 => 'Reservation',
+        3 => 'Service',
+      ),
     ),
     'browserRequirements' => 
     array (
@@ -1647,6 +2525,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebApplication',
       ),
     ),
     'busName' => 
@@ -1656,6 +2538,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusTrip',
+      ),
     ),
     'busNumber' => 
     array (
@@ -1663,6 +2549,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusTrip',
       ),
     ),
     'businessDays' => 
@@ -1673,6 +2563,11 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'DayOfWeek',
         1 => 'OpeningHoursSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServicePeriod',
+        1 => 'ShippingDeliveryTime',
+      ),
     ),
     'businessFunction' => 
     array (
@@ -1680,6 +2575,12 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'BusinessFunction',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'TypeAndQuantityNode',
       ),
     ),
     'buyer' => 
@@ -1690,6 +2591,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SellAction',
+      ),
     ),
     'byArtist' => 
     array (
@@ -1698,6 +2603,11 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'MusicGroup',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicAlbum',
+        1 => 'MusicRecording',
       ),
     ),
     'byDay' => 
@@ -1708,6 +2618,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'DayOfWeek',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
+      ),
     ),
     'byMonth' => 
     array (
@@ -1715,6 +2629,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
       ),
     ),
     'byMonthDay' => 
@@ -1724,6 +2642,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
+      ),
     ),
     'byMonthWeek' => 
     array (
@@ -1731,6 +2653,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
       ),
     ),
     'callSign' => 
@@ -1740,6 +2666,12 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
+        1 => 'Person',
+        2 => 'Vehicle',
+      ),
     ),
     'calories' => 
     array (
@@ -1748,6 +2680,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       array (
         0 => 'Energy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'candidate' => 
     array (
@@ -1755,6 +2691,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'VoteAction',
       ),
     ),
     'caption' => 
@@ -1765,6 +2705,12 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
         0 => 'MediaObject',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AudioObject',
+        1 => 'ImageObject',
+        2 => 'VideoObject',
+      ),
     ),
     'carbohydrateContent' => 
     array (
@@ -1772,6 +2718,10 @@ For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047
       'expectedTypes' => 
       array (
         0 => 'Mass',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
       ),
     ),
     'cargoVolume' => 
@@ -1785,6 +2735,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'carrierRequirements' => 
     array (
@@ -1792,6 +2746,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MobileApplication',
       ),
     ),
     'cashBack' => 
@@ -1802,6 +2760,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'Boolean',
         1 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PaymentCard',
+      ),
     ),
     'catalogNumber' => 
     array (
@@ -1809,6 +2771,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRelease',
       ),
     ),
     'category' => 
@@ -1822,6 +2788,18 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         3 => 'Thing',
         4 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'Guide',
+        2 => 'Invoice',
+        3 => 'Offer',
+        4 => 'PhysicalActivity',
+        5 => 'Product',
+        6 => 'Recommendation',
+        7 => 'Service',
+        8 => 'SpecialAnnouncement',
+      ),
     ),
     'cause' => 
     array (
@@ -1830,6 +2808,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'MedicalCause',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+      ),
     ),
     'causeOf' => 
     array (
@@ -1837,6 +2819,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'MedicalEntity',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCause',
       ),
     ),
     'ccRecipient' => 
@@ -1848,6 +2834,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         1 => 'Organization',
         2 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
+      ),
     ),
     'certificationIdentification' => 
     array (
@@ -1857,6 +2847,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+      ),
     ),
     'certificationRating' => 
     array (
@@ -1864,6 +2858,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Rating',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
       ),
     ),
     'certificationStatus' => 
@@ -1873,6 +2871,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'CertificationStatusEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+      ),
     ),
     'character' => 
     array (
@@ -1880,6 +2882,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'characterAttribute' => 
@@ -1889,6 +2895,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Game',
+        1 => 'VideoGameSeries',
+      ),
     ),
     'characterName' => 
     array (
@@ -1897,6 +2908,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PerformanceRole',
+      ),
     ),
     'cheatCode' => 
     array (
@@ -1904,6 +2919,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoGame',
+        1 => 'VideoGameSeries',
       ),
     ),
     'checkinTime' => 
@@ -1914,6 +2934,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LodgingBusiness',
+        1 => 'LodgingReservation',
+      ),
     ),
     'checkoutPageURLTemplate' => 
     array (
@@ -1921,6 +2946,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
       ),
     ),
     'checkoutTime' => 
@@ -1931,6 +2960,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LodgingBusiness',
+        1 => 'LodgingReservation',
+      ),
     ),
     'chemicalComposition' => 
     array (
@@ -1938,6 +2972,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ChemicalSubstance',
       ),
     ),
     'chemicalRole' => 
@@ -1947,6 +2985,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'DefinedTerm',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ChemicalSubstance',
+        1 => 'MolecularEntity',
+      ),
     ),
     'childMaxAge' => 
     array (
@@ -1955,6 +2998,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParentAudience',
+      ),
     ),
     'childMinAge' => 
     array (
@@ -1962,6 +3009,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParentAudience',
       ),
     ),
     'childTaxon' => 
@@ -1973,11 +3024,19 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Taxon',
+      ),
     ),
     'children' => 
     array (
       'description' => 'A child of the person.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -1989,6 +3048,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'circle' => 
     array (
@@ -1996,6 +3059,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoShape',
       ),
     ),
     'citation' => 
@@ -2006,6 +3073,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'CreativeWork',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'claimInterpreter' => 
     array (
@@ -2015,6 +3086,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Claim',
+      ),
     ),
     'claimReviewed' => 
     array (
@@ -2023,6 +3098,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ClaimReview',
+      ),
     ),
     'clinicalPharmacology' => 
     array (
@@ -2030,6 +3109,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'clipNumber' => 
@@ -2040,6 +3123,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+      ),
     ),
     'closes' => 
     array (
@@ -2047,6 +3134,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Time',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OpeningHoursSpecification',
       ),
     ),
     'coach' => 
@@ -2056,6 +3147,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsTeam',
+      ),
     ),
     'code' => 
     array (
@@ -2063,6 +3158,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'MedicalCode',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalEntity',
       ),
     ),
     'codeRepository' => 
@@ -2072,6 +3171,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareSourceCode',
+      ),
     ),
     'codeSampleType' => 
     array (
@@ -2079,6 +3182,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareSourceCode',
       ),
     ),
     'codeValue' => 
@@ -2088,6 +3195,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CategoryCode',
+        1 => 'MedicalCode',
+      ),
     ),
     'codingSystem' => 
     array (
@@ -2095,6 +3207,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCode',
       ),
     ),
     'colleague' => 
@@ -2105,6 +3221,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'Person',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'collectionSize' => 
     array (
@@ -2113,6 +3233,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Collection',
+      ),
     ),
     'color' => 
     array (
@@ -2120,6 +3244,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
       ),
     ),
     'colorSwatch' => 
@@ -2130,6 +3258,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'ImageObject',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'colorist' => 
     array (
@@ -2137,6 +3269,12 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ComicIssue',
+        1 => 'ComicStory',
+        2 => 'VisualArtwork',
       ),
     ),
     'comment' => 
@@ -2146,6 +3284,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Comment',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'RsvpAction',
+      ),
     ),
     'commentCount' => 
     array (
@@ -2154,6 +3297,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'commentText' => 
     array (
@@ -2161,6 +3308,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UserComments',
       ),
     ),
     'commentTime' => 
@@ -2171,6 +3322,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'UserComments',
+      ),
     ),
     'companyRegistration' => 
     array (
@@ -2178,6 +3333,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       'expectedTypes' => 
       array (
         0 => 'Certification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'competencyRequired' => 
@@ -2189,6 +3348,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalCredential',
+        1 => 'LearningResource',
+      ),
     ),
     'competitor' => 
     array (
@@ -2197,6 +3361,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'Person',
         1 => 'SportsTeam',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsEvent',
       ),
     ),
     'composer' => 
@@ -2207,6 +3375,11 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+        1 => 'MusicComposition',
+      ),
     ),
     'comprisedOf' => 
     array (
@@ -2215,6 +3388,10 @@ Note: You can use <a class="localLink" href="https://schema.org/minValue">minVal
       array (
         0 => 'AnatomicalStructure',
         1 => 'AnatomicalSystem',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalSystem',
       ),
     ),
     'conditionsOfAccess' => 
@@ -2226,6 +3403,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'confirmationNumber' => 
     array (
@@ -2234,11 +3415,20 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+        1 => 'Order',
+      ),
     ),
     'connectedTo' => 
     array (
       'description' => 'Other anatomical structures to which this structure is connected.',
       'expectedTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'AnatomicalStructure',
       ),
@@ -2251,6 +3441,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         0 => 'Property',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ConstraintNode',
+      ),
     ),
     'consumerNotice' => 
     array (
@@ -2262,6 +3456,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         2 => 'URL',
         3 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'contactOption' => 
     array (
@@ -2269,6 +3467,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'ContactPointOption',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
       ),
     ),
     'contactPoint' => 
@@ -2278,6 +3480,12 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'ContactPoint',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
+        1 => 'Organization',
+        2 => 'Person',
+      ),
     ),
     'contactType' => 
     array (
@@ -2285,6 +3493,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
       ),
     ),
     'contactlessPayment' => 
@@ -2294,11 +3506,19 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PaymentCard',
+      ),
     ),
     'containedInPlace' => 
     array (
       'description' => 'The basic containment relation between a place and one that contains it.',
       'expectedTypes' => 
+      array (
+        0 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Place',
       ),
@@ -2310,6 +3530,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'containsSeason' => 
     array (
@@ -2318,6 +3542,12 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'CreativeWorkSeason',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RadioSeries',
+        1 => 'TVSeries',
+        2 => 'VideoGameSeries',
+      ),
     ),
     'contentLocation' => 
     array (
@@ -2325,6 +3555,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'contentRating' => 
@@ -2335,6 +3569,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         0 => 'Rating',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'contentReferenceTime' => 
     array (
@@ -2342,6 +3580,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'contentSize' => 
@@ -2351,6 +3593,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+      ),
     ),
     'contentType' => 
     array (
@@ -2359,6 +3605,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EntryPoint',
+      ),
     ),
     'contentUrl' => 
     array (
@@ -2366,6 +3616,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
       ),
     ),
     'contraindication' => 
@@ -2376,6 +3630,11 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         0 => 'MedicalContraindication',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalDevice',
+        1 => 'MedicalTherapy',
+      ),
     ),
     'contributor' => 
     array (
@@ -2385,6 +3644,11 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+      ),
     ),
     'cookTime' => 
     array (
@@ -2393,6 +3657,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Duration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
+      ),
     ),
     'cookingMethod' => 
     array (
@@ -2400,6 +3668,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
       ),
     ),
     'copyrightHolder' => 
@@ -2410,6 +3682,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'copyrightNotice' => 
     array (
@@ -2418,6 +3694,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'copyrightYear' => 
     array (
@@ -2425,6 +3705,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'correction' => 
@@ -2436,6 +3720,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'correctionsPolicy' => 
     array (
@@ -2445,6 +3733,11 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
+      ),
     ),
     'costCategory' => 
     array (
@@ -2452,6 +3745,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'DrugCostCategory',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugCost',
       ),
     ),
     'costCurrency' => 
@@ -2461,6 +3758,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugCost',
+      ),
     ),
     'costOrigin' => 
     array (
@@ -2468,6 +3769,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugCost',
       ),
     ),
     'costPerUnit' => 
@@ -2479,6 +3784,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
         1 => 'QualitativeValue',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugCost',
+      ),
     ),
     'countriesNotSupported' => 
     array (
@@ -2486,6 +3795,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'countriesSupported' => 
@@ -2495,6 +3808,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'countryOfAssembly' => 
     array (
@@ -2503,6 +3820,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'countryOfLastProcessing' => 
     array (
@@ -2510,6 +3831,10 @@ For example "Available by appointment from the Reading Room" or "Accessible only
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
       ),
     ),
     'countryOfOrigin' => 
@@ -2523,6 +3848,15 @@ In the case of products, the country of origin of the product. The exact interpr
       array (
         0 => 'Country',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Movie',
+        2 => 'Product',
+        3 => 'TVEpisode',
+        4 => 'TVSeason',
+        5 => 'TVSeries',
+      ),
     ),
     'courseCode' => 
     array (
@@ -2530,6 +3864,10 @@ In the case of products, the country of origin of the product. The exact interpr
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
       ),
     ),
     'courseMode' => 
@@ -2539,6 +3877,10 @@ In the case of products, the country of origin of the product. The exact interpr
       array (
         0 => 'Text',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CourseInstance',
       ),
     ),
     'coursePrerequisites' => 
@@ -2550,6 +3892,10 @@ In the case of products, the country of origin of the product. The exact interpr
         1 => 'Course',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
+      ),
     ),
     'courseSchedule' => 
     array (
@@ -2557,6 +3903,10 @@ In the case of products, the country of origin of the product. The exact interpr
       'expectedTypes' => 
       array (
         0 => 'Schedule',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CourseInstance',
       ),
     ),
     'courseWorkload' => 
@@ -2566,6 +3916,10 @@ In the case of products, the country of origin of the product. The exact interpr
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CourseInstance',
+      ),
     ),
     'coverageEndTime' => 
     array (
@@ -2574,6 +3928,10 @@ In the case of products, the country of origin of the product. The exact interpr
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LiveBlogPosting',
+      ),
     ),
     'coverageStartTime' => 
     array (
@@ -2581,6 +3939,10 @@ In the case of products, the country of origin of the product. The exact interpr
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LiveBlogPosting',
       ),
     ),
     'creativeWorkStatus' => 
@@ -2591,6 +3953,10 @@ In the case of products, the country of origin of the product. The exact interpr
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'creator' => 
     array (
@@ -2599,6 +3965,11 @@ In the case of products, the country of origin of the product. The exact interpr
       array (
         0 => 'Organization',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'UserComments',
       ),
     ),
     'credentialCategory' => 
@@ -2610,6 +3981,10 @@ In the case of products, the country of origin of the product. The exact interpr
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Credential',
+      ),
     ),
     'creditText' => 
     array (
@@ -2617,6 +3992,10 @@ In the case of products, the country of origin of the product. The exact interpr
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'creditedTo' => 
@@ -2627,6 +4006,10 @@ In the case of products, the country of origin of the product. The exact interpr
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRelease',
+      ),
     ),
     'cssSelector' => 
     array (
@@ -2634,6 +4017,11 @@ In the case of products, the country of origin of the product. The exact interpr
       'expectedTypes' => 
       array (
         0 => 'CssSelectorType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpeakableSpecification',
+        1 => 'WebPageElement',
       ),
     ),
     'currenciesAccepted' => 
@@ -2645,6 +4033,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LocalBusiness',
+      ),
     ),
     'currency' => 
     array (
@@ -2655,6 +4047,14 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DatedMoneySpecification',
+        1 => 'ExchangeRateSpecification',
+        2 => 'LoanOrCredit',
+        3 => 'MonetaryAmount',
+        4 => 'MonetaryAmountDistribution',
+      ),
     ),
     'currentExchangeRate' => 
     array (
@@ -2662,6 +4062,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'UnitPriceSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExchangeRateSpecification',
       ),
     ),
     'customer' => 
@@ -2672,6 +4076,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+        1 => 'Order',
+      ),
     ),
     'customerRemorseReturnFees' => 
     array (
@@ -2679,6 +4088,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'ReturnFeesEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
       ),
     ),
     'customerRemorseReturnLabelSource' => 
@@ -2688,6 +4101,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'ReturnLabelSourceEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'customerRemorseReturnShippingFeesAmount' => 
     array (
@@ -2696,6 +4113,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'cutoffTime' => 
     array (
@@ -2703,6 +4124,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Time',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServicePeriod',
+        1 => 'ShippingDeliveryTime',
       ),
     ),
     'cvdCollectionDate' => 
@@ -2713,6 +4139,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'DateTime',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdFacilityCounty' => 
     array (
@@ -2720,6 +4150,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdFacilityId' => 
@@ -2729,6 +4163,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumBeds' => 
     array (
@@ -2736,6 +4174,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdNumBedsOcc' => 
@@ -2745,6 +4187,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumC19Died' => 
     array (
@@ -2752,6 +4198,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdNumC19HOPats' => 
@@ -2761,6 +4211,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumC19HospPats' => 
     array (
@@ -2768,6 +4222,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdNumC19MechVentPats' => 
@@ -2777,6 +4235,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumC19OFMechVentPats' => 
     array (
@@ -2784,6 +4246,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdNumC19OverflowPats' => 
@@ -2793,6 +4259,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumICUBeds' => 
     array (
@@ -2800,6 +4270,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdNumICUBedsOcc' => 
@@ -2809,6 +4283,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumTotBeds' => 
     array (
@@ -2816,6 +4294,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
       ),
     ),
     'cvdNumVent' => 
@@ -2825,6 +4307,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'cvdNumVentUse' => 
     array (
@@ -2833,6 +4319,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+      ),
     ),
     'data' => 
     array (
@@ -2840,6 +4330,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'InstantaneousEvent',
       ),
     ),
     'dataFeedElement' => 
@@ -2851,6 +4345,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         1 => 'Text',
         2 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DataFeed',
+      ),
     ),
     'dataset' => 
     array (
@@ -2858,6 +4356,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Dataset',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DataCatalog',
       ),
     ),
     'dateCreated' => 
@@ -2868,6 +4370,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'DataFeedItem',
+      ),
     ),
     'dateDeleted' => 
     array (
@@ -2876,6 +4383,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DataFeedItem',
       ),
     ),
     'dateIssued' => 
@@ -2886,6 +4397,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Ticket',
+      ),
     ),
     'dateModified' => 
     array (
@@ -2894,6 +4409,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'DataFeedItem',
       ),
     ),
     'datePosted' => 
@@ -2904,6 +4424,13 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CDCPMDRecord',
+        1 => 'JobPosting',
+        2 => 'RealEstateListing',
+        3 => 'SpecialAnnouncement',
+      ),
     ),
     'datePublished' => 
     array (
@@ -2912,6 +4439,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'CreativeWork',
       ),
     ),
     'dateRead' => 
@@ -2922,6 +4454,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
+      ),
     ),
     'dateReceived' => 
     array (
@@ -2929,6 +4465,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
       ),
     ),
     'dateSent' => 
@@ -2938,6 +4478,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
+      ),
     ),
     'dateVehicleFirstRegistered' => 
     array (
@@ -2945,6 +4489,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'dateline' => 
@@ -2958,6 +4506,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsArticle',
+      ),
     ),
     'dayOfWeek' => 
     array (
@@ -2965,6 +4517,11 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'DayOfWeek',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+        1 => 'OpeningHoursSpecification',
       ),
     ),
     'deathDate' => 
@@ -2974,6 +4531,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'deathPlace' => 
     array (
@@ -2981,6 +4542,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'defaultValue' => 
@@ -2991,6 +4556,10 @@ Dateline summaries are oriented more towards human readers than towards automate
         0 => 'Text',
         1 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
+      ),
     ),
     'deliveryAddress' => 
     array (
@@ -2998,6 +4567,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'PostalAddress',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
       ),
     ),
     'deliveryLeadTime' => 
@@ -3007,6 +4580,11 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+      ),
     ),
     'deliveryMethod' => 
     array (
@@ -3014,6 +4592,13 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'DeliveryMethod',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OrderAction',
+        1 => 'ReceiveAction',
+        2 => 'SendAction',
+        3 => 'TrackAction',
       ),
     ),
     'deliveryStatus' => 
@@ -3023,6 +4608,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'DeliveryEvent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
+      ),
     ),
     'deliveryTime' => 
     array (
@@ -3031,11 +4620,20 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'ShippingDeliveryTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryTimeSettings',
+        1 => 'OfferShippingDetails',
+      ),
     ),
     'department' => 
     array (
       'description' => 'A relationship between an organization and a department of that organization, also described as an organization (allowing different urls, logos, opening hours). For example: a store with a pharmacy, or a bakery with a cafe.',
       'expectedTypes' => 
+      array (
+        0 => 'Organization',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Organization',
       ),
@@ -3047,6 +4645,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'Airport',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
+      ),
     ),
     'departureBoatTerminal' => 
     array (
@@ -3054,6 +4656,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'BoatTerminal',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BoatTrip',
       ),
     ),
     'departureBusStop' => 
@@ -3064,6 +4670,10 @@ Dateline summaries are oriented more towards human readers than towards automate
         0 => 'BusStation',
         1 => 'BusStop',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusTrip',
+      ),
     ),
     'departureGate' => 
     array (
@@ -3071,6 +4681,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'departurePlatform' => 
@@ -3080,6 +4694,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'TrainTrip',
+      ),
     ),
     'departureStation' => 
     array (
@@ -3088,6 +4706,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'TrainStation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'TrainTrip',
+      ),
     ),
     'departureTerminal' => 
     array (
@@ -3095,6 +4717,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'departureTime' => 
@@ -3105,6 +4731,10 @@ Dateline summaries are oriented more towards human readers than towards automate
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Trip',
+      ),
     ),
     'dependencies' => 
     array (
@@ -3112,6 +4742,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'TechArticle',
       ),
     ),
     'depth' => 
@@ -3122,6 +4756,13 @@ Dateline summaries are oriented more towards human readers than towards automate
         0 => 'Distance',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'Product',
+        2 => 'ShippingConditions',
+        3 => 'VisualArtwork',
+      ),
     ),
     'description' => 
     array (
@@ -3131,6 +4772,10 @@ Dateline summaries are oriented more towards human readers than towards automate
         0 => 'Text',
         1 => 'TextObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'diagnosis' => 
     array (
@@ -3138,6 +4783,11 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'MedicalCondition',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DDxElement',
+        1 => 'Patient',
       ),
     ),
     'diagram' => 
@@ -3147,6 +4797,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'ImageObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+      ),
     ),
     'diet' => 
     array (
@@ -3154,6 +4808,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Diet',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
       ),
     ),
     'dietFeatures' => 
@@ -3163,6 +4821,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Diet',
+      ),
     ),
     'differentialDiagnosis' => 
     array (
@@ -3170,6 +4832,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'DDxElement',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'digitalSourceType' => 
@@ -3179,6 +4845,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'IPTCDigitalSourceEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'directApply' => 
     array (
@@ -3186,6 +4856,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'director' => 
@@ -3195,6 +4869,20 @@ Dateline summaries are oriented more towards human readers than towards automate
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+        1 => 'CreativeWorkSeason',
+        2 => 'Episode',
+        3 => 'Event',
+        4 => 'Movie',
+        5 => 'MovieSeries',
+        6 => 'RadioSeries',
+        7 => 'TVSeries',
+        8 => 'VideoGame',
+        9 => 'VideoGameSeries',
+        10 => 'VideoObject',
+      ),
     ),
     'disambiguatingDescription' => 
     array (
@@ -3202,6 +4890,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
       ),
     ),
     'discount' => 
@@ -3212,6 +4904,10 @@ Dateline summaries are oriented more towards human readers than towards automate
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+      ),
     ),
     'discountCode' => 
     array (
@@ -3219,6 +4915,10 @@ Dateline summaries are oriented more towards human readers than towards automate
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
       ),
     ),
     'discountCurrency' => 
@@ -3230,6 +4930,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+      ),
     ),
     'discusses' => 
     array (
@@ -3237,6 +4941,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UserComments',
       ),
     ),
     'discussionUrl' => 
@@ -3246,6 +4954,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'diseasePreventionInfo' => 
     array (
@@ -3254,6 +4966,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'URL',
         1 => 'WebContent',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
       ),
     ),
     'diseaseSpreadStatistics' => 
@@ -3268,6 +4984,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         2 => 'URL',
         3 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'displayLocation' => 
     array (
@@ -3275,6 +4995,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Product',
       ),
     ),
     'dissolutionDate' => 
@@ -3284,6 +5009,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+      ),
     ),
     'distance' => 
     array (
@@ -3291,6 +5020,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Distance',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+        1 => 'TravelAction',
       ),
     ),
     'distinguishingSign' => 
@@ -3300,6 +5034,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'MedicalSignOrSymptom',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DDxElement',
+      ),
     ),
     'distribution' => 
     array (
@@ -3307,6 +5045,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'DataDownload',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Dataset',
       ),
     ),
     'diversityPolicy' => 
@@ -3317,6 +5059,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
+      ),
     ),
     'diversityStaffingReport' => 
     array (
@@ -3325,6 +5072,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Article',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
       ),
     ),
     'documentation' => 
@@ -3335,6 +5087,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebAPI',
+      ),
     ),
     'doesNotShip' => 
     array (
@@ -3342,6 +5098,12 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'ShippingConditions',
+        2 => 'ShippingRateSettings',
       ),
     ),
     'domainIncludes' => 
@@ -3351,6 +5113,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Class',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Property',
+      ),
     ),
     'domiciledMortgage' => 
     array (
@@ -3358,6 +5124,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MortgageLoan',
       ),
     ),
     'doorTime' => 
@@ -3368,6 +5138,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'dosageForm' => 
     array (
@@ -3375,6 +5149,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'doseSchedule' => 
@@ -3384,6 +5162,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'DoseSchedule',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+        1 => 'TherapeuticProcedure',
+      ),
     ),
     'doseUnit' => 
     array (
@@ -3391,6 +5174,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DoseSchedule',
       ),
     ),
     'doseValue' => 
@@ -3401,6 +5188,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Number',
         1 => 'QualitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DoseSchedule',
+      ),
     ),
     'downPayment' => 
     array (
@@ -3410,6 +5201,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'MonetaryAmount',
         1 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RepaymentSpecification',
+      ),
     ),
     'downloadUrl' => 
     array (
@@ -3417,6 +5212,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'downvoteCount' => 
@@ -3426,6 +5225,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Comment',
+      ),
     ),
     'drainsTo' => 
     array (
@@ -3433,6 +5236,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Vessel',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vein',
       ),
     ),
     'driveWheelConfiguration' => 
@@ -3443,6 +5250,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'DriveWheelConfigurationValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'dropoffLocation' => 
     array (
@@ -3450,6 +5261,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RentalCarReservation',
       ),
     ),
     'dropoffTime' => 
@@ -3459,6 +5274,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RentalCarReservation',
+      ),
     ),
     'drug' => 
     array (
@@ -3466,6 +5285,13 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Drug',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugClass',
+        1 => 'MedicalCondition',
+        2 => 'Patient',
+        3 => 'TherapeuticProcedure',
       ),
     ),
     'drugClass' => 
@@ -3475,6 +5301,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'DrugClass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'drugUnit' => 
     array (
@@ -3482,6 +5312,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+        1 => 'DrugCost',
       ),
     ),
     'duns' => 
@@ -3491,11 +5326,20 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'duplicateTherapy' => 
     array (
       'description' => 'A therapy that duplicates or overlaps this one.',
       'expectedTypes' => 
+      array (
+        0 => 'MedicalTherapy',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'MedicalTherapy',
       ),
@@ -3508,6 +5352,19 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Duration',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Audiobook',
+        1 => 'Episode',
+        2 => 'Event',
+        3 => 'MediaObject',
+        4 => 'Movie',
+        5 => 'MusicRecording',
+        6 => 'MusicRelease',
+        7 => 'QuantitativeValueDistribution',
+        8 => 'Schedule',
+        9 => 'ServicePeriod',
+      ),
     ),
     'durationOfWarranty' => 
     array (
@@ -3515,6 +5372,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'WarrantyPromise',
       ),
     ),
     'duringMedia' => 
@@ -3525,6 +5386,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'MediaObject',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowToDirection',
+      ),
     ),
     'earlyPrepaymentPenalty' => 
     array (
@@ -3532,6 +5397,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'MonetaryAmount',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RepaymentSpecification',
       ),
     ),
     'editEIDR' => 
@@ -3546,6 +5415,10 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'editor' => 
     array (
@@ -3553,6 +5426,10 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'eduQuestionType' => 
@@ -3562,6 +5439,11 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Question',
+        1 => 'SolveMathAction',
+      ),
     ),
     'educationRequirements' => 
     array (
@@ -3570,6 +5452,11 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
       array (
         0 => 'EducationalOccupationalCredential',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+        1 => 'Occupation',
       ),
     ),
     'educationalAlignment' => 
@@ -3581,6 +5468,11 @@ This property should not be used where the nature of the alignment can be descri
       array (
         0 => 'AlignmentObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'LearningResource',
+      ),
     ),
     'educationalCredentialAwarded' => 
     array (
@@ -3591,6 +5483,11 @@ This property should not be used where the nature of the alignment can be descri
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
+        1 => 'EducationalOccupationalProgram',
+      ),
     ),
     'educationalFramework' => 
     array (
@@ -3598,6 +5495,10 @@ This property should not be used where the nature of the alignment can be descri
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AlignmentObject',
       ),
     ),
     'educationalLevel' => 
@@ -3609,6 +5510,13 @@ This property should not be used where the nature of the alignment can be descri
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'EducationEvent',
+        2 => 'EducationalOccupationalCredential',
+        3 => 'LearningResource',
+      ),
     ),
     'educationalProgramMode' => 
     array (
@@ -3618,6 +5526,10 @@ This property should not be used where the nature of the alignment can be descri
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'educationalRole' => 
     array (
@@ -3625,6 +5537,10 @@ This property should not be used where the nature of the alignment can be descri
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalAudience',
       ),
     ),
     'educationalUse' => 
@@ -3635,6 +5551,11 @@ This property should not be used where the nature of the alignment can be descri
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'LearningResource',
+      ),
     ),
     'elevation' => 
     array (
@@ -3644,6 +5565,11 @@ This property should not be used where the nature of the alignment can be descri
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoCoordinates',
+        1 => 'GeoShape',
+      ),
     ),
     'eligibilityToWorkRequirement' => 
     array (
@@ -3651,6 +5577,10 @@ This property should not be used where the nature of the alignment can be descri
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'eligibleCustomerType' => 
@@ -3660,6 +5590,11 @@ This property should not be used where the nature of the alignment can be descri
       array (
         0 => 'BusinessEntityType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+      ),
     ),
     'eligibleDuration' => 
     array (
@@ -3668,6 +5603,11 @@ This property should not be used where the nature of the alignment can be descri
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+      ),
     ),
     'eligibleQuantity' => 
     array (
@@ -3675,6 +5615,12 @@ This property should not be used where the nature of the alignment can be descri
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'PriceSpecification',
       ),
     ),
     'eligibleRegion' => 
@@ -3688,6 +5634,13 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
         1 => 'Place',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'DeliveryChargeSpecification',
+        2 => 'Demand',
+        3 => 'Offer',
+      ),
     ),
     'eligibleTransactionVolume' => 
     array (
@@ -3695,6 +5648,12 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'PriceSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'PriceSpecification',
       ),
     ),
     'eligibleWithSupplier' => 
@@ -3704,6 +5663,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
+      ),
     ),
     'email' => 
     array (
@@ -3711,6 +5674,12 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+        1 => 'Organization',
+        2 => 'Person',
       ),
     ),
     'embedUrl' => 
@@ -3720,6 +5689,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+      ),
     ),
     'embeddedTextCaption' => 
     array (
@@ -3727,6 +5700,12 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AudioObject',
+        1 => 'ImageObject',
+        2 => 'VideoObject',
       ),
     ),
     'emissionsCO2' => 
@@ -3736,6 +5715,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'employee' => 
     array (
@@ -3743,6 +5726,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'employerOverview' => 
@@ -3752,6 +5739,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'employmentType' => 
     array (
@@ -3759,6 +5750,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'employmentUnit' => 
@@ -3768,6 +5763,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'encodesBioChemEntity' => 
     array (
@@ -3775,6 +5774,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'BioChemEntity',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Gene',
       ),
     ),
     'encodesCreativeWork' => 
@@ -3784,6 +5787,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+      ),
     ),
     'encoding' => 
     array (
@@ -3791,6 +5798,10 @@ See also <a class="localLink" href="https://schema.org/ineligibleRegion">ineligi
       'expectedTypes' => 
       array (
         0 => 'MediaObject',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'encodingFormat' => 
@@ -3805,6 +5816,11 @@ Unregistered or niche encoding and file formats can be indicated instead via the
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'MediaObject',
+      ),
     ),
     'encodingType' => 
     array (
@@ -3812,6 +5828,10 @@ Unregistered or niche encoding and file formats can be indicated instead via the
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EntryPoint',
       ),
     ),
     'endDate' => 
@@ -3822,6 +5842,17 @@ Unregistered or niche encoding and file formats can be indicated instead via the
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+        1 => 'CreativeWorkSeries',
+        2 => 'DatedMoneySpecification',
+        3 => 'EducationalOccupationalProgram',
+        4 => 'Event',
+        5 => 'MerchantReturnPolicySeasonalOverride',
+        6 => 'Role',
+        7 => 'Schedule',
+      ),
     ),
     'endOffset' => 
     array (
@@ -3830,6 +5861,10 @@ Unregistered or niche encoding and file formats can be indicated instead via the
       array (
         0 => 'HyperTocEntry',
         1 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
       ),
     ),
     'endTime' => 
@@ -3842,6 +5877,14 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+        1 => 'FoodEstablishmentReservation',
+        2 => 'InteractionCounter',
+        3 => 'MediaObject',
+        4 => 'Schedule',
+      ),
     ),
     'endorsee' => 
     array (
@@ -3850,6 +5893,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Organization',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EndorseAction',
       ),
     ),
     'endorsers' => 
@@ -3860,6 +5907,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Diet',
+      ),
     ),
     'energyEfficiencyScaleMax' => 
     array (
@@ -3868,6 +5919,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'EUEnergyEfficiencyEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EnergyConsumptionDetails',
+      ),
     ),
     'energyEfficiencyScaleMin' => 
     array (
@@ -3875,6 +5930,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'EUEnergyEfficiencyEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EnergyConsumptionDetails',
       ),
     ),
     'engineDisplacement' => 
@@ -3887,6 +5946,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EngineSpecification',
       ),
     ),
     'enginePower' => 
@@ -3903,6 +5966,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EngineSpecification',
+      ),
     ),
     'engineType' => 
     array (
@@ -3913,6 +5980,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EngineSpecification',
+      ),
     ),
     'entertainmentBusiness' => 
     array (
@@ -3920,6 +5991,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'EntertainmentBusiness',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PerformAction',
       ),
     ),
     'epidemiology' => 
@@ -3929,6 +6004,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+        1 => 'PhysicalActivity',
+      ),
     ),
     'episode' => 
     array (
@@ -3936,6 +6016,13 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Episode',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+        1 => 'RadioSeries',
+        2 => 'TVSeries',
+        3 => 'VideoGameSeries',
       ),
     ),
     'episodeNumber' => 
@@ -3946,11 +6033,19 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Episode',
+      ),
     ),
     'equal' => 
     array (
       'description' => 'This ordering relation for qualitative values indicates that the subject is equal to the object.',
       'expectedTypes' => 
+      array (
+        0 => 'QualitativeValue',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'QualitativeValue',
       ),
@@ -3961,6 +6056,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
       ),
     ),
     'errorCode' => 
@@ -3973,6 +6072,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         2 => 'StatusEnumeration',
         3 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Error',
+      ),
     ),
     'estimatedCost' => 
     array (
@@ -3982,6 +6085,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'MonetaryAmount',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+        1 => 'HowToSupply',
+      ),
     ),
     'estimatedFlightDuration' => 
     array (
@@ -3990,6 +6098,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Duration',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'estimatedSalary' => 
@@ -4001,6 +6113,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         1 => 'MonetaryAmountDistribution',
         2 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+        1 => 'Occupation',
+      ),
     ),
     'estimatesRiskOf' => 
     array (
@@ -4008,6 +6125,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'MedicalEntity',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalRiskEstimator',
       ),
     ),
     'ethicsPolicy' => 
@@ -4018,6 +6139,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
+      ),
     ),
     'event' => 
     array (
@@ -4026,6 +6152,16 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Event',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'InformAction',
+        1 => 'InviteAction',
+        2 => 'JoinAction',
+        3 => 'LeaveAction',
+        4 => 'Organization',
+        5 => 'Place',
+        6 => 'PlayAction',
+      ),
     ),
     'eventAttendanceMode' => 
     array (
@@ -4033,6 +6169,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'EventAttendanceModeEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
       ),
     ),
     'eventSchedule' => 
@@ -4047,6 +6187,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Schedule',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'eventStatus' => 
     array (
@@ -4054,6 +6198,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'EventStatusType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
       ),
     ),
     'evidenceLevel' => 
@@ -4063,6 +6211,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'MedicalEvidenceLevel',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalGuideline',
+      ),
     ),
     'evidenceOrigin' => 
     array (
@@ -4071,11 +6223,19 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalGuideline',
+      ),
     ),
     'exampleOfWork' => 
     array (
       'description' => 'A creative work that this work is an example/instance/realization/derivation of.',
       'expectedTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'CreativeWork',
       ),
@@ -4091,6 +6251,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
+      ),
     ),
     'exchangeRateSpread' => 
     array (
@@ -4100,6 +6264,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'MonetaryAmount',
         1 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExchangeRateSpecification',
+      ),
     ),
     'executableLibraryName' => 
     array (
@@ -4107,6 +6275,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'APIReference',
       ),
     ),
     'exerciseCourse' => 
@@ -4116,6 +6288,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+      ),
     ),
     'exercisePlan' => 
     array (
@@ -4123,6 +6299,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'ExercisePlan',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
       ),
     ),
     'exerciseRelatedDiet' => 
@@ -4132,6 +6312,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Diet',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+      ),
     ),
     'exerciseType' => 
     array (
@@ -4139,6 +6323,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+        1 => 'ExercisePlan',
       ),
     ),
     'exifData' => 
@@ -4149,6 +6338,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'PropertyValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ImageObject',
+      ),
     ),
     'expectedArrivalFrom' => 
     array (
@@ -4157,6 +6350,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
       ),
     ),
     'expectedArrivalUntil' => 
@@ -4167,6 +6364,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
+      ),
     ),
     'expectedPrognosis' => 
     array (
@@ -4174,6 +6375,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'expectsAcceptanceOf' => 
@@ -4183,6 +6388,12 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Offer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'ConsumeAction',
+        2 => 'MediaSubscription',
+      ),
     ),
     'experienceInPlaceOfEducation' => 
     array (
@@ -4190,6 +6401,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'experienceRequirements' => 
@@ -4200,6 +6415,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'OccupationalExperienceRequirements',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+        1 => 'Occupation',
+      ),
     ),
     'expertConsiderations' => 
     array (
@@ -4207,6 +6427,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Diet',
       ),
     ),
     'expires' => 
@@ -4216,6 +6440,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'CreativeWork',
       ),
     ),
     'expressedIn' => 
@@ -4228,6 +6457,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         2 => 'BioChemEntity',
         3 => 'DefinedTerm',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Gene',
+      ),
     ),
     'extendedAddress' => 
     array (
@@ -4235,6 +6468,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PostalAddress',
       ),
     ),
     'familyName' => 
@@ -4244,6 +6481,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'fatContent' => 
     array (
@@ -4252,6 +6493,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'faxNumber' => 
     array (
@@ -4259,6 +6504,13 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+        1 => 'Organization',
+        2 => 'Person',
+        3 => 'Place',
       ),
     ),
     'featureList' => 
@@ -4269,6 +6521,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'feesAndCommissionsSpecification' => 
     array (
@@ -4278,6 +6534,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialProduct',
+        1 => 'FinancialService',
+      ),
     ),
     'fiberContent' => 
     array (
@@ -4286,6 +6547,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'fileSize' => 
     array (
@@ -4293,6 +6558,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'financialAidEligible' => 
@@ -4303,6 +6572,11 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
+        1 => 'EducationalOccupationalProgram',
+      ),
     ),
     'firstAppearance' => 
     array (
@@ -4311,6 +6585,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Claim',
+      ),
     ),
     'firstPerformance' => 
     array (
@@ -4318,6 +6596,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Event',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
       ),
     ),
     'flightDistance' => 
@@ -4328,6 +6610,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
         0 => 'Distance',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
+      ),
     ),
     'flightNumber' => 
     array (
@@ -4335,6 +6621,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'floorLevel' => 
@@ -4345,6 +6635,12 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'LocalBusiness',
+        2 => 'Residence',
+      ),
     ),
     'floorLimit' => 
     array (
@@ -4352,6 +6648,10 @@ Typical unit code(s): CMQ for cubic centimeter, LTR for liters, INQ for cubic in
       'expectedTypes' => 
       array (
         0 => 'MonetaryAmount',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PaymentCard',
       ),
     ),
     'floorSize' => 
@@ -4362,6 +6662,11 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'FloorPlan',
+      ),
     ),
     'followee' => 
     array (
@@ -4371,11 +6676,19 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FollowAction',
+      ),
     ),
     'follows' => 
     array (
       'description' => 'The most generic uni-directional social relation.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -4387,6 +6700,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalProcedure',
+      ),
     ),
     'foodEstablishment' => 
     array (
@@ -4396,6 +6713,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
         0 => 'FoodEstablishment',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CookAction',
+      ),
     ),
     'foodEvent' => 
     array (
@@ -4404,6 +6725,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       array (
         0 => 'FoodEvent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CookAction',
+      ),
     ),
     'foodWarning' => 
     array (
@@ -4411,6 +6736,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'founder' => 
@@ -4421,6 +6750,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+      ),
     ),
     'foundingDate' => 
     array (
@@ -4429,6 +6762,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+      ),
     ),
     'foundingLocation' => 
     array (
@@ -4436,6 +6773,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'freeShippingThreshold' => 
@@ -4446,6 +6787,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
         0 => 'DeliveryChargeSpecification',
         1 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingRateSettings',
+      ),
     ),
     'frequency' => 
     array (
@@ -4454,6 +6799,10 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DoseSchedule',
+      ),
     ),
     'fromLocation' => 
     array (
@@ -4461,6 +6810,12 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+        1 => 'MoveAction',
+        2 => 'TransferAction',
       ),
     ),
     'fuelCapacity' => 
@@ -4471,6 +6826,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'fuelConsumption' => 
@@ -4486,6 +6845,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'fuelEfficiency' => 
     array (
@@ -4500,6 +6863,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'fuelType' => 
     array (
@@ -4510,6 +6877,11 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EngineSpecification',
+        1 => 'Vehicle',
+      ),
     ),
     'fulfillmentType' => 
     array (
@@ -4517,6 +6889,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'FulfillmentTypeEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingService',
       ),
     ),
     'functionalClass' => 
@@ -4526,6 +6902,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'MedicalEntity',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Joint',
       ),
     ),
     'fundedItem' => 
@@ -4541,6 +6921,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         5 => 'Person',
         6 => 'Product',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Grant',
+      ),
     ),
     'funder' => 
     array (
@@ -4550,6 +6934,15 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+        2 => 'Grant',
+        3 => 'MonetaryGrant',
+        4 => 'Organization',
+        5 => 'Person',
+      ),
     ),
     'funding' => 
     array (
@@ -4558,6 +6951,16 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'Grant',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+        1 => 'CreativeWork',
+        2 => 'Event',
+        3 => 'MedicalEntity',
+        4 => 'Organization',
+        5 => 'Person',
+        6 => 'Product',
+      ),
     ),
     'game' => 
     array (
@@ -4565,6 +6968,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'VideoGame',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'GameServer',
       ),
     ),
     'gameAvailabilityType' => 
@@ -4575,6 +6982,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'GameAvailabilityEnumeration',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PlayGameAction',
+      ),
     ),
     'gameEdition' => 
     array (
@@ -4583,6 +6994,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoGame',
+      ),
     ),
     'gameItem' => 
     array (
@@ -4590,6 +7005,11 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Game',
+        1 => 'VideoGameSeries',
       ),
     ),
     'gameLocation' => 
@@ -4601,6 +7021,11 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         1 => 'PostalAddress',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Game',
+        1 => 'VideoGameSeries',
+      ),
     ),
     'gamePlatform' => 
     array (
@@ -4611,6 +7036,11 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         1 => 'Thing',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoGame',
+        1 => 'VideoGameSeries',
+      ),
     ),
     'gameServer' => 
     array (
@@ -4618,6 +7048,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'GameServer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoGame',
       ),
     ),
     'gameTip' => 
@@ -4627,6 +7061,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoGame',
+      ),
     ),
     'gender' => 
     array (
@@ -4635,6 +7073,11 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'GenderType',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+        1 => 'SportsTeam',
       ),
     ),
     'genre' => 
@@ -4646,6 +7089,12 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastChannel',
+        1 => 'CreativeWork',
+        2 => 'MusicGroup',
+      ),
     ),
     'geo' => 
     array (
@@ -4655,11 +7104,20 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'GeoCoordinates',
         1 => 'GeoShape',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'geoContains' => 
     array (
       'description' => 'Represents a relationship between two geometries (or the places they represent), relating a containing geometry to a contained geometry. "a contains b iff no points of b lie in the exterior of a, and at least one point of the interior of b lies in the interior of a". As defined in <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'GeospatialGeometry',
         1 => 'Place',
@@ -4673,11 +7131,21 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'GeospatialGeometry',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
     ),
     'geoCovers' => 
     array (
       'description' => 'Represents a relationship between two geometries (or the places they represent), relating a covering geometry to a covered geometry. "Every point of b is a point of (the interior or boundary of) a". As defined in <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'GeospatialGeometry',
         1 => 'Place',
@@ -4691,11 +7159,21 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'GeospatialGeometry',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
     ),
     'geoDisjoint' => 
     array (
       'description' => 'Represents spatial relations in which two geometries (or the places they represent) are topologically disjoint: "they have no point in common. They form a set of disconnected geometries." (A symmetric relationship, as defined in <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a>.)',
       'expectedTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'GeospatialGeometry',
         1 => 'Place',
@@ -4709,11 +7187,21 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'GeospatialGeometry',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
     ),
     'geoIntersects' => 
     array (
       'description' => 'Represents spatial relations in which two geometries (or the places they represent) have at least one point in common. As defined in <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'GeospatialGeometry',
         1 => 'Place',
@@ -4726,11 +7214,20 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'GeoCoordinates',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoCircle',
+      ),
     ),
     'geoOverlaps' => 
     array (
       'description' => 'Represents a relationship between two geometries (or the places they represent), relating a geometry to another that geospatially overlaps it, i.e. they have some but not all points in common. As defined in <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'GeospatialGeometry',
         1 => 'Place',
@@ -4745,11 +7242,20 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         1 => 'Number',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoCircle',
+      ),
     ),
     'geoTouches' => 
     array (
       'description' => 'Represents spatial relations in which two geometries (or the places they represent) touch: "they have at least one boundary point in common, but no interior points." (A symmetric relationship, as defined in <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a>.)',
       'expectedTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'GeospatialGeometry',
         1 => 'Place',
@@ -4763,6 +7269,11 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'GeospatialGeometry',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeospatialGeometry',
+        1 => 'Place',
+      ),
     ),
     'geographicArea' => 
     array (
@@ -4770,6 +7281,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'AdministrativeArea',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Audience',
       ),
     ),
     'gettingTestedInfo' => 
@@ -4780,6 +7295,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         0 => 'URL',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'givenName' => 
     array (
@@ -4787,6 +7306,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'globalLocationNumber' => 
@@ -4796,6 +7319,12 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+        2 => 'Place',
+      ),
     ),
     'governmentBenefitsInfo' => 
     array (
@@ -4804,6 +7333,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'GovernmentService',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'gracePeriod' => 
     array (
@@ -4811,6 +7344,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       'expectedTypes' => 
       array (
         0 => 'Duration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
       ),
     ),
     'grantee' => 
@@ -4823,6 +7360,10 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
         2 => 'Organization',
         3 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DigitalDocumentPermission',
+      ),
     ),
     'greater' => 
     array (
@@ -4831,11 +7372,19 @@ Typical unit code(s): LTR for liters, GLL of US gallons, GLI for UK / imperial g
       array (
         0 => 'QualitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'QualitativeValue',
+      ),
     ),
     'greaterOrEqual' => 
     array (
       'description' => 'This ordering relation for qualitative values indicates that the subject is greater than or equal to the object.',
       'expectedTypes' => 
+      array (
+        0 => 'QualitativeValue',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'QualitativeValue',
       ),
@@ -4855,6 +7404,12 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
+      ),
     ),
     'gtin12' => 
     array (
@@ -4862,6 +7417,12 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
       ),
     ),
     'gtin13' => 
@@ -4871,6 +7432,12 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
+      ),
     ),
     'gtin14' => 
     array (
@@ -4878,6 +7445,12 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
       ),
     ),
     'gtin8' => 
@@ -4887,6 +7460,12 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
+      ),
     ),
     'guideline' => 
     array (
@@ -4894,6 +7473,10 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       'expectedTypes' => 
       array (
         0 => 'MedicalGuideline',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalEntity',
       ),
     ),
     'guidelineDate' => 
@@ -4903,6 +7486,10 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalGuideline',
+      ),
     ),
     'guidelineSubject' => 
     array (
@@ -4910,6 +7497,10 @@ Note also that this is a definition for how to include GTINs in Schema.org data,
       'expectedTypes' => 
       array (
         0 => 'MedicalEntity',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalGuideline',
       ),
     ),
     'handlingTime' => 
@@ -4924,6 +7515,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         0 => 'QuantitativeValue',
         1 => 'ServicePeriod',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingDeliveryTime',
+        1 => 'ShippingService',
+      ),
     ),
     'hasAdultConsideration' => 
     array (
@@ -4932,11 +7528,20 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'AdultOrientedEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+        1 => 'Product',
+      ),
     ),
     'hasBioChemEntityPart' => 
     array (
       'description' => 'Indicates a BioChemEntity that (in some sense) has this BioChemEntity as a part.',
       'expectedTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'BioChemEntity',
       ),
@@ -4948,6 +7553,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Gene',
+        1 => 'Protein',
+      ),
     ),
     'hasBroadcastChannel' => 
     array (
@@ -4955,6 +7565,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'BroadcastChannel',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
       ),
     ),
     'hasCategoryCode' => 
@@ -4964,6 +7578,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'CategoryCode',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CategoryCodeSet',
+      ),
     ),
     'hasCertification' => 
     array (
@@ -4971,6 +7589,14 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Certification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+        2 => 'Place',
+        3 => 'Product',
+        4 => 'Service',
       ),
     ),
     'hasCourse' => 
@@ -4980,6 +7606,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Course',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'hasCourseInstance' => 
     array (
@@ -4987,6 +7617,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'CourseInstance',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
       ),
     ),
     'hasCredential' => 
@@ -4996,6 +7630,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Credential',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'hasDefinedTerm' => 
     array (
@@ -5003,6 +7642,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'DefinedTerm',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedTermSet',
+        1 => 'Taxon',
       ),
     ),
     'hasDeliveryMethod' => 
@@ -5012,6 +7656,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'DeliveryMethod',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryEvent',
+        1 => 'ParcelDelivery',
+      ),
     ),
     'hasDigitalDocumentPermission' => 
     array (
@@ -5019,6 +7668,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'DigitalDocumentPermission',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DigitalDocument',
       ),
     ),
     'hasDigitalProductPassport' => 
@@ -5029,6 +7682,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         0 => 'DigitalProductPassport',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+        1 => 'Product',
+      ),
     ),
     'hasDriveThroughService' => 
     array (
@@ -5036,6 +7694,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
       ),
     ),
     'hasEnergyConsumptionDetails' => 
@@ -5045,6 +7707,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'EnergyConsumptionDetails',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'hasEnergyEfficiencyCategory' => 
     array (
@@ -5052,6 +7718,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'EnergyEfficiencyEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EnergyConsumptionDetails',
       ),
     ),
     'hasGS1DigitalLink' => 
@@ -5061,6 +7731,13 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+        1 => 'Organization',
+        2 => 'Place',
+        3 => 'Product',
+      ),
     ),
     'hasHealthAspect' => 
     array (
@@ -5068,6 +7745,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'HealthAspectEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthTopicContent',
       ),
     ),
     'hasMap' => 
@@ -5078,6 +7759,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         0 => 'Map',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'hasMeasurement' => 
     array (
@@ -5086,6 +7771,13 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'Offer',
+        2 => 'Product',
+        3 => 'SizeSpecification',
+      ),
     ),
     'hasMemberProgram' => 
     array (
@@ -5093,6 +7785,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'MemberProgram',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'hasMenu' => 
@@ -5104,6 +7800,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FoodEstablishment',
+      ),
     ),
     'hasMenuItem' => 
     array (
@@ -5111,6 +7811,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'MenuItem',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Menu',
+        1 => 'MenuSection',
       ),
     ),
     'hasMenuSection' => 
@@ -5120,6 +7825,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'MenuSection',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Menu',
+        1 => 'MenuSection',
+      ),
     ),
     'hasMerchantReturnPolicy' => 
     array (
@@ -5127,6 +7837,12 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'MerchantReturnPolicy',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+        1 => 'Organization',
+        2 => 'Product',
       ),
     ),
     'hasMolecularFunction' => 
@@ -5138,6 +7854,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         1 => 'PropertyValue',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'hasOccupation' => 
     array (
@@ -5145,6 +7865,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Occupation',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'hasOfferCatalog' => 
@@ -5154,6 +7878,12 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'OfferCatalog',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+        2 => 'Service',
+      ),
     ),
     'hasPOS' => 
     array (
@@ -5162,11 +7892,20 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'hasPart' => 
     array (
       'description' => 'Indicates an item or CreativeWork that is part of this item, or CreativeWork (in some sense).',
       'expectedTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'CreativeWork',
       ),
@@ -5178,6 +7917,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Offer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'hasRepresentation' => 
     array (
@@ -5188,6 +7931,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'hasShippingService' => 
     array (
@@ -5195,6 +7942,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'ShippingService',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'Organization',
       ),
     ),
     'hasSponsorshipOffer' => 
@@ -5204,6 +7956,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Offer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'hasStore' => 
     array (
@@ -5212,6 +7968,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'OnlineStore',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OnlineMarketplace',
+      ),
     ),
     'hasTierBenefit' => 
     array (
@@ -5219,6 +7979,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'TierBenefitEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MemberProgramTier',
       ),
     ),
     'hasTierRequirement' => 
@@ -5231,6 +7995,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         2 => 'Text',
         3 => 'UnitPriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MemberProgramTier',
+      ),
     ),
     'hasTiers' => 
     array (
@@ -5238,6 +8006,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'MemberProgramTier',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MemberProgram',
       ),
     ),
     'hasVariant' => 
@@ -5247,6 +8019,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Product',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ProductGroup',
+      ),
     ),
     'headline' => 
     array (
@@ -5254,6 +8030,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'healthCondition' => 
@@ -5263,6 +8043,12 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'MedicalCondition',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalStudy',
+        1 => 'Patient',
+        2 => 'PeopleAudience',
+      ),
     ),
     'healthPlanCoinsuranceOption' => 
     array (
@@ -5270,6 +8056,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanCostSharingSpecification',
       ),
     ),
     'healthPlanCoinsuranceRate' => 
@@ -5279,6 +8069,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanCostSharingSpecification',
+      ),
     ),
     'healthPlanCopay' => 
     array (
@@ -5287,6 +8081,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'PriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanCostSharingSpecification',
+      ),
     ),
     'healthPlanCopayOption' => 
     array (
@@ -5294,6 +8092,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanCostSharingSpecification',
       ),
     ),
     'healthPlanCostSharing' => 
@@ -5304,6 +8106,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         0 => 'Boolean',
         1 => 'HealthPlanCostSharingSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanFormulary',
+        1 => 'HealthPlanNetwork',
+      ),
     ),
     'healthPlanDrugOption' => 
     array (
@@ -5311,6 +8118,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
       ),
     ),
     'healthPlanDrugTier' => 
@@ -5320,6 +8131,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
+        1 => 'HealthPlanFormulary',
+      ),
     ),
     'healthPlanId' => 
     array (
@@ -5327,6 +8143,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
       ),
     ),
     'healthPlanMarketingUrl' => 
@@ -5336,6 +8156,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
+      ),
     ),
     'healthPlanNetworkId' => 
     array (
@@ -5343,6 +8167,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanNetwork',
+        1 => 'MedicalOrganization',
       ),
     ),
     'healthPlanNetworkTier' => 
@@ -5352,6 +8181,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanNetwork',
+      ),
     ),
     'healthPlanPharmacyCategory' => 
     array (
@@ -5359,6 +8192,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanCostSharingSpecification',
       ),
     ),
     'healthcareReportingData' => 
@@ -5369,6 +8206,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
         0 => 'CDCPMDRecord',
         1 => 'Dataset',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Hospital',
+      ),
     ),
     'height' => 
     array (
@@ -5377,6 +8218,15 @@ In the context of <a class="localLink" href="https://schema.org/ShippingService"
       array (
         0 => 'Distance',
         1 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+        1 => 'OfferShippingDetails',
+        2 => 'Person',
+        3 => 'Product',
+        4 => 'ShippingConditions',
+        5 => 'VisualArtwork',
       ),
     ),
     'highPrice' => 
@@ -5394,6 +8244,10 @@ Usage guidelines:<br/><br/>
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateOffer',
+      ),
     ),
     'hiringOrganization' => 
     array (
@@ -5403,6 +8257,10 @@ Usage guidelines:<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'holdingArchive' => 
     array (
@@ -5410,6 +8268,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'ArchiveOrganization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ArchiveComponent',
       ),
     ),
     'homeLocation' => 
@@ -5420,6 +8282,10 @@ Usage guidelines:<br/><br/>
         0 => 'ContactPoint',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'homeTeam' => 
     array (
@@ -5429,6 +8295,10 @@ Usage guidelines:<br/><br/>
         0 => 'Person',
         1 => 'SportsTeam',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsEvent',
+      ),
     ),
     'honorificPrefix' => 
     array (
@@ -5436,6 +8306,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'honorificSuffix' => 
@@ -5445,6 +8319,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'hospitalAffiliation' => 
     array (
@@ -5452,6 +8330,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Hospital',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Physician',
       ),
     ),
     'hostingOrganization' => 
@@ -5461,6 +8343,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MemberProgram',
+        1 => 'ProgramMembership',
+      ),
     ),
     'hoursAvailable' => 
     array (
@@ -5468,6 +8355,12 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'OpeningHoursSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+        1 => 'LocationFeatureSpecification',
+        2 => 'Service',
       ),
     ),
     'howPerformed' => 
@@ -5477,6 +8370,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalProcedure',
+      ),
     ),
     'httpMethod' => 
     array (
@@ -5484,6 +8381,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EntryPoint',
       ),
     ),
     'iataCode' => 
@@ -5493,6 +8394,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Airline',
+        1 => 'Airport',
+      ),
     ),
     'icaoCode' => 
     array (
@@ -5500,6 +8406,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Airport',
       ),
     ),
     'identifier' => 
@@ -5511,6 +8421,10 @@ Usage guidelines:<br/><br/>
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'identifyingExam' => 
     array (
@@ -5518,6 +8432,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'PhysicalExam',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalSign',
       ),
     ),
     'identifyingTest' => 
@@ -5527,6 +8445,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'MedicalTest',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalSign',
+      ),
     ),
     'illustrator' => 
     array (
@@ -5534,6 +8456,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Book',
       ),
     ),
     'image' => 
@@ -5544,6 +8470,10 @@ Usage guidelines:<br/><br/>
         0 => 'ImageObject',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'imagingTechnique' => 
     array (
@@ -5551,6 +8481,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MedicalImagingTechnique',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ImagingTest',
       ),
     ),
     'importer' => 
@@ -5561,6 +8495,10 @@ Usage guidelines:<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'inAlbum' => 
     array (
@@ -5568,6 +8506,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MusicAlbum',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRecording',
       ),
     ),
     'inBroadcastLineup' => 
@@ -5577,6 +8519,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'CableOrSatelliteService',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastChannel',
+      ),
     ),
     'inChI' => 
     array (
@@ -5585,6 +8531,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
+      ),
     ),
     'inChIKey' => 
     array (
@@ -5592,6 +8542,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
       ),
     ),
     'inCodeSet' => 
@@ -5602,6 +8556,10 @@ Usage guidelines:<br/><br/>
         0 => 'CategoryCodeSet',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CategoryCode',
+      ),
     ),
     'inDefinedTermSet' => 
     array (
@@ -5610,6 +8568,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'DefinedTermSet',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedTerm',
       ),
     ),
     'inLanguage' => 
@@ -5620,6 +8582,16 @@ Usage guidelines:<br/><br/>
         0 => 'Language',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastService',
+        1 => 'CommunicateAction',
+        2 => 'CreativeWork',
+        3 => 'Event',
+        4 => 'LinkRole',
+        5 => 'PronounceableText',
+        6 => 'WriteAction',
+      ),
     ),
     'inPlaylist' => 
     array (
@@ -5627,6 +8599,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MusicPlaylist',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRecording',
       ),
     ),
     'inProductGroupWithID' => 
@@ -5636,6 +8612,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'inStoreReturnsOffered' => 
     array (
@@ -5644,6 +8624,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'inSupportOf' => 
     array (
@@ -5651,6 +8635,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thesis',
       ),
     ),
     'incentiveAmount' => 
@@ -5736,6 +8724,10 @@ In summary: <ul><li>Use <a class="localLink" href="https://schema.org/Quantitati
         1 => 'QuantitativeValue',
         2 => 'UnitPriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
+      ),
     ),
     'incentiveCompensation' => 
     array (
@@ -5743,6 +8735,10 @@ In summary: <ul><li>Use <a class="localLink" href="https://schema.org/Quantitati
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'incentiveStatus' => 
@@ -5752,6 +8748,10 @@ In summary: <ul><li>Use <a class="localLink" href="https://schema.org/Quantitati
       array (
         0 => 'IncentiveStatus',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
+      ),
     ),
     'incentiveType' => 
     array (
@@ -5759,6 +8759,10 @@ In summary: <ul><li>Use <a class="localLink" href="https://schema.org/Quantitati
       'expectedTypes' => 
       array (
         0 => 'IncentiveType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
       ),
     ),
     'incentivizedItem' => 
@@ -5789,11 +8793,19 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
         0 => 'DefinedTerm',
         1 => 'Product',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
+      ),
     ),
     'includedComposition' => 
     array (
       'description' => 'Smaller compositions included in this work (e.g. a movement in a symphony).',
       'expectedTypes' => 
+      array (
+        0 => 'MusicComposition',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'MusicComposition',
       ),
@@ -5805,6 +8817,10 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       array (
         0 => 'DataCatalog',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Dataset',
+      ),
     ),
     'includedInHealthInsurancePlan' => 
     array (
@@ -5812,6 +8828,10 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       'expectedTypes' => 
       array (
         0 => 'HealthInsurancePlan',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'includedRiskFactor' => 
@@ -5821,6 +8841,10 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       array (
         0 => 'MedicalRiskFactor',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalRiskEstimator',
+      ),
     ),
     'includesAttraction' => 
     array (
@@ -5828,6 +8852,10 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       'expectedTypes' => 
       array (
         0 => 'TouristAttraction',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'TouristDestination',
       ),
     ),
     'includesHealthPlanFormulary' => 
@@ -5837,6 +8865,10 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       array (
         0 => 'HealthPlanFormulary',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
+      ),
     ),
     'includesHealthPlanNetwork' => 
     array (
@@ -5845,6 +8877,10 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       array (
         0 => 'HealthPlanNetwork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
+      ),
     ),
     'includesObject' => 
     array (
@@ -5852,6 +8888,12 @@ For multiple different incentivized items, use multiple <a class="localLink" hre
       'expectedTypes' => 
       array (
         0 => 'TypeAndQuantityNode',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'ProductCollection',
       ),
     ),
     'incomeLimit' => 
@@ -5873,6 +8915,10 @@ Use Text for incentives that are limited based on other criteria, for example if
         0 => 'MonetaryAmount',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
+      ),
     ),
     'increasesRiskOf' => 
     array (
@@ -5880,6 +8926,10 @@ Use Text for incentives that are limited based on other criteria, for example if
       'expectedTypes' => 
       array (
         0 => 'MedicalEntity',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalRiskFactor',
       ),
     ),
     'industry' => 
@@ -5889,6 +8939,10 @@ Use Text for incentives that are limited based on other criteria, for example if
       array (
         0 => 'DefinedTerm',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'ineligibleRegion' => 
@@ -5902,6 +8956,14 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         1 => 'Place',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'DeliveryChargeSpecification',
+        2 => 'Demand',
+        3 => 'MediaObject',
+        4 => 'Offer',
+      ),
     ),
     'infectiousAgent' => 
     array (
@@ -5909,6 +8971,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'InfectiousDisease',
       ),
     ),
     'infectiousAgentClass' => 
@@ -5918,6 +8984,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'InfectiousAgentClass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'InfectiousDisease',
+      ),
     ),
     'inker' => 
     array (
@@ -5925,6 +8995,12 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ComicIssue',
+        1 => 'ComicStory',
+        2 => 'VisualArtwork',
       ),
     ),
     'insertion' => 
@@ -5934,6 +9010,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'AnatomicalStructure',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Muscle',
+      ),
     ),
     'installUrl' => 
     array (
@@ -5941,6 +9021,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'instructor' => 
@@ -5950,6 +9034,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CourseInstance',
+      ),
     ),
     'instrument' => 
     array (
@@ -5957,6 +9045,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
       ),
     ),
     'intensity' => 
@@ -5967,11 +9059,19 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         0 => 'QuantitativeValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
+      ),
     ),
     'interactingDrug' => 
     array (
       'description' => 'Another drug that is known to interact with this drug in a way that impacts the effect of this drug or causes a risk to the patient. Note: disease interactions are typically captured as contraindications.',
       'expectedTypes' => 
+      array (
+        0 => 'Drug',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Drug',
       ),
@@ -5984,6 +9084,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         0 => 'SoftwareApplication',
         1 => 'WebSite',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'InteractionCounter',
+      ),
     ),
     'interactionStatistic' => 
     array (
@@ -5991,6 +9095,12 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'InteractionCounter',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Organization',
+        2 => 'Person',
       ),
     ),
     'interactionType' => 
@@ -6000,6 +9110,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Action',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'InteractionCounter',
+      ),
     ),
     'interactivityType' => 
     array (
@@ -6007,6 +9121,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'interestRate' => 
@@ -6017,6 +9135,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialProduct',
+      ),
     ),
     'interpretedAsClaim' => 
     array (
@@ -6024,6 +9146,11 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Claim',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'MediaObject',
       ),
     ),
     'inventoryLevel' => 
@@ -6033,11 +9160,21 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'SomeProducts',
+      ),
     ),
     'inverseOf' => 
     array (
       'description' => 'Relates a property to a property that is its inverse. Inverse properties relate the same pairs of items to each other, but in reversed direction. For example, the \'alumni\' and \'alumniOf\' properties are inverseOf each other. Some properties don\'t have explicit inverses; in these situations RDFa and JSON-LD syntax for reverse properties can be used.',
       'expectedTypes' => 
+      array (
+        0 => 'Property',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Property',
       ),
@@ -6049,6 +9186,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalOrganization',
+      ),
     ),
     'isAccessibleForFree' => 
     array (
@@ -6057,11 +9198,21 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+        2 => 'Place',
+      ),
     ),
     'isAccessoryOrSparePartFor' => 
     array (
       'description' => 'A pointer to another product (or multiple products) for which this product is an accessory or spare part.',
       'expectedTypes' => 
+      array (
+        0 => 'Product',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Product',
       ),
@@ -6073,6 +9224,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'isBasedOn' => 
     array (
@@ -6083,11 +9238,19 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         1 => 'Product',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'isConsumableFor' => 
     array (
       'description' => 'A pointer to another product (or multiple products) for which this product is a consumable.',
       'expectedTypes' => 
+      array (
+        0 => 'Product',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Product',
       ),
@@ -6099,6 +9262,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Gene',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'isFamilyFriendly' => 
     array (
@@ -6107,6 +9274,12 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Offer',
+        2 => 'Product',
+      ),
     ),
     'isGift' => 
     array (
@@ -6114,6 +9287,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
       ),
     ),
     'isInvolvedInBiologicalProcess' => 
@@ -6125,6 +9302,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         1 => 'PropertyValue',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'isLiveBroadcast' => 
     array (
@@ -6132,6 +9313,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastEvent',
       ),
     ),
     'isLocatedInSubcellularLocation' => 
@@ -6143,11 +9328,19 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         1 => 'PropertyValue',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'isOftenBoughtWith' => 
     array (
       'description' => 'Indicates a product that is often bought with the described product.',
       'expectedTypes' => 
+      array (
+        0 => 'Product',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Product',
       ),
@@ -6160,11 +9353,19 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'isPartOfBioChemEntity' => 
     array (
       'description' => 'Indicates a BioChemEntity that is (in some sense) a part of this BioChemEntity.',
       'expectedTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'BioChemEntity',
       ),
@@ -6176,6 +9377,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Accommodation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FloorPlan',
+      ),
     ),
     'isProprietary' => 
     array (
@@ -6184,11 +9389,21 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
+      ),
     ),
     'isRelatedTo' => 
     array (
       'description' => 'A pointer to another, somehow related product (or multiple products).',
       'expectedTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'Service',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Product',
         1 => 'Service',
@@ -6201,11 +9416,20 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => '3DModel',
+      ),
     ),
     'isSimilarTo' => 
     array (
       'description' => 'A pointer to another, functionally similar product (or multiple products).',
       'expectedTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'Service',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Product',
         1 => 'Service',
@@ -6218,6 +9442,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'OnlineMarketplace',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OnlineStore',
+      ),
     ),
     'isTierOf' => 
     array (
@@ -6226,6 +9454,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'MemberProgram',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MemberProgramTier',
+      ),
     ),
     'isUnlabelledFallback' => 
     array (
@@ -6233,6 +9465,11 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryTimeSettings',
+        1 => 'ShippingRateSettings',
       ),
     ),
     'isVariantOf' => 
@@ -6243,6 +9480,11 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         0 => 'ProductGroup',
         1 => 'ProductModel',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'ProductModel',
+      ),
     ),
     'isbn' => 
     array (
@@ -6250,6 +9492,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Book',
       ),
     ),
     'isicV4' => 
@@ -6259,6 +9505,12 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+        2 => 'Place',
+      ),
     ),
     'iso6523Code' => 
     array (
@@ -6266,6 +9518,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'isrcCode' => 
@@ -6275,6 +9531,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRecording',
+      ),
     ),
     'issn' => 
     array (
@@ -6282,6 +9542,13 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Blog',
+        1 => 'CreativeWorkSeries',
+        2 => 'Dataset',
+        3 => 'WebSite',
       ),
     ),
     'issueNumber' => 
@@ -6292,6 +9559,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PublicationIssue',
+      ),
     ),
     'issuedBy' => 
     array (
@@ -6299,6 +9570,12 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'Permit',
+        2 => 'Ticket',
       ),
     ),
     'issuedThrough' => 
@@ -6308,6 +9585,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Service',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Permit',
+      ),
     ),
     'iswcCode' => 
     array (
@@ -6315,6 +9596,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
       ),
     ),
     'item' => 
@@ -6324,6 +9609,11 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DataFeedItem',
+        1 => 'ListItem',
+      ),
     ),
     'itemCondition' => 
     array (
@@ -6331,6 +9621,13 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'OfferItemCondition',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'MerchantReturnPolicy',
+        2 => 'Offer',
+        3 => 'Product',
       ),
     ),
     'itemDefectReturnFees' => 
@@ -6340,6 +9637,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'ReturnFeesEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'itemDefectReturnLabelSource' => 
     array (
@@ -6348,6 +9649,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       array (
         0 => 'ReturnLabelSourceEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'itemDefectReturnShippingFeesAmount' => 
     array (
@@ -6355,6 +9660,10 @@ See also <a class="localLink" href="https://schema.org/eligibleRegion">eligibleR
       'expectedTypes' => 
       array (
         0 => 'MonetaryAmount',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
       ),
     ),
     'itemListElement' => 
@@ -6370,6 +9679,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         1 => 'Text',
         2 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ItemList',
+      ),
     ),
     'itemListOrder' => 
     array (
@@ -6378,6 +9691,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'ItemListOrderType',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ItemList',
       ),
     ),
     'itemLocation' => 
@@ -6388,6 +9705,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Place',
         1 => 'PostalAddress',
         2 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ArchiveComponent',
       ),
     ),
     'itemOffered' => 
@@ -6403,6 +9724,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         5 => 'Service',
         6 => 'Trip',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+      ),
     ),
     'itemPopularity' => 
     array (
@@ -6412,6 +9738,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+      ),
     ),
     'itemReviewed' => 
     array (
@@ -6420,6 +9750,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateRating',
+        1 => 'Review',
+      ),
     ),
     'itemShipped' => 
     array (
@@ -6427,6 +9762,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Product',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
       ),
     ),
     'itinerary' => 
@@ -6437,6 +9776,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'ItemList',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Trip',
+      ),
     ),
     'iupacName' => 
     array (
@@ -6445,6 +9788,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
+      ),
     ),
     'jobBenefits' => 
     array (
@@ -6452,6 +9799,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'jobDuration' => 
@@ -6462,6 +9813,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Duration',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'jobImmediateStart' => 
     array (
@@ -6469,6 +9824,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'jobLocation' => 
@@ -6478,6 +9837,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'jobLocationType' => 
     array (
@@ -6485,6 +9848,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'jobStartDate' => 
@@ -6495,6 +9862,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Date',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'jobTitle' => 
     array (
@@ -6504,6 +9875,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'jurisdiction' => 
     array (
@@ -6512,6 +9887,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'AdministrativeArea',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'GovernmentService',
+        1 => 'Legislation',
       ),
     ),
     'keywords' => 
@@ -6523,6 +9903,14 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+        2 => 'Organization',
+        3 => 'Place',
+        4 => 'Product',
+      ),
     ),
     'knownVehicleDamages' => 
     array (
@@ -6531,11 +9919,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'knows' => 
     array (
       'description' => 'The most generic bi-directional social/work relation.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -6549,6 +9945,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         1 => 'Thing',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'knowsLanguage' => 
     array (
@@ -6558,6 +9959,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Language',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'labelDetails' => 
     array (
@@ -6565,6 +9971,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'landlord' => 
@@ -6575,6 +9985,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RentAction',
+      ),
     ),
     'lastReviewed' => 
     array (
@@ -6582,6 +9996,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
       ),
     ),
     'latitude' => 
@@ -6592,6 +10010,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoCoordinates',
+        1 => 'Place',
+      ),
     ),
     'layoutImage' => 
     array (
@@ -6600,6 +10023,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'ImageObject',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FloorPlan',
       ),
     ),
     'learningResourceType' => 
@@ -6610,6 +10037,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'LearningResource',
+      ),
     ),
     'leaseLength' => 
     array (
@@ -6619,6 +10051,12 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Duration',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'Offer',
+        2 => 'RealEstateListing',
+      ),
     ),
     'legalAddress' => 
     array (
@@ -6626,6 +10064,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'PostalAddress',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'legalName' => 
@@ -6635,6 +10077,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+      ),
     ),
     'legalRepresentative' => 
     array (
@@ -6642,6 +10088,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'legalStatus' => 
@@ -6653,11 +10103,21 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         1 => 'MedicalEnumeration',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
+        2 => 'MedicalEntity',
+      ),
     ),
     'legislationAmends' => 
     array (
       'description' => 'Another legislation that this legislation amends, introducing legal changes.',
       'expectedTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Legislation',
       ),
@@ -6669,11 +10129,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Legislation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationChanges' => 
     array (
       'description' => 'Another legislation that this legislation changes. This encompasses the notions of amendment, replacement, correction, repeal, or other types of change. This may be a direct change (textual or non-textual amendment) or a consequential or indirect change. The property is to be used to express the existence of a change relationship between two acts rather than the existence of a consolidated version of the text that shows the result of the change. For consolidation relationships, use the <a href="https://schema.org/legislationConsolidates">legislationConsolidates</a> property.',
       'expectedTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Legislation',
       ),
@@ -6685,6 +10153,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Legislation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationConsolidates' => 
     array (
@@ -6693,11 +10165,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Legislation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationCorrects' => 
     array (
       'description' => 'Another legislation in which this one introduces textual changes, like correction of spelling mistakes, with no legal impact (for modifications that have legal impact, use <a href="https://schema.org/legislationAmends">legislationAmends</a>).',
       'expectedTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Legislation',
       ),
@@ -6710,6 +10190,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationDate' => 
     array (
@@ -6717,6 +10201,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
       ),
     ),
     'legislationDateOfApplicability' => 
@@ -6726,6 +10214,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationDateVersion' => 
     array (
@@ -6734,11 +10226,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationEnsuresImplementationOf' => 
     array (
       'description' => 'Indicates that this Legislation ensures the implementation of another Legislation, for example by modifying national legislations so that they do not contradict to an EU regulation or decision. This implies a legal meaning. Transpositions of EU Directive should be captured with <a href="https://schema.org/legislationTransposes">legislationTransposes</a>.',
       'expectedTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Legislation',
       ),
@@ -6751,6 +10251,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationJurisdiction' => 
     array (
@@ -6760,6 +10264,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'AdministrativeArea',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationLegalForce' => 
     array (
@@ -6768,6 +10276,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'LegalForceStatus',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationLegalValue' => 
     array (
@@ -6775,6 +10287,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'LegalValueLevel',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LegislationObject',
       ),
     ),
     'legislationPassedBy' => 
@@ -6785,11 +10301,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationRepeals' => 
     array (
       'description' => 'Another legislation that this legislation repeals (cancels, abrogates).',
       'expectedTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Legislation',
       ),
@@ -6802,11 +10326,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'legislationTransposes' => 
     array (
       'description' => 'Indicates that this legislation (or part of legislation) fulfills the objectives set by another legislation, by passing appropriate implementation measures. Typically, some legislations of European Union\'s member states or regions transpose European Directives. This indicates a legally binding link between the 2 legislations.',
       'expectedTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Legislation',
       ),
@@ -6819,6 +10351,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'CategoryCode',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Legislation',
+      ),
     ),
     'leiCode' => 
     array (
@@ -6826,6 +10362,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'lender' => 
@@ -6836,11 +10376,19 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BorrowAction',
+      ),
     ),
     'lesser' => 
     array (
       'description' => 'This ordering relation for qualitative values indicates that the subject is lesser than the object.',
       'expectedTypes' => 
+      array (
+        0 => 'QualitativeValue',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'QualitativeValue',
       ),
@@ -6852,6 +10400,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'QualitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'QualitativeValue',
+      ),
     ),
     'letterer' => 
     array (
@@ -6859,6 +10411,12 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ComicIssue',
+        1 => 'ComicStory',
+        2 => 'VisualArtwork',
       ),
     ),
     'license' => 
@@ -6869,6 +10427,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'lifeEvent' => 
     array (
@@ -6876,6 +10438,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Event',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'line' => 
@@ -6885,6 +10451,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoShape',
+      ),
     ),
     'linkRelationship' => 
     array (
@@ -6892,6 +10462,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LinkRole',
       ),
     ),
     'liveBlogUpdate' => 
@@ -6901,6 +10475,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'BlogPosting',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LiveBlogPosting',
+      ),
     ),
     'loanMortgageMandateAmount' => 
     array (
@@ -6908,6 +10486,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'MonetaryAmount',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MortgageLoan',
       ),
     ),
     'loanPaymentAmount' => 
@@ -6917,6 +10499,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RepaymentSpecification',
+      ),
     ),
     'loanPaymentFrequency' => 
     array (
@@ -6924,6 +10510,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RepaymentSpecification',
       ),
     ),
     'loanRepaymentForm' => 
@@ -6933,6 +10523,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'RepaymentSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
+      ),
     ),
     'loanTerm' => 
     array (
@@ -6940,6 +10534,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
       ),
     ),
     'loanType' => 
@@ -6949,6 +10547,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Text',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
       ),
     ),
     'location' => 
@@ -6961,6 +10563,13 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         2 => 'Text',
         3 => 'VirtualLocation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+        1 => 'Event',
+        2 => 'InteractionCounter',
+        3 => 'Organization',
+      ),
     ),
     'locationCreated' => 
     array (
@@ -6969,6 +10578,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'lodgingUnitDescription' => 
     array (
@@ -6976,6 +10589,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LodgingReservation',
       ),
     ),
     'lodgingUnitType' => 
@@ -6986,6 +10603,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'QualitativeValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LodgingReservation',
+      ),
     ),
     'logo' => 
     array (
@@ -6994,6 +10615,15 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       array (
         0 => 'ImageObject',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Brand',
+        1 => 'Certification',
+        2 => 'Organization',
+        3 => 'Place',
+        4 => 'Product',
+        5 => 'Service',
       ),
     ),
     'longitude' => 
@@ -7004,6 +10634,11 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoCoordinates',
+        1 => 'Place',
+      ),
     ),
     'loser' => 
     array (
@@ -7011,6 +10646,10 @@ Note: The order of elements in your mark-up is not sufficient for indicating the
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'WinAction',
       ),
     ),
     'lowPrice' => 
@@ -7028,6 +10667,10 @@ Usage guidelines:<br/><br/>
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateOffer',
+      ),
     ),
     'lyricist' => 
     array (
@@ -7035,6 +10678,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
       ),
     ),
     'lyrics' => 
@@ -7044,6 +10691,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
+      ),
     ),
     'mainContentOfPage' => 
     array (
@@ -7052,6 +10703,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'WebPageElement',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
+      ),
     ),
     'mainEntity' => 
     array (
@@ -7059,6 +10714,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'mainEntityOfPage' => 
@@ -7069,6 +10728,10 @@ Usage guidelines:<br/><br/>
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'maintainer' => 
     array (
@@ -7078,6 +10741,10 @@ Usage guidelines:<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'makesOffer' => 
     array (
@@ -7085,6 +10752,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Offer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
       ),
     ),
     'manufacturer' => 
@@ -7094,6 +10766,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'mapType' => 
     array (
@@ -7101,6 +10777,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MapCategoryType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Map',
       ),
     ),
     'marginOfError' => 
@@ -7110,6 +10790,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
+      ),
     ),
     'masthead' => 
     array (
@@ -7118,6 +10802,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'CreativeWork',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
       ),
     ),
     'material' => 
@@ -7129,6 +10817,11 @@ Usage guidelines:<br/><br/>
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Product',
+      ),
     ),
     'materialExtent' => 
     array (
@@ -7137,6 +10830,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'QuantitativeValue',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'mathExpression' => 
@@ -7147,6 +10844,10 @@ Usage guidelines:<br/><br/>
         0 => 'SolveMathAction',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MathSolver',
+      ),
     ),
     'maxPrice' => 
     array (
@@ -7154,6 +10855,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PriceSpecification',
       ),
     ),
     'maxValue' => 
@@ -7163,6 +10868,13 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MonetaryAmount',
+        1 => 'PropertyValue',
+        2 => 'PropertyValueSpecification',
+        3 => 'QuantitativeValue',
+      ),
     ),
     'maximumAttendeeCapacity' => 
     array (
@@ -7170,6 +10882,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+        1 => 'Place',
       ),
     ),
     'maximumEnrollment' => 
@@ -7179,6 +10896,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'maximumIntake' => 
     array (
@@ -7186,6 +10907,13 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MaximumDoseSchedule',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
+        2 => 'DrugStrength',
+        3 => 'Substance',
       ),
     ),
     'maximumPhysicalAttendeeCapacity' => 
@@ -7195,6 +10923,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'maximumVirtualAttendeeCapacity' => 
     array (
@@ -7202,6 +10934,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
       ),
     ),
     'mealService' => 
@@ -7211,6 +10947,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
+      ),
     ),
     'measuredProperty' => 
     array (
@@ -7219,6 +10959,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Property',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
+        1 => 'StatisticalVariable',
+      ),
     ),
     'measurementDenominator' => 
     array (
@@ -7226,6 +10971,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'StatisticalVariable',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
+        1 => 'StatisticalVariable',
       ),
     ),
     'measurementMethod' => 
@@ -7238,6 +10988,15 @@ Usage guidelines:<br/><br/>
         2 => 'Text',
         3 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DataCatalog',
+        1 => 'DataDownload',
+        2 => 'Dataset',
+        3 => 'Observation',
+        4 => 'PropertyValue',
+        5 => 'StatisticalVariable',
+      ),
     ),
     'measurementQualifier' => 
     array (
@@ -7245,6 +11004,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Enumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
+        1 => 'StatisticalVariable',
       ),
     ),
     'measurementTechnique' => 
@@ -7263,6 +11027,15 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         2 => 'Text',
         3 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DataCatalog',
+        1 => 'DataDownload',
+        2 => 'Dataset',
+        3 => 'Observation',
+        4 => 'PropertyValue',
+        5 => 'StatisticalVariable',
+      ),
     ),
     'mechanismOfAction' => 
     array (
@@ -7270,6 +11043,11 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
       ),
     ),
     'mediaAuthenticityCategory' => 
@@ -7279,6 +11057,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       array (
         0 => 'MediaManipulationRatingEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaReview',
+      ),
     ),
     'mediaItemAppearance' => 
     array (
@@ -7287,6 +11069,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       array (
         0 => 'MediaObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaReviewItem',
+      ),
     ),
     'median' => 
     array (
@@ -7294,6 +11080,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'QuantitativeValueDistribution',
       ),
     ),
     'medicalAudience' => 
@@ -7304,6 +11094,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         0 => 'MedicalAudience',
         1 => 'MedicalAudienceType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalWebPage',
+      ),
     ),
     'medicalSpecialty' => 
     array (
@@ -7312,6 +11106,13 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       array (
         0 => 'MedicalSpecialty',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Hospital',
+        1 => 'MedicalClinic',
+        2 => 'MedicalOrganization',
+        3 => 'Physician',
+      ),
     ),
     'medicineSystem' => 
     array (
@@ -7319,6 +11120,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       'expectedTypes' => 
       array (
         0 => 'MedicineSystem',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalEntity',
       ),
     ),
     'meetsEmissionStandard' => 
@@ -7330,6 +11135,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'member' => 
     array (
@@ -7338,6 +11147,11 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       array (
         0 => 'Organization',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'ProgramMembership',
       ),
     ),
     'memberOf' => 
@@ -7349,6 +11163,11 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         1 => 'Organization',
         2 => 'ProgramMembership',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'membershipNumber' => 
     array (
@@ -7356,6 +11175,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ProgramMembership',
       ),
     ),
     'membershipPointsEarned' => 
@@ -7366,6 +11189,12 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MemberProgramTier',
+        1 => 'PriceSpecification',
+        2 => 'ProgramMembership',
+      ),
     ),
     'memoryRequirements' => 
     array (
@@ -7375,6 +11204,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'mentions' => 
     array (
@@ -7382,6 +11215,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'menuAddOn' => 
@@ -7391,6 +11228,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       array (
         0 => 'MenuItem',
         1 => 'MenuSection',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MenuItem',
       ),
     ),
     'merchantReturnDays' => 
@@ -7402,6 +11243,11 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
         1 => 'DateTime',
         2 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
+      ),
     ),
     'merchantReturnLink' => 
     array (
@@ -7410,6 +11256,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'messageAttachment' => 
     array (
@@ -7417,6 +11267,10 @@ If there are several <a class="localLink" href="https://schema.org/variableMeasu
       'expectedTypes' => 
       array (
         0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
       ),
     ),
     'mileageFromOdometer' => 
@@ -7428,6 +11282,10 @@ Typical unit code(s): KMT for kilometers, SMI for statute miles.',
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'minPrice' => 
     array (
@@ -7436,6 +11294,10 @@ Typical unit code(s): KMT for kilometers, SMI for statute miles.',
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PriceSpecification',
+      ),
     ),
     'minValue' => 
     array (
@@ -7443,6 +11305,13 @@ Typical unit code(s): KMT for kilometers, SMI for statute miles.',
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MonetaryAmount',
+        1 => 'PropertyValue',
+        2 => 'PropertyValueSpecification',
+        3 => 'QuantitativeValue',
       ),
     ),
     'minimumOrderValue' => 
@@ -7454,6 +11323,10 @@ Typical unit code(s): KMT for kilometers, SMI for statute miles.',
         1 => 'Number',
         2 => 'PriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingRateSettings',
+      ),
     ),
     'minimumPaymentDue' => 
     array (
@@ -7463,6 +11336,10 @@ Typical unit code(s): KMT for kilometers, SMI for statute miles.',
         0 => 'MonetaryAmount',
         1 => 'PriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+      ),
     ),
     'missionCoveragePrioritiesPolicy' => 
     array (
@@ -7471,6 +11348,10 @@ Typical unit code(s): KMT for kilometers, SMI for statute miles.',
       array (
         0 => 'CreativeWork',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
       ),
     ),
     'mobileUrl' => 
@@ -7482,6 +11363,11 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+        1 => 'Product',
+      ),
     ),
     'model' => 
     array (
@@ -7491,6 +11377,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
         0 => 'ProductModel',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'modelDate' => 
     array (
@@ -7498,6 +11388,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'modifiedTime' => 
@@ -7507,6 +11401,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
+      ),
     ),
     'molecularFormula' => 
     array (
@@ -7514,6 +11412,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
       ),
     ),
     'molecularWeight' => 
@@ -7524,6 +11426,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
         0 => 'QuantitativeValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
+      ),
     ),
     'monoisotopicMolecularWeight' => 
     array (
@@ -7532,6 +11438,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'QuantitativeValue',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
       ),
     ),
     'monthlyMinimumRepaymentAmount' => 
@@ -7542,6 +11452,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
         0 => 'MonetaryAmount',
         1 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PaymentCard',
+      ),
     ),
     'monthsOfExperience' => 
     array (
@@ -7549,6 +11463,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OccupationalExperienceRequirements',
       ),
     ),
     'mpn' => 
@@ -7558,6 +11476,12 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
+      ),
     ),
     'multipleValues' => 
     array (
@@ -7565,6 +11489,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
       ),
     ),
     'muscleAction' => 
@@ -7574,11 +11502,19 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Muscle',
+      ),
     ),
     'musicArrangement' => 
     array (
       'description' => 'An arrangement derived from the composition.',
       'expectedTypes' => 
+      array (
+        0 => 'MusicComposition',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'MusicComposition',
       ),
@@ -7591,6 +11527,18 @@ To discourage over-use, and reflecting intial usecases, the property is expected
         0 => 'MusicGroup',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+        1 => 'Episode',
+        2 => 'Movie',
+        3 => 'MovieSeries',
+        4 => 'RadioSeries',
+        5 => 'TVSeries',
+        6 => 'VideoGame',
+        7 => 'VideoGameSeries',
+        8 => 'VideoObject',
+      ),
     ),
     'musicCompositionForm' => 
     array (
@@ -7598,6 +11546,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
       ),
     ),
     'musicReleaseFormat' => 
@@ -7607,6 +11559,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'MusicReleaseFormatType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRelease',
+      ),
     ),
     'musicalKey' => 
     array (
@@ -7614,6 +11570,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
       ),
     ),
     'naics' => 
@@ -7623,6 +11583,11 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'name' => 
     array (
@@ -7630,6 +11595,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
       ),
     ),
     'nationality' => 
@@ -7639,6 +11608,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       array (
         0 => 'Country',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'naturalProgression' => 
     array (
@@ -7646,6 +11619,10 @@ To discourage over-use, and reflecting intial usecases, the property is expected
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'negativeNotes' => 
@@ -7663,6 +11640,11 @@ The property values can be expressed either as unstructured text (repeated as ne
         2 => 'Text',
         3 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'Review',
+      ),
     ),
     'nerve' => 
     array (
@@ -7671,6 +11653,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Nerve',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Muscle',
+      ),
     ),
     'nerveMotor' => 
     array (
@@ -7678,6 +11664,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Muscle',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Nerve',
       ),
     ),
     'netWorth' => 
@@ -7688,6 +11678,10 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'MonetaryAmount',
         1 => 'PriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'newsUpdatesAndGuidelines' => 
     array (
@@ -7697,11 +11691,19 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'URL',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'nextItem' => 
     array (
       'description' => 'A link to the ListItem that follows the current one.',
       'expectedTypes' => 
+      array (
+        0 => 'ListItem',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'ListItem',
       ),
@@ -7714,11 +11716,19 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+      ),
     ),
     'nonEqual' => 
     array (
       'description' => 'This ordering relation for qualitative values indicates that the subject is not equal to the object.',
       'expectedTypes' => 
+      array (
+        0 => 'QualitativeValue',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'QualitativeValue',
       ),
@@ -7730,6 +11740,11 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
+      ),
     ),
     'nonprofitStatus' => 
     array (
@@ -7737,6 +11752,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'NonprofitType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
       ),
     ),
     'normalRange' => 
@@ -7747,6 +11766,10 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'MedicalEnumeration',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTest',
+      ),
     ),
     'nsn' => 
     array (
@@ -7754,6 +11777,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
       ),
     ),
     'numAdults' => 
@@ -7764,6 +11791,10 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'Integer',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LodgingReservation',
+      ),
     ),
     'numChildren' => 
     array (
@@ -7773,6 +11804,10 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'Integer',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LodgingReservation',
+      ),
     ),
     'numConstraints' => 
     array (
@@ -7780,6 +11815,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ConstraintNode',
       ),
     ),
     'numItems' => 
@@ -7789,6 +11828,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingConditions',
+      ),
     ),
     'numTracks' => 
     array (
@@ -7797,6 +11840,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicPlaylist',
+      ),
     ),
     'numberOfAccommodationUnits' => 
     array (
@@ -7804,6 +11851,11 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ApartmentComplex',
+        1 => 'FloorPlan',
       ),
     ),
     'numberOfAirbags' => 
@@ -7814,6 +11866,10 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'numberOfAvailableAccommodationUnits' => 
     array (
@@ -7821,6 +11877,11 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ApartmentComplex',
+        1 => 'FloorPlan',
       ),
     ),
     'numberOfAxles' => 
@@ -7833,6 +11894,10 @@ Typical unit code(s): C62.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'numberOfBathroomsTotal' => 
     array (
@@ -7840,6 +11905,11 @@ Typical unit code(s): C62.',
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'FloorPlan',
       ),
     ),
     'numberOfBedrooms' => 
@@ -7850,6 +11920,12 @@ Typical unit code(s): C62.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'ApartmentComplex',
+        2 => 'FloorPlan',
+      ),
     ),
     'numberOfBeds' => 
     array (
@@ -7857,6 +11933,10 @@ Typical unit code(s): C62.',
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BedDetails',
       ),
     ),
     'numberOfCredits' => 
@@ -7866,6 +11946,11 @@ Typical unit code(s): C62.',
       array (
         0 => 'Integer',
         1 => 'StructuredValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
+        1 => 'EducationalOccupationalProgram',
       ),
     ),
     'numberOfDoors' => 
@@ -7878,6 +11963,10 @@ Typical unit code(s): C62.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'numberOfEmployees' => 
     array (
@@ -7886,6 +11975,11 @@ Typical unit code(s): C62.',
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusinessAudience',
+        1 => 'Organization',
+      ),
     ),
     'numberOfEpisodes' => 
     array (
@@ -7893,6 +11987,13 @@ Typical unit code(s): C62.',
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+        1 => 'RadioSeries',
+        2 => 'TVSeries',
+        3 => 'VideoGameSeries',
       ),
     ),
     'numberOfForwardGears' => 
@@ -7905,6 +12006,10 @@ Typical unit code(s): C62.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'numberOfFullBathrooms' => 
     array (
@@ -7912,6 +12017,11 @@ Typical unit code(s): C62.',
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'FloorPlan',
       ),
     ),
     'numberOfItems' => 
@@ -7921,6 +12031,10 @@ Typical unit code(s): C62.',
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ItemList',
+      ),
     ),
     'numberOfLoanPayments' => 
     array (
@@ -7928,6 +12042,10 @@ Typical unit code(s): C62.',
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RepaymentSpecification',
       ),
     ),
     'numberOfPages' => 
@@ -7937,6 +12055,10 @@ Typical unit code(s): C62.',
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Book',
+      ),
     ),
     'numberOfPartialBathrooms' => 
     array (
@@ -7945,6 +12067,11 @@ Typical unit code(s): C62.',
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'FloorPlan',
+      ),
     ),
     'numberOfPlayers' => 
     array (
@@ -7952,6 +12079,11 @@ Typical unit code(s): C62.',
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Game',
+        1 => 'VideoGameSeries',
       ),
     ),
     'numberOfPreviousOwners' => 
@@ -7964,6 +12096,10 @@ Typical unit code(s): C62.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'numberOfRooms' => 
     array (
@@ -7974,6 +12110,16 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'Apartment',
+        2 => 'FloorPlan',
+        3 => 'House',
+        4 => 'LodgingBusiness',
+        5 => 'SingleFamilyResidence',
+        6 => 'Suite',
+      ),
     ),
     'numberOfSeasons' => 
     array (
@@ -7981,6 +12127,12 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RadioSeries',
+        1 => 'TVSeries',
+        2 => 'VideoGameSeries',
       ),
     ),
     'numberedPosition' => 
@@ -7990,6 +12142,10 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OrganizationRole',
+      ),
     ),
     'nutrition' => 
     array (
@@ -7998,6 +12154,11 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
       array (
         0 => 'NutritionInformation',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MenuItem',
+        1 => 'Recipe',
+      ),
     ),
     'object' => 
     array (
@@ -8005,6 +12166,10 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
       ),
     ),
     'observationAbout' => 
@@ -8015,6 +12180,10 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
         0 => 'Place',
         1 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
+      ),
     ),
     'observationDate' => 
     array (
@@ -8024,6 +12193,10 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
+      ),
     ),
     'observationPeriod' => 
     array (
@@ -8031,6 +12204,10 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Observation',
       ),
     ),
     'occupancy' => 
@@ -8041,6 +12218,14 @@ Typical unit code(s): C62 for person.',
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'Apartment',
+        2 => 'HotelRoom',
+        3 => 'SingleFamilyResidence',
+        4 => 'Suite',
+      ),
     ),
     'occupationLocation' => 
     array (
@@ -8048,6 +12233,10 @@ Typical unit code(s): C62 for person.',
       'expectedTypes' => 
       array (
         0 => 'AdministrativeArea',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Occupation',
       ),
     ),
     'occupationalCategory' => 
@@ -8060,6 +12249,14 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'CategoryCode',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+        1 => 'JobPosting',
+        2 => 'Occupation',
+        3 => 'Physician',
+        4 => 'WorkBasedProgram',
+      ),
     ),
     'occupationalCredentialAwarded' => 
     array (
@@ -8070,6 +12267,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
+        1 => 'EducationalOccupationalProgram',
+      ),
     ),
     'offerCount' => 
     array (
@@ -8077,6 +12279,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateOffer',
       ),
     ),
     'offeredBy' => 
@@ -8087,6 +12293,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
+      ),
     ),
     'offers' => 
     array (
@@ -8096,6 +12306,17 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Demand',
         1 => 'Offer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateOffer',
+        1 => 'CreativeWork',
+        2 => 'EducationalOccupationalProgram',
+        3 => 'Event',
+        4 => 'MenuItem',
+        5 => 'Product',
+        6 => 'Service',
+        7 => 'Trip',
+      ),
     ),
     'offersPrescriptionByMail' => 
     array (
@@ -8103,6 +12324,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthPlanFormulary',
       ),
     ),
     'openingHours' => 
@@ -8119,6 +12344,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CivicStructure',
+        1 => 'LocalBusiness',
+      ),
     ),
     'openingHoursSpecification' => 
     array (
@@ -8127,6 +12357,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'OpeningHoursSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'opens' => 
     array (
@@ -8134,6 +12368,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Time',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OpeningHoursSpecification',
       ),
     ),
     'operatingSystem' => 
@@ -8144,6 +12382,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'OperatingSystem',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'opponent' => 
     array (
@@ -8151,6 +12393,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
       ),
     ),
     'orderDate' => 
@@ -8161,6 +12407,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+      ),
     ),
     'orderDelivery' => 
     array (
@@ -8168,6 +12418,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'ParcelDelivery',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+        1 => 'OrderItem',
       ),
     ),
     'orderItemNumber' => 
@@ -8177,6 +12432,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OrderItem',
+      ),
     ),
     'orderItemStatus' => 
     array (
@@ -8184,6 +12443,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'OrderStatus',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OrderItem',
       ),
     ),
     'orderNumber' => 
@@ -8193,6 +12456,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+      ),
     ),
     'orderPercentage' => 
     array (
@@ -8200,6 +12467,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingRateSettings',
       ),
     ),
     'orderQuantity' => 
@@ -8210,6 +12481,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OrderItem',
+      ),
     ),
     'orderStatus' => 
     array (
@@ -8218,6 +12493,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'OrderStatus',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+      ),
     ),
     'orderValue' => 
     array (
@@ -8225,6 +12504,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'MonetaryAmount',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingConditions',
       ),
     ),
     'orderedItem' => 
@@ -8236,6 +12519,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
         1 => 'Product',
         2 => 'Service',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+        1 => 'OrderItem',
+      ),
     ),
     'organizer' => 
     array (
@@ -8245,6 +12533,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'originAddress' => 
     array (
@@ -8253,6 +12545,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'PostalAddress',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
+      ),
     ),
     'originalMediaContextDescription' => 
     array (
@@ -8260,6 +12556,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaReview',
       ),
     ),
     'originalMediaLink' => 
@@ -8271,6 +12571,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         1 => 'URL',
         2 => 'WebPage',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaReview',
+      ),
     ),
     'originatesFrom' => 
     array (
@@ -8278,6 +12582,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Vessel',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LymphaticVessel',
       ),
     ),
     'overdosage' => 
@@ -8287,6 +12595,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'ownedFrom' => 
     array (
@@ -8294,6 +12606,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OwnershipInfo',
       ),
     ),
     'ownedThrough' => 
@@ -8303,6 +12619,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OwnershipInfo',
+      ),
     ),
     'owner' => 
     array (
@@ -8311,6 +12631,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Organization',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
       ),
     ),
     'ownershipFundingInfo' => 
@@ -8323,6 +12647,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
         2 => 'Text',
         3 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
+      ),
     ),
     'owns' => 
     array (
@@ -8330,6 +12659,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
       ),
     ),
     'pageEnd' => 
@@ -8340,6 +12674,13 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+        1 => 'Chapter',
+        2 => 'PublicationIssue',
+        3 => 'PublicationVolume',
+      ),
     ),
     'pageStart' => 
     array (
@@ -8349,6 +12690,13 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+        1 => 'Chapter',
+        2 => 'PublicationIssue',
+        3 => 'PublicationVolume',
+      ),
     ),
     'pagination' => 
     array (
@@ -8357,11 +12705,22 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+        1 => 'Chapter',
+        2 => 'PublicationIssue',
+        3 => 'PublicationVolume',
+      ),
     ),
     'parent' => 
     array (
       'description' => 'A parent of this person.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -8374,6 +12733,12 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Comment',
         1 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Answer',
+        1 => 'Comment',
+        2 => 'Question',
+      ),
     ),
     'parentOrganization' => 
     array (
@@ -8382,11 +12747,19 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+      ),
     ),
     'parentService' => 
     array (
       'description' => 'A broadcast service to which the broadcast service may belong to such as regional variations of a national channel.',
       'expectedTypes' => 
+      array (
+        0 => 'BroadcastService',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'BroadcastService',
       ),
@@ -8400,6 +12773,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Taxon',
+      ),
     ),
     'partOfEpisode' => 
     array (
@@ -8407,6 +12784,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Episode',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
       ),
     ),
     'partOfInvoice' => 
@@ -8416,6 +12797,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Invoice',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
+      ),
     ),
     'partOfOrder' => 
     array (
@@ -8423,6 +12808,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Order',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
       ),
     ),
     'partOfSeason' => 
@@ -8432,6 +12821,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'CreativeWorkSeason',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+        1 => 'Episode',
+      ),
     ),
     'partOfSeries' => 
     array (
@@ -8439,6 +12833,12 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'CreativeWorkSeries',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+        1 => 'CreativeWorkSeason',
+        2 => 'Episode',
       ),
     ),
     'partOfSystem' => 
@@ -8448,11 +12848,19 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'AnatomicalSystem',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+      ),
     ),
     'partOfTrip' => 
     array (
       'description' => 'Identifies that this <a class="localLink" href="https://schema.org/Trip">Trip</a> is a subTrip of another Trip.  For example Day 1, Day 2, etc. of a multi-day trip.',
       'expectedTypes' => 
+      array (
+        0 => 'Trip',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Trip',
       ),
@@ -8465,6 +12873,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+      ),
     ),
     'partySize' => 
     array (
@@ -8473,6 +12885,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Integer',
         1 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FoodEstablishmentReservation',
+        1 => 'TaxiReservation',
       ),
     ),
     'passengerPriorityStatus' => 
@@ -8483,6 +12900,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
         0 => 'QualitativeValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FlightReservation',
+      ),
     ),
     'passengerSequenceNumber' => 
     array (
@@ -8490,6 +12911,10 @@ Note: for historical reasons, any textual label and formal code provided as a li
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FlightReservation',
       ),
     ),
     'pathophysiology' => 
@@ -8499,6 +12924,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+        1 => 'PhysicalActivity',
+      ),
     ),
     'pattern' => 
     array (
@@ -8507,6 +12937,11 @@ Note: for historical reasons, any textual label and formal code provided as a li
       array (
         0 => 'DefinedTerm',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Product',
       ),
     ),
     'payload' => 
@@ -8525,6 +12960,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'paymentAccepted' => 
     array (
@@ -8532,6 +12971,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LocalBusiness',
       ),
     ),
     'paymentDueDate' => 
@@ -8542,6 +12985,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+        1 => 'Order',
+      ),
     ),
     'paymentMethod' => 
     array (
@@ -8551,6 +12999,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'PaymentMethod',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+        1 => 'Order',
+      ),
     ),
     'paymentMethodId' => 
     array (
@@ -8559,6 +13012,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+        1 => 'Order',
+      ),
     ),
     'paymentMethodType' => 
     array (
@@ -8566,6 +13024,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'PaymentMethodType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PaymentMethod',
       ),
     ),
     'paymentStatus' => 
@@ -8576,6 +13038,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'PaymentStatusType',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+      ),
     ),
     'paymentUrl' => 
     array (
@@ -8583,6 +13049,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Order',
       ),
     ),
     'penciler' => 
@@ -8592,6 +13062,12 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ComicIssue',
+        1 => 'ComicStory',
+        2 => 'VisualArtwork',
+      ),
     ),
     'percentile10' => 
     array (
@@ -8599,6 +13075,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'QuantitativeValueDistribution',
       ),
     ),
     'percentile25' => 
@@ -8608,6 +13088,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'QuantitativeValueDistribution',
+      ),
     ),
     'percentile75' => 
     array (
@@ -8615,6 +13099,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'QuantitativeValueDistribution',
       ),
     ),
     'percentile90' => 
@@ -8624,6 +13112,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'QuantitativeValueDistribution',
+      ),
     ),
     'performTime' => 
     array (
@@ -8631,6 +13123,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Duration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+        1 => 'HowToDirection',
       ),
     ),
     'performer' => 
@@ -8641,6 +13138,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'performerIn' => 
     array (
@@ -8648,6 +13149,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Event',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'permissionType' => 
@@ -8657,6 +13162,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'DigitalDocumentPermissionType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DigitalDocumentPermission',
+      ),
     ),
     'permissions' => 
     array (
@@ -8664,6 +13173,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'permitAudience' => 
@@ -8673,6 +13186,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Audience',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Permit',
+      ),
     ),
     'permittedUsage' => 
     array (
@@ -8680,6 +13197,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
       ),
     ),
     'petsAllowed' => 
@@ -8690,6 +13211,13 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'Boolean',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'ApartmentComplex',
+        2 => 'FloorPlan',
+        3 => 'LodgingBusiness',
+      ),
     ),
     'phoneticText' => 
     array (
@@ -8697,6 +13225,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PronounceableText',
       ),
     ),
     'photo' => 
@@ -8706,6 +13238,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'ImageObject',
         1 => 'Photograph',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
       ),
     ),
     'physicalRequirement' => 
@@ -8717,6 +13253,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'physiologicalBenefits' => 
     array (
@@ -8724,6 +13264,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Diet',
       ),
     ),
     'pickupLocation' => 
@@ -8733,6 +13277,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RentalCarReservation',
+        1 => 'TaxiReservation',
+      ),
     ),
     'pickupTime' => 
     array (
@@ -8740,6 +13289,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RentalCarReservation',
+        1 => 'TaxiReservation',
       ),
     ),
     'playMode' => 
@@ -8749,6 +13303,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'GamePlayMode',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoGame',
+        1 => 'VideoGameSeries',
+      ),
     ),
     'playerType' => 
     array (
@@ -8756,6 +13315,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
       ),
     ),
     'playersOnline' => 
@@ -8765,6 +13328,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GameServer',
+      ),
     ),
     'polygon' => 
     array (
@@ -8772,6 +13339,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'GeoShape',
       ),
     ),
     'populationType' => 
@@ -8781,6 +13352,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Class',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'StatisticalPopulation',
+        1 => 'StatisticalVariable',
+      ),
     ),
     'position' => 
     array (
@@ -8789,6 +13365,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Integer',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'ListItem',
       ),
     ),
     'positiveNotes' => 
@@ -8805,6 +13386,11 @@ The property values can be expressed either as unstructured text (repeated as ne
         2 => 'Text',
         3 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'Review',
+      ),
     ),
     'possibleComplication' => 
     array (
@@ -8812,6 +13398,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'possibleTreatment' => 
@@ -8824,6 +13414,11 @@ The property values can be expressed either as unstructured text (repeated as ne
         2 => 'LifestyleModification',
         3 => 'MedicalTherapy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+        1 => 'MedicalSignOrSymptom',
+      ),
     ),
     'postOfficeBoxNumber' => 
     array (
@@ -8831,6 +13426,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PostalAddress',
       ),
     ),
     'postOp' => 
@@ -8840,6 +13439,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalDevice',
+      ),
     ),
     'postalCode' => 
     array (
@@ -8847,6 +13450,13 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedRegion',
+        1 => 'GeoCoordinates',
+        2 => 'GeoShape',
+        3 => 'PostalAddress',
       ),
     ),
     'postalCodeBegin' => 
@@ -8856,6 +13466,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PostalCodeRangeSpecification',
+      ),
     ),
     'postalCodeEnd' => 
     array (
@@ -8863,6 +13477,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PostalCodeRangeSpecification',
       ),
     ),
     'postalCodePrefix' => 
@@ -8872,6 +13490,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedRegion',
+      ),
     ),
     'postalCodeRange' => 
     array (
@@ -8879,6 +13501,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'PostalCodeRangeSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedRegion',
       ),
     ),
     'potentialAction' => 
@@ -8888,6 +13514,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Action',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'potentialUse' => 
     array (
@@ -8895,6 +13525,11 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'DefinedTerm',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ChemicalSubstance',
+        1 => 'MolecularEntity',
       ),
     ),
     'practicesAt' => 
@@ -8904,6 +13539,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'MedicalOrganization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'IndividualPhysician',
+      ),
     ),
     'preOp' => 
     array (
@@ -8912,11 +13551,19 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalDevice',
+      ),
     ),
     'predecessorOf' => 
     array (
       'description' => 'A pointer from a previous, often discontinued variant of the product to its newer variant.',
       'expectedTypes' => 
+      array (
+        0 => 'ProductModel',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'ProductModel',
       ),
@@ -8928,6 +13575,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'DrugPregnancyCategory',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'pregnancyWarning' => 
     array (
@@ -8936,6 +13587,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'prepTime' => 
     array (
@@ -8943,6 +13598,11 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'Duration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+        1 => 'HowToDirection',
       ),
     ),
     'preparation' => 
@@ -8953,6 +13613,10 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'MedicalEntity',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalProcedure',
+      ),
     ),
     'prescribingInfo' => 
     array (
@@ -8960,6 +13624,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'prescriptionStatus' => 
@@ -8970,11 +13638,19 @@ The property values can be expressed either as unstructured text (repeated as ne
         0 => 'DrugPrescriptionStatus',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'previousItem' => 
     array (
       'description' => 'A link to the ListItem that precedes the current one.',
       'expectedTypes' => 
+      array (
+        0 => 'ListItem',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'ListItem',
       ),
@@ -8986,6 +13662,10 @@ The property values can be expressed either as unstructured text (repeated as ne
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
       ),
     ),
     'price' => 
@@ -9005,6 +13685,13 @@ Usage guidelines:<br/><br/>
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DonateAction',
+        1 => 'Offer',
+        2 => 'PriceSpecification',
+        3 => 'TradeAction',
+      ),
     ),
     'priceComponent' => 
     array (
@@ -9013,6 +13700,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'PriceSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CompoundPriceSpecification',
+      ),
     ),
     'priceComponentType' => 
     array (
@@ -9020,6 +13711,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'PriceComponentTypeEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UnitPriceSpecification',
       ),
     ),
     'priceCurrency' => 
@@ -9031,6 +13726,15 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DonateAction',
+        1 => 'Offer',
+        2 => 'PriceSpecification',
+        3 => 'Reservation',
+        4 => 'Ticket',
+        5 => 'TradeAction',
+      ),
     ),
     'priceRange' => 
     array (
@@ -9039,6 +13743,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LocalBusiness',
+      ),
     ),
     'priceSpecification' => 
     array (
@@ -9046,6 +13754,13 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'PriceSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'DonateAction',
+        2 => 'Offer',
+        3 => 'TradeAction',
       ),
     ),
     'priceType' => 
@@ -9056,6 +13771,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'PriceTypeEnumeration',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CompoundPriceSpecification',
+        1 => 'UnitPriceSpecification',
+      ),
     ),
     'priceValidUntil' => 
     array (
@@ -9063,6 +13783,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
       ),
     ),
     'primaryImageOfPage' => 
@@ -9072,6 +13796,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'ImageObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
+      ),
     ),
     'primaryPrevention' => 
     array (
@@ -9079,6 +13807,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'MedicalTherapy',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'printColumn' => 
@@ -9088,6 +13820,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsArticle',
+      ),
     ),
     'printEdition' => 
     array (
@@ -9095,6 +13831,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsArticle',
       ),
     ),
     'printPage' => 
@@ -9104,6 +13844,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsArticle',
+      ),
     ),
     'printSection' => 
     array (
@@ -9111,6 +13855,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsArticle',
       ),
     ),
     'procedure' => 
@@ -9120,6 +13868,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalDevice',
+      ),
     ),
     'procedureType' => 
     array (
@@ -9127,6 +13879,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'MedicalProcedureType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalProcedure',
       ),
     ),
     'processingTime' => 
@@ -9136,6 +13892,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Duration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
+      ),
     ),
     'processorRequirements' => 
     array (
@@ -9143,6 +13903,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'producer' => 
@@ -9153,6 +13917,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'productGroupID' => 
     array (
@@ -9161,6 +13929,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ProductGroup',
+      ),
     ),
     'productID' => 
     array (
@@ -9168,6 +13940,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
       ),
     ),
     'productSupported' => 
@@ -9178,6 +13954,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'Product',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+      ),
     ),
     'productionCompany' => 
     array (
@@ -9185,6 +13965,17 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+        1 => 'Episode',
+        2 => 'MediaObject',
+        3 => 'Movie',
+        4 => 'MovieSeries',
+        5 => 'RadioSeries',
+        6 => 'TVSeries',
+        7 => 'VideoGameSeries',
       ),
     ),
     'productionDate' => 
@@ -9194,6 +13985,11 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'Vehicle',
+      ),
     ),
     'proficiencyLevel' => 
     array (
@@ -9201,6 +13997,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'TechArticle',
       ),
     ),
     'program' => 
@@ -9210,6 +14010,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'MemberProgram',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ProgramMembership',
+      ),
     ),
     'programMembershipUsed' => 
     array (
@@ -9218,6 +14022,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'ProgramMembership',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
+      ),
     ),
     'programName' => 
     array (
@@ -9225,6 +14033,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ProgramMembership',
       ),
     ),
     'programPrerequisites' => 
@@ -9237,6 +14049,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         2 => 'EducationalOccupationalCredential',
         3 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'programType' => 
     array (
@@ -9245,6 +14061,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       array (
         0 => 'DefinedTerm',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
       ),
     ),
     'programmingLanguage' => 
@@ -9255,6 +14075,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
         0 => 'ComputerLanguage',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareSourceCode',
+      ),
     ),
     'programmingModel' => 
     array (
@@ -9262,6 +14086,10 @@ Use standard formats: <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217 c
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'APIReference',
       ),
     ),
     'pronouns' => 
@@ -9275,6 +14103,10 @@ In English, formulations such as "they/them", "she/her", and "he/him" are common
         1 => 'StructuredValue',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'propertyID' => 
     array (
@@ -9287,6 +14119,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValue',
+      ),
     ),
     'proprietaryName' => 
     array (
@@ -9295,6 +14131,11 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'Drug',
+      ),
     ),
     'proteinContent' => 
     array (
@@ -9302,6 +14143,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       'expectedTypes' => 
       array (
         0 => 'Mass',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
       ),
     ),
     'provider' => 
@@ -9312,6 +14157,19 @@ Standards bodies should promote a standard prefix for the identifiers of propert
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+        1 => 'CreativeWork',
+        2 => 'EducationalOccupationalProgram',
+        3 => 'FinancialIncentive',
+        4 => 'Invoice',
+        5 => 'OfferShippingDetails',
+        6 => 'ParcelDelivery',
+        7 => 'Reservation',
+        8 => 'Service',
+        9 => 'Trip',
+      ),
     ),
     'providerMobility' => 
     array (
@@ -9319,6 +14177,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Service',
       ),
     ),
     'providesBroadcastService' => 
@@ -9328,6 +14190,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       array (
         0 => 'BroadcastService',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastChannel',
+      ),
     ),
     'providesService' => 
     array (
@@ -9336,6 +14202,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       array (
         0 => 'Service',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
+      ),
     ),
     'publicAccess' => 
     array (
@@ -9343,6 +14213,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
       ),
     ),
     'publicTransportClosuresInfo' => 
@@ -9353,6 +14227,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
         0 => 'URL',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'publication' => 
     array (
@@ -9361,6 +14239,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       array (
         0 => 'PublicationEvent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'publicationType' => 
     array (
@@ -9368,6 +14250,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalScholarlyArticle',
       ),
     ),
     'publishedBy' => 
@@ -9378,6 +14264,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PublicationEvent',
+      ),
     ),
     'publishedOn' => 
     array (
@@ -9385,6 +14275,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       'expectedTypes' => 
       array (
         0 => 'BroadcastService',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PublicationEvent',
       ),
     ),
     'publisher' => 
@@ -9395,6 +14289,11 @@ Standards bodies should promote a standard prefix for the identifiers of propert
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'FinancialIncentive',
+      ),
     ),
     'publisherImprint' => 
     array (
@@ -9402,6 +14301,10 @@ Standards bodies should promote a standard prefix for the identifiers of propert
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'publishingPrinciples' => 
@@ -9414,6 +14317,12 @@ While such policies are most typically expressed in natural language, sometimes 
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Organization',
+        2 => 'Person',
+      ),
     ),
     'purchaseDate' => 
     array (
@@ -9421,6 +14330,11 @@ While such policies are most typically expressed in natural language, sometimes 
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+        1 => 'Vehicle',
       ),
     ),
     'purchasePriceLimit' => 
@@ -9430,6 +14344,10 @@ While such policies are most typically expressed in natural language, sometimes 
       array (
         0 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
+      ),
     ),
     'purchaseType' => 
     array (
@@ -9437,6 +14355,10 @@ While such policies are most typically expressed in natural language, sometimes 
       'expectedTypes' => 
       array (
         0 => 'PurchaseType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
       ),
     ),
     'qualifications' => 
@@ -9447,6 +14369,11 @@ While such policies are most typically expressed in natural language, sometimes 
         0 => 'Credential',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+        1 => 'Occupation',
+      ),
     ),
     'qualifiedExpense' => 
     array (
@@ -9454,6 +14381,10 @@ While such policies are most typically expressed in natural language, sometimes 
       'expectedTypes' => 
       array (
         0 => 'IncentiveQualifiedExpenseType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FinancialIncentive',
       ),
     ),
     'quarantineGuidelines' => 
@@ -9464,6 +14395,10 @@ While such policies are most typically expressed in natural language, sometimes 
         0 => 'URL',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'query' => 
     array (
@@ -9471,6 +14406,10 @@ While such policies are most typically expressed in natural language, sometimes 
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SearchAction',
       ),
     ),
     'quest' => 
@@ -9480,6 +14419,11 @@ While such policies are most typically expressed in natural language, sometimes 
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Game',
+        1 => 'VideoGameSeries',
+      ),
     ),
     'question' => 
     array (
@@ -9487,6 +14431,10 @@ While such policies are most typically expressed in natural language, sometimes 
       'expectedTypes' => 
       array (
         0 => 'Question',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AskAction',
       ),
     ),
     'rangeIncludes' => 
@@ -9496,6 +14444,10 @@ While such policies are most typically expressed in natural language, sometimes 
       array (
         0 => 'Class',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Property',
+      ),
     ),
     'ratingCount' => 
     array (
@@ -9504,6 +14456,10 @@ While such policies are most typically expressed in natural language, sometimes 
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateRating',
+      ),
     ),
     'ratingExplanation' => 
     array (
@@ -9511,6 +14467,10 @@ While such policies are most typically expressed in natural language, sometimes 
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Rating',
       ),
     ),
     'ratingValue' => 
@@ -9528,6 +14488,10 @@ Usage guidelines:<br/><br/>
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Rating',
+      ),
     ),
     'readBy' => 
     array (
@@ -9535,6 +14499,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Audiobook',
       ),
     ),
     'readonlyValue' => 
@@ -9544,6 +14512,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
+      ),
     ),
     'realEstateAgent' => 
     array (
@@ -9551,6 +14523,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'RealEstateAgent',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'RentAction',
       ),
     ),
     'recipe' => 
@@ -9560,6 +14536,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Recipe',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CookAction',
+      ),
     ),
     'recipeCategory' => 
     array (
@@ -9568,6 +14548,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
+      ),
     ),
     'recipeCuisine' => 
     array (
@@ -9575,6 +14559,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
       ),
     ),
     'recipeIngredient' => 
@@ -9586,6 +14574,10 @@ Usage guidelines:<br/><br/>
         1 => 'PropertyValue',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
+      ),
     ),
     'recipeInstructions' => 
     array (
@@ -9596,6 +14588,10 @@ Usage guidelines:<br/><br/>
         1 => 'ItemList',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
+      ),
     ),
     'recipeYield' => 
     array (
@@ -9604,6 +14600,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'QuantitativeValue',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Recipe',
       ),
     ),
     'recipient' => 
@@ -9616,6 +14616,18 @@ Usage guidelines:<br/><br/>
         2 => 'Organization',
         3 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AuthorizeAction',
+        1 => 'CommunicateAction',
+        2 => 'DonateAction',
+        3 => 'GiveAction',
+        4 => 'Message',
+        5 => 'PayAction',
+        6 => 'ReturnAction',
+        7 => 'SendAction',
+        8 => 'TipAction',
+      ),
     ),
     'recognizedBy' => 
     array (
@@ -9623,6 +14635,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Credential',
       ),
     ),
     'recognizingAuthority' => 
@@ -9632,6 +14648,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalEntity',
+      ),
     ),
     'recommendationStrength' => 
     array (
@@ -9639,6 +14659,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalGuidelineRecommendation',
       ),
     ),
     'recommendedIntake' => 
@@ -9648,6 +14672,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'RecommendedDoseSchedule',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+      ),
     ),
     'recordLabel' => 
     array (
@@ -9655,6 +14683,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRelease',
       ),
     ),
     'recordedAs' => 
@@ -9664,6 +14696,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'MusicRecording',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicComposition',
+      ),
     ),
     'recordedAt' => 
     array (
@@ -9671,6 +14707,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Event',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'recordedIn' => 
@@ -9680,6 +14720,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'recordingOf' => 
     array (
@@ -9687,6 +14731,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MusicComposition',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRecording',
       ),
     ),
     'recourseLoan' => 
@@ -9696,6 +14744,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
+      ),
     ),
     'recycledContentPercentage' => 
     array (
@@ -9703,6 +14755,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
       ),
     ),
     'referee' => 
@@ -9712,6 +14768,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsEvent',
+      ),
     ),
     'referenceQuantity' => 
     array (
@@ -9719,6 +14779,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UnitPriceSpecification',
       ),
     ),
     'referencesOrder' => 
@@ -9728,6 +14792,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Order',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+      ),
     ),
     'refundType' => 
     array (
@@ -9735,6 +14803,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'RefundTypeEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
       ),
     ),
     'regionDrained' => 
@@ -9745,6 +14818,11 @@ Usage guidelines:<br/><br/>
         0 => 'AnatomicalStructure',
         1 => 'AnatomicalSystem',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LymphaticVessel',
+        1 => 'Vein',
+      ),
     ),
     'regionsAllowed' => 
     array (
@@ -9752,6 +14830,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
       ),
     ),
     'relatedAnatomy' => 
@@ -9762,6 +14844,10 @@ Usage guidelines:<br/><br/>
         0 => 'AnatomicalStructure',
         1 => 'AnatomicalSystem',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SuperficialAnatomy',
+      ),
     ),
     'relatedCondition' => 
     array (
@@ -9770,11 +14856,21 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'MedicalCondition',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+        1 => 'AnatomicalSystem',
+        2 => 'SuperficialAnatomy',
+      ),
     ),
     'relatedDrug' => 
     array (
       'description' => 'Any other drug related to this one, for example commonly-prescribed alternatives.',
       'expectedTypes' => 
+      array (
+        0 => 'Drug',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Drug',
       ),
@@ -9786,6 +14882,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
+      ),
     ),
     'relatedStructure' => 
     array (
@@ -9793,6 +14893,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'AnatomicalStructure',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalSystem',
       ),
     ),
     'relatedTherapy' => 
@@ -9802,11 +14906,21 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'MedicalTherapy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+        1 => 'AnatomicalSystem',
+        2 => 'SuperficialAnatomy',
+      ),
     ),
     'relatedTo' => 
     array (
       'description' => 'The most generic familial relation.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -9818,6 +14932,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'releaseNotes' => 
     array (
@@ -9827,6 +14945,10 @@ Usage guidelines:<br/><br/>
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'releaseOf' => 
     array (
@@ -9834,6 +14956,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MusicAlbum',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicRelease',
       ),
     ),
     'releasedEvent' => 
@@ -9843,6 +14969,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'PublicationEvent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'relevantOccupation' => 
     array (
@@ -9850,6 +14980,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Occupation',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'relevantSpecialty' => 
@@ -9859,6 +14993,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'MedicalSpecialty',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalEntity',
+      ),
     ),
     'remainingAttendeeCapacity' => 
     array (
@@ -9866,6 +15004,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
       ),
     ),
     'renegotiableLoan' => 
@@ -9875,6 +15017,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
+      ),
     ),
     'repeatCount' => 
     array (
@@ -9882,6 +15028,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
       ),
     ),
     'repeatFrequency' => 
@@ -9893,6 +15043,10 @@ Usage guidelines:<br/><br/>
         0 => 'Duration',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
+      ),
     ),
     'repetitions' => 
     array (
@@ -9902,6 +15056,10 @@ Usage guidelines:<br/><br/>
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
+      ),
     ),
     'replacee' => 
     array (
@@ -9909,6 +15067,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ReplaceAction',
       ),
     ),
     'replacer' => 
@@ -9918,6 +15080,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ReplaceAction',
+      ),
     ),
     'replyToUrl' => 
     array (
@@ -9925,6 +15091,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UserComments',
       ),
     ),
     'reportNumber' => 
@@ -9934,6 +15104,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Report',
+      ),
     ),
     'representativeOfPage' => 
     array (
@@ -9941,6 +15115,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ImageObject',
       ),
     ),
     'requiredCollateral' => 
@@ -9951,6 +15129,10 @@ Usage guidelines:<br/><br/>
         0 => 'Text',
         1 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoanOrCredit',
+      ),
     ),
     'requiredGender' => 
     array (
@@ -9958,6 +15140,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
       ),
     ),
     'requiredMaxAge' => 
@@ -9967,6 +15153,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
+      ),
     ),
     'requiredMinAge' => 
     array (
@@ -9974,6 +15164,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
       ),
     ),
     'requiredQuantity' => 
@@ -9985,6 +15179,10 @@ Usage guidelines:<br/><br/>
         1 => 'QuantitativeValue',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowToItem',
+      ),
     ),
     'requiresSubscription' => 
     array (
@@ -9994,6 +15192,11 @@ Usage guidelines:<br/><br/>
         0 => 'Boolean',
         1 => 'MediaSubscription',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ActionAccessSpecification',
+        1 => 'MediaObject',
+      ),
     ),
     'reservationFor' => 
     array (
@@ -10001,6 +15204,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
       ),
     ),
     'reservationId' => 
@@ -10010,6 +15217,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
+      ),
     ),
     'reservationStatus' => 
     array (
@@ -10017,6 +15228,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'ReservationStatusType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
       ),
     ),
     'reservedTicket' => 
@@ -10026,6 +15241,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Ticket',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
+      ),
     ),
     'responsibilities' => 
     array (
@@ -10033,6 +15252,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+        1 => 'Occupation',
       ),
     ),
     'restPeriods' => 
@@ -10043,6 +15267,10 @@ Usage guidelines:<br/><br/>
         0 => 'QuantitativeValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
+      ),
     ),
     'restockingFee' => 
     array (
@@ -10052,6 +15280,11 @@ Usage guidelines:<br/><br/>
         0 => 'MonetaryAmount',
         1 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
+      ),
     ),
     'result' => 
     array (
@@ -10059,6 +15292,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
       ),
     ),
     'resultComment' => 
@@ -10068,6 +15305,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Comment',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CommentAction',
+        1 => 'ReplyAction',
+      ),
     ),
     'resultReview' => 
     array (
@@ -10075,6 +15317,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Review',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ReviewAction',
       ),
     ),
     'returnFees' => 
@@ -10084,6 +15330,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'ReturnFeesEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
+      ),
     ),
     'returnLabelSource' => 
     array (
@@ -10091,6 +15342,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'ReturnLabelSourceEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
       ),
     ),
     'returnMethod' => 
@@ -10100,6 +15355,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'ReturnMethodEnumeration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
+      ),
     ),
     'returnPolicyCategory' => 
     array (
@@ -10107,6 +15367,11 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MerchantReturnEnumeration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
       ),
     ),
     'returnPolicyCountry' => 
@@ -10117,6 +15382,10 @@ Usage guidelines:<br/><br/>
         0 => 'Country',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+      ),
     ),
     'returnPolicySeasonalOverride' => 
     array (
@@ -10124,6 +15393,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MerchantReturnPolicySeasonalOverride',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
       ),
     ),
     'returnShippingFeesAmount' => 
@@ -10133,6 +15406,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'MonetaryAmount',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'MerchantReturnPolicySeasonalOverride',
+      ),
     ),
     'review' => 
     array (
@@ -10140,6 +15418,17 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Review',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Brand',
+        1 => 'CreativeWork',
+        2 => 'Event',
+        3 => 'Offer',
+        4 => 'Organization',
+        5 => 'Place',
+        6 => 'Product',
+        7 => 'Service',
       ),
     ),
     'reviewAspect' => 
@@ -10150,6 +15439,12 @@ Usage guidelines:<br/><br/>
         0 => 'StructuredValue',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Guide',
+        1 => 'Rating',
+        2 => 'Review',
+      ),
     ),
     'reviewBody' => 
     array (
@@ -10157,6 +15452,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Review',
       ),
     ),
     'reviewCount' => 
@@ -10166,6 +15465,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AggregateRating',
+      ),
     ),
     'reviewRating' => 
     array (
@@ -10173,6 +15476,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Rating',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Review',
       ),
     ),
     'reviewedBy' => 
@@ -10183,6 +15490,10 @@ Usage guidelines:<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
+      ),
     ),
     'riskFactor' => 
     array (
@@ -10190,6 +15501,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'MedicalRiskFactor',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'risks' => 
@@ -10199,6 +15514,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Diet',
+      ),
     ),
     'roleName' => 
     array (
@@ -10207,6 +15526,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Text',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Role',
       ),
     ),
     'roofLoad' => 
@@ -10224,6 +15547,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusOrCoach',
+        1 => 'Car',
+      ),
     ),
     'rsvpResponse' => 
     array (
@@ -10232,6 +15560,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'RsvpResponseType',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'RsvpAction',
+      ),
     ),
     'runsTo' => 
     array (
@@ -10239,6 +15571,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Vessel',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LymphaticVessel',
       ),
     ),
     'runtimePlatform' => 
@@ -10249,6 +15585,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'RuntimePlatform',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+        1 => 'SoftwareSourceCode',
+      ),
     ),
     'rxcui' => 
     array (
@@ -10256,6 +15597,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
       ),
     ),
     'safetyConsideration' => 
@@ -10265,6 +15610,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+      ),
     ),
     'salaryCurrency' => 
     array (
@@ -10272,6 +15621,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EmployeeRole',
+        1 => 'JobPosting',
       ),
     ),
     'salaryUponCompletion' => 
@@ -10281,6 +15635,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'MonetaryAmountDistribution',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'sameAs' => 
     array (
@@ -10288,6 +15646,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
       ),
     ),
     'saturatedFatContent' => 
@@ -10297,6 +15659,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'scheduleTimezone' => 
     array (
@@ -10304,6 +15670,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Schedule',
       ),
     ),
     'scheduledPaymentDate' => 
@@ -10313,6 +15683,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Date',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
+      ),
     ),
     'scheduledTime' => 
     array (
@@ -10321,6 +15695,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Date',
         1 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PlanAction',
       ),
     ),
     'schemaVersion' => 
@@ -10332,6 +15710,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'schoolClosuresInfo' => 
     array (
@@ -10341,6 +15723,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'URL',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'screenCount' => 
     array (
@@ -10348,6 +15734,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MovieTheater',
       ),
     ),
     'screenshot' => 
@@ -10358,6 +15748,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'ImageObject',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'sdDatePublished' => 
     array (
@@ -10365,6 +15759,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'sdLicense' => 
@@ -10374,6 +15772,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'CreativeWork',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'sdPublisher' => 
@@ -10385,6 +15787,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'seasonNumber' => 
     array (
@@ -10394,6 +15800,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+      ),
     ),
     'seasonalOverride' => 
     array (
@@ -10401,6 +15811,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'OpeningHoursSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingConditions',
       ),
     ),
     'seatNumber' => 
@@ -10410,6 +15824,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Seat',
+      ),
     ),
     'seatRow' => 
     array (
@@ -10418,6 +15836,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Seat',
+      ),
     ),
     'seatSection' => 
     array (
@@ -10425,6 +15847,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Seat',
       ),
     ),
     'seatingCapacity' => 
@@ -10437,6 +15863,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'seatingType' => 
     array (
@@ -10445,6 +15875,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'QualitativeValue',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Seat',
       ),
     ),
     'secondaryPrevention' => 
@@ -10457,6 +15891,10 @@ Typical unit code(s): C62 for persons.',
         2 => 'LifestyleModification',
         3 => 'MedicalTherapy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+      ),
     ),
     'securityClearanceRequirement' => 
     array (
@@ -10466,6 +15904,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'securityScreening' => 
     array (
@@ -10473,6 +15915,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FlightReservation',
       ),
     ),
     'seeks' => 
@@ -10482,6 +15928,11 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Demand',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
+      ),
     ),
     'seller' => 
     array (
@@ -10490,6 +15941,14 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Organization',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BuyAction',
+        1 => 'Demand',
+        2 => 'Flight',
+        3 => 'Offer',
+        4 => 'Order',
       ),
     ),
     'sender' => 
@@ -10501,6 +15960,11 @@ Typical unit code(s): C62 for persons.',
         1 => 'Organization',
         2 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
+        1 => 'ReceiveAction',
+      ),
     ),
     'sensoryRequirement' => 
     array (
@@ -10511,6 +15975,10 @@ Typical unit code(s): C62 for persons.',
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'sensoryUnit' => 
     array (
@@ -10520,6 +15988,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'AnatomicalStructure',
         1 => 'SuperficialAnatomy',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Nerve',
+      ),
     ),
     'serialNumber' => 
     array (
@@ -10527,6 +15999,12 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'IndividualProduct',
+        2 => 'Offer',
       ),
     ),
     'seriousAdverseOutcome' => 
@@ -10536,6 +16014,11 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'MedicalEntity',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalDevice',
+        1 => 'MedicalTherapy',
+      ),
     ),
     'serverStatus' => 
     array (
@@ -10543,6 +16026,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'GameServerStatus',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'GameServer',
       ),
     ),
     'servesCuisine' => 
@@ -10552,6 +16039,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'FoodEstablishment',
+      ),
     ),
     'serviceLocation' => 
     array (
@@ -10559,6 +16050,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
       ),
     ),
     'serviceOperator' => 
@@ -10568,6 +16063,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'GovernmentService',
+      ),
     ),
     'serviceOutput' => 
     array (
@@ -10575,6 +16074,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Service',
       ),
     ),
     'servicePhone' => 
@@ -10584,6 +16087,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'ContactPoint',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
+      ),
     ),
     'servicePostalAddress' => 
     array (
@@ -10592,6 +16099,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'PostalAddress',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
+      ),
     ),
     'serviceSmsNumber' => 
     array (
@@ -10599,6 +16110,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'ContactPoint',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
       ),
     ),
     'serviceType' => 
@@ -10609,6 +16124,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'GovernmentBenefitsType',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Service',
+      ),
     ),
     'serviceUrl' => 
     array (
@@ -10616,6 +16135,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ServiceChannel',
       ),
     ),
     'servingSize' => 
@@ -10625,6 +16148,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'sha256' => 
     array (
@@ -10632,6 +16159,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
       ),
     ),
     'sharedContent' => 
@@ -10641,6 +16172,11 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Comment',
+        1 => 'SocialMediaPosting',
+      ),
     ),
     'shippingConditions' => 
     array (
@@ -10648,6 +16184,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'ShippingConditions',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingService',
       ),
     ),
     'shippingDestination' => 
@@ -10657,6 +16197,13 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'DefinedRegion',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryTimeSettings',
+        1 => 'OfferShippingDetails',
+        2 => 'ShippingConditions',
+        3 => 'ShippingRateSettings',
+      ),
     ),
     'shippingDetails' => 
     array (
@@ -10664,6 +16211,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'OfferShippingDetails',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Offer',
       ),
     ),
     'shippingLabel' => 
@@ -10673,6 +16224,11 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'ShippingRateSettings',
+      ),
     ),
     'shippingOrigin' => 
     array (
@@ -10680,6 +16236,11 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'DefinedRegion',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'ShippingConditions',
       ),
     ),
     'shippingRate' => 
@@ -10690,6 +16251,12 @@ Typical unit code(s): C62 for persons.',
         0 => 'MonetaryAmount',
         1 => 'ShippingRateSettings',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'ShippingConditions',
+        2 => 'ShippingRateSettings',
+      ),
     ),
     'shippingSettingsLink' => 
     array (
@@ -10698,11 +16265,19 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+      ),
     ),
     'sibling' => 
     array (
       'description' => 'A sibling of the person.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -10714,6 +16289,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'MedicalSign',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTest',
+      ),
     ),
     'signOrSymptom' => 
     array (
@@ -10721,6 +16300,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'MedicalSignOrSymptom',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'significance' => 
@@ -10730,6 +16313,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SuperficialAnatomy',
+      ),
     ),
     'significantLink' => 
     array (
@@ -10737,6 +16324,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
       ),
     ),
     'size' => 
@@ -10749,6 +16340,11 @@ Typical unit code(s): C62 for persons.',
         2 => 'SizeSpecification',
         3 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Product',
+      ),
     ),
     'sizeGroup' => 
     array (
@@ -10757,6 +16353,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'SizeGroupEnumeration',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SizeSpecification',
       ),
     ),
     'sizeSystem' => 
@@ -10767,6 +16367,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'SizeSystemEnumeration',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SizeSpecification',
+      ),
     ),
     'skills' => 
     array (
@@ -10776,6 +16380,13 @@ Typical unit code(s): C62 for persons.',
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+        1 => 'Occupation',
+        2 => 'Organization',
+        3 => 'Person',
+      ),
     ),
     'sku' => 
     array (
@@ -10783,6 +16394,12 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
+        2 => 'Product',
       ),
     ),
     'slogan' => 
@@ -10792,6 +16409,14 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Brand',
+        1 => 'Organization',
+        2 => 'Place',
+        3 => 'Product',
+        4 => 'Service',
+      ),
     ),
     'smiles' => 
     array (
@@ -10799,6 +16424,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MolecularEntity',
       ),
     ),
     'smokingAllowed' => 
@@ -10808,6 +16437,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Boolean',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'sodiumContent' => 
     array (
@@ -10816,11 +16449,19 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'softwareAddOn' => 
     array (
       'description' => 'Additional content for a software application.',
       'expectedTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'SoftwareApplication',
       ),
@@ -10832,6 +16473,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'softwareRequirements' => 
     array (
@@ -10842,6 +16487,10 @@ Typical unit code(s): C62 for persons.',
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'softwareVersion' => 
     array (
@@ -10849,6 +16498,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
       ),
     ),
     'source' => 
@@ -10858,6 +16511,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Thing',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'InstantaneousEvent',
+      ),
     ),
     'sourceOrganization' => 
     array (
@@ -10866,6 +16523,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'sourcedFrom' => 
     array (
@@ -10873,6 +16534,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'BrainStructure',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Nerve',
       ),
     ),
     'spatial' => 
@@ -10883,6 +16548,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'spatialCoverage' => 
     array (
@@ -10892,6 +16561,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'speakable' => 
@@ -10913,6 +16586,11 @@ we define a supporting type, <a class="localLink" href="https://schema.org/Speak
         0 => 'SpeakableSpecification',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+        1 => 'WebPage',
+      ),
     ),
     'specialCommitments' => 
     array (
@@ -10920,6 +16598,10 @@ we define a supporting type, <a class="localLink" href="https://schema.org/Speak
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'specialOpeningHoursSpecification' => 
@@ -10931,6 +16613,10 @@ Use this to explicitly override general opening hours brought in scope by <a cla
       array (
         0 => 'OpeningHoursSpecification',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Place',
+      ),
     ),
     'specialty' => 
     array (
@@ -10938,6 +16624,10 @@ Use this to explicitly override general opening hours brought in scope by <a cla
       'expectedTypes' => 
       array (
         0 => 'Specialty',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'WebPage',
       ),
     ),
     'specification' => 
@@ -10947,6 +16637,10 @@ Use this to explicitly override general opening hours brought in scope by <a cla
       array (
         0 => 'PropertyValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'speechToTextMarkup' => 
     array (
@@ -10954,6 +16648,10 @@ Use this to explicitly override general opening hours brought in scope by <a cla
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PronounceableText',
       ),
     ),
     'speed' => 
@@ -10968,6 +16666,10 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'spokenByCharacter' => 
     array (
@@ -10976,6 +16678,10 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'Organization',
         1 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Quotation',
       ),
     ),
     'sponsor' => 
@@ -10986,6 +16692,15 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+        2 => 'Grant',
+        3 => 'MedicalStudy',
+        4 => 'Organization',
+        5 => 'Person',
+      ),
     ),
     'sport' => 
     array (
@@ -10995,6 +16710,11 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SportsEvent',
+        1 => 'SportsOrganization',
+      ),
     ),
     'sportsActivityLocation' => 
     array (
@@ -11002,6 +16722,10 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       'expectedTypes' => 
       array (
         0 => 'SportsActivityLocation',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
       ),
     ),
     'sportsEvent' => 
@@ -11011,6 +16735,10 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'SportsEvent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+      ),
     ),
     'sportsTeam' => 
     array (
@@ -11019,11 +16747,19 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'SportsTeam',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+      ),
     ),
     'spouse' => 
     array (
       'description' => 'The person\'s spouse.',
       'expectedTypes' => 
+      array (
+        0 => 'Person',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Person',
       ),
@@ -11035,6 +16771,10 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'MedicalConditionStage',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+      ),
     ),
     'stageAsNumber' => 
     array (
@@ -11043,6 +16783,10 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalConditionStage',
+      ),
     ),
     'starRating' => 
     array (
@@ -11050,6 +16794,11 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       'expectedTypes' => 
       array (
         0 => 'Rating',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'FoodEstablishment',
+        1 => 'LodgingBusiness',
       ),
     ),
     'startDate' => 
@@ -11060,6 +16809,17 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+        1 => 'CreativeWorkSeries',
+        2 => 'DatedMoneySpecification',
+        3 => 'EducationalOccupationalProgram',
+        4 => 'Event',
+        5 => 'MerchantReturnPolicySeasonalOverride',
+        6 => 'Role',
+        7 => 'Schedule',
+      ),
     ),
     'startOffset' => 
     array (
@@ -11068,6 +16828,11 @@ Typical unit code(s): KMH for km/h, HM for mile per hour (0.447 04 m/s), KNT for
       array (
         0 => 'HyperTocEntry',
         1 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Clip',
+        1 => 'SeekToAction',
       ),
     ),
     'startTime' => 
@@ -11080,6 +16845,14 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'DateTime',
         1 => 'Time',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+        1 => 'FoodEstablishmentReservation',
+        2 => 'InteractionCounter',
+        3 => 'MediaObject',
+        4 => 'Schedule',
+      ),
     ),
     'statType' => 
     array (
@@ -11089,6 +16862,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'Property',
         1 => 'Text',
         2 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'StatisticalVariable',
       ),
     ),
     'status' => 
@@ -11100,6 +16877,12 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         1 => 'MedicalStudyStatus',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
+        1 => 'MedicalProcedure',
+        2 => 'MedicalStudy',
+      ),
     ),
     'steeringPosition' => 
     array (
@@ -11107,6 +16890,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'SteeringPositionValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'step' => 
@@ -11119,6 +16906,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         2 => 'HowToStep',
         3 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+      ),
     ),
     'stepValue' => 
     array (
@@ -11126,6 +16917,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
       ),
     ),
     'storageRequirements' => 
@@ -11136,6 +16931,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'streetAddress' => 
     array (
@@ -11143,6 +16942,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PostalAddress',
       ),
     ),
     'strengthUnit' => 
@@ -11152,6 +16955,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugStrength',
+      ),
     ),
     'strengthValue' => 
     array (
@@ -11159,6 +16966,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DrugStrength',
       ),
     ),
     'structuralClass' => 
@@ -11168,6 +16979,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Joint',
+      ),
     ),
     'study' => 
     array (
@@ -11175,6 +16990,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'MedicalStudy',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalEntity',
       ),
     ),
     'studyDesign' => 
@@ -11184,6 +17003,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'MedicalObservationalStudyDesign',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalObservationalStudy',
+      ),
     ),
     'studyLocation' => 
     array (
@@ -11191,6 +17014,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'AdministrativeArea',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalStudy',
       ),
     ),
     'studySubject' => 
@@ -11200,11 +17027,19 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'MedicalEntity',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalStudy',
+      ),
     ),
     'subEvent' => 
     array (
       'description' => 'An Event that is part of this event. For example, a conference event includes many presentations, each of which is a subEvent of the conference.',
       'expectedTypes' => 
+      array (
+        0 => 'Event',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Event',
       ),
@@ -11216,6 +17051,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Organization',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+      ),
     ),
     'subReservation' => 
     array (
@@ -11223,6 +17062,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Reservation',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ReservationPackage',
       ),
     ),
     'subStageSuffix' => 
@@ -11232,11 +17075,19 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalConditionStage',
+      ),
     ),
     'subStructure' => 
     array (
       'description' => 'Component (sub-)structure(s) that comprise this anatomical structure.',
       'expectedTypes' => 
+      array (
+        0 => 'AnatomicalStructure',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'AnatomicalStructure',
       ),
@@ -11248,11 +17099,19 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'MedicalTest',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTestPanel',
+      ),
     ),
     'subTrip' => 
     array (
       'description' => 'Identifies a <a class="localLink" href="https://schema.org/Trip">Trip</a> that is a subTrip of this Trip.  For example Day 1, Day 2, etc. of a multi-day trip.',
       'expectedTypes' => 
+      array (
+        0 => 'Trip',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Trip',
       ),
@@ -11265,6 +17124,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'CreativeWork',
         1 => 'Event',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'substanceOfConcern' => 
     array (
@@ -11276,6 +17139,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         2 => 'Text',
         3 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Product',
+      ),
     ),
     'subtitleLanguage' => 
     array (
@@ -11285,11 +17152,22 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'Language',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastEvent',
+        1 => 'Movie',
+        2 => 'ScreeningEvent',
+        3 => 'TVEpisode',
+      ),
     ),
     'successorOf' => 
     array (
       'description' => 'A pointer from a newer variant of a product  to its previous, often discontinued predecessor.',
       'expectedTypes' => 
+      array (
+        0 => 'ProductModel',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'ProductModel',
       ),
@@ -11301,6 +17179,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'suggestedAge' => 
     array (
@@ -11308,6 +17190,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
+        1 => 'SizeSpecification',
       ),
     ),
     'suggestedAnswer' => 
@@ -11318,6 +17205,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'Answer',
         1 => 'ItemList',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Question',
+      ),
     ),
     'suggestedGender' => 
     array (
@@ -11327,6 +17218,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'GenderType',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
+        1 => 'SizeSpecification',
+      ),
     ),
     'suggestedMaxAge' => 
     array (
@@ -11334,6 +17230,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
       ),
     ),
     'suggestedMeasurement' => 
@@ -11343,6 +17243,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
+        1 => 'SizeSpecification',
+      ),
     ),
     'suggestedMinAge' => 
     array (
@@ -11350,6 +17255,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PeopleAudience',
       ),
     ),
     'suitableForDiet' => 
@@ -11360,6 +17269,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'Diet',
         1 => 'RestrictedDiet',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MenuItem',
+        1 => 'Recipe',
+      ),
     ),
     'superEvent' => 
     array (
@@ -11368,11 +17282,21 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Event',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'supersededBy' => 
     array (
       'description' => 'Relates a term (i.e. a property, class or enumeration) to one that supersedes it.',
       'expectedTypes' => 
+      array (
+        0 => 'Class',
+        1 => 'Enumeration',
+        2 => 'Property',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'Class',
         1 => 'Enumeration',
@@ -11387,6 +17311,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'HowToSupply',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+        1 => 'HowToDirection',
+      ),
     ),
     'supplyTo' => 
     array (
@@ -11394,6 +17323,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'AnatomicalStructure',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Artery',
       ),
     ),
     'supportingData' => 
@@ -11403,6 +17336,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'DataFeed',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareApplication',
+      ),
     ),
     'syllabusSections' => 
     array (
@@ -11410,6 +17347,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Syllabus',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
       ),
     ),
     'target' => 
@@ -11420,6 +17361,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'EntryPoint',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Action',
+      ),
     ),
     'targetCollection' => 
     array (
@@ -11427,6 +17372,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Thing',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'UpdateAction',
       ),
     ),
     'targetDescription' => 
@@ -11436,6 +17385,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AlignmentObject',
+      ),
     ),
     'targetName' => 
     array (
@@ -11443,6 +17396,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AlignmentObject',
       ),
     ),
     'targetPlatform' => 
@@ -11452,6 +17409,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'APIReference',
+      ),
     ),
     'targetPopulation' => 
     array (
@@ -11459,6 +17420,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'DietarySupplement',
+        1 => 'DoseSchedule',
       ),
     ),
     'targetProduct' => 
@@ -11468,6 +17434,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'SoftwareApplication',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SoftwareSourceCode',
+      ),
     ),
     'targetUrl' => 
     array (
@@ -11476,6 +17446,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'AlignmentObject',
+      ),
     ),
     'taxID' => 
     array (
@@ -11483,6 +17457,11 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
       ),
     ),
     'taxonRank' => 
@@ -11493,6 +17472,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'PropertyValue',
         1 => 'Text',
         2 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Taxon',
       ),
     ),
     'taxonomicRange' => 
@@ -11505,6 +17488,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         2 => 'Text',
         3 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BioChemEntity',
+      ),
     ),
     'teaches' => 
     array (
@@ -11514,6 +17501,12 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
         0 => 'DefinedTerm',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'EducationEvent',
+        2 => 'LearningResource',
+      ),
     ),
     'telephone' => 
     array (
@@ -11521,6 +17514,13 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ContactPoint',
+        1 => 'Organization',
+        2 => 'Person',
+        3 => 'Place',
       ),
     ),
     'temporal' => 
@@ -11531,6 +17531,10 @@ Note that Event uses startDate/endDate instead of startTime/endTime, even when d
       array (
         0 => 'DateTime',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'temporalCoverage' => 
@@ -11546,6 +17550,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'termCode' => 
     array (
@@ -11554,6 +17562,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DefinedTerm',
+      ),
     ),
     'termDuration' => 
     array (
@@ -11561,6 +17573,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Duration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
       ),
     ),
     'termsOfService' => 
@@ -11571,6 +17587,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Service',
+      ),
     ),
     'termsPerYear' => 
     array (
@@ -11578,6 +17598,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
       ),
     ),
     'text' => 
@@ -11587,6 +17611,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'textValue' => 
     array (
@@ -11594,6 +17622,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PronounceableText',
       ),
     ),
     'thumbnail' => 
@@ -11603,6 +17635,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'ImageObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'thumbnailUrl' => 
     array (
@@ -11610,6 +17646,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'tickerSymbol' => 
@@ -11619,6 +17659,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Corporation',
+      ),
     ),
     'ticketNumber' => 
     array (
@@ -11626,6 +17670,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Ticket',
       ),
     ),
     'ticketToken' => 
@@ -11636,6 +17684,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Ticket',
+      ),
     ),
     'ticketedSeat' => 
     array (
@@ -11643,6 +17695,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Seat',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Ticket',
       ),
     ),
     'timeOfDay' => 
@@ -11652,6 +17708,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'timeRequired' => 
     array (
@@ -11659,6 +17719,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Duration',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
       ),
     ),
     'timeToComplete' => 
@@ -11668,6 +17732,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'Duration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'timestamp' => 
     array (
@@ -11675,6 +17743,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'InstantaneousEvent',
       ),
     ),
     'tissueSample' => 
@@ -11684,6 +17756,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PathologyTest',
+      ),
     ),
     'title' => 
     array (
@@ -11691,6 +17767,10 @@ Open-ended date ranges can be written with ".." in place of the end date. For ex
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'titleEIDR' => 
@@ -11705,6 +17785,13 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Movie',
+        1 => 'TVEpisode',
+        2 => 'TVSeason',
+        3 => 'TVSeries',
+      ),
     ),
     'toLocation' => 
     array (
@@ -11712,6 +17799,13 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExerciseAction',
+        1 => 'InsertAction',
+        2 => 'MoveAction',
+        3 => 'TransferAction',
       ),
     ),
     'toRecipient' => 
@@ -11724,11 +17818,19 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
         2 => 'Organization',
         3 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Message',
+      ),
     ),
     'tocContinuation' => 
     array (
       'description' => 'A <a class="localLink" href="https://schema.org/HyperTocEntry">HyperTocEntry</a> can have a <a class="localLink" href="https://schema.org/tocContinuation">tocContinuation</a> indicated, which is another <a class="localLink" href="https://schema.org/HyperTocEntry">HyperTocEntry</a> that would be the default next item to play or render.',
       'expectedTypes' => 
+      array (
+        0 => 'HyperTocEntry',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'HyperTocEntry',
       ),
@@ -11739,6 +17841,10 @@ Since schema.org types like <a class="localLink" href="https://schema.org/Movie"
       'expectedTypes' => 
       array (
         0 => 'HyperTocEntry',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HyperToc',
       ),
     ),
     'tongueWeight' => 
@@ -11756,6 +17862,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'tool' => 
     array (
@@ -11764,6 +17874,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'HowToTool',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+        1 => 'HowToDirection',
       ),
     ),
     'torque' => 
@@ -11780,6 +17895,10 @@ Typical unit code(s): NU for newton metre (N m), F17 for pound-force per foot, o
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EngineSpecification',
+      ),
     ),
     'totalHistoricalEnrollment' => 
     array (
@@ -11787,6 +17906,10 @@ Typical unit code(s): NU for newton metre (N m), F17 for pound-force per foot, o
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Course',
       ),
     ),
     'totalJobOpenings' => 
@@ -11796,6 +17919,10 @@ Typical unit code(s): NU for newton metre (N m), F17 for pound-force per foot, o
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
+      ),
     ),
     'totalPaymentDue' => 
     array (
@@ -11804,6 +17931,10 @@ Typical unit code(s): NU for newton metre (N m), F17 for pound-force per foot, o
       array (
         0 => 'MonetaryAmount',
         1 => 'PriceSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Invoice',
       ),
     ),
     'totalPrice' => 
@@ -11822,6 +17953,11 @@ Usage guidelines:<br/><br/>
         1 => 'PriceSpecification',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
+        1 => 'Ticket',
+      ),
     ),
     'totalTime' => 
     array (
@@ -11830,6 +17966,11 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'Duration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
+        1 => 'HowToDirection',
+      ),
     ),
     'tourBookingPage' => 
     array (
@@ -11837,6 +17978,12 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+        1 => 'ApartmentComplex',
+        2 => 'Place',
       ),
     ),
     'touristType' => 
@@ -11847,6 +17994,12 @@ Usage guidelines:<br/><br/>
         0 => 'Audience',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'TouristAttraction',
+        1 => 'TouristDestination',
+        2 => 'TouristTrip',
+      ),
     ),
     'track' => 
     array (
@@ -11856,6 +18009,11 @@ Usage guidelines:<br/><br/>
         0 => 'ItemList',
         1 => 'MusicRecording',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MusicGroup',
+        1 => 'MusicPlaylist',
+      ),
     ),
     'trackingNumber' => 
     array (
@@ -11863,6 +18021,10 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
       ),
     ),
     'trackingUrl' => 
@@ -11872,6 +18034,10 @@ Usage guidelines:<br/><br/>
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ParcelDelivery',
+      ),
     ),
     'trailer' => 
     array (
@@ -11879,6 +18045,17 @@ Usage guidelines:<br/><br/>
       'expectedTypes' => 
       array (
         0 => 'VideoObject',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWorkSeason',
+        1 => 'Episode',
+        2 => 'Movie',
+        3 => 'MovieSeries',
+        4 => 'RadioSeries',
+        5 => 'TVSeries',
+        6 => 'VideoGame',
+        7 => 'VideoGameSeries',
       ),
     ),
     'trailerWeight' => 
@@ -11893,6 +18070,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'trainName' => 
     array (
@@ -11900,6 +18081,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'TrainTrip',
       ),
     ),
     'trainNumber' => 
@@ -11909,6 +18094,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'TrainTrip',
+      ),
     ),
     'trainingSalary' => 
     array (
@@ -11916,6 +18105,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound
       'expectedTypes' => 
       array (
         0 => 'MonetaryAmountDistribution',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+        1 => 'WorkBasedProgram',
       ),
     ),
     'transFatContent' => 
@@ -11925,6 +18119,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound
       array (
         0 => 'Mass',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
+      ),
     ),
     'transcript' => 
     array (
@@ -11932,6 +18130,11 @@ Typical unit code(s): KGM for kilogram, LBR for pound
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'AudioObject',
+        1 => 'VideoObject',
       ),
     ),
     'transitTime' => 
@@ -11946,6 +18149,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'QuantitativeValue',
         1 => 'ServicePeriod',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingConditions',
+        1 => 'ShippingDeliveryTime',
+      ),
     ),
     'transitTimeLabel' => 
     array (
@@ -11954,11 +18162,20 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'DeliveryTimeSettings',
+        1 => 'OfferShippingDetails',
+      ),
     ),
     'translationOfWork' => 
     array (
       'description' => 'The work that this work has been translated from. E.g. 物种起源 is a translationOf “On the Origin of Species”.',
       'expectedTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'CreativeWork',
       ),
@@ -11971,6 +18188,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
+      ),
     ),
     'transmissionMethod' => 
     array (
@@ -11978,6 +18200,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'InfectiousDisease',
       ),
     ),
     'travelBans' => 
@@ -11988,6 +18214,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'URL',
         1 => 'WebContent',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpecialAnnouncement',
+      ),
     ),
     'trialDesign' => 
     array (
@@ -11995,6 +18225,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'MedicalTrialDesign',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTrial',
       ),
     ),
     'tributary' => 
@@ -12004,6 +18238,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       array (
         0 => 'AnatomicalStructure',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vein',
+      ),
     ),
     'tripOrigin' => 
     array (
@@ -12011,6 +18249,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Place',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Trip',
       ),
     ),
     'typeOfBed' => 
@@ -12021,6 +18263,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'BedType',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BedDetails',
+      ),
     ),
     'typeOfGood' => 
     array (
@@ -12030,6 +18276,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'Product',
         1 => 'Service',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OwnershipInfo',
+        1 => 'TypeAndQuantityNode',
+      ),
     ),
     'typicalAgeRange' => 
     array (
@@ -12037,6 +18288,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+        1 => 'Event',
       ),
     ),
     'typicalCreditsPerTerm' => 
@@ -12047,6 +18303,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'Integer',
         1 => 'StructuredValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'EducationalOccupationalProgram',
+      ),
     ),
     'typicalTest' => 
     array (
@@ -12054,6 +18314,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'MedicalTest',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalCondition',
       ),
     ),
     'underName' => 
@@ -12064,6 +18328,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'Organization',
         1 => 'Person',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Reservation',
+        1 => 'Ticket',
+      ),
     ),
     'unitCode' => 
     array (
@@ -12072,6 +18341,13 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       array (
         0 => 'Text',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValue',
+        1 => 'QuantitativeValue',
+        2 => 'TypeAndQuantityNode',
+        3 => 'UnitPriceSpecification',
       ),
     ),
     'unitText' => 
@@ -12082,6 +18358,13 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValue',
+        1 => 'QuantitativeValue',
+        2 => 'TypeAndQuantityNode',
+        3 => 'UnitPriceSpecification',
+      ),
     ),
     'unnamedSourcesPolicy' => 
     array (
@@ -12091,6 +18374,11 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
+        1 => 'Organization',
+      ),
     ),
     'unsaturatedFatContent' => 
     array (
@@ -12098,6 +18386,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Mass',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NutritionInformation',
       ),
     ),
     'uploadDate' => 
@@ -12108,6 +18400,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+      ),
     ),
     'upvoteCount' => 
     array (
@@ -12115,6 +18411,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Integer',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Comment',
       ),
     ),
     'url' => 
@@ -12124,6 +18424,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       array (
         0 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Thing',
+      ),
     ),
     'urlTemplate' => 
     array (
@@ -12131,6 +18435,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'EntryPoint',
       ),
     ),
     'usNPI' => 
@@ -12140,6 +18448,10 @@ In the context of <a class="localLink" href="https://schema.org/ShippingConditio
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Physician',
       ),
     ),
     'usageInfo' => 
@@ -12152,6 +18464,10 @@ This property can be used alongside the license property which indicates license
         0 => 'CreativeWork',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'usedToDiagnose' => 
     array (
@@ -12159,6 +18475,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'MedicalCondition',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTest',
       ),
     ),
     'userInteractionCount' => 
@@ -12168,6 +18488,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'InteractionCounter',
+      ),
     ),
     'usesDevice' => 
     array (
@@ -12175,6 +18499,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'MedicalDevice',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MedicalTest',
       ),
     ),
     'usesHealthPlanIdStandard' => 
@@ -12185,6 +18513,10 @@ This property can be used alongside the license property which indicates license
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'HealthInsurancePlan',
+      ),
     ),
     'utterances' => 
     array (
@@ -12192,6 +18524,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HyperTocEntry',
       ),
     ),
     'validFor' => 
@@ -12201,6 +18537,11 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Duration',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Credential',
+        1 => 'Permit',
+      ),
     ),
     'validForMemberTier' => 
     array (
@@ -12208,6 +18549,14 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'MemberProgramTier',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'MerchantReturnPolicy',
+        1 => 'Offer',
+        2 => 'OfferShippingDetails',
+        3 => 'PriceSpecification',
+        4 => 'ShippingService',
       ),
     ),
     'validFrom' => 
@@ -12218,6 +18567,18 @@ This property can be used alongside the license property which indicates license
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'Demand',
+        2 => 'FinancialIncentive',
+        3 => 'LocationFeatureSpecification',
+        4 => 'MonetaryAmount',
+        5 => 'Offer',
+        6 => 'OpeningHoursSpecification',
+        7 => 'Permit',
+        8 => 'PriceSpecification',
+      ),
     ),
     'validIn' => 
     array (
@@ -12225,6 +18586,12 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'AdministrativeArea',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Certification',
+        1 => 'Credential',
+        2 => 'Permit',
       ),
     ),
     'validThrough' => 
@@ -12235,6 +18602,17 @@ This property can be used alongside the license property which indicates license
         0 => 'Date',
         1 => 'DateTime',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'FinancialIncentive',
+        2 => 'JobPosting',
+        3 => 'LocationFeatureSpecification',
+        4 => 'MonetaryAmount',
+        5 => 'Offer',
+        6 => 'OpeningHoursSpecification',
+        7 => 'PriceSpecification',
+      ),
     ),
     'validUntil' => 
     array (
@@ -12242,6 +18620,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Permit',
       ),
     ),
     'value' => 
@@ -12262,6 +18644,12 @@ This property can be used alongside the license property which indicates license
         3 => 'StructuredValue',
         4 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MonetaryAmount',
+        1 => 'PropertyValue',
+        2 => 'QuantitativeValue',
+      ),
     ),
     'valueAddedTaxIncluded' => 
     array (
@@ -12269,6 +18657,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PriceSpecification',
       ),
     ),
     'valueGroup' => 
@@ -12278,6 +18670,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValue',
+      ),
     ),
     'valueMaxLength' => 
     array (
@@ -12285,6 +18681,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
       ),
     ),
     'valueMinLength' => 
@@ -12294,6 +18694,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
+      ),
     ),
     'valueName' => 
     array (
@@ -12302,6 +18706,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
+      ),
     ),
     'valuePattern' => 
     array (
@@ -12309,6 +18717,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
       ),
     ),
     'valueReference' => 
@@ -12325,6 +18737,12 @@ This property can be used alongside the license property which indicates license
         6 => 'StructuredValue',
         7 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValue',
+        1 => 'QualitativeValue',
+        2 => 'QuantitativeValue',
+      ),
     ),
     'valueRequired' => 
     array (
@@ -12332,6 +18750,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Boolean',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'PropertyValueSpecification',
       ),
     ),
     'variableMeasured' => 
@@ -12344,6 +18766,11 @@ This property can be used alongside the license property which indicates license
         2 => 'StatisticalVariable',
         3 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Dataset',
+        1 => 'Observation',
+      ),
     ),
     'variantCover' => 
     array (
@@ -12353,6 +18780,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ComicIssue',
       ),
     ),
     'variesBy' => 
@@ -12364,6 +18795,10 @@ This property can be used alongside the license property which indicates license
         1 => 'PropertyValue',
         2 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ProductGroup',
+      ),
     ),
     'vatID' => 
     array (
@@ -12371,6 +18806,11 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Organization',
+        1 => 'Person',
       ),
     ),
     'vehicleConfiguration' => 
@@ -12380,6 +18820,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'vehicleEngine' => 
     array (
@@ -12387,6 +18831,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'EngineSpecification',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'vehicleIdentificationNumber' => 
@@ -12396,6 +18844,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'vehicleInteriorColor' => 
     array (
@@ -12403,6 +18855,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'vehicleInteriorType' => 
@@ -12412,6 +18868,10 @@ This property can be used alongside the license property which indicates license
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'vehicleModelDate' => 
     array (
@@ -12419,6 +18879,10 @@ This property can be used alongside the license property which indicates license
       'expectedTypes' => 
       array (
         0 => 'Date',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'vehicleSeatingCapacity' => 
@@ -12431,6 +18895,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Number',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'vehicleSpecialUsage' => 
     array (
@@ -12439,6 +18907,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'CarUsageType',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
       ),
     ),
     'vehicleTransmission' => 
@@ -12450,6 +18922,10 @@ Typical unit code(s): C62 for persons.',
         1 => 'Text',
         2 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'verificationFactCheckingPolicy' => 
     array (
@@ -12458,6 +18934,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'CreativeWork',
         1 => 'URL',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'NewsMediaOrganization',
       ),
     ),
     'version' => 
@@ -12468,6 +18948,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'video' => 
     array (
@@ -12477,6 +18961,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Clip',
         1 => 'VideoObject',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
     ),
     'videoFormat' => 
     array (
@@ -12484,6 +18972,12 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BroadcastEvent',
+        1 => 'BroadcastService',
+        2 => 'ScreeningEvent',
       ),
     ),
     'videoFrameSize' => 
@@ -12493,6 +18987,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoObject',
+      ),
     ),
     'videoQuality' => 
     array (
@@ -12500,6 +18998,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'VideoObject',
       ),
     ),
     'volumeNumber' => 
@@ -12510,6 +19012,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Integer',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PublicationVolume',
+      ),
     ),
     'warning' => 
     array (
@@ -12519,6 +19025,10 @@ Typical unit code(s): C62 for persons.',
         0 => 'Text',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Drug',
+      ),
     ),
     'warranty' => 
     array (
@@ -12526,6 +19036,11 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'WarrantyPromise',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Demand',
+        1 => 'Offer',
       ),
     ),
     'warrantyScope' => 
@@ -12535,6 +19050,10 @@ Typical unit code(s): C62 for persons.',
       array (
         0 => 'WarrantyScope',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'WarrantyPromise',
+      ),
     ),
     'webCheckinTime' => 
     array (
@@ -12542,6 +19061,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'DateTime',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Flight',
       ),
     ),
     'webFeed' => 
@@ -12552,6 +19075,11 @@ Typical unit code(s): C62 for persons.',
         0 => 'DataFeed',
         1 => 'URL',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'PodcastSeries',
+        1 => 'SpecialAnnouncement',
+      ),
     ),
     'weight' => 
     array (
@@ -12561,6 +19089,14 @@ Typical unit code(s): C62 for persons.',
         0 => 'Mass',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'OfferShippingDetails',
+        1 => 'Person',
+        2 => 'Product',
+        3 => 'ShippingConditions',
+        4 => 'VisualArtwork',
+      ),
     ),
     'weightPercentage' => 
     array (
@@ -12568,6 +19104,10 @@ Typical unit code(s): C62 for persons.',
       'expectedTypes' => 
       array (
         0 => 'Number',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'ShippingRateSettings',
       ),
     ),
     'weightTotal' => 
@@ -12585,6 +19125,10 @@ Typical unit code(s): KGM for kilogram, LBR for pound<br/><br/>
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'wheelbase' => 
     array (
@@ -12595,6 +19139,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Vehicle',
+      ),
     ),
     'width' => 
     array (
@@ -12604,6 +19152,14 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
         0 => 'Distance',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'MediaObject',
+        1 => 'OfferShippingDetails',
+        2 => 'Product',
+        3 => 'ShippingConditions',
+        4 => 'VisualArtwork',
+      ),
     ),
     'winner' => 
     array (
@@ -12611,6 +19167,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       'expectedTypes' => 
       array (
         0 => 'Person',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'LoseAction',
       ),
     ),
     'wordCount' => 
@@ -12620,11 +19180,20 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'Integer',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Article',
+        1 => 'CreativeWork',
+      ),
     ),
     'workExample' => 
     array (
       'description' => 'Example/instance/realization/derivation of the concept of this creative work. E.g. the paperback edition, first edition, or e-book.',
       'expectedTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'CreativeWork',
       ),
@@ -12637,6 +19206,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'CreativeWork',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
+      ),
     ),
     'workHours' => 
     array (
@@ -12644,6 +19217,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       'expectedTypes' => 
       array (
         0 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'JobPosting',
       ),
     ),
     'workLocation' => 
@@ -12654,6 +19231,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
         0 => 'ContactPoint',
         1 => 'Place',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
+      ),
     ),
     'workPerformed' => 
     array (
@@ -12661,6 +19242,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       'expectedTypes' => 
       array (
         0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Event',
       ),
     ),
     'workPresented' => 
@@ -12670,11 +19255,19 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'Movie',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ScreeningEvent',
+      ),
     ),
     'workTranslation' => 
     array (
       'description' => 'A work that is a translation of the content of this work. E.g. 西遊記 has an English workTranslation “Journey to the West”, a German workTranslation “Monkeys Pilgerfahrt” and a Vietnamese  translation Tây du ký bình khảo.',
       'expectedTypes' => 
+      array (
+        0 => 'CreativeWork',
+      ),
+      'nativeTypes' => 
       array (
         0 => 'CreativeWork',
       ),
@@ -12687,6 +19280,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
         0 => 'Energy',
         1 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'ExercisePlan',
+      ),
     ),
     'worksFor' => 
     array (
@@ -12694,6 +19291,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       'expectedTypes' => 
       array (
         0 => 'Organization',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'Person',
       ),
     ),
     'worstRating' => 
@@ -12704,6 +19305,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
         0 => 'Number',
         1 => 'Text',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Rating',
+      ),
     ),
     'xpath' => 
     array (
@@ -12711,6 +19316,11 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       'expectedTypes' => 
       array (
         0 => 'XPathType',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'SpeakableSpecification',
+        1 => 'WebPageElement',
       ),
     ),
     'yearBuilt' => 
@@ -12720,6 +19330,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'Number',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'Accommodation',
+      ),
     ),
     'yearlyRevenue' => 
     array (
@@ -12727,6 +19341,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       'expectedTypes' => 
       array (
         0 => 'QuantitativeValue',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusinessAudience',
       ),
     ),
     'yearsInOperation' => 
@@ -12736,6 +19354,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'QuantitativeValue',
       ),
+      'nativeTypes' => 
+      array (
+        0 => 'BusinessAudience',
+      ),
     ),
     'yield' => 
     array (
@@ -12744,6 +19366,10 @@ Typical unit code(s): CMT for centimeters, MTR for meters, INH for inches, FOT f
       array (
         0 => 'QuantitativeValue',
         1 => 'Text',
+      ),
+      'nativeTypes' => 
+      array (
+        0 => 'HowTo',
       ),
     ),
   ),

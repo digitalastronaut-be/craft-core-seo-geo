@@ -1,3 +1,237 @@
 {% extends 'core-seo-geo/settings/_layout.twig' %}
 
-{% set selectedNavItem = 'global-seo' %}
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'Global'|t('core-seo-geo') %}
+{% set urlFormat = 'core-seo-geo/settings/global-seo?site={handle}' %}
+{% set selectedSiteId = site.id %}
+
+{% set fullPageForm = true %}
+
+{% set rowCols = {
+    label: {
+        heading: 'Label'|t('core-seo-geo'),
+        type: 'singleline',
+    },
+    template: {
+        heading: 'Template'|t('core-seo-geo'),
+        type: 'template',
+    },
+    editable: {
+        heading: 'Editable'|t('core-seo-geo'),
+        type: 'lightswitch',
+    },
+} %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/content-seo/save-global') }}
+    {{ hiddenInput('siteId', site.id) }}
+    {{ redirectInput('core-seo-geo/settings/global-seo?site=' ~ site.handle) }}
+
+    <div class="flex-fields">
+        {{ forms.elementSelectField({
+            id: 'image',
+            name: 'image',
+            label: 'Default Social Image'|t('core-seo-geo'),
+            instructions: "Used as the og:image/twitter:image for any page whose SEO/GEO field (or section) has no image of its own."|t('core-seo-geo'),
+            elementType: 'craft\\elements\\Asset',
+            elements: image ? [image] : [],
+            criteria: { kind: 'image' },
+            single: true,
+            viewMode: 'thumbs',
+            selectionLabel: 'Choose an image'|t('core-seo-geo'),
+        }) }}
+
+        {{ forms.editableTableField({
+            label: 'Meta Title Config'|t('core-seo-geo'),
+            instructions: "The blocks used to build the meta title for an entry type with no SEO/GEO field of its own, rendered in order and joined together. A block's template accepts {attr} shorthand and full {{ twig }} against the entry being rendered."|t('core-seo-geo'),
+            id: 'titleConfig',
+            name: 'titleConfig',
+            addRowLabel: 'Add a block'|t('core-seo-geo'),
+            allowAdd: true,
+            allowReorder: true,
+            allowDelete: true,
+            cols: rowCols,
+            rows: titleConfig,
+            includeRowId: true,
+        }) }}
+
+        {{ forms.editableTableField({
+            label: 'Meta Description Config'|t('core-seo-geo'),
+            instructions: 'The blocks used to build the fallback meta description. Same rules as the title blocks above.'|t('core-seo-geo'),
+            id: 'descriptionConfig',
+            name: 'descriptionConfig',
+            addRowLabel: 'Add a block'|t('core-seo-geo'),
+            allowAdd: true,
+            allowReorder: true,
+            allowDelete: true,
+            cols: rowCols,
+            rows: descriptionConfig,
+            includeRowId: true,
+        }) }}
+
+        {{ forms.selectizeField({
+            id: 'robots',
+            name: 'robots',
+            multi: true,
+            label: 'Robots/AI Visibility'|t('core-seo-geo'),
+            instructions: "Applied to any page whose SEO/GEO field (or section) doesn't set its own robots directives."|t('core-seo-geo'),
+            values: robots,
+            options: robotsOptions,
+        }) }}
+
+        <hr>
+
+        <div class="field">
+            <h2>{{ 'Structured data'|t('core-seo-geo') }}</h2>
+            <p class="light">{{ 'Fill these in once to describe this site, its owning organization, and/or the physical business behind it - the result is sent to search engines and AI assistants on every page.'|t('core-seo-geo') }}</p>
+            
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'Type'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Status'|t('core-seo-geo') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in structuredDataTypeRows %}
+                        <tr>
+                            <td><a href="{{ row.url }}">{{ row.label }}</a></td>
+                            <td>{{ row.statusHtml|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <h2>{{ 'Text files'|t('core-seo-geo') }}</h2>
+            <p class="light">{{ 'The plain-text files search engines and AI crawlers look for at a few fixed URLs.'|t('core-seo-geo') }}</p>
+
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'File'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Status'|t('core-seo-geo') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in txtFileRows %}
+                        <tr>
+                            <td><a href="{{ row.url }}">{{ row.label }}</a></td>
+                            <td>{{ row.statusHtml|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Hreflang Tags'|t('core-seo-geo'),
+                instructions: 'Automatically render `<link rel="alternate" hreflang>` tags for an entry’s other localized versions, based on the sites it’s enabled in.'|t('core-seo-geo'),
+                name: 'enableHreflang',
+                on: settings.enableHreflang,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {% set rasterFaviconCriteria = {kind: 'image', filename: ['*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif']} %}
+
+            {% set faviconAsset = settings.getFaviconAsset() %}
+
+            {{ forms.elementSelectField({
+                id: 'favicon-asset',
+                name: 'faviconAssetId',
+                label: 'Favicon'|t('core-seo-geo'),
+                instructions: 'The source icon favicons and app icons are generated from.'|t('core-seo-geo'),
+                tip: 'Please upload a file that is at least 512px by 512px'|t('core-seo-geo'),
+                elementType: 'craft\\elements\\Asset',
+                elements: faviconAsset ? [faviconAsset] : [],
+                criteria: rasterFaviconCriteria,
+                single: true,
+                viewMode: 'thumbs',
+                selectionLabel: 'Choose a favicon'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {{ forms.lightswitchField({
+                label: 'Sitemap generation'|t('core-seo-geo'),
+                instructions: "Serve sitemap.xml and its sub-sitemaps. Inaccessible on any environment with Disallow Robots enabled, regardless of this setting. [View sitemap.xml]({url})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/sitemap/index'),
+                }),
+                id: 'enableSitemap',
+                name: 'enableSitemap',
+                on: settings.enableSitemap,
+                disabled: not allowAdminChanges,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Custom Sitemap URLs'|t('core-seo-geo'),
+                instructions: 'Manually add URLs that should be included in the sitemap but aren\'t covered automatically, such as pages hosted outside this site.'|t('core-seo-geo'),
+                id: 'customUrls',
+                name: 'customUrls',
+                cols: {
+                    url: {
+                        type: 'url',
+                        heading: 'URL'|t('core-seo-geo'),
+                    },
+                    lastModified: {
+                        type: 'date',
+                        heading: 'Last modified'|t('core-seo-geo'),
+                        width: '20%',
+                    },
+                    enabled: {
+                        type: 'lightswitch',
+                        heading: 'Enabled'|t('core-seo-geo'),
+                        width: '10%',
+                    },
+                },
+                rows: settings.customUrls,
+                addRowLabel: 'Add a URL'|t('core-seo-geo'),
+                allowAdd: allowAdminChanges,
+                allowDelete: allowAdminChanges,
+                allowReorder: allowAdminChanges,
+                static: not allowAdminChanges,
+            }) }}
+
+            {% set unresolvedRoutesWarning = craft.coreSeoGeo.unresolvedSitemapRoutesWarningHtml() %}
+            {% if unresolvedRoutesWarning is not null %}
+                {{ unresolvedRoutesWarning|raw }}
+            {% endif %}
+
+            <hr>
+
+            <div class="field">
+                <h2>{{ 'Miscellaneous'|t('core-seo-geo') }}</h2>
+            </div>
+
+            {{ forms.colorField({
+                label: 'Theme Color'|t('core-seo-geo'),
+                instructions: "Tints the mobile browser's address bar and PWA app-switcher card. Also used as manifest.webmanifest's theme_color/background_color."|t('core-seo-geo'),
+                id: 'theme-color',
+                name: 'themeColor',
+                value: settings.themeColor,
+            }) }}
+
+            {{ forms.selectizeField({
+                label: 'Referrer Policy'|t('core-seo-geo'),
+                instructions: 'Controls how much referrer data browsers send to other sites when a visitor clicks an outbound link.'|t('core-seo-geo'),
+                id: 'referrer-policy',
+                name: 'referrerPolicy',
+                value: settings.referrerPolicy,
+                options: referrerPolicyOptions,
+            }) }}
+        {% endnamespace %}
+    </div>
+{% endblock %}

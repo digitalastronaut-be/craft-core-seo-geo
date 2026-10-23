@@ -1,7 +1,6 @@
 <svg width="512" height="513" viewBox="0 0 512 513" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_654_2)">
-        <mask id="mask0_654_2" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="512"
-            height="513">
+        <mask id="mask0_654_2" x="0" y="0" width="512" height="513">
             <path
                 d="M451.981 0.980469H60.0195C26.8824 0.980469 0.0195312 27.8434 0.0195312 60.9805V452.98C0.0195312 486.118 26.8824 512.98 60.0195 512.98H451.981C485.118 512.98 511.981 486.118 511.981 452.98V60.9805C511.981 27.8434 485.118 0.980469 451.981 0.980469Z"
                 fill="white" />
@@ -28,8 +27,5 @@
             <stop stop-color="#07559D" />
             <stop offset="1" stop-color="#2F98FA" />
         </linearGradient>
-        <clipPath id="clip0_654_2">
-            <rect width="512" height="513" fill="white" />
-        </clipPath>
     </defs>
 </svg>

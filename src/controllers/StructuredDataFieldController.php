@@ -17,6 +17,7 @@ use craft\web\Controller;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
+use Fuse\Fuse;
 use starfederation\datastar\ServerSentEventGenerator;
 use yii\web\Response;
 
@@ -38,13 +39,28 @@ class StructuredDataFieldController extends Controller {
         $this->requireCpRequest();
 
         $signals = ServerSentEventGenerator::readSignals();
-        
-        $search = $signals['search'] ?? '';
-        $selectedType = $signals['type'] ?? '';
+
+        $search = trim((string)($signals['search'] ?? ''));
+        $selectedType = (string)($signals['type'] ?? '');
+        $schemaOrg = CoreSeoGeo::getInstance()->getSchemaOrg();
+
+        if ($search === '') {
+            $typeTree = $schemaOrg->getTypeTree();
+        } else {
+            $ranked = $this->_rank($schemaOrg->getTypeOptions(), $search);
+            $typeTree = $this->_highlightTree(
+                $schemaOrg->getFilteredTypeTree(array_keys($ranked)),
+                array_map(static fn(array $result): array => $result['indices'], $ranked),
+            );
+        }
 
         $html = $this->getView()->renderTemplate('core-seo-geo/fields/structured-data/_schemaTypeSelectorOptions.twig', [
-            'typeOptions' => $this->_rank(CoreSeoGeo::getInstance()->getSchemaOrg()->getTypeOptions(), $search),
-            'selectedType' => $selectedType,
+            'typeTree' => $typeTree,
+            'expandedTypes' => $selectedType !== '' ? $schemaOrg->getPrimaryAncestorPath($selectedType) : [],
+            // While searching, the tree is already pruned down to results + their ancestor
+            // path - there's nothing left to collapse, so every branch should render open
+            // regardless of which type (if any) is currently selected.
+            'forceOpen' => $search !== '',
         ]);
 
         return $this->_patch($html, '.core-seo-geo-type-options');
@@ -63,25 +79,27 @@ class StructuredDataFieldController extends Controller {
         $search = trim((string)($signals['propertySearch'] ?? ''));
         $typeName = (string)($signals['type'] ?? '');
 
-        $names = CoreSeoGeo::getInstance()->getSchemaOrg()->getType($typeName)['properties'] ?? [];
+        $schemaOrg = CoreSeoGeo::getInstance()->getSchemaOrg();
+        $names = $schemaOrg->getType($typeName)['properties'] ?? [];
+
+        $propertyLabels = [];
+        if ($search !== '') {
+            foreach ($this->_rank(array_combine($names, $names), $search) as $name => $result) {
+                $propertyLabels[$name] = self::_highlightMatches($result['label'], $result['indices']);
+            }
+        }
 
         $html = $this->getView()->renderTemplate('core-seo-geo/fields/structured-data/_schemaPropertiesSelectorOptions.twig', [
-            'propertyOptions' => $this->_rank(array_combine($names, $names), $search),
-            'propertyDescriptions' => CoreSeoGeo::getInstance()->getSchemaOrg()->getPropertyDescriptions($names),
+            'searching' => $search !== '',
+            'propertyLabels' => $propertyLabels,
+            'propertyGroups' => $search === '' ? $schemaOrg->getGroupedTypeProperties($typeName) : [],
+            'propertyTooltips' => $schemaOrg->getPropertyTooltips($names),
         ]);
 
         return $this->_patch($html, '.core-seo-geo-property-options');
     }
 
     /**
-     * Adds or removes a single property's row. The client already mutated the `properties`
-     * signal before calling this, so whether `name` is still in it tells us which case we're
-     * in - only that one row is ever rendered or patched, so no other row's `makeMonacoEditor()`
-     * call gets re-run and nothing has to be guessed-at and disposed/recreated. The client
-     * disposes the Monaco instance itself (`coreSeoGeoDisposeEditor`, registered in
-     * `_settings.twig`) in the same click handler that triggers a removal, so the server side
-     * of a removal never needs to render anything.
-     *
      * @return Response
      *
      * @author      Digitalastronaut
@@ -123,12 +141,6 @@ class StructuredDataFieldController extends Controller {
     }
 
     /**
-     * Clears every mapped property at once, for when the schema type itself is switched or
-     * removed - every existing row (and its Monaco editor) is being thrown away together here,
-     * rather than one at a time, so there's no per-row id to target. The client disposes all of
-     * them itself (`coreSeoGeoDisposeAllPropertyEditors`) before calling this, so the server
-     * side never needs to render or dispose anything row-specific.
-     *
      * @return Response
      *
      * @author      Digitalastronaut
@@ -197,10 +209,6 @@ class StructuredDataFieldController extends Controller {
     }
 
     /**
-     * Sends any number of element patches over a single SSE response, so a signal change that
-     * affects more than one part of the page (e.g. the selected-item pills and the mapping table)
-     * doesn't need a request per patch.
-     *
      * @param array<int, array{html: string, selector: string, mode?: string}> $patches
      * @return Response
      *
@@ -228,14 +236,10 @@ class StructuredDataFieldController extends Controller {
      * @since v1.0.0
      */
     private static function _namespace(): string {
-        return 'types[' . Html::id(StructuredDataField::class) . ']';
+        return StructuredDataField::settingsNamespace();
     }
 
     /**
-     * Builds the namespaced id selector for a property's row, matching whatever
-     * `_schemaPropertyRow.twig` renders as that `<tr>`'s id (namespaced in bulk by
-     * `_patchAll()`'s `namespaceInputs()` call) so a removal patch's selector actually finds it.
-     *
      * @param string $name
      * @return string
      *
@@ -252,31 +256,95 @@ class StructuredDataFieldController extends Controller {
     }
 
     /**
-     * @param array<string, string> $options
+     * @param array<string, string> $options value => label
      * @param string $search
-     * @return array<string, string>
+     * @return array<string, array{label: string, indices: array<int, array{0: int, 1: int}>}>
+     * Ranked best match first; `indices` are the 0-based, inclusive character ranges within
+     * each result's label that `$search` actually matched (via Fuse's `includeMatches`),
+     * passed to `_highlightMatches()` to show which part of the label matched.
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
     private function _rank(array $options, string $search): array {
-        if ($search === '') return $options;
-
-        $needle = mb_strtolower($search);
-        $exact = $prefix = $contains = [];
-
-        foreach ($options as $value => $label) {
-            $haystack = mb_strtolower($label);
-
-            if ($haystack === $needle) {
-                $exact[$value] = $label;
-            } elseif (str_starts_with($haystack, $needle)) {
-                $prefix[$value] = $label;
-            } elseif (str_contains($haystack, $needle)) {
-                $contains[$value] = $label;
-            }
+        if ($search === '') {
+            $ranked = [];
+            foreach ($options as $value => $label) $ranked[$value] = ['label' => $label, 'indices' => []];
+            return $ranked;
         }
 
-        return $exact + $prefix + $contains;
+        $values = array_keys($options);
+        $fuse = new Fuse(array_values($options), ['includeMatches' => true]);
+
+        $ranked = [];
+        foreach ($fuse->search($search) as $result) {
+            $value = $values[$result['refIndex']];
+            $indices = [];
+
+            foreach ($result['matches'] ?? [] as $match) {
+                foreach ($match['indices'] ?? [] as $range) $indices[] = $range;
+            }
+
+            $ranked[$value] = ['label' => $options[$value], 'indices' => $indices];
+        }
+
+        return $ranked;
+    }
+
+    /**
+     * Wraps the character ranges in `$indices` - as `_rank()` returns them - in `<mark>`,
+     * HTML-escaping everything else. Shows which part of a label actually matched the user's
+     * search term in the type/property dropdowns.
+     *
+     * @param string $label
+     * @param array<int, array{0: int, 1: int}> $indices
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    private static function _highlightMatches(string $label, array $indices): string {
+        if ($indices === []) return Html::encode($label);
+
+        usort($indices, static fn(array $a, array $b): int => $a[0] <=> $b[0]);
+
+        $html = '';
+        $cursor = 0;
+
+        foreach ($indices as [$start, $end]) {
+            if ($start < $cursor) continue;
+
+            $html .= Html::encode(mb_substr($label, $cursor, $start - $cursor));
+            $html .= '<mark>' . Html::encode(mb_substr($label, $start, $end - $start + 1)) . '</mark>';
+            $cursor = $end + 1;
+        }
+
+        $html .= Html::encode(mb_substr($label, $cursor));
+
+        return $html;
+    }
+
+    /**
+     * Recursively replaces each matched node's plain `label` with `_highlightMatches()`'s HTML
+     * - ancestor-context nodes (not themselves a search result) are left as plain text, since
+     * `$matchIndices` only has entries for actual matches.
+     *
+     * @param array<int, array{name: string, label: string, isMatch: bool, children: array}> $nodes
+     * @param array<string, array<int, array{0: int, 1: int}>> $matchIndices
+     * @return array<int, array{name: string, label: string, isMatch: bool, children: array}>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    private function _highlightTree(array $nodes, array $matchIndices): array {
+        foreach ($nodes as &$node) {
+            if (isset($matchIndices[$node['name']])) {
+                $node['label'] = self::_highlightMatches($node['label'], $matchIndices[$node['name']]);
+            }
+
+            $node['children'] = $this->_highlightTree($node['children'], $matchIndices);
+        }
+
+        return $nodes;
     }
 }

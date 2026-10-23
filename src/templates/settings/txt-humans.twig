@@ -1,0 +1,148 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'humans.txt'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'humans.txt'|t('core-seo-geo'), url: url('core-seo-geo/settings/txt/humans') },
+] %}
+
+{% set fullPageForm = true %}
+{% set specUrl = 'https://humanstxt.org/Standard.html' %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/txt-files/save') }}
+    {{ redirectInput('core-seo-geo/settings/txt/humans') }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.lightswitchField({
+                label: 'Serve humans.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until the fields below are filled in. [View humans.txt]({url}) · Spec: [humanstxt.org]({specUrl})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/humans/index'),
+                    specUrl: specUrl,
+                }),
+                id: 'enable-humans-txt',
+                name: 'enableHumansTxt',
+                on: settings.enableHumansTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {% set humansPersonCols = {
+                role: {
+                    heading: 'Role'|t('core-seo-geo'),
+                    type: 'singleline',
+                    width: '25%',
+                },
+                name: {
+                    heading: 'Name'|t('core-seo-geo'),
+                    type: 'singleline',
+                    width: '25%',
+                },
+                contact: {
+                    heading: 'Contact'|t('core-seo-geo'),
+                    type: 'singleline',
+                    width: '25%',
+                },
+                from: {
+                    heading: 'From'|t('core-seo-geo'),
+                    type: 'singleline',
+                    width: '25%',
+                },
+            } %}
+
+            {{ forms.editableTableField({
+                label: 'Team'|t('core-seo-geo'),
+                instructions: 'The people who built this site.'|t('core-seo-geo'),
+                id: 'humans-txt-team',
+                name: 'humansTxtTeam',
+                addRowLabel: 'Add a person'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: humansPersonCols,
+                rows: settings.humansTxtTeam,
+            }) }}
+
+            {{ forms.editableTableField({
+                label: 'Thanks'|t('core-seo-geo'),
+                instructions: 'Acknowledgements.'|t('core-seo-geo'),
+                id: 'humans-txt-thanks',
+                name: 'humansTxtThanks',
+                addRowLabel: 'Add a person'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: humansPersonCols,
+                rows: settings.humansTxtThanks,
+            }) }}
+
+            <hr>
+
+            {{ forms.textField({
+                label: 'Standards'|t('core-seo-geo'),
+                instructions: 'technologies/stack used to build this website.'|t('core-seo-geo'),
+                id: 'humans-txt-standards',
+                name: 'humansTxtStandards',
+                value: settings.humansTxtStandards,
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.dateField({
+                label: 'Last update'|t('core-seo-geo'),
+                instructions: 'The last time this site\'s design/templates changed.'|t('core-seo-geo'),
+                id: 'humans-txt-last-updated',
+                name: 'humansTxtLastUpdated',
+                value: settings.humansTxtLastUpdated,
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ codeEditor.textareaField({
+                label: 'Extra Raw Text'|t('core-seo-geo'),
+                instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
+                id: 'humans-txt-extra',
+                name: 'humansTxtExtra',
+                value: settings.humansTxtExtra,
+                class: ['code'],
+                rows: 4,
+            }, 'CodeEditor', {
+                theme: 'vs',
+                language: 'plaintext',
+                lineNumbers: 'on',
+                lineNumbersMinChars: 3,
+                lineDecorationsWidth: 16,
+            }, {
+                wrapperClass: 'monaco-editor-background-frame',
+                displayLanguageIcon: false,
+            }) }}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    {{ codeEditor.textareaField({
+        label: 'Preview'|t('core-seo-geo'),
+        instructions: 'The humans.txt that would be served right now, from the settings above.'|t('core-seo-geo'),
+        id: 'humans-txt-preview',
+        value: humansTxtPreview,
+        readonly: true,
+        class: ['code'],
+        rows: 8,
+    }, 'CodeEditor', {
+        theme: 'vs',
+        language: 'plaintext',
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 16,
+        readOnly: true,
+    }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        displayLanguageIcon: false,
+    }) }}
+{% endblock %}

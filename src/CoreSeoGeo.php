@@ -30,7 +30,7 @@ class CoreSeoGeo extends Plugin {
     use ServicesTrait;
     use PluginTrait;
 
-    public string $schemaVersion = '1.0.3';
+    public string $schemaVersion = '1.0.12';
     public bool $hasCpSettings = true;
     public bool $hasCpSection = true;
 
@@ -54,13 +54,21 @@ class CoreSeoGeo extends Plugin {
     public function getCpNavItem(): ?array {
         $item = parent::getCpNavItem();
 
-        $item['label'] = Craft::t('core-seo-geo', 'SEO/GEO');
+        $item['label'] = $this->getSettings()->pluginName ?: Craft::t('core-seo-geo', 'SEO/GEO');
         $item['url'] = 'core-seo-geo';
         $item['icon'] = '@digitalastronaut/craftcoreseogeo/web/assets/icons/seo-geo-field-icon.svg';
         $item['subnav'] = [
-            'sitemap' => [
-                'label' => Craft::t('core-seo-geo', 'Sitemap'),
-                'url' => 'core-seo-geo/sitemap',
+            'global-seo' => [
+                'label' => Craft::t('core-seo-geo', 'Global'),
+                'url' => 'core-seo-geo/settings/global-seo',
+            ],
+            'content-seo' => [
+                'label' => Craft::t('core-seo-geo', 'Content'),
+                'url' => 'core-seo-geo/settings/content-seo',
+            ],
+            'tracking-scripts' => [
+                'label' => Craft::t('core-seo-geo', 'Tracking Scripts'),
+                'url' => 'core-seo-geo/settings/tracking-scripts',
             ],
             'redirects' => [
                 'label' => Craft::t('core-seo-geo', 'Redirects'),
@@ -70,9 +78,9 @@ class CoreSeoGeo extends Plugin {
                 'label' => Craft::t('core-seo-geo', 'Structured Data'),
                 'url' => 'core-seo-geo/structured-data',
             ],
-            'settings' => [
-                'label' => Craft::t('core-seo-geo', 'Settings'),
-                'url' => 'core-seo-geo/settings',
+            'appearance' => [
+                'label' => Craft::t('core-seo-geo', 'Appearance'),
+                'url' => 'core-seo-geo/settings/appearance',
             ],
         ];
 
@@ -84,6 +92,33 @@ class CoreSeoGeo extends Plugin {
      */
     protected function createSettingsModel(): ?Model {
         return Craft::createObject(Settings::class);
+    }
+
+    /**
+     * Saves a *subset* of this plugin's settings - exactly one page's worth of posted fields -
+     * without clobbering every other setting that isn't on that page.
+     *
+     * `craft\services\Plugins::savePluginSettings()` writes `plugins.core-seo-geo.settings` as
+     * one whole project config node, built from `toArray(array_keys($settings))` - only the
+     * keys actually present in whatever was posted. Since this plugin now has several
+     * independent settings pages (`global-seo.twig`, each `txt-<slug>.twig`, ...) that each post
+     * only their own fields under the same `settings` namespace, calling it directly with just
+     * `$posted` would silently erase every field from every *other* page the next time any one
+     * of them is saved - confirmed happening in practice (ads.txt/security.txt/trust.txt all
+     * reverted to their defaults after later, unrelated saves). Merging the posted fields over
+     * this plugin's *current, full* settings before handing them to Craft keeps every page's
+     * save self-contained again, regardless of how many more settings pages this grows to.
+     *
+     * @param array $posted this one page's posted fields only
+     * @return bool whether the save succeeded
+     *
+     * @author      Digitalastronaut
+     * @since       v1.15.0
+     */
+    public function savePartialSettings(array $posted): bool {
+        $full = array_merge($this->getSettings()->toArray(), $posted);
+
+        return Craft::$app->getPlugins()->savePluginSettings($this, $full);
     }
 
     /**

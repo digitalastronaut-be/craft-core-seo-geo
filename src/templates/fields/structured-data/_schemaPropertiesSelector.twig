@@ -1,5 +1,5 @@
-{# @var propertyOptions array<string, string> #}
-{# @var propertyDescriptions array<string, string> #}
+{# @var propertyGroups array<string, array{label: string, properties: string[]}> #}
+{# @var propertyTooltips array<string, string> #}
 
 {% set searchPropertiesAction = actionUrl('core-seo-geo/structured-data-field/search-properties') %}
 
@@ -15,5 +15,10 @@
         data-on:input__debounce.300ms="@get('{{ searchPropertiesAction }}')"
     >
 
-    {% include 'core-seo-geo/fields/structured-data/_schemaPropertiesSelectorOptions.twig' %}
+    {% include 'core-seo-geo/fields/structured-data/_schemaPropertiesSelectorOptions.twig' with {
+        searching: false,
+        propertyLabels: {},
+        propertyGroups: propertyGroups,
+        propertyTooltips: propertyTooltips,
+    } only %}
 </div>

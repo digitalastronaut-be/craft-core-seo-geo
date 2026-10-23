@@ -1,0 +1,133 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'robots.txt'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'robots.txt'|t('core-seo-geo'), url: url('core-seo-geo/settings/txt/robots') },
+] %}
+
+{% set fullPageForm = true %}
+{% set specUrl = 'https://www.rfc-editor.org/rfc/rfc9309' %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/txt-files/save') }}
+    {{ redirectInput('core-seo-geo/settings/txt/robots') }}
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.lightswitchField({
+                label: 'Serve robots.txt'|t('core-seo-geo'),
+                instructions: "Forced on regardless of this setting whenever this environment has Disallow Robots enabled - a disallowed environment always needs robots.txt to actively block crawlers. [View robots.txt]({url}) · Spec: [RFC 9309]({specUrl})"|t('core-seo-geo', {
+                    url: actionUrl('core-seo-geo/robots/index'),
+                    specUrl: specUrl,
+                }),
+                id: 'enable-robots-txt',
+                name: 'enableRobotsTxt',
+                on: settings.enableRobotsTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            {{ forms.lightswitchField({
+                label: 'Disallow the control panel'|t('core-seo-geo'),
+                instructions: 'Adds `Disallow: /{trigger}/` to the default group.'|t('core-seo-geo', {
+                    trigger: craft.app.config.general.cpTrigger,
+                }),
+                id: 'robots-txt-disallow-cp',
+                name: 'robotsTxtDisallowCp',
+                on: settings.robotsTxtDisallowCp,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {{ forms.selectizeField({
+                label: 'Block AI Crawlers'|t('core-seo-geo'),
+                instructions: 'Give any of these known AI crawler/agent user agents their own `Disallow: /` group.'|t('core-seo-geo'),
+                id: 'robots-txt-blocked-bots',
+                name: 'robotsTxtBlockedBots',
+                multi: true,
+                values: settings.robotsTxtBlockedBots,
+                options: knownAiBotOptions,
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Extra Rules'|t('core-seo-geo'),
+                instructions: "Additional path rules, grouped by user agent (leave blank for `*`, every crawler)."|t('core-seo-geo'),
+                id: 'robots-txt-rules',
+                name: 'robotsTxtRules',
+                addRowLabel: 'Add a rule'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    path: {
+                        heading: 'Path'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '40%',
+                    },
+                    type: {
+                        heading: 'Rule'|t('core-seo-geo'),
+                        type: 'select',
+                        options: robotsRuleTypeOptions,
+                        width: '25%',
+                    },
+                    userAgent: {
+                        heading: 'User-agent'|t('core-seo-geo'),
+                        type: 'singleline',
+                        width: '35%',
+                    },
+                },
+                rows: settings.robotsTxtRules,
+            }) }}
+
+            {{ codeEditor.textareaField({
+                label: 'Extra Raw Rules'|t('core-seo-geo'),
+                instructions: 'Appended verbatim to the end of the generated file - an escape hatch for anything the fields above don\'t cover.'|t('core-seo-geo'),
+                id: 'robots-txt-extra',
+                name: 'robotsTxtExtra',
+                value: settings.robotsTxtExtra,
+                class: ['code'],
+                rows: 4,
+            }, 'CodeEditor', {
+                theme: 'vs',
+                language: 'plaintext',
+                lineNumbers: 'on',
+                lineNumbersMinChars: 3,
+                lineDecorationsWidth: 16,
+            }, {
+                wrapperClass: 'monaco-editor-background-frame',
+                displayLanguageIcon: false,
+            }) }}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    {{ codeEditor.textareaField({
+        label: 'Preview'|t('core-seo-geo'),
+        instructions: 'The robots.txt that would be served right now, from the settings above.'|t('core-seo-geo'),
+        id: 'robots-txt-preview',
+        value: robotsTxtPreview,
+        readonly: true,
+        class: ['code'],
+        rows: 8,
+    }, 'CodeEditor', {
+        theme: 'vs',
+        language: 'plaintext',
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 16,
+        readOnly: true,
+    }, {
+        wrapperClass: 'monaco-editor-background-frame',
+        displayLanguageIcon: false,
+    }) }}
+{% endblock %}

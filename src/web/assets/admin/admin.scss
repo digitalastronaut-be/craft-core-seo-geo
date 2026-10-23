@@ -1,7 +1,7 @@
 // Core SEO/GEO control panel styles
 
-.core-seo-geo-properties-table {
-	overflow-x: auto;
+.core-seo-geo-structured-data-settings .pane {
+	padding: var(--m);
 }
 
 .core-seo-geo-selected-type {
@@ -12,12 +12,10 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--m);
-	padding: var(--m);
 
 	&-top {
 		display: flex;
 		gap: 12px;
-		max-width: 800px;
 	}
 
 	&-bottom {
@@ -68,7 +66,9 @@
 	list-style: none;
 
 	.core-seo-geo-type-option {
+		display: block;
 		padding: var(--s);
+		padding-inline-start: calc(var(--s) + var(--core-seo-geo-depth, 0) * var(--l) * 3);
 		cursor: pointer;
 
 		&:hover {
@@ -78,7 +78,96 @@
 		&.sel {
 			background-color: var(--bg-selection-dark);
 			color: var(--white);
+			--ui-control-color: var(--white);
 		}
+
+		&.core-seo-geo-type-context {
+			color: var(--medium-text-color);
+		}
+
+		mark {
+			background: rgba(125, 168, 208, .2);
+			border-radius: 1px;
+		}
+	}
+
+	.core-seo-geo-no-results {
+		padding: var(--s);
+		color: var(--medium-text-color);
+	}
+
+	.core-seo-geo-property-group-label {
+		padding: var(--s) var(--s) var(--xs);
+		font-size: 11px;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: var(--medium-text-color);
+		background-color: var(--gray-050);
+		cursor: default;
+	}
+}
+
+.core-seo-geo-type-node {
+	> details > summary {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		list-style: none;
+
+		&:hover {
+			background-color: var(--gray-050);
+		}
+
+		&:has(.core-seo-geo-type-option.sel) {
+			background-color: var(--bg-selection-dark);
+
+			.core-seo-geo-type-option {
+				color: var(--white);
+			}
+
+			.core-seo-geo-type-chevron {
+				color: var(--white);
+			}
+		}
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		.core-seo-geo-type-chevron {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex: none;
+			margin-inline-start: calc(var(--s) + var(--core-seo-geo-depth, 0) * var(--l) * 3);
+			width: 1em;
+			height: 1em;
+			font-size: 1.1em;
+			color: var(--light-text-color);
+			transition: transform 0.15s ease;
+
+			svg {
+				width: 100%;
+				height: 100%;
+				fill: currentColor;
+			}
+		}
+
+		.core-seo-geo-type-option {
+			flex: 1;
+			padding-inline-start: var(--s);
+		}
+	}
+
+	> details[open] > summary .core-seo-geo-type-chevron {
+		transform: rotate(90deg);
+	}
+
+	.core-seo-geo-type-children {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 	}
 }
 
@@ -112,13 +201,13 @@
 }
 
 .core-seo-geo-info-icon-popup {
-	display: none;
-	position: absolute;
+	// Positioned and shown/hidden from JS (tooltips.js, via the Popover API + floating-ui) -
+	// `position: fixed` is what lets the browser's top-layer rendering escape clipping by an
+	// `overflow: auto`/`hidden` ancestor (the structured-data field's property dropdown), which
+	// plain `position: absolute` + CSS :hover never could. `top`/`left` are set inline by JS.
+	position: fixed;
+	margin: 0;
 	z-index: 3;
-	bottom: calc(100% - 4px);
-	left: 50%;
-	transform: translateX(-50%);
-	margin-top: var(--xs);
 	width: 260px;
 	padding: var(--s);
 	border-radius: var(--medium-border-radius);
@@ -139,11 +228,6 @@
 			margin-top: 0;
 		}
 	}
-}
-
-.core-seo-geo-info-icon-wrap:hover .core-seo-geo-info-icon-popup,
-.core-seo-geo-info-icon-wrap:focus-within .core-seo-geo-info-icon-popup {
-	display: block;
 }
 
 .core-seo-geo-template-error {

@@ -1,0 +1,39 @@
+{# @var value string #}
+{# @var label string|null the text to display - may contain highlighted <mark> HTML; defaults to `value` #}
+{# @var tooltip string|null #}
+{# @var depth int|null same `--core-seo-geo-depth` indent the type tree uses - 1 indents a
+     property under its "Properties from X" group label so the label jumps out more;
+     defaults to 0 (no indent) for the flat search-results list, which has no group label #}
+
+{% set syncPropertyAction = actionUrl('core-seo-geo/structured-data-field/sync-property', { name: value }) %}
+{% set templateEditorId = ('core-seo-geo-property-template-' ~ value|kebab)|namespaceInputId %}
+
+<li
+    class="core-seo-geo-type-option"
+    style="--core-seo-geo-depth: {{ depth|default(0) }};"
+    data-on:mousedown="evt.preventDefault()"
+    data-on:click="
+        if ('{{ value }}' in $properties) {
+            window.coreSeoGeoDisposeEditor('{{ templateEditorId }}');
+            delete $properties['{{ value }}'];
+        } else {
+            $properties['{{ value }}'] = {template: ''};
+        }
+        $propertySearch = '';
+        @get('{{ syncPropertyAction }}');
+        el.closest('.core-seo-geo-property-selector')?.querySelector('input')?.blur()
+    "
+    data-class:sel="'{{ value }}' in $properties"
+>
+    {{ (label ?? value)|raw }}
+    {% if tooltip %}
+        <span
+            class="core-seo-geo-info-icon-wrap"
+            data-on:mousedown="evt.stopPropagation()"
+            data-on:click="evt.stopPropagation()"
+        >
+            <span class="info"></span>
+            <span class="core-seo-geo-info-icon-popup" popover="manual">{{ tooltip|raw }}</span>
+        </span>
+    {% endif %}
+</li>

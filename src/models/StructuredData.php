@@ -12,14 +12,14 @@ namespace digitalastronaut\craftcoreseogeo\models;
 
 use craft\base\Model;
 
-use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
-
 /**
  * Class StructuredData
  *
- * The computed structured data for one element: `type` and `data` are derived entirely from
- * the field's `properties` settings rendered against the element, there's nothing left here
- * that a content editor can type into directly.
+ * `StructuredDataField`'s value: every `StructuredData` element already computed (by
+ * `StructuredDataMappingService::syncEntry()`) for the owning entry/site, across every mapping
+ * configured on that entry's section - a section with 3 mappings means 3 `$objects` entries,
+ * not 1. There's nothing here a content editor can type into directly; the field is read-only
+ * display, the same reasoning `JsonLdPreviewUiElement` already applies to a standalone object.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -27,36 +27,19 @@ use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
  */
 class StructuredData extends Model {
     /**
-     * @var string|null The schema.org type this object represents, e.g. `WebPage`.
+     * @var array<int, array<string, mixed>> Each already-computed object's full JSON-LD -
+     * `@context`, `@type`, and every property - exactly as `elements\StructuredData::toJsonLd()`
+     * produces it, one array per mapping that applies to this entry.
      *
-     * @since v1.0.0
+     * @since v1.4.0 (replaces the single `$type`/`$data` pair a field-owned mapping used to need)
      */
-    public ?string $type = null;
-
-    /**
-     * @var array<string, mixed> The computed value for each of the type's configured
-     * properties, keyed by property name.
-     *
-     * @since v1.0.0
-     */
-    public array $data = [];
+    public array $objects = [];
 
     /**
      * @return bool
      * @since       v1.0.0
      */
     public function isEmpty(): bool {
-        return $this->data === [];
-    }
-
-    /**
-     * Returns the full JSON-LD object: `@context`, `@type`, and every computed property.
-     *
-     * @return array<string, mixed>
-     *
-     * @since v1.0.0
-     */
-    public function toJsonLd(): array {
-        return CoreSeoGeo::getInstance()->getStructuredData()->toJsonLd((string)$this->type, $this->data);
+        return $this->objects === [];
     }
 }

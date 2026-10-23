@@ -1,0 +1,102 @@
+{% extends '_layouts/cp.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set title = redirect.id ? 'Edit redirect'|t('core-seo-geo') : 'Add redirect'|t('core-seo-geo') %}
+{% set selectedSubnavItem = 'redirects' %}
+{% set crumbs = [
+    { label: 'Redirects'|t('core-seo-geo'), url: url('core-seo-geo/redirects') },
+] %}
+{% set fullPageForm = true %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/redirects/save') }}
+    {{ hiddenInput('id', redirect.id ?? '') }}
+    {{ redirectInput('core-seo-geo/redirects') }}
+
+    <div class="flex-fields">
+        {{ forms.textField({
+            first: true,
+            label: 'Source URI'|t('core-seo-geo'),
+            instructions: 'The path that should redirect, without a leading slash (e.g. “old-page”, or “^blog/(.+)$” for a regex match below). Query strings are ignored.'|t('core-seo-geo'),
+            id: 'sourceUri',
+            name: 'sourceUri',
+            value: redirect.sourceUri,
+            required: true,
+            autofocus: true,
+            fieldClass: 'width-50',
+            errors: redirect.getErrors('sourceUri'),
+        }) }}
+
+        {{ forms.selectizeField({
+            label: 'Match type'|t('core-seo-geo'),
+            instructions: '“Regex” treats the source above as a regular expression (no delimiters needed); its destination can reference capture groups as $1, $2, etc.'|t('core-seo-geo'),
+            id: 'matchType',
+            name: 'matchType',
+            value: redirect.matchType,
+            options: matchTypeOptions,
+            fieldClass: 'width-50',
+        }) }}
+
+        <hr>
+
+        {{ forms.selectizeField({
+            label: 'Status code'|t('core-seo-geo'),
+            instructions: '“Gone” tells visitors and search engines this content was deliberately removed - it needs no destination.'|t('core-seo-geo'),
+            id: 'statusCode',
+            name: 'statusCode',
+            value: redirect.statusCode,
+            options: statusCodeOptions,
+            fieldClass: 'width-50',
+        }) }}
+
+        <div id="destination-field">
+            {{ forms.textField({
+                label: 'Destination'|t('core-seo-geo'),
+                instructions: 'A relative path or an absolute URL to send visitors to.'|t('core-seo-geo'),
+                id: 'destinationUri',
+                name: 'destinationUri',
+                value: redirect.destinationUri,
+                errors: redirect.getErrors('destinationUri'),
+            }) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: redirect.enabled ?? true,
+        }) }}
+
+        {% if isMultiSite %}
+            {{ forms.selectizeField({
+                label: 'Site'|t('core-seo-geo'),
+                instructions: 'Leave as “All sites” to apply this redirect everywhere.'|t('core-seo-geo'),
+                id: 'siteId',
+                name: 'siteId',
+                value: redirect.siteId ?? '',
+                options: siteOptions,
+                selectizeOptions: {
+                    allowEmptyOption: true,
+                },
+            }) }}
+        {% endif %}
+    </div>
+
+    {% if metadataHtml %}
+        {{ metadataHtml|raw }}
+    {% endif %}
+{% endblock %}
+
+{% js %}
+    function coreSeoGeoToggleDestinationField() {
+        $('#destination-field').toggle($('#statusCode').val() !== '410');
+    }
+
+    $('#statusCode').on('change', coreSeoGeoToggleDestinationField);
+    coreSeoGeoToggleDestinationField();
+{% endjs %}

@@ -15,17 +15,20 @@ use craft\base\ElementInterface;
 use craft\fieldlayoutelements\BaseUiElement;
 use craft\helpers\Cp;
 use craft\helpers\Html;
+use craft\helpers\Json;
+use craft\helpers\UrlHelper;
 
 use digitalastronaut\craftcoreseogeo\elements\StructuredData;
 use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
+use digitalastronaut\craftcoreseogeo\records\StructuredDataMapping as StructuredDataMappingRecord;
 
 /**
  * Class FieldMappingUiElement
  *
- * Read-only reference table showing each property the owning `StructuredDataField` computes,
+ * Read-only reference table showing each property the owning `StructuredDataMapping` computes,
  * alongside its configured Twig template and this row's current computed value - purely for
- * context, nothing here is editable. Renders nothing for a standalone object (`$fieldId` null),
- * since there's no backing field to map from.
+ * context, nothing here is editable. Renders nothing for a standalone object (`$mappingId`
+ * null), since there's no mapping to show.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -36,15 +39,16 @@ class FieldMappingUiElement extends BaseUiElement {
      * @inheritdoc
      */
     public function formHtml(?ElementInterface $element = null, bool $static = false): ?string {
-        if (!$element instanceof StructuredData || $element->fieldId === null) return null;
+        if (!$element instanceof StructuredData || $element->mappingId === null) return null;
 
-        $field = Craft::$app->getFields()->getFieldById($element->fieldId);
+        $mapping = StructuredDataMappingRecord::findOne($element->mappingId);
 
-        if (!$field instanceof StructuredDataField) return null;
+        if ($mapping === null) return null;
 
+        $properties = Json::decode($mapping->properties ?? '[]') ?: [];
         $rows = [];
 
-        foreach ($field->properties as $property => $propertyData) {
+        foreach ($properties as $property => $propertyData) {
             $template = $propertyData['template'] ?? '';
 
             $rows[$property] = [
@@ -54,11 +58,17 @@ class FieldMappingUiElement extends BaseUiElement {
             ];
         }
 
+        $mappingUrl = $mapping->sectionHandle !== ''
+            ? UrlHelper::cpUrl("core-seo-geo/settings/content-seo/{$mapping->sectionHandle}/mappings/{$mapping->id}")
+            : null;
+
         return Html::tag('div', Cp::editableTableFieldHtml([
             'label' => Craft::t('core-seo-geo', 'Field Mapping'),
-            'instructions' => Craft::t('core-seo-geo', 'How "{field}" computes this object\'s properties, for reference. Configured in Settings → Fields, not here.', [
-                'field' => $field->name,
-            ]),
+            'instructions' => $mappingUrl !== null
+                ? Craft::t('core-seo-geo', 'How this object\'s properties are computed, for reference. [Edit this mapping]({url}).', [
+                    'url' => $mappingUrl,
+                ])
+                : Craft::t('core-seo-geo', 'How this object\'s properties are computed, for reference.'),
             'static' => true,
             'name' => 'fieldMapping',
             'cols' => [

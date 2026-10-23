@@ -12,6 +12,8 @@ namespace digitalastronaut\craftcoreseogeo\services;
 
 use Craft;
 use craft\base\Component;
+use craft\base\Element;
+use craft\elements\Entry;
 use craft\helpers\Html;
 
 use yii\base\InvalidArgumentException;
@@ -69,7 +71,7 @@ class SchemaOrgService extends Component {
 
     /**
      * @param string $name A schema.org property name, e.g. `reviewRating`.
-     * @return array{description: string, expectedTypes: string[]}|null
+     * @return array{description: string, expectedTypes: string[], nativeTypes: string[]}|null
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
@@ -79,11 +81,8 @@ class SchemaOrgService extends Component {
     }
 
     /**
-     * Same as `getType()`, but with `properties` resolved from names into full definitions -
-     * what a property-mapping UI actually wants to render.
-     *
-     * @param string $name 
-     * @return array{label: string, description: string, parentTypes: string[], properties: array<string, array{description: string, expectedTypes: string[]}>}|null
+     * @param string $name
+     * @return array{label: string, description: string, parentTypes: string[], properties: array<string, array{description: string, expectedTypes: string[], nativeTypes: string[]}>}|null
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
@@ -118,6 +117,200 @@ class SchemaOrgService extends Component {
         }
 
         return $options;
+    }
+
+    /**
+     * @return array<int, array{name: string, label: string, isMatch: bool, children: array}>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    public function getTypeTree(): array {
+        $types = $this->_registry()['types'];
+        $childNamesByParent = [];
+        $rootNames = [];
+
+        foreach ($types as $name => $type) {
+            $primaryParent = $type['parentTypes'][0] ?? null;
+
+            if ($primaryParent !== null && isset($types[$primaryParent])) {
+                $childNamesByParent[$primaryParent][] = $name;
+            } else {
+                $rootNames[] = $name;
+            }
+        }
+
+        return $this->_buildTypeTreeNodes($rootNames, $childNamesByParent);
+    }
+
+    /**
+     * @param string[] $matchNames Ranked best match first, as `_rank()` returns them.
+     * @return array<int, array{name: string, label: string, isMatch: bool, children: array}>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    public function getFilteredTypeTree(array $matchNames): array {
+        $types = $this->_registry()['types'];
+        $matchSet = array_flip($matchNames);
+        $include = [];
+        $bestRank = [];
+
+        foreach ($matchNames as $rank => $matchName) {
+            foreach ($this->getPrimaryAncestorPath($matchName) as $ancestorName) {
+                $include[$ancestorName] = true;
+                $bestRank[$ancestorName] = min($bestRank[$ancestorName] ?? PHP_INT_MAX, $rank);
+            }
+        }
+
+        $childNamesByParent = [];
+        $rootNames = [];
+
+        foreach (array_keys($include) as $name) {
+            $primaryParent = $types[$name]['parentTypes'][0] ?? null;
+
+            if ($primaryParent !== null && isset($include[$primaryParent])) {
+                $childNamesByParent[$primaryParent][] = $name;
+            } else {
+                $rootNames[] = $name;
+            }
+        }
+
+        return $this->_buildTypeTreeNodes($rootNames, $childNamesByParent, $matchSet, $bestRank);
+    }
+
+    /**
+     * @param string[] $names
+     * @param array<string, string[]> $childNamesByParent
+     * @param array<string, int>|null $matchSet 
+     * @param array<string, int>|null $bestRank 
+     * @return array<int, array{name: string, label: string, isMatch: bool, children: array}>
+     */
+    private function _buildTypeTreeNodes(array $names, array $childNamesByParent, ?array $matchSet = null, ?array $bestRank = null): array {
+        if ($bestRank !== null) {
+            usort($names, static fn(string $a, string $b): int => ($bestRank[$a] ?? PHP_INT_MAX) <=> ($bestRank[$b] ?? PHP_INT_MAX) ?: strcmp($a, $b));
+        } else {
+            sort($names);
+        }
+
+        $nodes = [];
+
+        foreach ($names as $name) {
+            $nodes[] = [
+                'name' => $name,
+                'label' => $this->getType($name)['label'] ?? $name,
+                'isMatch' => $matchSet === null || isset($matchSet[$name]),
+                'children' => $this->_buildTypeTreeNodes($childNamesByParent[$name] ?? [], $childNamesByParent, $matchSet, $bestRank),
+            ];
+        }
+
+        return $nodes;
+    }
+
+    /**
+     * @param string $name
+     * @return string[] 
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    public function getPrimaryAncestorPath(string $name): array {
+        $types = $this->_registry()['types'];
+        $path = [];
+        $current = $name;
+
+        while ($current !== null && isset($types[$current]) && !isset($path[$current])) {
+            $path[$current] = true;
+            $current = $types[$current]['parentTypes'][0] ?? null;
+        }
+
+        return array_keys($path);
+    }
+
+    /**
+     * @param string $name
+     * @return string[]
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    public function getAncestorChain(string $name): array {
+        $chain = [];
+        $queue = [$name];
+
+        while ($queue !== []) {
+            $current = array_shift($queue);
+            if (isset($chain[$current])) continue;
+
+            $type = $this->getType($current);
+            if ($type === null) continue;
+
+            $chain[$current] = true;
+
+            foreach ($type['parentTypes'] as $parentName) {
+                $queue[] = $parentName;
+            }
+        }
+
+        return array_keys($chain);
+    }
+
+    /**
+     * `getType($name)['properties']` is already flattened with inheritance resolved - every
+     * property the type can use, with no record of which ancestor it came from. This re-groups
+     * that same list back into "Properties from X" sections (closest ancestor first, `$name`
+     * itself included), the way schema.org's own type pages present a type's properties -
+     * matched against each property's `nativeTypes` (its `domainIncludes`).
+     *
+     * @param string $name
+     * @return array<string, array{label: string, properties: string[]}> keyed by the ancestor
+     * type name each group's properties are native to.
+     *
+     * @author      Digitalastronaut
+     * @since       v1.4.0
+     */
+    public function getGroupedTypeProperties(string $name): array {
+        $type = $this->getType($name);
+        if ($type === null) return [];
+
+        $unclaimed = array_flip($type['properties']);
+        $groups = [];
+
+        foreach ($this->getAncestorChain($name) as $ancestorName) {
+            $ancestor = $this->getType($ancestorName);
+            if ($ancestor === null) continue;
+
+            $members = [];
+
+            foreach ($type['properties'] as $propertyName) {
+                if (!isset($unclaimed[$propertyName])) continue;
+
+                $property = $this->getProperty($propertyName);
+                if ($property === null || !\in_array($ancestorName, $property['nativeTypes'], true)) continue;
+
+                $members[] = $propertyName;
+                unset($unclaimed[$propertyName]);
+            }
+
+            if ($members !== []) {
+                $groups[$ancestorName] = [
+                    'label' => $ancestor['label'],
+                    'properties' => $members,
+                ];
+            }
+        }
+
+        // A property whose `nativeTypes` names none of $name's ancestors (dangling/edge-case
+        // vocabulary data) would otherwise silently disappear from the picker instead of just
+        // from its proper group.
+        if ($unclaimed !== []) {
+            $groups[''] = [
+                'label' => Craft::t('core-seo-geo', 'Other properties'),
+                'properties' => array_values(array_intersect($type['properties'], array_keys($unclaimed))),
+            ];
+        }
+
+        return $groups;
     }
 
     /**
@@ -212,6 +405,52 @@ class SchemaOrgService extends Component {
         }
 
         return Schema::{$factoryMethod}();
+    }
+
+    /**
+     * Builds a `BreadcrumbList`'s `itemListElement` value from the same `{label, href}` shape
+     * templates already build for their own on-page breadcrumb trail - so a template can pass
+     * its existing `breadcrumbs` variable straight through, virtual/non-element crumbs (e.g. a
+     * filtered archive segment with no entry of its own) included, instead of hand-rolling
+     * `ListItem`s itself. The current site's homepage is prepended automatically, unless `$items`
+     * already starts with it (so calling this from the homepage itself doesn't double it up).
+     *
+     * @param array<int, array{label: string, href: string}> $items ordered from just below the
+     * homepage to the current page
+     * @param bool $includeHomepage
+     * @return array<int, array{'@type': string, position: int, name: string, item: string}> the
+     * ready `itemListElement` value - plain arrays, not `spatie/schema-org` objects, so a
+     * template can `json_encode` it directly
+     *
+     * @author      Digitalastronaut
+     * @since       v1.7.0
+     */
+    public function breadcrumbs(array $items, bool $includeHomepage = true): array {
+        if ($includeHomepage) {
+            $homepage = Entry::find()
+                ->uri(Element::HOMEPAGE_URI)
+                ->siteId(Craft::$app->getSites()->getCurrentSite()->id)
+                ->one();
+
+            $alreadyHomepage = $homepage !== null && ($items[0]['href'] ?? null) === $homepage->getUrl();
+
+            if ($homepage !== null && !$alreadyHomepage) {
+                array_unshift($items, ['label' => $homepage->title, 'href' => $homepage->getUrl()]);
+            }
+        }
+
+        $itemListElement = [];
+
+        foreach ($items as $position => $item) {
+            $itemListElement[] = [
+                '@type' => 'ListItem',
+                'position' => $position + 1,
+                'name' => $item['label'],
+                'item' => $item['href'],
+            ];
+        }
+
+        return $itemListElement;
     }
 
     /**

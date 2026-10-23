@@ -1,24 +1,37 @@
-{# @var propertyOptions array<string, string> #}
+{# @var searching bool #}
+{# @var propertyLabels array<string, string> name => display label, possibly with highlighted <mark> HTML #}
+{# @var propertyGroups array<string, array{label: string, properties: string[]}> #}
+{# @var propertyTooltips array<string, string> #}
 
 <ul class="core-seo-geo-type-list core-seo-geo-property-options">
-    {% for value, label in propertyOptions %}
-        {% set syncPropertyAction = actionUrl('core-seo-geo/structured-data-field/sync-property', { name: value }) %}
-        {% set templateEditorId = ('core-seo-geo-property-template-' ~ value|kebab)|namespaceInputId %}
-        <li
-            class="core-seo-geo-type-option"
-            data-on:mousedown="evt.preventDefault()"
-            data-on:click="
-                if ('{{ value }}' in $properties) {
-                    window.coreSeoGeoDisposeEditor('{{ templateEditorId }}');
-                    delete $properties['{{ value }}'];
-                } else {
-                    $properties['{{ value }}'] = {template: ''};
-                }
-                @get('{{ syncPropertyAction }}')
-            "
-            data-class:sel="'{{ value }}' in $properties"
-        >
-            {{ label }}
-        </li>
-    {% endfor %}
+    {% if searching %}
+        {% if propertyLabels is empty %}
+            <li class="core-seo-geo-no-results">{{ "No results found"|t('core-seo-geo') }}</li>
+        {% else %}
+            {% for value, label in propertyLabels %}
+                {% include 'core-seo-geo/fields/structured-data/_schemaPropertyOption.twig' with {
+                    value: value,
+                    label: label,
+                    tooltip: propertyTooltips[value] ?? '',
+                } only %}
+            {% endfor %}
+        {% endif %}
+    {% else %}
+        {% if propertyGroups is empty %}
+            <li class="core-seo-geo-no-results">{{ "No results found"|t('core-seo-geo') }}</li>
+        {% else %}
+            {% for ancestorName, group in propertyGroups %}
+                <li class="core-seo-geo-property-group-label">
+                    {{ ancestorName != '' ? "Properties from {type}"|t('core-seo-geo', { type: group.label }) : group.label }}
+                </li>
+                {% for value in group.properties %}
+                    {% include 'core-seo-geo/fields/structured-data/_schemaPropertyOption.twig' with {
+                        value: value,
+                        tooltip: propertyTooltips[value] ?? '',
+                        depth: 1,
+                    } only %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
 </ul>

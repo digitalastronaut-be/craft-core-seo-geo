@@ -1,0 +1,143 @@
+{% extends 'core-seo-geo/settings/_layout.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'global-seo' %}
+{% set title = 'Local Business'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
+    { label: 'Local Business'|t('core-seo-geo'), url: url('core-seo-geo/settings/global/local-business') },
+] %}
+{% set urlFormat = 'core-seo-geo/settings/global/local-business?site={handle}' %}
+{% set selectedSiteId = site.id %}
+{% set fullPageForm = true %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/global-structured-data/save') }}
+    {{ hiddenInput('type', 'local-business') }}
+    {{ hiddenInput('siteId', site.id) }}
+    {{ redirectInput('core-seo-geo/settings/global/local-business?site=' ~ site.handle) }}
+
+    <p class="light">{{ "Describes a physical business people visit - storefront, office, clinic, restaurant, ... - shown to search engines and AI assistants on every page. Leave every field empty to stop sending this object."|t('core-seo-geo') }}</p>
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ forms.textField({
+                label: 'Name'|t('core-seo-geo'),
+                instructions: "The business's public-facing name."|t('core-seo-geo'),
+                id: 'name',
+                name: 'name',
+                value: model.name,
+                required: true,
+                errors: model.getErrors('name'),
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.textField({
+                label: 'Legal Name'|t('core-seo-geo'),
+                instructions: 'The full, legally registered name, if different from the name above.'|t('core-seo-geo'),
+                id: 'legalName',
+                name: 'legalName',
+                value: model.legalName,
+                errors: model.getErrors('legalName'),
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.autosuggestField({
+                label: 'Website URL'|t('core-seo-geo'),
+                id: 'url',
+                name: 'url',
+                value: model.url,
+                suggestions: [site.getBaseUrl()],
+                errors: model.getErrors('url'),
+            }) }}
+
+            {{ forms.elementSelectField({
+                id: 'logo',
+                name: 'logo',
+                label: 'Logo'|t('core-seo-geo'),
+                elementType: 'craft\\elements\\Asset',
+                elements: model.getLogoAsset() ? [model.getLogoAsset()] : [],
+                criteria: { kind: 'image' },
+                single: true,
+                viewMode: 'thumbs',
+                selectionLabel: 'Choose a logo'|t('core-seo-geo'),
+            }) }}
+
+            <hr>
+
+            {{ forms.textField({
+                label: 'Email'|t('core-seo-geo'),
+                id: 'email',
+                name: 'email',
+                type: 'email',
+                value: model.email,
+                errors: model.getErrors('email'),
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.textField({
+                label: 'Telephone'|t('core-seo-geo'),
+                id: 'telephone',
+                name: 'telephone',
+                value: model.telephone,
+                errors: model.getErrors('telephone'),
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.textField({
+                label: 'Price Range'|t('core-seo-geo'),
+                instructions: 'A short indicator such as `$`, `$$`, or `€10-€30`.'|t('core-seo-geo'),
+                id: 'priceRange',
+                name: 'priceRange',
+                value: model.priceRange,
+                errors: model.getErrors('priceRange'),
+            }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: 'Opening Hours'|t('core-seo-geo'),
+                instructions: 'One row per day (or range of days), with times in 24-hour `HH:MM` format.'|t('core-seo-geo'),
+                id: 'openingHours',
+                name: 'openingHours',
+                addRowLabel: 'Add a row'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    dayOfWeek: { heading: 'Day(s)'|t('core-seo-geo'), type: 'singleline', info: 'e.g. "Monday" or "Monday,Tuesday,Wednesday"'|t('core-seo-geo') },
+                    opens: { heading: 'Opens'|t('core-seo-geo'), type: 'time' },
+                    closes: { heading: 'Closes'|t('core-seo-geo'), type: 'time' },
+                },
+                rows: model.openingHours,
+            }) }}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    <p class="light">{{ "Latitude/longitude, set from the address's own edit panel, becomes this business's map location."|t('core-seo-geo') }}</p>
+
+    <div class="flex-fields">
+        {{ addressFieldHtml|raw }}
+
+        {% namespace 'settings' %}
+            {{ forms.editableTableField({
+                label: 'Social Profiles'|t('core-seo-geo'),
+                instructions: 'Links to this business\'s profiles elsewhere (Google Business Profile, Facebook, Instagram, ...).'|t('core-seo-geo'),
+                id: 'sameAs',
+                name: 'sameAs',
+                addRowLabel: 'Add a profile'|t('core-seo-geo'),
+                allowAdd: true,
+                allowReorder: true,
+                allowDelete: true,
+                cols: {
+                    url: { heading: 'URL'|t('core-seo-geo'), type: 'url' },
+                },
+                rows: model.sameAs,
+                fieldClass: 'width-50',
+            }) }}
+        {% endnamespace %}
+    </div>
+{% endblock %}

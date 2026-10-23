@@ -1,6 +1,7 @@
 {# @var names string[] #}
 {# @var properties array<string, array{template: string}> #}
 {# @var propertyTooltips array<string, string> #}
+{# @var calculatedValueHtml array<string, string>|null #}
 
 {% import "codeeditor/codeEditor" as codeEditor %}
 
@@ -21,6 +22,7 @@
                 name: name,
                 template: properties[name].template ?? '',
                 tooltip: propertyTooltips[name] ?? '',
+                calculatedValueHtml: calculatedValueHtml is null ? null : (calculatedValueHtml[name] ?? null),
             } only %}
         {% endfor %}
     </tbody>

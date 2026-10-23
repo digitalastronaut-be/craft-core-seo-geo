@@ -1,3 +1,70 @@
 {% extends 'core-seo-geo/settings/_layout.twig' %}
 
-{% set selectedNavItem = 'tracking-scripts' %}
+{% set selectedSubnavItem = 'tracking-scripts' %}
+{% set title = 'Tracking Scripts'|t('core-seo-geo') %}
+
+{% block actionButton %}
+    <a href="{{ url('core-seo-geo/settings/tracking-scripts/new') }}" class="btn submit add icon">
+        {{ 'Add tracking script'|t('core-seo-geo') }}
+    </a>
+{% endblock %}
+
+{% block content %}
+    <table id="tracking-scripts-table" class="data fullwidth"{% if not trackingScripts|length %} style="display: none;"{% endif %}>
+        <thead>
+            <tr>
+                <th scope="col">{{ 'Name'|t('core-seo-geo') }}</th>
+                <th scope="col">{{ 'Enabled'|t('core-seo-geo') }}</th>
+                <td class="thin"></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trackingScript in trackingScripts %}
+                <tr data-id="{{ trackingScript.id }}">
+                    <td>
+                        <a href="{{ url('core-seo-geo/settings/tracking-scripts/' ~ trackingScript.id) }}">
+                            {{ trackingScript.name }}
+                        </a>
+                    </td>
+
+                    <td>{{ enabledStatusHtmlById[trackingScript.id]|raw }}</td>
+
+                    <td class="thin">
+                        <a class="delete icon tracking-script-delete-btn" title="{{ 'Delete'|t('core-seo-geo') }}" aria-label="{{ 'Delete'|t('core-seo-geo') }}" role="button" data-id="{{ trackingScript.id }}"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="tracking-scripts-zilch" class="zilch small"{% if trackingScripts|length %} style="display: none;"{% endif %}>{{ 'No tracking scripts yet.'|t('core-seo-geo') }}</div>
+{% endblock %}
+
+{% js %}
+    $('.tracking-script-delete-btn').on('click', function() {
+        var $btn = $(this);
+
+        if (!confirm({{ 'Are you sure you want to delete this tracking script?'|t('core-seo-geo')|json_encode|raw }})) {
+            return;
+        }
+
+        $btn.addClass('loading');
+
+        Craft.sendActionRequest('POST', 'core-seo-geo/tracking-scripts/delete', {
+            data: {
+                id: $btn.data('id'),
+            },
+        }).then(function(response) {
+            Craft.cp.displayNotice(response.data.message);
+            $btn.closest('tr').remove();
+
+            if (!$('#tracking-scripts-table tbody tr').length) {
+                $('#tracking-scripts-table').hide();
+                $('#tracking-scripts-zilch').show();
+            }
+        }).catch(function(error) {
+            $btn.removeClass('loading');
+            Craft.cp.displayError(error?.response?.data?.message);
+        });
+    });
+{% endjs %}

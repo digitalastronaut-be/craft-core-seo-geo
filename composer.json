@@ -13,10 +13,14 @@
   "require": {
     "php": ">=8.2",
     "craftcms/cms": "^5.11.0",
+    "league/html-to-markdown": "^5.1",
+    "loilo/fuse": "^7.1.1",
     "nystudio107/craft-code-editor": "^1.0.30",
     "nystudio107/craft-plugin-vite": "^5.0.0",
     "spatie/schema-org": "^4.0.2",
-    "starfederation/datastar-php": "^1.0"
+    "starfederation/datastar-php": "^1.0",
+    "symfony/css-selector": "^6.0|^7.0",
+    "symfony/dom-crawler": "^6.0|^7.0"
   },
   "require-dev": {
     "craftcms/ecs": "dev-main",

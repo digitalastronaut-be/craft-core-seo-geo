@@ -1,3 +1,6 @@
 {% extends 'core-seo-geo/settings/_layout.twig' %}
 
-{% set selectedNavItem = 'structured-data' %}
+{# No longer linked from the CP nav - reachable by direct URL only. Highlights the "Structured
+   Data" nav item, the closest still-visible parent concept. #}
+{% set selectedSubnavItem = 'structured-data' %}
+{% set title = 'Structured Data Settings'|t('core-seo-geo') %}

@@ -38,21 +38,25 @@ class StructuredDataService extends Component {
      *
      * A template rendering to an empty string is omitted entirely (an unset property), rather
      * than being kept as `""`. A render that throws (e.g. a typo'd filter) is logged and
-     * skipped the same way, rather than failing the whole object over one bad property. Each
-     * surviving result is decoded by `_decodeRenderedProperty()`, which lets a template return
-     * a plain string (the common case, e.g. a `name`) or a nested object (e.g.
+     * skipped the same way, rather than failing the whole object over one bad property - the
+     * thrown message is also collected into `$errors` (keyed by property name) for a caller,
+     * such as the field settings preview, that wants to surface it rather than only the log.
+     * Each surviving result is decoded by `_decodeRenderedProperty()`, which lets a template
+     * return a plain string (the common case, e.g. a `name`) or a nested object (e.g.
      * `craft.coreSeoGeo.schema(...)`) without the template needing to say which; a result
      * that isn't valid JSON is kept as the plain string it already is.
      *
      * @param ElementInterface $element the element the property templates render against
      * @param array<string, array{template?: string|null}> $properties keyed by schema.org
      * property name
+     * @param array<string, string>|null $errors out param: populated with the exception
+     * message for each property whose template threw, keyed by property name
      * @return array<string, mixed>
      *
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
-    public function renderProperties(ElementInterface $element, array $properties): array {
+    public function renderProperties(ElementInterface $element, array $properties, ?array &$errors = null): array {
         $data = [];
         $view = Craft::$app->getView();
 
@@ -65,6 +69,7 @@ class StructuredDataService extends Component {
                 $rendered = trim($view->renderObjectTemplate($template, $element, ['entry' => $element]));
             } catch (\Throwable $e) {
                 Craft::warning("Couldn't render the \"{$property}\" structured data property: {$e->getMessage()}", __METHOD__);
+                if ($errors !== null) $errors[$property] = $e->getMessage();
                 continue;
             }
 

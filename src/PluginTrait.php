@@ -14,9 +14,11 @@ use Craft;
 
 use craft\base\Element;
 use craft\base\ElementInterface;
+use craft\controllers\ElementsController;
 use craft\db\Table as CraftTable;
 use craft\elements\Entry;
 use craft\events\DefineHtmlEvent;
+use craft\events\DefineMenuItemsEvent;
 use craft\events\ElementEvent;
 use craft\events\ExceptionEvent;
 use craft\events\RegisterComponentTypesEvent;
@@ -25,10 +27,10 @@ use craft\events\RegisterUrlRulesEvent;
 use craft\events\SectionEvent;
 use craft\events\TemplateEvent;
 use craft\helpers\App;
-use craft\helpers\Cp;
 use craft\helpers\ElementHelper;
 use craft\helpers\Html;
 use craft\helpers\Json;
+use craft\helpers\Markdown;
 use craft\helpers\UrlHelper;
 use craft\services\Elements;
 use craft\services\Entries;
@@ -104,8 +106,10 @@ trait PluginTrait {
         $this->registerSharedEvents();
 
         if (Craft::$app->request->isCpRequest) $this->registerCpEvents();
-        if (Craft::$app->request->isConsoleRequest) $this->controllerNamespace = 'digitalastronaut\\craftcoreseogeo\\console\\controllers';
         if (Craft::$app->request->isSiteRequest) $this->registerSiteEvents();
+        if (Craft::$app->request->isConsoleRequest) {
+            $this->controllerNamespace = 'digitalastronaut\\craftcoreseogeo\\console\\controllers';
+        }
     }
 
     /**
@@ -378,9 +382,8 @@ trait PluginTrait {
             function(DefineHtmlEvent $event) {
                 /** @var ElementInterface $element */
                 $element = $event->sender;
-                $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
 
-                foreach ($this->_getSeoFields($element) as $field) $event->html .= $this->_seoScoreSidebarHtml($field, $element, $seoScore);
+                foreach ($this->_getSeoFields($element) as $field) $event->html .= $this->_seoScoreSidebarHtml($element, $field);
             }
         );
     }
@@ -397,42 +400,64 @@ trait PluginTrait {
     }
 
     /**
-     * @param SeoField $field
+     * Renders the SEO/GEO sidebar pane for `$field` on `$element` - called both from the sidebar
+     * itself (`registerSeoScoreSidebar()`) and by `SeoScoreController::actionRefresh()`, which
+     * patches the same markup back in via Datastar after a manual refresh.
+     *
      * @param ElementInterface $element
-     * @param SeoScoreService $seoScore
+     * @param SeoField $field
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.27.0
+     */
+    public function seoScoreSidebarHtml(ElementInterface $element, SeoField $field): string {
+        return $this->_seoScoreSidebarHtml($element, $field);
+    }
+
+    /**
+     * Shows the same score chip the element index uses ({@see SeoField::getPreviewHtml()}),
+     * next to a "Refresh" button that queues a fresh `CalculateSeoScore` run -- the pane then
+     * shows the pending chip until that job runs, same as it would right after a normal save.
+     *
+     * @param ElementInterface $element
+     * @param SeoField $field
      * @return string
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
      */
-    private function _seoScoreSidebarHtml(SeoField $field, ElementInterface $element, SeoScoreService $seoScore): string {
-        $score = $seoScore->getScore($element, (int)$field->id);
+    private function _seoScoreSidebarHtml(ElementInterface $element, SeoField $field): string {
+        /** @var Element $element */
+        $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
+        $chip = $seoScore->renderChip($seoScore->getScore($element, (int)$field->id));
 
-        $rows = [
-            Craft::t('core-seo-geo', 'Score') => match (true) {
-                $score === null => Craft::t('core-seo-geo', 'Not calculated'),
-                $score->pending && $score->score === null => Craft::t('core-seo-geo', 'Calculating...'),
-                $score->pending => Craft::t('core-seo-geo', '{score}% (recalculating...)', ['score' => $score->score]),
-                default => "{$score->score}%",
-            },
-        ];
+        $refreshUrl = UrlHelper::actionUrl('core-seo-geo/seo-score/refresh', [
+            'elementId' => $element->id,
+            'siteId' => $element->siteId,
+            'fieldId' => $field->id,
+        ]);
 
-        foreach ($score?->checks ?? [] as $check) {
-            $status = match (true) {
-                !$check['applicable'] => Craft::t('core-seo-geo', 'N/A'),
-                $check['valid'] => Craft::t('core-seo-geo', 'Pass'),
-                default => Craft::t('core-seo-geo', 'Fail'),
-            };
+        $button = Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
+            'type' => 'button',
+            'class' => ['btn', 'small'],
+            'data-on:click' => "@get('{$refreshUrl}')",
+        ]);
 
-            $rows[$check['label']] = Html::encode("{$status}: {$check['message']}");
-        }
+        $status = Html::tag('div', $chip . $button, ['class' => ['core-seo-geo-score-status']]);
 
-        return Html::tag('fieldset',
-            Html::tag('legend', Html::encode(Craft::t('core-seo-geo', '{field} Score', [
-                'field' => $field->name,
-            ])), ['class' => 'h6', 'style' => 'padding-block: 16px;']) .
-            Cp::metadataHtml($rows)
-        );
+        $row =
+            Html::tag('dt', Craft::t('core-seo-geo', 'Score'), ['class' => 'heading']) .
+            Html::tag('dd', $status, ['class' => 'value']);
+
+        $html =
+            Html::tag('legend', Craft::t('core-seo-geo', 'SEO/GEO'), ['class' => 'h6']) .
+            Html::tag('dl', Html::tag('div', $row, ['class' => 'data']), ['class' => 'meta']);
+
+        return Html::tag('fieldset', $html, [
+            'class' => ['core-seo-geo-score-pane'],
+            'id' => "core-seo-geo-score-pane-{$field->id}",
+        ]);
     }
 
     /**
@@ -456,6 +481,29 @@ trait PluginTrait {
     }
 
     /**
+     * Renders the "Markdown" sidebar pane for `$entry` - called both from the sidebar
+     * itself (`registerMarkdownSidebar()`) and by `MarkdownController::actionRefresh()`,
+     * which patches the same markup back in via Datastar after a manual refresh.
+     *
+     * @param Entry $entry
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    public function markdownSidebarHtml(Entry $entry): string {
+        return $this->_markdownSidebarHtml($entry);
+    }
+
+    /**
+     * Builds the pane's rows by hand rather than via `Cp::metadataHtml()` - the "Status"
+     * row needs a live Refresh button, which that helper has no way to carry. Mirrors
+     * `Cp::metadataHtml()`'s own `dl.meta` / `dt.heading` / `dd.value` markup (deliberately
+     * *not* `.read-only` - that variant drops the panel's background/shadow, and this pane
+     * is meant to look like the "nice white panel" CP uses for other sidebar metadata, not
+     * the plain inline list). `admin.scss` carries a small `.heading` override alongside it -
+     * see the comment there for why it's needed.
+     *
      * @param Entry $entry
      * @return string
      *
@@ -464,24 +512,173 @@ trait PluginTrait {
      */
     private function _markdownSidebarHtml(Entry $entry): string {
         $result = CoreSeoGeo::getInstance()->getMarkdown()->getCachedResult($entry);
+        $stale = $result === null || $result['failureReason'] !== null;
 
         $rows = [
-            Craft::t('core-seo-geo', 'Status') => match (true) {
-                $result === null => Craft::t('core-seo-geo', 'Not yet generated'),
-                $result['failureReason'] !== null => Craft::t('core-seo-geo', 'Failed: {reason}', [
-                    'reason' => $result['failureReason'],
-                ]),
-                default => Craft::t('core-seo-geo', 'Cached'),
-            },
+            Craft::t('core-seo-geo', 'Status') => $this->_markdownStatusHtml($entry, $stale),
         ];
 
-        if ($result !== null) $rows[Craft::t('core-seo-geo', 'Generated')] = Craft::$app->getFormatter()->asRelativeTime($result['date']);
+        if ($result !== null) {
+            $rows[Craft::t('core-seo-geo', 'Generated')] = Html::encode(
+                Craft::$app->getFormatter()->asRelativeTime($result['date'])
+            );
+        }
 
-        if ($result !== null && $result['failureReason'] === null) $rows[Craft::t('core-seo-geo', 'Tokens (est.)')] = (string)MarkdownService::estimateTokens($result['markdown']);
+        if ($result !== null && $result['failureReason'] === null && !empty($result['htmlTokens'])) {
+            $rows[Craft::t('core-seo-geo', 'Token savings')] = $this->_tokenSavingsHtml(
+                $result['htmlTokens'],
+                MarkdownService::estimateTokens($result['markdown']),
+            );
+        }
 
-        return Html::tag('fieldset',
-            Html::tag('legend', Craft::t('core-seo-geo', 'Markdown'), ['class' => 'h6', 'style' => 'padding-block: 16px;']) .
-            Cp::metadataHtml($rows)
+        $defs = [];
+        foreach ($rows as $label => $value) {
+            $defs[] =
+                Html::beginTag('div', ['class' => 'data']) .
+                Html::tag('dt', Html::encode($label), ['class' => 'heading']) .
+                Html::tag('dd', $value, ['class' => 'value']) .
+                Html::endTag('div');
+        }
+
+        $html =
+            Html::tag('legend', Craft::t('core-seo-geo', 'Markdown'), ['class' => 'h6']) .
+            Html::tag('dl', implode('', $defs), ['class' => ['meta']]);
+
+        if ($result !== null && $result['failureReason'] === MarkdownService::NO_LLM_CONTENT_REASON) {
+            $html .= $this->_noLlmContentNoticeHtml();
+        }
+
+        return Html::tag('fieldset', $html, ['class' => ['core-seo-geo-markdown-pane']]);
+    }
+
+    /**
+     * Notice shown in the Markdown sidebar pane when the page has no `{% llmContent %}`
+     * blocks yet. Built by hand rather than via `craft\fieldlayoutelements\Tip` (too much
+     * padding/background for this already-compact pane) - this mirrors the markup
+     * `Cp::fieldHtml()` itself uses for a field's `tip` option (`.notice.has-icon`, the
+     * small blue "bulb" line under a field, Markdown and all), just without going through
+     * that method.
+     *
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    private function _noLlmContentNoticeHtml(): string {
+        $message = Craft::t('core-seo-geo', 'This page has no **`{% llmContent %}`** blocks yet');
+
+        return Html::tag('p',
+            Html::tag('span', '', ['class' => 'icon', 'aria' => ['hidden' => 'true']]) .
+            Html::tag('span', Html::decodeDoubles(Markdown::processParagraph(Html::encodeInvalidTags($message)))),
+            ['class' => ['notice', 'has-icon']]
+        );
+    }
+
+    /**
+     * @param Entry $entry
+     * @param bool $stale
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    private function _markdownStatusHtml(Entry $entry, bool $stale): string {
+        $label = Html::tag('span', $stale ? Craft::t('core-seo-geo', 'No content') : Craft::t('core-seo-geo', 'Cached'));
+
+        $refreshUrl = UrlHelper::actionUrl('core-seo-geo/markdown/refresh', [
+            'elementId' => $entry->id,
+            'siteId' => $entry->siteId,
+        ]);
+
+        $button = Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
+            'type' => 'button',
+            'class' => ['btn', 'small'],
+            // Datastar's `on` plugin requires the colon form (`data-on:click`) - its
+            // dataset-based attribute scan splits on the first `:` to find the plugin
+            // name, so a `data-on-click` attribute (hyphen) would never match it.
+            'data-on:click' => "@get('{$refreshUrl}')",
+        ]);
+
+        return Html::tag('div', $label . $button, [
+            'class' => ['core-seo-geo-markdown-status'],
+        ]);
+    }
+
+    /**
+     * @param int $htmlTokens
+     * @param int $markdownTokens
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    private function _tokenSavingsHtml(int $htmlTokens, int $markdownTokens): string {
+        $percentSaved = $htmlTokens > 0 ? round((1 - $markdownTokens / $htmlTokens) * 100) : 0;
+
+        return Html::encode(Craft::t('core-seo-geo', '{html} → {markdown} tokens ({percent}%)', [
+            'html' => number_format($htmlTokens),
+            'markdown' => number_format($markdownTokens),
+            'percent' => $percentSaved,
+        ]));
+    }
+
+    /**
+     * Adds a "SEO/GEO settings" item to the entry edit page's action menu (the `#action-btn`
+     * disclosure menu), linking straight to this plugin's own per-section settings page
+     * ({@see \digitalastronaut\craftcoreseogeo\controllers\ContentSeoController::actionSection()})
+     * for the entry's section. Mirrors {@see \craft\elements\Entry::safeActionMenuItems()}'s own
+     * gating for its "Section settings"/"Entry type settings" items - admin-only, and only on
+     * the entry's actual edit screen rather than every inline action menu an `Entry` renders
+     * across element indexes - and is spliced in right after that item so the two sit together.
+     * Unlike those items, `ContentSeoController` stays reachable even when `allowAdminChanges`
+     * is off (see its own `requireAdmin(false)`), so when "Section settings" isn't present for
+     * that reason, this is added to the top of the menu instead.
+     *
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.26.0
+     */
+    protected function registerEntryActionMenuItem(): void {
+        Event::on(
+            Element::class,
+            Element::EVENT_DEFINE_ACTION_MENU_ITEMS,
+            function(DefineMenuItemsEvent $event) {
+                $entry = $event->sender;
+
+                if (!$entry instanceof Entry) return;
+
+                $section = $entry->getSection();
+
+                if (
+                    $section === null ||
+                    !Craft::$app->getUser()->getIsAdmin() ||
+                    !(Craft::$app->controller instanceof ElementsController) ||
+                    Craft::$app->controller->element !== $entry
+                ) return;
+
+                $item = [
+                    'icon' => '@digitalastronaut/craftcoreseogeo/web/assets/icons/seo-geo-field-icon.svg',
+                    'label' => Craft::t('core-seo-geo', 'SEO/GEO settings'),
+                    'url' => UrlHelper::cpUrl("core-seo-geo/settings/content-seo/{$section->handle}", [
+                        'site' => $entry->getSite()->handle,
+                    ]),
+                ];
+
+                $sectionSettingsIndex = null;
+                foreach ($event->items as $i => $existing) {
+                    if (($existing['label'] ?? null) === Craft::t('app', 'Section settings')) {
+                        $sectionSettingsIndex = $i;
+                        break;
+                    }
+                }
+
+                if ($sectionSettingsIndex !== null) {
+                    array_splice($event->items, $sectionSettingsIndex + 1, 0, [$item]);
+                } else {
+                    array_unshift($event->items, $item);
+                }
+            }
         );
     }
 
@@ -801,6 +998,7 @@ trait PluginTrait {
         $this->registerCpUrlRules();
         $this->registerSeoScoreSidebar();
         $this->registerMarkdownSidebar();
+        $this->registerEntryActionMenuItem();
     }
 
     /**

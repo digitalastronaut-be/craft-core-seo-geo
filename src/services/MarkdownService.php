@@ -42,6 +42,16 @@ class MarkdownService extends Component {
     private const CACHE_TAG = 'core-seo-geo-markdown';
 
     /**
+     * `failureReason` text when a page has no `{% llmContent %}` blocks to convert - the
+     * CP sidebar checks for this exact reason to show its own warning (see
+     * `PluginTrait::_markdownSidebarHtml()`), so it's a named constant rather than a
+     * literal string repeated in two places.
+     *
+     * @since v1.0.6
+     */
+    public const string NO_LLM_CONTENT_REASON = 'The page has no {% llmContent %} blocks to convert.';
+
+    /**
      * @var array<string, mixed>
      */
     private const DEFAULT_OPTIONS = [
@@ -67,7 +77,7 @@ class MarkdownService extends Component {
      * generates, caches, and returns it.
      *
      * @param ElementInterface $element
-     * @return array{markdown: string, failureReason: string|null, date: int}
+     * @return array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
@@ -85,12 +95,31 @@ class MarkdownService extends Component {
     }
 
     /**
+     * Regenerates the Markdown for `$element`, bypassing (and then overwriting) whatever
+     * is cached - the "Refresh" action in the CP sidebar, for when an editor wants to
+     * force a re-fetch without waiting for the cache's `TagDependency` to invalidate.
+     *
+     * @param ElementInterface $element
+     * @return array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    public function refresh(ElementInterface $element): array {
+        $result = $this->_generate($element);
+        $this->_store($element, $result);
+
+        return $result;
+    }
+
+    /**
      * Reads the cached result without generating one - for CP status display, which
      * must never block an editor's page load on an internal HTTP fetch.
      *
      * @param ElementInterface $element
-     * @return array{markdown: string, failureReason: string|null, date: int}|null
-     * `null` if nothing has been cached for this element yet.
+     * @return array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}|null
+     * `null` if nothing has been cached for this element yet (or the cache's `TagDependency`
+     * has since invalidated it).
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
@@ -131,7 +160,7 @@ class MarkdownService extends Component {
 
     /**
      * @param ElementInterface $element
-     * @return array{markdown: string, failureReason: string|null, date: int}
+     * @return array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}
      */
     private function _generate(ElementInterface $element): array {
         $url = $element->getUrl();
@@ -149,18 +178,23 @@ class MarkdownService extends Component {
         $markdown = trim($this->htmlToMarkdown($content));
 
         if ($markdown === '') {
-            return $this->_failure('The page has no {% llmContent %} blocks to convert.');
+            return $this->_failure(self::NO_LLM_CONTENT_REASON);
         }
 
-        return ['markdown' => $markdown, 'failureReason' => null, 'date' => time()];
+        return [
+            'markdown' => $markdown,
+            'failureReason' => null,
+            'date' => time(),
+            'htmlTokens' => self::estimateTokens($html),
+        ];
     }
 
     /**
      * @param string $reason
-     * @return array{markdown: string, failureReason: string|null, date: int}
+     * @return array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}
      */
     private function _failure(string $reason): array {
-        return ['markdown' => '', 'failureReason' => $reason, 'date' => time()];
+        return ['markdown' => '', 'failureReason' => $reason, 'date' => time(), 'htmlTokens' => null];
     }
 
     /**
@@ -192,7 +226,7 @@ class MarkdownService extends Component {
 
     /**
      * @param ElementInterface $element
-     * @param array{markdown: string, failureReason: string|null, date: int} $result
+     * @param array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null} $result
      * @return void
      */
     private function _store(ElementInterface $element, array $result): void {

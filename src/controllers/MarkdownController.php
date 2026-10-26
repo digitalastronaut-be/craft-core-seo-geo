@@ -17,6 +17,7 @@ use craft\web\Controller;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 
+use starfederation\datastar\ServerSentEventGenerator;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -31,7 +32,9 @@ use yii\web\Response;
  * @since       v1.0.6
  */
 class MarkdownController extends Controller {
-    protected array|bool|int $allowAnonymous = true;
+    // Only `render` is public - `refresh` forces a re-fetch of the entry's own front-end
+    // URL and is reached from the CP sidebar, so it stays behind the default CP auth.
+    protected array|bool|int $allowAnonymous = ['render'];
 
     /**
      * @param string $slug
@@ -63,5 +66,40 @@ class MarkdownController extends Controller {
         Craft::$app->getResponse()->getHeaders()->set('Content-Type', 'text/markdown; charset=UTF-8');
 
         return $this->asRaw($markdown);
+    }
+
+    /**
+     * Forces a fresh fetch + conversion of `$elementId`'s Markdown, bypassing the cache,
+     * then patches the CP sidebar's `.core-seo-geo-markdown-pane` with the result via
+     * Datastar - the "Refresh" button's `data-on-click` target.
+     *
+     * @param int $elementId
+     * @param int $siteId
+     * @return Response
+     * @throws NotFoundHttpException
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    public function actionRefresh(int $elementId, int $siteId): Response {
+        $this->requireCpRequest();
+
+        $entry = Craft::$app->getElements()->getElementById($elementId, Entry::class, $siteId, ['status' => null]);
+        if (!$entry instanceof Entry) {
+            throw new NotFoundHttpException("No entry found with ID \"{$elementId}\".");
+        }
+
+        CoreSeoGeo::getInstance()->getMarkdown()->refresh($entry);
+
+        $html = CoreSeoGeo::getInstance()->markdownSidebarHtml($entry);
+
+        $sse = new ServerSentEventGenerator();
+        $sse->sendHeaders();
+        $sse->patchElements($html, ['selector' => '.core-seo-geo-markdown-pane', 'mode' => 'outer']);
+
+        $response = Craft::$app->getResponse();
+        $response->isSent = true;
+
+        return $response;
     }
 }

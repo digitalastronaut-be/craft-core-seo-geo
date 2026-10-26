@@ -195,7 +195,7 @@
 }
 
 .core-seo-geo-info-icon {
-	cursor: help;
+	cursor: pointer;
 	color: var(--light-text-color);
 	margin-inline-start: var(--xs);
 }
@@ -224,6 +224,177 @@
 			margin-top: 0;
 		}
 	}
+}
+
+.core-seo-geo-score-chip {
+	display: inline-flex;
+	align-items: stretch;
+	gap: 0;
+	cursor: pointer;
+	border-radius: var(--large-border-radius);
+	overflow: hidden;
+	font-weight: 600;
+	line-height: 1.6;
+
+	&-percent,
+	&-count {
+		display: inline-flex;
+		align-items: center;
+		padding: 1px var(--xs);
+	}
+
+	&-percent {
+		padding-inline: var(--s);
+	}
+
+	&-count {
+		padding-inline: var(--s);
+		color: var(--white);
+		font-weight: 700;
+		opacity: 0.85;
+	}
+
+	&--good {
+		background-color: rgb(from var(--teal-550) r g b / 15%);
+		color: var(--teal-700);
+
+		.core-seo-geo-score-chip-count {
+			background-color: var(--teal-700);
+		}
+	}
+
+	&--warning {
+		background-color: rgb(from var(--amber-500) r g b / 15%);
+		color: var(--amber-700);
+
+		.core-seo-geo-score-chip-count {
+			background-color: var(--amber-700);
+		}
+	}
+
+	&--bad {
+		background-color: rgb(from var(--red-500) r g b / 15%);
+		color: var(--red-700);
+
+		.core-seo-geo-score-chip-count {
+			background-color: var(--red-700);
+		}
+	}
+
+	&--none,
+	&--pending {
+		padding: 1px var(--s);
+		background-color: var(--gray-100);
+		border: 1px solid var(--gray-200);
+		color: var(--gray-600);
+		font-weight: 400;
+		font-style: italic;
+	}
+}
+
+.core-seo-geo-score-chip-popup {
+	width: 300px;
+	max-height: 320px;
+	overflow-y: auto;
+	padding: 0;
+}
+
+.core-seo-geo-score-checklist {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.core-seo-geo-score-check {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: var(--xs);
+	padding: var(--xs) var(--s);
+	border-bottom: 1px solid var(--hairline-color);
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	&.is-invalid {
+		background-color: var(--bg-error);
+	}
+}
+
+.core-seo-geo-score-check-icon {
+	flex: 0 0 auto;
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+	border-radius: 50%;
+	position: relative;
+
+	.is-valid > & {
+		background-color: var(--fg-success);
+	}
+
+	.is-invalid > & {
+		background-color: var(--fg-error);
+	}
+
+	.is-na > & {
+		background-color: var(--gray-300);
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+	}
+
+	.is-valid > &::after {
+		width: 7px;
+		height: 4px;
+		margin-top: -3px;
+		margin-left: -4px;
+		border-left: 2px solid var(--white);
+		border-bottom: 2px solid var(--white);
+		transform: rotate(-45deg);
+	}
+
+	.is-invalid > &::after {
+		width: 7px;
+		height: 7px;
+		margin-top: -4px;
+		margin-left: -4px;
+		background:
+			linear-gradient(45deg, transparent 45%, var(--white) 45%, var(--white) 55%, transparent 55%),
+			linear-gradient(-45deg, transparent 45%, var(--white) 45%, var(--white) 55%, transparent 55%);
+	}
+
+	.is-na > &::after {
+		width: 6px;
+		height: 2px;
+		margin-top: -1px;
+		margin-left: -3px;
+		background-color: var(--white);
+	}
+}
+
+.core-seo-geo-score-check-label {
+	flex: 1 1 auto;
+	font-weight: 600;
+
+	.is-na & {
+		font-weight: 400;
+		opacity: 0.7;
+	}
+}
+
+.core-seo-geo-score-check-message {
+	flex: 1 1 100%;
+	margin: var(--xs) 0 0 calc(16px + var(--xs));
+	color: var(--light-text-color);
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1.4;
 }
 
 .core-seo-geo-template-error {
@@ -259,4 +430,37 @@
 	textarea {
 		field-sizing: content;
 	}
+}
+
+.core-seo-geo-markdown-pane .meta > .data,
+.core-seo-geo-score-pane .meta > .data {
+	// Craft's own CP CSS gives every `.meta > .data` row a 44px floor meant for
+	// form-field-sized rows - too tall for a compact, read-heavy pane like this one.
+	min-height: 0;
+
+	// ... and centers `.value` vertically but leaves `.heading` (the label) with only
+	// top/bottom padding - fine for a single line, but it leaves the label sitting above
+	// center once a value wraps onto two lines, as "Token savings" does here.
+	> .heading {
+		display: flex;
+		align-items: center;
+	}
+}
+
+// The "Status"/"Score" row's label (or chip) and Refresh button, pushed to opposite ends of the row.
+.core-seo-geo-markdown-status,
+.core-seo-geo-score-status {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+// Tucked closer under the `dl` than the CP's own default `.notice` top margin leaves it, and
+// bled to the pane's edges (same `--neg-padding` trick as `.core-seo-geo-hit-chart-wrapper`
+// above) so it spans the full pane width; `padding-inline` puts the text back where it'd sit
+// if the margin bleed weren't there, keeping it aligned with the rows above it.
+.core-seo-geo-markdown-pane .notice {
+	margin-block-start: 0;
+	margin-inline: var(--neg-padding);
 }

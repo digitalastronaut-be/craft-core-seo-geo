@@ -79,7 +79,7 @@ class SeoData extends Model {
      * @since v1.0.0
      */
     public function getImage(): AssetQuery {
-        return Asset::find()->andWhere(['elements.id' => $this->_imageId]);
+        return Asset::find()->id($this->_imageId ?? false);
     }
 
     /**

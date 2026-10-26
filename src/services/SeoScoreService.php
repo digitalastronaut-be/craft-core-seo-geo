@@ -16,6 +16,7 @@ use craft\base\Component;
 use craft\base\Element;
 use craft\base\ElementInterface;
 use craft\events\RegisterComponentTypesEvent;
+use craft\helpers\Html;
 use craft\helpers\Json;
 
 use digitalastronaut\craftcoreseogeo\jobs\CalculateSeoScore;
@@ -179,6 +180,86 @@ class SeoScoreService extends Component {
         ]);
 
         return $record !== null ? SeoScoreModel::fromRecord($record) : null;
+    }
+
+    /**
+     * Renders `$score` as the colored "passed/applicable" chip used both in the element index
+     * (via `SeoField::getPreviewHtml()`) and the entry edit page's SEO/GEO sidebar pane (via
+     * `PluginTrait::_seoScoreSidebarHtml()`). Hovering (or focusing) the chip opens a popup --
+     * built on the same `.core-seo-geo-info-icon-wrap`/`tooltips.js` popover pattern already used
+     * for the structured-data and redirects forms -- listing every check with a pass/fail icon
+     * and, for failures, the check's own explanation.
+     *
+     * @param SeoScoreModel|null $score
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.27.0
+     */
+    public function renderChip(?SeoScoreModel $score): string {
+        if ($score === null) {
+            return Html::tag('span', Craft::t('core-seo-geo', 'Not calculated'), [
+                'class' => ['core-seo-geo-score-chip', 'core-seo-geo-score-chip--none'],
+            ]);
+        }
+
+        if ($score->pending) {
+            return Html::tag('span', Craft::t('core-seo-geo', 'Calculating...'), [
+                'class' => ['core-seo-geo-score-chip', 'core-seo-geo-score-chip--pending'],
+            ]);
+        }
+
+        $applicable = array_values(array_filter($score->checks, static fn(array $check): bool => $check['applicable']));
+        $passed = array_values(array_filter($applicable, static fn(array $check): bool => $check['valid']));
+        $total = count($applicable);
+
+        $tier = match (true) {
+            $score->score >= 80 => 'good',
+            $score->score >= 50 => 'warning',
+            default => 'bad',
+        };
+
+        // Full checklist, failures first so the things that need attention don't get buried
+        // below a wall of passes; non-applicable checks (excluded from the score itself) sink
+        // to the bottom.
+        $rank = static function(array $check): int {
+            if (!$check['applicable']) return 2;
+            return $check['valid'] ? 1 : 0;
+        };
+        $sortedChecks = $score->checks;
+        usort($sortedChecks, static fn(array $a, array $b): int => $rank($a) <=> $rank($b));
+
+        $checklist = Html::tag('ul', implode('', array_map(
+            static function(array $check): string {
+                $state = !$check['applicable'] ? 'is-na' : ($check['valid'] ? 'is-valid' : 'is-invalid');
+
+                return Html::tag('li', implode('', [
+                    Html::tag('span', '', [
+                        'class' => ['core-seo-geo-score-check-icon', $state],
+                        'aria-hidden' => 'true',
+                    ]),
+                    Html::tag('span', Html::encode($check['label']), ['class' => 'core-seo-geo-score-check-label']),
+                    $check['valid'] || !$check['applicable']
+                        ? ''
+                        : Html::tag('p', Html::encode($check['message']), ['class' => 'core-seo-geo-score-check-message']),
+                ]), [
+                    'class' => ['core-seo-geo-score-check', $state],
+                ]);
+            },
+            $sortedChecks,
+        )), ['class' => 'core-seo-geo-score-checklist']);
+
+        return Html::tag('span', implode('', [
+            Html::tag('span', "{$score->score}%", ['class' => 'core-seo-geo-score-chip-percent']),
+            Html::tag('span', count($passed) . "/{$total}", ['class' => 'core-seo-geo-score-chip-count']),
+            Html::tag('span', $checklist, [
+                'class' => 'core-seo-geo-info-icon-popup core-seo-geo-score-chip-popup',
+                'popover' => 'manual',
+            ]),
+        ]), [
+            'class' => ['core-seo-geo-score-chip', 'core-seo-geo-info-icon-wrap', "core-seo-geo-score-chip--{$tier}"],
+            'tabindex' => '0',
+        ]);
     }
 
     // Private Methods

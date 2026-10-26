@@ -8,53 +8,26 @@
 {% set urlFormat = 'core-seo-geo/settings/content-seo?site={handle}' %}
 {% set selectedSiteId = site.id %}
 
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') -%}
+
 {% block content %}
-    <table class="data fullwidth">
-        <thead>
-            <tr>
-                <th scope="col">{{ 'Sections'|t('core-seo-geo') }}</th>
-                <th scope="col">{{ 'Title'|t('core-seo-geo') }}</th>
-                <th scope="col">{{ 'Description'|t('core-seo-geo') }}</th>
-                <th scope="col">{{ 'Sitemap'|t('core-seo-geo') }}</th>
-                <th scope="col">{{ 'Robots'|t('core-seo-geo') }}</th>
-                <th scope="col">{{ 'Mappings'|t('core-seo-geo') }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in rows %}
-                {% if not row.isGlobal %}
-                    {% set extra = extraBySectionHandle[row.sectionHandle] %}
-                    <tr>
-                        <td>
-                            <a href="{{ url('core-seo-geo/settings/content-seo/' ~ row.sectionHandle) }}">{{ row.sectionLabel }}</a>
-                        </td>
-
-                        <td data-title="{{ 'Title'|t('core-seo-geo') }}">
-                            {{ extra.titleStatusHtml|raw }}
-                        </td>
-
-                        <td data-title="{{ 'Description'|t('core-seo-geo') }}">
-                            {{ extra.descriptionStatusHtml|raw }}
-                        </td>
-
-                        <td data-title="{{ 'Sitemap'|t('core-seo-geo') }}">
-                            {{ extra.sitemapStatusHtml|raw }}
-                        </td>
-
-                        <td>{{ extra.robotsLabels|length ? extra.robotsLabels|join(', ') : '–' }}</td>
-
-                        <td>
-                            {% if extra.mappings|length %}
-                                {% for mapping in extra.mappings %}
-                                    {{ mapping.typeLabel }} {{ '(' ~ mapping.propertyCount ~ ')' }}
-                                {% endfor %}
-                            {% else %}
-                                {{ '-' }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+    <div id="content-seo-vue-admin-table"></div>
 {% endblock %}
+
+{% js %}
+    new Craft.VueAdminTable({
+        container: '#content-seo-vue-admin-table',
+        tableDataEndpoint: {{ ('core-seo-geo/content-seo/table-data?site=' ~ site.handle)|json_encode|raw }},
+        search: true,
+        fullPane: false,
+        emptyMessage: {{ 'No sections yet.'|t('core-seo-geo')|json_encode|raw }},
+        columns: [
+            { name: '__slot:title', title: {{ 'Sections'|t('core-seo-geo')|json_encode|raw }}, sortField: true },
+            { name: 'titleStatus', title: {{ 'Title'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'description', title: {{ 'Description'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'sitemap', title: {{ 'Sitemap'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'robots', title: {{ 'Robots'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'mappings', title: {{ 'Mappings'|t('core-seo-geo')|json_encode|raw }} },
+        ],
+    });
+{% endjs %}

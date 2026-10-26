@@ -16,6 +16,7 @@ use craft\base\Component;
 use craft\base\ElementInterface;
 use craft\elements\Asset;
 use craft\elements\Entry;
+use craft\helpers\AdminTable;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\models\Section;
@@ -305,6 +306,44 @@ class ContentSeoService extends Component {
             // '' sorts before any real handle, which puts the global bundle row first.
             ->orderBy(['sectionHandle' => SORT_ASC])
             ->all();
+    }
+
+    /**
+     * Returns one page of a site's section rows (the global bundle row excluded - it has no
+     * place in a per-section listing) for `ContentSeoController::actionTableData()`'s
+     * `Craft.VueAdminTable`, optionally filtered by `$searchTerm` against `sectionLabel`/
+     * `sectionHandle` and always sorted by `sectionLabel`, the only column the table exposes as
+     * sortable.
+     *
+     * @param int $siteId
+     * @param int $page
+     * @param int $limit
+     * @param string|null $searchTerm
+     * @param int $sortDir `SORT_ASC` or `SORT_DESC`
+     * @return array{0: array, 1: ContentSeoRecord[]} the pagination links and this page's rows
+     *
+     * @author      Digitalastronaut
+     * @since       v1.25.0
+     */
+    public function getTableDataForSite(int $siteId, int $page, int $limit, ?string $searchTerm, int $sortDir): array {
+        if (!$this->_tableExists()) return [AdminTable::paginationLinks($page, 0, $limit), []];
+
+        $query = ContentSeoRecord::find()
+            ->where(['siteId' => $siteId])
+            ->andWhere(['!=', 'sectionHandle', ''])
+            ->orderBy(['sectionLabel' => $sortDir]);
+
+        if ($searchTerm !== null && $searchTerm !== '') {
+            $query->andWhere(['or',
+                ['like', 'sectionLabel', $searchTerm],
+                ['like', 'sectionHandle', $searchTerm],
+            ]);
+        }
+
+        $total = (int)$query->count();
+        $rows = $query->limit($limit)->offset(($page - 1) * $limit)->all();
+
+        return [AdminTable::paginationLinks($page, $total, $limit), $rows];
     }
 
     /**

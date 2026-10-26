@@ -301,8 +301,11 @@ class SeoField extends Field implements PreviewableFieldInterface {
     }
 
     /**
-     * Shows the element's stored SEO score as a plain percentage in the element index, when this
-     * field is added as a table attribute. No color/styling yet -- just the number.
+     * Shows the element's stored SEO score as a colored "passed/applicable" chip in the element
+     * index, when this field is added as a table attribute. The chip markup itself lives on
+     * `SeoScoreService::renderChip()` so the entry edit page's SEO/GEO sidebar pane
+     * ({@see \digitalastronaut\craftcoreseogeo\PluginTrait::_seoScoreSidebarHtml()}) can show the
+     * exact same chip rather than duplicating this.
      *
      * @param mixed $value
      * @param ElementInterface $element
@@ -314,15 +317,7 @@ class SeoField extends Field implements PreviewableFieldInterface {
     public function getPreviewHtml(mixed $value, ElementInterface $element): string {
         $score = CoreSeoGeo::getInstance()->getSeoScore()->getScore($element, (int)$this->id);
 
-        if ($score === null) {
-            return Craft::t('core-seo-geo', 'Not calculated');
-        }
-
-        if ($score->pending) {
-            return Craft::t('core-seo-geo', 'Calculating...');
-        }
-
-        return "{$score->score}%";
+        return CoreSeoGeo::getInstance()->getSeoScore()->renderChip($score);
     }
 
     /**

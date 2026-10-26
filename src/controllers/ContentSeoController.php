@@ -13,6 +13,7 @@ namespace digitalastronaut\craftcoreseogeo\controllers;
 use Craft;
 use craft\enums\Color;
 use craft\helpers\Cp;
+use craft\helpers\Html;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
@@ -74,12 +75,44 @@ class ContentSeoController extends Controller {
             throw new ForbiddenHttpException(Craft::t('core-seo-geo', "You don't have permission to edit any sites."));
         }
 
-        $rows = CoreSeoGeo::getInstance()->getContentSeo()->getRowsForSite($site->id);
-
         return $this->renderTemplate('core-seo-geo/settings/content-seo.twig', [
             'site' => $site,
-            'rows' => $rows,
-            'extraBySectionHandle' => $this->_contentSeoIndexExtras($rows),
+        ]);
+    }
+
+    /**
+     * JSON data for the index's `Craft.VueAdminTable` - `content-seo.twig`'s
+     * `tableDataEndpoint`, scoped to whichever site the page's `?site=` query param (baked into
+     * that endpoint string) names. `page`/`per_page`/`search`/`sort.0.direction` are the
+     * component's own query params; `sectionLabel` is the only sortable column, so unlike
+     * `RedirectsController::actionTableData()` there's no `sort.0.field` to branch on.
+     *
+     * @return Response
+     * @throws ForbiddenHttpException if the current user can't edit any site
+     *
+     * @author      Digitalastronaut
+     * @since       v1.25.0
+     */
+    public function actionTableData(): Response {
+        $this->requireAcceptsJson();
+
+        $site = Cp::requestedSite();
+
+        if ($site === null) {
+            throw new ForbiddenHttpException(Craft::t('core-seo-geo', "You don't have permission to edit any sites."));
+        }
+
+        $request = Craft::$app->getRequest();
+        $page = (int)$request->getParam('page', 1);
+        $limit = (int)$request->getParam('per_page', 100);
+        $searchTerm = $request->getParam('search');
+        $sortDir = $request->getParam('sort.0.direction') === 'desc' ? SORT_DESC : SORT_ASC;
+
+        [$pagination, $rows] = CoreSeoGeo::getInstance()->getContentSeo()->getTableDataForSite($site->id, $page, $limit, $searchTerm, $sortDir);
+
+        return $this->asSuccess(data: [
+            'pagination' => $pagination,
+            'data' => $this->_contentSeoTableRows($rows),
         ]);
     }
 
@@ -599,37 +632,47 @@ class ContentSeoController extends Controller {
     }
 
     /**
-     * Builds `content-seo.twig`'s per-section extra columns, keyed by `sectionHandle` so the
-     * index's existing `rows` loop (over the raw `ContentSeo` records) doesn't need to change -
-     * a status label for whether a title/description block config is configured at all, the
-     * sitemap generation toggle, the chosen robots directives' labels, and this section's
-     * structured data mappings (type label + property count each).
+     * Builds one `Craft.VueAdminTable` row per section for `actionTableData()`'s JSON
+     * response. `title`/`url` feed the `__slot:title` column; `titleStatus`/`description`/
+     * `sitemap` are pre-rendered status-label HTML ({@see _configStatusHtml()}/{@see
+     * _onOffStatusHtml()}) since the admin table renders every non-slot cell's value as raw
+     * HTML, not escaped text. `robots` and `mappings` are comma-joined, HTML-encoded text,
+     * falling back to `&ndash;` when there's nothing configured.
      *
      * @param ContentSeo[] $rows
-     * @return array<string, array{titleStatusHtml: string, descriptionStatusHtml: string, sitemapStatusHtml: string, robotsLabels: string[], mappings: array<int, array{typeLabel: string, propertyCount: int}>}>
+     * @return array<int, array<string, mixed>>
      *
      * @author      Digitalastronaut
-     * @since       v1.8.0
+     * @since       v1.25.0
      */
-    private function _contentSeoIndexExtras(array $rows): array {
+    private function _contentSeoTableRows(array $rows): array {
         $mappingsService = CoreSeoGeo::getInstance()->getStructuredDataMappings();
-        $extras = [];
+        $tableRows = [];
 
         foreach ($rows as $row) {
-            $extras[$row->sectionHandle] = [
-                'titleStatusHtml' => $this->_configStatusHtml($this->_decodeConfig($row->titleConfig) !== []),
-                'descriptionStatusHtml' => $this->_configStatusHtml($this->_decodeConfig($row->descriptionConfig) !== []),
-                'sitemapStatusHtml' => $this->_onOffStatusHtml(
+            $robotsLabels = $this->_robotsLabels($this->_decodeConfig($row->robots));
+            $mappings = $this->_mappingSummaryRows($mappingsService->getRowsForSection($row->sectionHandle));
+
+            $tableRows[] = [
+                'id' => $row->id,
+                'title' => $row->sectionLabel,
+                'url' => UrlHelper::url('core-seo-geo/settings/content-seo/' . $row->sectionHandle),
+                'titleStatus' => $this->_configStatusHtml($this->_decodeConfig($row->titleConfig) !== []),
+                'description' => $this->_configStatusHtml($this->_decodeConfig($row->descriptionConfig) !== []),
+                'sitemap' => $this->_onOffStatusHtml(
                     $row->sitemapEnabled,
                     Craft::t('core-seo-geo', 'On'),
                     Craft::t('core-seo-geo', 'Off'),
                 ),
-                'robotsLabels' => $this->_robotsLabels($this->_decodeConfig($row->robots)),
-                'mappings' => $this->_mappingSummaryRows($mappingsService->getRowsForSection($row->sectionHandle)),
+                'robots' => $robotsLabels !== [] ? Html::encode(implode(', ', $robotsLabels)) : '&ndash;',
+                'mappings' => $mappings !== [] ? Html::encode(implode(', ', array_map(
+                    static fn(array $mapping): string => "{$mapping['typeLabel']} ({$mapping['propertyCount']})",
+                    $mappings,
+                ))) : '&ndash;',
             ];
         }
 
-        return $extras;
+        return $tableRows;
     }
 
     /**

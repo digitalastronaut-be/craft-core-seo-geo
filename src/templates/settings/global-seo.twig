@@ -86,31 +86,7 @@
 
         <hr>
 
-        <div class="field">
-            <h2>{{ 'Structured data'|t('core-seo-geo') }}</h2>
-            <p class="light">{{ 'Fill these in once to describe this site, its owning organization, and/or the physical business behind it - the result is sent to search engines and AI assistants on every page.'|t('core-seo-geo') }}</p>
-            
-            <table class="data fullwidth">
-                <thead>
-                    <tr>
-                        <th scope="col">{{ 'Type'|t('core-seo-geo') }}</th>
-                        <th scope="col">{{ 'Status'|t('core-seo-geo') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in structuredDataTypeRows %}
-                        <tr>
-                            <td><a href="{{ row.url }}">{{ row.label }}</a></td>
-                            <td>{{ row.statusHtml|raw }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <hr>
-
-        <div class="field">
+        <div class="field width-50">
             <h2>{{ 'Text files'|t('core-seo-geo') }}</h2>
             <p class="light">{{ 'The plain-text files search engines and AI crawlers look for at a few fixed URLs.'|t('core-seo-geo') }}</p>
 
@@ -123,6 +99,28 @@
                 </thead>
                 <tbody>
                     {% for row in txtFileRows %}
+                        <tr>
+                            <td><a href="{{ row.url }}">{{ row.label }}</a></td>
+                            <td>{{ row.statusHtml|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="field width-50">
+            <h2>{{ 'Structured data'|t('core-seo-geo') }}</h2>
+            <p class="light">{{ 'Fill these in once to describe this site, its owning organization, and/or the physical business'|t('core-seo-geo') }}</p>
+            
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'Type'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Status'|t('core-seo-geo') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in structuredDataTypeRows %}
                         <tr>
                             <td><a href="{{ row.url }}">{{ row.label }}</a></td>
                             <td>{{ row.statusHtml|raw }}</td>

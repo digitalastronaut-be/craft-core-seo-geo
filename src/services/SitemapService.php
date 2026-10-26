@@ -341,7 +341,7 @@ class SitemapService extends Component {
     /**
      * The element query backing one of `getGroups()`'s handles - `null` for `custom-urls`,
      * since those have no backing element at all. Public (promoted from `_queryForGroup()`) so
-     * `LlmsService` can enumerate the same eligible content for llms.txt without this plugin
+     * `TxtFilesService` can enumerate the same eligible content for llms.txt without this plugin
      * maintaining two separate "what counts as this site's indexable content" definitions.
      *
      * @param int $siteId

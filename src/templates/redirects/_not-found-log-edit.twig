@@ -1,0 +1,89 @@
+{% extends '_layouts/cp.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set title = '/' ~ entry.uri %}
+{% set selectedSubnavItem = 'redirects' %}
+{% set crumbs = [
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
+    { label: '404s'|t('core-seo-geo'), url: url('core-seo-geo/redirects/not-found-log') },
+    { label: title },
+] %}
+{% set fullPageForm = true %}
+
+{% set additionalButtons %}
+    {% if showCreateRedirect %}
+        <a href="{{ url('core-seo-geo/redirects/new', {source: entry.uri}) }}" class="btn add icon">
+            {{ 'Create redirect'|t('core-seo-geo') }}
+        </a>
+    {% endif %}
+{% endset %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/redirects/save-not-found-log-entry') }}
+    {{ hiddenInput('id', entry.id) }}
+    {{ redirectInput('core-seo-geo/redirects/not-found-log') }}
+
+    <div class="flex-fields">
+        <h2>{{ 'Matching redirects'|t('core-seo-geo') }}</h2>
+
+        <div class="field">
+            
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'Source'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Destination'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Type'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Status code'|t('core-seo-geo') }}</th>
+                        {% if isMultiSite %}
+                            <th scope="col">{{ 'Sites'|t('core-seo-geo') }}</th>
+                        {% endif %}
+                        <th scope="col">{{ 'Enabled'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Applies here'|t('core-seo-geo') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in matchingRedirects %}
+                        <tr>
+                            <th scope="row"><a href="{{ row.url }}">{{ row.title }}</a></th>
+                            <td>{{ row.destination|raw }}</td>
+                            <td>{{ row.matchType }}</td>
+                            <td>{{ row.statusCode }}</td>
+                            {% if isMultiSite %}
+                                <td>{{ row.sites|raw }}</td>
+                            {% endif %}
+                            <td>{{ row.enabled|raw }}</td>
+                            <td>{{ row.active|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            {% if matchingRedirects is empty %}
+                <p class="zilch small">{{ 'No redirect rule matches this URI.'|t('core-seo-geo') }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Manually fixed'|t('core-seo-geo'),
+            instructions: 'Turn this on once you’ve fixed the underlying issue outside of a redirect (e.g. re-uploaded a deleted asset). It’ll switch back off on its own if this URI 404s again.'|t('core-seo-geo'),
+            id: 'resolved',
+            name: 'resolved',
+            on: entry.resolved,
+        }) }}
+    </div>
+
+    {% if hitChartData %}
+        {% set chartId = entry.id %}
+        {% include 'core-seo-geo/redirects/_hit-chart.twig' %}
+    {% endif %}
+
+    {% if metadataHtml %}
+        {{ metadataHtml|raw }}
+    {% endif %}
+{% endblock %}

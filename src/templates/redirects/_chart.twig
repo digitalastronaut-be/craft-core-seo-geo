@@ -1,0 +1,94 @@
+{% if chartData.datasets|length %}
+    <h2>{{ chartTitle }}</h2>
+
+    <div class="core-seo-geo-activity-chart-wrapper">
+        <canvas id="activity-chart"></canvas>
+    </div>
+
+    {% js %}
+        (() => {
+            const chartData = {{ chartData|json_encode|raw }};
+
+            const colors = ['#0594D1', '#DE3800', '#FF9A00', '#009802'];
+            const colorOffset = {{ chartColorOffset|default(0) }};
+
+            chartData.datasets.forEach((dataset, i) => {
+                dataset.backgroundColor = colors[colorOffset + i];
+                dataset.borderColor = 'transparent';
+                dataset.borderWidth = 0;
+                dataset.borderRadius = 2;
+                dataset.maxBarThickness = 24;
+                dataset.minBarLength = 5;
+                dataset.barPercentage = 0.80;
+            });
+
+            const labelEvery = 5;
+
+            const renderChart = () => new Chart(document.getElementById('activity-chart'), {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    layout: {
+                        padding: { bottom: 8 },
+                    },
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            backgroundColor: '#fff',
+                            titleColor: '#1F2933',
+                            titleFont: { weight: 'bold' },
+                            bodyColor: '#515F6C',
+                            borderColor: '#CDD8E4',
+                            borderWidth: 1,
+                            cornerRadius: 3,
+                            padding: 10,
+                            boxPadding: 4,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 0,
+                                callback: (value, index) => (index % labelEvery === 0 ? chartData.labels[index] : ''),
+                            },
+                        },
+                        yCount: {
+                            type: 'linear',
+                            position: 'left',
+                            beginAtZero: true,
+                            grace: '5%',
+                            ticks: { maxTicksLimit: 6 },
+                            grid: { borderDash: [5, 5] },
+                        },
+                        yHits: {
+                            type: 'linear',
+                            position: 'right',
+                            beginAtZero: true,
+                            grace: '5%',
+                            ticks: { maxTicksLimit: 6 },
+                            grid: { drawOnChartArea: false },
+                        },
+                    },
+                },
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', renderChart);
+            } else {
+                renderChart();
+            }
+        })();
+    {% endjs %}
+{% endif %}

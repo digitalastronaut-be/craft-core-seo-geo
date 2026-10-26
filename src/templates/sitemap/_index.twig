@@ -2,3 +2,7 @@
 
 {% set title = 'Sitemap'|t('core-seo-geo') %}
 {% set selectedSubnavItem = 'sitemap' %}
+{% set crumbs = [
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
+    { label: title },
+] %}

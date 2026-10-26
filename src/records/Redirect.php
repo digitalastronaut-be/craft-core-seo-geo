@@ -24,12 +24,9 @@ use digitalastronaut\craftcoreseogeo\db\Table;
  * table, rather than splitting into two tables the way `nystudio107/craft-retour` does.
  *
  * @property int $id
- * @property int|null $siteId `null` applies to every site
  * @property string $matchType one of the `MATCH_TYPE_*` constants
- * @property string $sourceUri normalized path (no leading slash, no query string) when
- *                              `matchType` is exact; a regex pattern otherwise
- * @property string|null $destinationUri relative path or absolute URL; `null` only when
- *                                        `statusCode` is `STATUS_CODE_GONE`
+ * @property string $sourceUri normalized path (no leading slash, no query string) when `matchType` is exact; a regex pattern otherwise
+ * @property string|null $destinationUri relative path or absolute URL; `null` only when `statusCode` is `STATUS_CODE_GONE`
  * @property int $statusCode one of the `STATUS_CODE_*` constants
  * @property bool $enabled
  * @property int|null $sourceElementId the entry that triggered this redirect, if auto-created
@@ -73,6 +70,21 @@ class Redirect extends ActiveRecord {
         self::STATUS_CODE_FOUND,
         self::STATUS_CODE_GONE,
     ];
+
+    /**
+     * The sites this redirect applies to - empty means every site. Not a database column:
+     * `RedirectsService` reads/writes the actual relationship through the
+     * `coreseogeo_redirect_sites` table instead, since a redirect can apply to an arbitrary
+     * subset of sites rather than just one. Populated by `RedirectsService::saveRedirect()`
+     * (even on a validation failure, so `_edit.twig` can redisplay what was posted) and by
+     * `RedirectsController::actionEdit()` for an existing, already-saved redirect.
+     *
+     * @var int[]
+     *
+     * @author      Digitalastronaut
+     * @since       v1.19.0
+     */
+    public array $siteIds = [];
 
     /**
      * @inheritdoc

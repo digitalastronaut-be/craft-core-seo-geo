@@ -26,12 +26,15 @@ use yii\web\Response;
 /**
  * Class TxtFilesController
  *
- * The settings pages for the plugin's generated text files - robots.txt, humans.txt, ads.txt,
- * llms.txt, llms-full.txt - reachable as sub-pages of "Global"
- * (`core-seo-geo/settings/txt/<slug>`, `<slug>` being one of `TxtFilesService::TYPE_SLUGS`).
- * The five have nothing in common field-wise, so each gets its own template
- * (`txt-<slug>.twig`), but a single edit action still covers all five - same reasoning as
- * `GlobalStructuredDataController` for its four structured data types.
+ * Everything to do with the plugin's generated text files - robots.txt, humans.txt, ads.txt,
+ * security.txt, trust.txt, llms.txt, llms-full.txt: both their CP settings pages
+ * (`core-seo-geo/settings/txt/<slug>`, `<slug>` being one of `TxtFilesService::TYPE_SLUGS`) and
+ * the public front-end actions that actually serve each file. The five settings pages have
+ * nothing in common field-wise, so each gets its own template (`txt-<slug>.twig`), but a single
+ * edit/save action still covers all of them - same reasoning as `GlobalStructuredDataController`
+ * for its four structured data types. The serving actions are kept on this same controller
+ * rather than split out per file, since each one is just a one-liner calling `TxtFilesService`
+ * and setting a content type - not enough distinct behavior to earn a controller of its own.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -39,12 +42,27 @@ use yii\web\Response;
  */
 class TxtFilesController extends Controller {
     /**
+     * @var array<int, string> the public, anonymous, front-end serving actions - every other
+     * action on this controller is a CP settings page and requires an admin.
+     */
+    private const array SERVING_ACTIONS = ['robots', 'humans', 'ads', 'security', 'trust', 'llms', 'llms-full'];
+
+    /**
+     * @inheritdoc
+     *
+     * @since v1.10.0
+     */
+    protected array|bool|int $allowAnonymous = self::SERVING_ACTIONS;
+
+    /**
      * @inheritdoc
      *
      * @since v1.10.0
      */
     public function beforeAction($action): bool {
-        $this->requireAdmin(false);
+        if (!\in_array($action->id, self::SERVING_ACTIONS, true)) {
+            $this->requireAdmin(false);
+        }
 
         return parent::beforeAction($action);
     }
@@ -110,6 +128,129 @@ class TxtFilesController extends Controller {
     }
 
     /**
+     * Serves `robots.txt`.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.10.0
+     */
+    public function actionRobots(): Response {
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getRobotsTxt($siteId);
+
+        $this->response->getHeaders()->set('Content-Type', 'text/plain; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
+     * Serves `humans.txt`.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.11.0
+     */
+    public function actionHumans(): Response {
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getHumansTxt();
+
+        $this->response->getHeaders()->set('Content-Type', 'text/plain; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
+     * Serves `ads.txt`.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.12.0
+     */
+    public function actionAds(): Response {
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getAdsTxt();
+
+        $this->response->getHeaders()->set('Content-Type', 'text/plain; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
+     * Serves `security.txt`, at both the location RFC 9116 prefers and the root location kept
+     * for backwards compatibility - see `PluginTrait::registerSiteUrlRules()`.
+     *
+     * @return Response
+     * @throws NotFoundHttpException if the required `Contact`/`Expires` fields aren't both set
+     * - see `TxtFilesService::getSecurityTxt()`
+     *
+     * @author      Digitalastronaut
+     * @since       v1.13.0
+     */
+    public function actionSecurity(): Response {
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getSecurityTxt($siteId);
+
+        if ($txt === '') {
+            throw new NotFoundHttpException('security.txt is missing its required Contact/Expires fields.');
+        }
+
+        $this->response->getHeaders()->set('Content-Type', 'text/plain; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
+     * Serves `trust.txt`.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.14.0
+     */
+    public function actionTrust(): Response {
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getTrustTxt();
+
+        $this->response->getHeaders()->set('Content-Type', 'text/plain; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
+     * Serves `llms.txt`.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.15.0
+     */
+    public function actionLlms(): Response {
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getLlmsTxt($siteId);
+
+        $this->response->getHeaders()->set('Content-Type', 'text/markdown; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
+     * Serves `llms-full.txt`.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.15.0
+     */
+    public function actionLlmsFull(): Response {
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+        $txt = CoreSeoGeo::getInstance()->getTxtFiles()->getLlmsFullTxt($siteId);
+
+        $this->response->getHeaders()->set('Content-Type', 'text/markdown; charset=UTF-8');
+
+        return $this->asRaw($txt);
+    }
+
+    /**
      * The per-type template variables `actionEdit()` needs on top of `settings` - whatever a
      * given page's fields require that isn't just a `Settings` property it can read directly.
      *
@@ -121,6 +262,8 @@ class TxtFilesController extends Controller {
      * @since       v1.10.0
      */
     private function _extraVars(string $type, Site $site): array {
+        $txtFiles = CoreSeoGeo::getInstance()->getTxtFiles();
+
         return match ($type) {
             'robots' => [
                 'cpTrigger' => Craft::$app->getConfig()->getGeneral()->cpTrigger,
@@ -129,28 +272,28 @@ class TxtFilesController extends Controller {
                     static fn(string $bot): array => ['label' => $bot, 'value' => $bot],
                     CoreSeoGeo::getInstance()->getBotDetection()->getKnownBots(),
                 ),
-                'robotsTxtPreview' => CoreSeoGeo::getInstance()->getRobots()->getRobotsTxt($site->id),
+                'robotsTxtPreview' => $txtFiles->getRobotsTxt($site->id),
             ],
             'humans' => [
-                'humansTxtPreview' => CoreSeoGeo::getInstance()->getHumans()->getHumansTxt(),
+                'humansTxtPreview' => $txtFiles->getHumansTxt(),
             ],
             'ads' => [
                 'adsTxtRelationshipOptions' => Settings::getAdsTxtRelationshipOptions(),
-                'adsTxtPreview' => CoreSeoGeo::getInstance()->getAds()->getAdsTxt(),
+                'adsTxtPreview' => $txtFiles->getAdsTxt(),
             ],
             'security' => [
-                'securityTxtPreview' => CoreSeoGeo::getInstance()->getSecurity()->getSecurityTxt($site->id),
+                'securityTxtPreview' => $txtFiles->getSecurityTxt($site->id),
             ],
             'trust' => [
                 'trustTxtDataTrainingAllowedOptions' => Settings::getTrustTxtDataTrainingAllowedOptions(),
-                'trustTxtPreview' => CoreSeoGeo::getInstance()->getTrust()->getTrustTxt(),
+                'trustTxtPreview' => $txtFiles->getTrustTxt(),
             ],
             'llms' => [
                 'llmsRow' => CoreSeoGeo::getInstance()->getContentSeo()->getGlobalRow($site->id),
-                'llmsTxtPreview' => CoreSeoGeo::getInstance()->getLlms()->getLlmsTxt($site->id),
+                'llmsTxtPreview' => $txtFiles->getLlmsTxt($site->id),
             ],
             'llms-full' => [
-                'llmsFullTxtPreview' => CoreSeoGeo::getInstance()->getLlmsFull()->getLlmsFullTxt($site->id),
+                'llmsFullTxtPreview' => $txtFiles->getLlmsFullTxt($site->id),
             ],
             default => [],
         };

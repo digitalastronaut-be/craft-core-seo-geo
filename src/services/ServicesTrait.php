@@ -83,27 +83,6 @@ trait ServicesTrait {
                 'txtFiles' => [
                     'class' => TxtFilesService::class,
                 ],
-                'robots' => [
-                    'class' => RobotsService::class,
-                ],
-                'humans' => [
-                    'class' => HumansService::class,
-                ],
-                'ads' => [
-                    'class' => AdsService::class,
-                ],
-                'security' => [
-                    'class' => SecurityService::class,
-                ],
-                'trust' => [
-                    'class' => TrustService::class,
-                ],
-                'llms' => [
-                    'class' => LlmsService::class,
-                ],
-                'llmsFull' => [
-                    'class' => LlmsFullService::class,
-                ],
                 'redirects' => [
                     'class' => RedirectsService::class,
                 ],
@@ -214,55 +193,6 @@ trait ServicesTrait {
      */
     public function getTxtFiles(): TxtFilesService {
         return $this->get('txtFiles');
-    }
-
-    /**
-     * @return RobotsService
-     */
-    public function getRobots(): RobotsService {
-        return $this->get('robots');
-    }
-
-    /**
-     * @return HumansService
-     */
-    public function getHumans(): HumansService {
-        return $this->get('humans');
-    }
-
-    /**
-     * @return AdsService
-     */
-    public function getAds(): AdsService {
-        return $this->get('ads');
-    }
-
-    /**
-     * @return SecurityService
-     */
-    public function getSecurity(): SecurityService {
-        return $this->get('security');
-    }
-
-    /**
-     * @return TrustService
-     */
-    public function getTrust(): TrustService {
-        return $this->get('trust');
-    }
-
-    /**
-     * @return LlmsService
-     */
-    public function getLlms(): LlmsService {
-        return $this->get('llms');
-    }
-
-    /**
-     * @return LlmsFullService
-     */
-    public function getLlmsFull(): LlmsFullService {
-        return $this->get('llmsFull');
     }
 
     /**

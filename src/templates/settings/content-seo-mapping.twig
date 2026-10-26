@@ -5,7 +5,7 @@
 {% set extraCrumbs = [
     { label: 'Content'|t('core-seo-geo'), url: url('core-seo-geo/settings/content-seo') },
     { label: section.name, url: url('core-seo-geo/settings/content-seo/' ~ section.handle) },
-    { label: mapping ? 'Edit mapping'|t('core-seo-geo') : 'Create mapping'|t('core-seo-geo') },
+    { label: title },
 ] %}
 {% set fullPageForm = true %}
 

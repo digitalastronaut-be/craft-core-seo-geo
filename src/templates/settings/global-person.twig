@@ -6,7 +6,7 @@
 {% set title = 'Person'|t('core-seo-geo') %}
 {% set extraCrumbs = [
     { label: 'Global'|t('core-seo-geo'), url: url('core-seo-geo/settings/global-seo') },
-    { label: 'Person'|t('core-seo-geo'), url: url('core-seo-geo/settings/global/person') },
+    { label: title },
 ] %}
 {% set urlFormat = 'core-seo-geo/settings/global/person?site={handle}' %}
 {% set selectedSiteId = site.id %}

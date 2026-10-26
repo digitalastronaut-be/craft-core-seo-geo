@@ -2,6 +2,9 @@
 
 {% set selectedSubnavItem = 'content-seo' %}
 {% set title = 'Content'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: title },
+] %}
 {% set urlFormat = 'core-seo-geo/settings/content-seo?site={handle}' %}
 {% set selectedSiteId = site.id %}
 

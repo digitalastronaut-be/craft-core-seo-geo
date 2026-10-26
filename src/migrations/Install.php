@@ -127,7 +127,6 @@ class Install extends Migration {
 
         $this->createTable(Table::REDIRECTS, [
             'id' => $this->primaryKey(),
-            'siteId' => $this->integer()->null(),
             'matchType' => $this->string(10)->notNull()->defaultValue(Redirect::MATCH_TYPE_EXACT),
             'sourceUri' => $this->string(255)->notNull(),
             'destinationUri' => $this->string(255)->null(),
@@ -141,9 +140,21 @@ class Install extends Migration {
             'uid' => $this->uid(),
         ]);
 
-        $this->addForeignKey(null, Table::REDIRECTS, ['siteId'], CraftTable::SITES, ['id'], 'CASCADE', null);
         $this->addForeignKey(null, Table::REDIRECTS, ['sourceElementId'], CraftTable::ELEMENTS, ['id'], 'SET NULL', null);
-        $this->createIndex(null, Table::REDIRECTS, ['siteId', 'sourceUri'], false);
+        $this->createIndex(null, Table::REDIRECTS, ['sourceUri']);
+
+        $this->createTable(Table::REDIRECTSITES, [
+            'id' => $this->primaryKey(),
+            'redirectId' => $this->integer()->notNull(),
+            'siteId' => $this->integer()->notNull(),
+            'dateCreated' => $this->dateTime()->notNull(),
+            'dateUpdated' => $this->dateTime()->notNull(),
+            'uid' => $this->uid(),
+        ]);
+
+        $this->addForeignKey(null, Table::REDIRECTSITES, ['redirectId'], Table::REDIRECTS, ['id'], 'CASCADE', null);
+        $this->addForeignKey(null, Table::REDIRECTSITES, ['siteId'], CraftTable::SITES, ['id'], 'CASCADE', null);
+        $this->createIndex(null, Table::REDIRECTSITES, ['redirectId', 'siteId'], true);
 
         $this->createTable(Table::NOTFOUNDLOG, [
             'id' => $this->primaryKey(),
@@ -151,6 +162,7 @@ class Install extends Migration {
             'uri' => $this->string(255)->notNull(),
             'referrer' => $this->string(2000)->null(),
             'hitCount' => $this->integer()->notNull()->defaultValue(1),
+            'resolved' => $this->boolean()->notNull()->defaultValue(false),
             'dateLastHit' => $this->dateTime()->notNull(),
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),
@@ -159,6 +171,21 @@ class Install extends Migration {
 
         $this->addForeignKey(null, Table::NOTFOUNDLOG, ['siteId'], CraftTable::SITES, ['id'], 'CASCADE', null);
         $this->createIndex(null, Table::NOTFOUNDLOG, ['siteId', 'uri'], true);
+
+        $this->createTable(Table::METRICS, [
+            'id' => $this->primaryKey(),
+            'type' => $this->string()->notNull(),
+            'entityId' => $this->integer()->notNull()->defaultValue(0),
+            'siteId' => $this->integer()->notNull(),
+            'timestamp' => $this->dateTime()->notNull(),
+            'hitCount' => $this->integer()->notNull()->defaultValue(1),
+            'dateCreated' => $this->dateTime()->notNull(),
+            'dateUpdated' => $this->dateTime()->notNull(),
+            'uid' => $this->uid(),
+        ]);
+
+        $this->addForeignKey(null, Table::METRICS, ['siteId'], CraftTable::SITES, ['id'], 'CASCADE', null);
+        $this->createIndex(null, Table::METRICS, ['type', 'entityId', 'siteId', 'timestamp'], true);
 
         return true;
     }
@@ -175,8 +202,10 @@ class Install extends Migration {
         $this->dropTableIfExists(Table::SEODATA);
         $this->dropTableIfExists(Table::STRUCTUREDDATAMAPPINGS);
         $this->dropTableIfExists(Table::TRACKINGSCRIPTS);
+        $this->dropTableIfExists(Table::REDIRECTSITES);
         $this->dropTableIfExists(Table::REDIRECTS);
         $this->dropTableIfExists(Table::NOTFOUNDLOG);
+        $this->dropTableIfExists(Table::METRICS);
 
         return true;
     }

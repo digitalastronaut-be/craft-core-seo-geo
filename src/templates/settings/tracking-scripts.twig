@@ -2,6 +2,9 @@
 
 {% set selectedSubnavItem = 'tracking-scripts' %}
 {% set title = 'Tracking Scripts'|t('core-seo-geo') %}
+{% set extraCrumbs = [
+    { label: title },
+] %}
 
 {% block actionButton %}
     <a href="{{ url('core-seo-geo/settings/tracking-scripts/new') }}" class="btn submit add icon">

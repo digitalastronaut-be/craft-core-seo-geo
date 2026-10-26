@@ -54,4 +54,30 @@ abstract class Table {
      * @since v1.16.0
      */
     public const string NOTFOUNDLOG = '{{%coreseogeo_404s}}';
+
+    /**
+     * @since v1.19.0
+     */
+    public const string REDIRECTSITES = '{{%coreseogeo_redirect_sites}}';
+
+    /**
+     * Retained only for `m261024_150000_add_404_hits_table`/`m261024_160000_add_redirect_
+     * hits_table` (old, immutable migration history) to still reference - the table itself no
+     * longer exists on a fresh install (see `Install.php`) or after `m261026_100000_add_
+     * metrics_table` has run, which replaces it with `METRICS`.
+     *
+     * @since v1.17.0
+     */
+    public const string NOTFOUNDHITS = '{{%coreseogeo_404_hits}}';
+
+    /**
+     * @see self::NOTFOUNDHITS
+     * @since v1.17.0
+     */
+    public const string REDIRECTHITS = '{{%coreseogeo_redirect_hits}}';
+
+    /**
+     * @since v1.20.0
+     */
+    public const string METRICS = '{{%coreseogeo_metrics}}';
 }

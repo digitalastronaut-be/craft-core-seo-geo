@@ -1,0 +1,78 @@
+{#
+    The small per-entity hit chart in `_edit.twig`'s and `_not-found-log-edit.twig`'s details
+    sidebars - `_chart.twig`'s counterpart for one specific redirect or 404 log entry
+    (`entityId` in `coreseogeo_metrics`) rather than a site's whole activity. Deliberately
+    bare - no axes, no legend, just the bars and a hover tooltip - since this is meant to read
+    as a glance-able sparkline next to the metadata table below it, not a second full chart.
+
+    `chartId` is set by whichever template includes this one, so the canvas's own element id
+    is still unique per entity without this partial needing to know which kind of entity
+    (`redirect`/`entry`) it's charting.
+#}
+<h2 class="h6 core-seo-geo-hit-chart-label">{{ 'Hits, last 30 days'|t('core-seo-geo') }}</h2>
+
+<div class="core-seo-geo-hit-chart-wrapper">
+    <canvas id="hit-chart-{{ chartId }}"></canvas>
+</div>
+
+{% js %}
+    (() => {
+        const chartData = {{ hitChartData|json_encode|raw }};
+
+        chartData.datasets.forEach((dataset) => {
+            dataset.backgroundColor = '#0594D1';
+            dataset.borderColor = 'transparent';
+            dataset.borderWidth = 0;
+            dataset.borderRadius = 2;
+            dataset.maxBarThickness = 12;
+            dataset.minBarLength = 3;
+        });
+
+        // Same reasoning as `_chart.twig`'s own `renderChart()` for why this waits for
+        // `DOMContentLoaded` rather than running immediately.
+        const renderChart = () => new Chart(document.getElementById('hit-chart-{{ chartId }}'), {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false,
+                },
+                layout: {
+                    padding: 0,
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#1F2933',
+                        titleFont: { weight: 'bold' },
+                        bodyColor: '#515F6C',
+                        borderColor: '#CDD8E4',
+                        borderWidth: 1,
+                        cornerRadius: 3,
+                        padding: 8,
+                        // Round label swatches (not the default square box) - same as
+                        // `_chart.twig`'s own tooltip, so every chart's tooltip matches.
+                        usePointStyle: true,
+                        callbacks: {
+                            label: (context) => context.parsed.y + ' ' + {{ 'hits'|t('core-seo-geo')|json_encode|raw }},
+                        },
+                    },
+                },
+                scales: {
+                    x: { display: false },
+                    y: { display: false, beginAtZero: true },
+                },
+            },
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderChart);
+        } else {
+            renderChart();
+        }
+    })();
+{% endjs %}

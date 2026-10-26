@@ -82,6 +82,22 @@ class CoreSeoGeoVariable {
     }
 
     /**
+     * The label for this plugin's own CP nav item, respecting the `Settings::$pluginName`
+     * override exactly like `CoreSeoGeo::getCpNavItem()` does. Used as every CP page's root
+     * breadcrumb label so it can never drift out of sync with the nav item itself.
+     *
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.16.0
+     */
+    public function rootLabel(): string {
+        $item = CoreSeoGeo::getInstance()->getCpNavItem();
+
+        return $item['label'] ?? Craft::t('core-seo-geo', 'SEO/GEO');
+    }
+
+    /**
      * Renders the unresolved-custom-routes warning for the sitemap settings (now part of the
      * Global settings page), using Craft's own built-in `Tip` field-layout UI element so it
      * matches every other warning callout in the CP exactly. `null` when there's nothing to warn

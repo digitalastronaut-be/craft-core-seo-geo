@@ -86,7 +86,7 @@
 		}
 
 		mark {
-			background: rgba(125, 168, 208, .2);
+			background: rgba(125, 168, 208, 0.2);
 			border-radius: 1px;
 		}
 	}
@@ -201,10 +201,6 @@
 }
 
 .core-seo-geo-info-icon-popup {
-	// Positioned and shown/hidden from JS (tooltips.js, via the Popover API + floating-ui) -
-	// `position: fixed` is what lets the browser's top-layer rendering escape clipping by an
-	// `overflow: auto`/`hidden` ancestor (the structured-data field's property dropdown), which
-	// plain `position: absolute` + CSS :hover never could. `top`/`left` are set inline by JS.
 	position: fixed;
 	margin: 0;
 	z-index: 3;
@@ -232,6 +228,29 @@
 
 .core-seo-geo-template-error {
 	color: var(--error-color);
+}
+
+.core-seo-geo-activity-chart-wrapper {
+	position: relative;
+	height: 240px;
+	margin-bottom: var(--l);
+}
+
+.core-seo-geo-hit-chart-label {
+	font-weight: 400;
+	margin-bottom: var(--m);
+}
+
+.core-seo-geo-hit-chart-wrapper {
+	position: relative;
+	height: 80px;
+	margin-bottom: var(--m);
+	border-bottom: 1px solid var(--hairline-color);
+
+	// Same bleed-to-the-edge trick `.meta > .field` uses in the CP's own CSS - the chart
+	// (and, since it's edge to edge too, the hairline below it) spans the sidebar's full
+	// width while the `.h6` label above it stays inset.
+	margin-inline: var(--neg-padding);
 }
 
 .core-seo-geo-mapping-table-options {

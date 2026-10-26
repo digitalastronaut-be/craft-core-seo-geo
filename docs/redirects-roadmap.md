@@ -178,11 +178,15 @@ New `RedirectsController` (CP-only, `requireAdmin(false)` like `TrackingScriptsC
   (`Cp::statusLabelHtml()`, same teal/gray convention `TrackingScriptsController::
   _enabledStatusHtmlById()` already uses), edit/delete actions.
 - `actionNotFoundLog()` — the "404s" tab: lists `coreseogeo_404s`, sorted by
-  `hitCount` descending. Columns: URI, hit count, last hit (relative time), referrer, a
-  "Create redirect" link to `redirects/new?source=<uri>` (Step 5's add form reads a
-  `source` query param to pre-fill `sourceUri` — no extra controller action needed for
-  that hand-off), and a delete action for manual cleanup of log entries nobody intends
-  to fix.
+  `hitCount` descending. Columns: URI, type, hit count, last hit (relative time),
+  referrer, a "Create redirect" link to `redirects/new?source=<uri>` (Step 5's add form
+  reads a `source` query param to pre-fill `sourceUri` — no extra controller action
+  needed for that hand-off), and a delete action for manual cleanup of log entries
+  nobody intends to fix. The "type" column (Asset/Page) isn't a stored column — it's
+  `NotFoundLogEntry::getIsAsset()`, inferred from whether the URI's last path segment
+  has a file extension. A page's `uri` in Craft is never extension-less and an asset's
+  filename always is, so the URI shape alone is enough; no schema change, no volume/
+  filesystem lookup needed just to label a row in a list.
 - `actionEdit(?int $id, ?Redirect $redirect)` / `actionSave()` / `actionDelete()` — same
   three-action shape as `TrackingScriptsController`'s edit/save/delete trio, including
   the re-render-with-posted-data-on-failure pattern via `setRouteParams()`.

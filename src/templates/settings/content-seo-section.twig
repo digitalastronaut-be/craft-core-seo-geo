@@ -6,7 +6,7 @@
 {% set title = section.name %}
 {% set extraCrumbs = [
     { label: 'Content'|t('core-seo-geo'), url: url('core-seo-geo/settings/content-seo') },
-    { label: section.name, url: url('core-seo-geo/settings/content-seo/' ~ section.handle) },
+    { label: title },
 ] %}
 {% set urlFormat = 'core-seo-geo/settings/content-seo/' ~ section.handle ~ '?site={handle}' %}
 {% set selectedSiteId = site.id %}

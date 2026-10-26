@@ -12,9 +12,9 @@ namespace digitalastronaut\craftcoreseogeo\elements;
 
 use Craft;
 use craft\base\Element;
-use craft\elements\User;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\db\ElementQueryInterface;
+use craft\elements\User;
 use craft\fieldlayoutelements\TitleField;
 use craft\helpers\Cp;
 use craft\helpers\Db;
@@ -215,9 +215,26 @@ class StructuredData extends Element {
      * @return array[]
      */
     protected static function defineSources(string $context): array {
-        return [
+        $sources = [
             ['key' => '*', 'label' => Craft::t('core-seo-geo', 'All structured data')],
+            ['heading' => Craft::t('core-seo-geo', 'Data types')],
         ];
+
+        // `self::TYPES` only covers the built-in standalone types - a mapping's content
+        // settings can pick any schema.org type (e.g. `Person`, `WebPage`), so those need to be
+        // pulled in too for a source to exist for them.
+        $mappedTypes = array_diff(CoreSeoGeo::getInstance()->getStructuredDataMappings()->getMappedTypes(), self::TYPES);
+        sort($mappedTypes);
+
+        foreach (array_merge(self::TYPES, $mappedTypes) as $type) {
+            $sources[] = [
+                'key' => "type:$type",
+                'label' => Craft::t('core-seo-geo', $type),
+                'criteria' => ['type' => $type],
+            ];
+        }
+
+        return $sources;
     }
 
     protected static function includeSetStatusAction(): bool { return true; }

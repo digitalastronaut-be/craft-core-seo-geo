@@ -70,7 +70,7 @@ class Settings extends Model {
 
     /**
      * Whether `robots.txt` is served at all. Forced on regardless of this setting whenever
-     * `disallowRobots` is active outside dev mode - see `RobotsService::getRobotsTxt()`.
+     * `disallowRobots` is active outside dev mode - see `TxtFilesService::getRobotsTxt()`.
      *
      * @since v1.10.0
      */
@@ -222,7 +222,7 @@ class Settings extends Model {
     /**
      * Whether `security.txt` is served at all (at both `.well-known/security.txt` and, for
      * backwards compatibility, the root `security.txt` - see `PluginTrait::registerSiteUrlRules()`). Off
-     * by default, same reasoning as `humans.txt`/`ads.txt`. Even when on, `SecurityService`
+     * by default, same reasoning as `humans.txt`/`ads.txt`. Even when on, `TxtFilesService`
      * won't actually serve content until the two fields RFC 9116 requires - at least one
      * `$securityTxtContacts` entry and `$securityTxtExpires` - are both set; serving a file
      * that's missing either would be actively non-compliant, worse than not serving one.
@@ -742,7 +742,7 @@ class Settings extends Model {
     /**
      * Normalizes a posted `humansTxtTeam`/`humansTxtThanks` editable table - both are a list of
      * credited people with the same row shape, only the section header they end up under
-     * differs ({@see \digitalastronaut\craftcoreseogeo\services\HumansService::getHumansTxt()}).
+     * differs ({@see \digitalastronaut\craftcoreseogeo\services\TxtFilesService::getHumansTxt()}).
      * Rows with no name are dropped entirely; a row with a name but nothing else is still kept.
      *
      * @param mixed $value

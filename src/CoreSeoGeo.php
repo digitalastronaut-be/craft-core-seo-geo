@@ -30,7 +30,7 @@ class CoreSeoGeo extends Plugin {
     use ServicesTrait;
     use PluginTrait;
 
-    public string $schemaVersion = '1.0.12';
+    public string $schemaVersion = '1.0.14';
     public bool $hasCpSettings = true;
     public bool $hasCpSection = true;
 

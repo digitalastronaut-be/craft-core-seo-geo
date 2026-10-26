@@ -265,8 +265,8 @@ class ContentSeoService extends Component {
         $saved = $record->save();
 
         if ($saved) {
-            CoreSeoGeo::getInstance()->getLlms()->clearCache();
-            CoreSeoGeo::getInstance()->getLlmsFull()->clearCache();
+            CoreSeoGeo::getInstance()->getTxtFiles()->clearLlmsCache();
+            CoreSeoGeo::getInstance()->getTxtFiles()->clearLlmsFullCache();
         }
 
         return $saved;
@@ -376,7 +376,7 @@ class ContentSeoService extends Component {
      * but its value isn't actually a `SeoData` instance (a corrupt/legacy value) - treated as
      * "nothing to resolve" rather than guessing, matching what the pre-extraction inline version
      * of this in `PluginTrait::_renderSeoTags()` already did. Used by both that meta-tag
-     * injection and `LlmsService` for llms.txt's title/description/robots-exclusion per entry.
+     * injection and `TxtFilesService` for llms.txt's title/description/robots-exclusion per entry.
      *
      * @param ElementInterface $element
      * @return SeoData|null

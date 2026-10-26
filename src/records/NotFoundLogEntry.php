@@ -27,6 +27,8 @@ use digitalastronaut\craftcoreseogeo\db\Table;
  * @property string $uri normalized path (no leading slash, no query string)
  * @property string|null $referrer last-seen `Referer` header, if any
  * @property int $hitCount
+ * @property bool $resolved manually marked fixed from the detail page - `RedirectsService::
+ * _recordNotFound()` flips this back to `false` the next time this same `(siteId, uri)` 404s
  * @property string $dateLastHit
  * @property string $dateCreated
  * @property string $dateUpdated
@@ -48,7 +50,24 @@ class NotFoundLogEntry extends ActiveRecord {
 
         if ($this->getIsNewRecord()) {
             $this->hitCount = 1;
+            $this->resolved = false;
         }
+    }
+
+    /**
+     * Whether this URI looks like an asset request rather than a page request, judged
+     * purely by whether its last path segment has a file extension - a page's `uri` in
+     * Craft is never extension-less, an asset's filename always is. No DB lookup against
+     * actual volumes: this is a display hint for the "404s" tab (`redirects-roadmap.md`
+     * Step 4), not a guarantee the URI ever matched a real asset.
+     *
+     * @return bool
+     *
+     * @author      Digitalastronaut
+     * @since       v1.16.0
+     */
+    public function getIsAsset(): bool {
+        return pathinfo($this->uri, PATHINFO_EXTENSION) !== '';
     }
 
     /**
@@ -70,6 +89,7 @@ class NotFoundLogEntry extends ActiveRecord {
     public function rules(): array {
         return array_merge(parent::rules(), [
             [['siteId', 'uri'], 'required'],
+            [['resolved'], 'boolean'],
         ]);
     }
 }

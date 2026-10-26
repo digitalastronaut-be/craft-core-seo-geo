@@ -10,11 +10,11 @@
 
 namespace digitalastronaut\craftcoreseogeo;
 
-use Throwable;
-
 use Craft;
+
 use craft\base\Element;
 use craft\base\ElementInterface;
+use craft\db\Table as CraftTable;
 use craft\elements\Entry;
 use craft\events\DefineHtmlEvent;
 use craft\events\ElementEvent;
@@ -26,6 +26,7 @@ use craft\events\SectionEvent;
 use craft\events\TemplateEvent;
 use craft\helpers\App;
 use craft\helpers\Cp;
+use craft\helpers\ElementHelper;
 use craft\helpers\Html;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
@@ -33,16 +34,14 @@ use craft\services\Elements;
 use craft\services\Entries;
 use craft\services\Fields;
 use craft\web\ErrorHandler;
-use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
+use craft\web\UrlManager;
 use craft\web\View;
-
-use yii\base\Event;
-use yii\web\HttpException;
-
 use digitalastronaut\craftcoreseogeo\elements\StructuredData;
+
 use digitalastronaut\craftcoreseogeo\fields\SeoField;
 use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
+
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\seochecks\CanonicalUrlCheck;
 use digitalastronaut\craftcoreseogeo\seochecks\DuplicateContentCheck;
@@ -56,6 +55,10 @@ use digitalastronaut\craftcoreseogeo\twig\CoreSeoGeoExtension;
 use digitalastronaut\craftcoreseogeo\variables\CoreSeoGeoVariable;
 use digitalastronaut\craftcoreseogeo\web\assets\admin\AdminAssetBundle;
 use digitalastronaut\craftcoreseogeo\web\assets\schema\SchemaAssetBundle;
+use Throwable;
+use yii\base\Event;
+use yii\db\Query;
+use yii\web\HttpException;
 
 /**
  * Class PluginTrait
@@ -65,6 +68,35 @@ use digitalastronaut\craftcoreseogeo\web\assets\schema\SchemaAssetBundle;
  * @since       v1.0.0
  */
 trait PluginTrait {
+    /**
+     * This element+site's URI as it stood in the database just before the change currently
+     * being saved - keyed by `"{elementId}_{siteId}"`, written by `_stashOldUriForRedirect()`
+     * and consumed by `_createRedirectForUriChange()`. Lives for the duration of one request,
+     * the same role a local static array would play - a plain property works just as well
+     * since `PluginTrait` is mixed into the one `CoreSeoGeo` plugin instance Craft keeps for
+     * the whole request.
+     *
+     * @var array<string, string|null>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.22.0
+     */
+    private array $_redirectOldUris = [];
+
+    /**
+     * Element+site keys (same `"{elementId}_{siteId}"` shape as `$_redirectOldUris`)
+     * `_createRedirectForUriChange()` has already processed this request. A single content
+     * save can fire its "after" event more than once for the same element+site - a normal save
+     * followed by a cascaded `EVENT_AFTER_UPDATE_SLUG_AND_URI` for a descendant, say - and only
+     * the first should ever create a redirect.
+     *
+     * @var array<string, true>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.22.0
+     */
+    private array $_redirectHandledElementSites = [];
+
     /**
      * @return void
      */
@@ -87,20 +119,10 @@ trait PluginTrait {
         $this->registerSeoScoreCalculation();
         $this->registerContentSeoSync();
         $this->registerStructuredDataSync();
+        $this->registerRedirectUriChangeHandling();
     }
 
     /**
-     * Keeps `coreseogeo_seodata` (`ContentSeoService`) in sync with the site's actual sections.
-     * Registered unconditionally (not just for CP requests) since `EVENT_AFTER_SAVE_SECTION`/
-     * `EVENT_AFTER_DELETE_SECTION` fire from console requests too - a `project-config/apply` on
-     * deploy saves/deletes sections the same way the CP does, and needs the same reaction.
-     *
-     * The full reconciliation (`syncSections()`) only runs for CP/console requests: it's an
-     * admin-facing safety net against drift, not something an anonymous site visitor's GET
-     * request should be paying the extra queries (or risking a write against a read-only DB
-     * replica) for on every page load - the targeted save/delete handlers above already keep the
-     * table current for everything that goes through normal section save/delete.
-     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -123,9 +145,7 @@ trait PluginTrait {
             }
         );
 
-        if (!Craft::$app->request->isSiteRequest) {
-            CoreSeoGeo::getInstance()->getContentSeo()->syncSections();
-        }
+        if (!Craft::$app->request->isSiteRequest) CoreSeoGeo::getInstance()->getContentSeo()->syncSections();
     }
 
     /**
@@ -159,9 +179,6 @@ trait PluginTrait {
     }
 
     /**
-     * Registers the built-in SEO score checks. Adding or removing one is purely a matter of
-     * adding or removing a line here -- nothing else in the plugin references this list.
-     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -195,9 +212,7 @@ trait PluginTrait {
             function(ElementEvent $event) {
                 $element = $event->element;
 
-                if ($element->getIsDraft() || $element->getIsRevision()) {
-                    return;
-                }
+                if ($element->getIsDraft() || $element->getIsRevision()) return;
 
                 $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
 
@@ -210,13 +225,6 @@ trait PluginTrait {
     }
 
     /**
-     * Keeps `coreseogeo_structureddata` in sync with every entry's own section mappings -
-     * independent of whether that entry type's field layout even has a `StructuredDataField` to
-     * display the result, since the computation itself no longer belongs to any one field
-     * instance (see `StructuredDataMappingService::syncEntry()`). Registered unconditionally
-     * (not just for CP requests), the same reasoning as `registerContentSeoSync()`: a front-end
-     * form or a console `project-config/apply`/`resave/entries` can save entries too.
-     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -237,6 +245,127 @@ trait PluginTrait {
     }
 
     /**
+     * Step 5 of `redirects-roadmap.md`: auto-creates (or chain-collapses into) a redirect the
+     * moment an entry's URL changes, so nobody has to remember to add one by hand.
+     *
+     * Hooks four events, not the two the roadmap doc originally proposed. A plain slug edit
+     * saved from the entry editor - the single most common way a URL actually changes - never
+     * touches `Elements::updateElementSlugAndUri()` at all: Craft recalculates `$element->uri`
+     * from the posted slug via `ElementUriValidator` during ordinary validation, so the only
+     * events that fire for it are the generic `EVENT_BEFORE_SAVE_ELEMENT`/
+     * `EVENT_AFTER_SAVE_ELEMENT` pair every save fires. `EVENT_BEFORE_UPDATE_SLUG_AND_URI`/
+     * `EVENT_AFTER_UPDATE_SLUG_AND_URI` only fire for the other, rarer paths that call
+     * `updateElementSlugAndUri()` directly and bypass `EVENT_(BEFORE|AFTER)_SAVE_ELEMENT`
+     * entirely - a structure move (`Entry::afterMoveInStructure()`) or a console `resave` whose
+     * URI format changed. Hooking only the latter pair would miss the former case completely;
+     * hooking only the former would miss structure moves. Both "before" hooks share
+     * `_stashOldUriForRedirect()`, both "after" hooks share `_createRedirectForUriChange()`.
+     *
+     * Registered unconditionally (not gated to site requests) - a CP slug edit and a console
+     * `resave/entries` both need to trigger this, the same reasoning already documented on
+     * `registerContentSeoSync()`/`registerStructuredDataSync()`. `Settings::
+     * $createUriChangeRedirects` itself is read once, here, rather than inside either handler -
+     * if it's off, these listeners are simply never registered for the request, rather than
+     * registered-but-a-no-op.
+     *
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.22.0
+     */
+    protected function registerRedirectUriChangeHandling(): void {
+        if (!CoreSeoGeo::getInstance()->getSettings()->createUriChangeRedirects) return;
+
+        $stash = function(ElementEvent $event) {
+            $this->_stashOldUriForRedirect($event->element);
+        };
+
+        $createRedirect = function(ElementEvent $event) {
+            $this->_createRedirectForUriChange($event->element);
+        };
+
+        Event::on(Elements::class, Elements::EVENT_BEFORE_SAVE_ELEMENT, $stash);
+        Event::on(Elements::class, Elements::EVENT_BEFORE_UPDATE_SLUG_AND_URI, $stash);
+        Event::on(Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT, $createRedirect);
+        Event::on(Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI, $createRedirect);
+    }
+
+    /**
+     * The "before" half of Step 5's auto-redirect - stashes `$element`'s URI as it's currently
+     * stored in `elements_sites`, *not* `$element->uri` itself. By the time
+     * `EVENT_BEFORE_UPDATE_SLUG_AND_URI` fires, Craft has already recalculated `$element->uri`
+     * to its new value in memory (`Elements::updateElementSlugAndUri()` calls `setElementUri()`
+     * before firing that event) - the database row this same call is about to overwrite is the
+     * only place the old value still exists at that point. Querying it directly here, rather
+     * than trusting whichever in-memory value happens to be current, is correct regardless of
+     * which of the two "before" events triggered it.
+     *
+     * Only ever stashes once per element+site per request (`array_key_exists`, not `isset` -
+     * finding no existing row at all is itself a meaningful "there's no old URI", worth
+     * remembering as `null` rather than querying again on a second "before" event for the same
+     * key) - so a later one firing in the same request (descendant propagation, say) can never
+     * clobber the one true original value with whatever the database holds partway through.
+     *
+     * @param ElementInterface $element
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.22.0
+     */
+    private function _stashOldUriForRedirect(ElementInterface $element): void {
+        if (!$element instanceof Entry || !$element::hasUris() || !$element->id) return;
+
+        $key = $element->id . '_' . $element->siteId;
+
+        if (array_key_exists($key, $this->_redirectOldUris)) return;
+
+        $uri = (new Query())
+            ->select(['uri'])
+            ->from(CraftTable::ELEMENTS_SITES)
+            ->where(['elementId' => $element->id, 'siteId' => $element->siteId])
+            ->scalar();
+
+        $this->_redirectOldUris[$key] = $uri !== false ? $uri : null;
+    }
+
+    /**
+     * The "after" half of Step 5's auto-redirect - compares the URI `_stashOldUriForRedirect()`
+     * captured against `$element->uri` as it stands now (the save/move has already completed
+     * by the time either "after" event fires), and hands off to `RedirectsService::
+     * handleElementUriChange()` for the actual guard checks (disabled, draft/revision,
+     * propagating, collision, chain-collapsing) and the save itself.
+     *
+     * @param ElementInterface $element
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.22.0
+     */
+    private function _createRedirectForUriChange(ElementInterface $element): void {
+        if (!$element instanceof Entry || !$element::hasUris() || !$element->id) return;
+
+        $key = $element->id . '_' . $element->siteId;
+
+        if (isset($this->_redirectHandledElementSites[$key])) return;
+
+        $this->_redirectHandledElementSites[$key] = true;
+
+        $oldUri = $this->_redirectOldUris[$key] ?? null;
+
+        unset($this->_redirectOldUris[$key]);
+
+        if ($oldUri === null) return;
+        if ($element->propagating || ElementHelper::isDraftOrRevision($element)) return;
+        if (!$element->enabled || !$element->getEnabledForSite()) return;
+
+        $newUri = $element->uri;
+
+        if ($newUri === null) return;
+
+        CoreSeoGeo::getInstance()->getRedirects()->handleElementUriChange($element, $oldUri, $newUri);
+    }
+
+    /**
      * @return void
      *
      * @author      Digitalastronaut
@@ -251,9 +380,7 @@ trait PluginTrait {
                 $element = $event->sender;
                 $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
 
-                foreach ($this->_getSeoFields($element) as $field) {
-                    $event->html .= $this->_seoScoreSidebarHtml($field, $element, $seoScore);
-                }
+                foreach ($this->_getSeoFields($element) as $field) $event->html .= $this->_seoScoreSidebarHtml($field, $element, $seoScore);
             }
         );
     }
@@ -321,9 +448,7 @@ trait PluginTrait {
             function(DefineHtmlEvent $event) {
                 $element = $event->sender;
 
-                if (!$element instanceof Entry || $element->uri === null) {
-                    return;
-                }
+                if (!$element instanceof Entry || $element->uri === null) return;
 
                 $event->html .= $this->_markdownSidebarHtml($element);
             }
@@ -350,13 +475,9 @@ trait PluginTrait {
             },
         ];
 
-        if ($result !== null) {
-            $rows[Craft::t('core-seo-geo', 'Generated')] = Craft::$app->getFormatter()->asRelativeTime($result['date']);
-        }
+        if ($result !== null) $rows[Craft::t('core-seo-geo', 'Generated')] = Craft::$app->getFormatter()->asRelativeTime($result['date']);
 
-        if ($result !== null && $result['failureReason'] === null) {
-            $rows[Craft::t('core-seo-geo', 'Tokens (est.)')] = (string)MarkdownService::estimateTokens($result['markdown']);
-        }
+        if ($result !== null && $result['failureReason'] === null) $rows[Craft::t('core-seo-geo', 'Tokens (est.)')] = (string)MarkdownService::estimateTokens($result['markdown']);
 
         return Html::tag('fieldset',
             Html::tag('legend', Craft::t('core-seo-geo', 'Markdown'), ['class' => 'h6', 'style' => 'padding-block: 16px;']) .
@@ -398,15 +519,6 @@ trait PluginTrait {
     }
 
     /**
-     * Registers the 404-interception listener: on every unhandled 404, try to resolve it
-     * against `coreseogeo_redirects` first, falling back to logging it in `coreseogeo_404s`
-     * when nothing matches. See `redirects-roadmap.md` Step 2 for why `ErrorHandler::
-     * EVENT_BEFORE_HANDLE_EXCEPTION` is the right (and only) point to catch this - Craft's
-     * router doesn't know a request is unroutable until deep inside normal controller/
-     * template resolution, by which point this exception already exists. Already site-
-     * request-gated by `registerEvents()` calling `registerSiteEvents()` only for one, so
-     * this never registers at all for a CP or console request - no extra guard needed here.
-     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -521,20 +633,18 @@ trait PluginTrait {
                     $event->rules['sitemap-<group:[\w-]+\.xml>'] = 'core-seo-geo/sitemap/group';
                 }
 
-                if ($robotsDisallowed || $settings->enableRobotsTxt) {
-                    $event->rules['robots.txt'] = 'core-seo-geo/robots/index';
-                }
+                if ($robotsDisallowed || $settings->enableRobotsTxt) $event->rules['robots.txt'] = 'core-seo-geo/txt-files/robots';
 
                 foreach ([
-                    'enableHumansTxt' => ['humans.txt' => 'core-seo-geo/humans/index'],
-                    'enableAdsTxt' => ['ads.txt' => 'core-seo-geo/ads/index'],
+                    'enableHumansTxt' => ['humans.txt' => 'core-seo-geo/txt-files/humans'],
+                    'enableAdsTxt' => ['ads.txt' => 'core-seo-geo/txt-files/ads'],
                     'enableSecurityTxt' => [
-                        '.well-known/security.txt' => 'core-seo-geo/security/index',
-                        'security.txt' => 'core-seo-geo/security/index',
+                        '.well-known/security.txt' => 'core-seo-geo/txt-files/security',
+                        'security.txt' => 'core-seo-geo/txt-files/security',
                     ],
-                    'enableTrustTxt' => ['trust.txt' => 'core-seo-geo/trust/index'],
-                    'enableLlmsTxt' => ['llms.txt' => 'core-seo-geo/llms/index'],
-                    'enableLlmsFullTxt' => ['llms-full.txt' => 'core-seo-geo/llms-full/index'],
+                    'enableTrustTxt' => ['trust.txt' => 'core-seo-geo/txt-files/trust'],
+                    'enableLlmsTxt' => ['llms.txt' => 'core-seo-geo/txt-files/llms'],
+                    'enableLlmsFullTxt' => ['llms-full.txt' => 'core-seo-geo/txt-files/llms-full'],
                 ] as $flag => $rules) {
                     if ($settings->$flag) $event->rules = array_merge($event->rules, $rules);
                 }
@@ -671,9 +781,7 @@ trait PluginTrait {
     private function _getFaviconTags(Settings $settings): ?array {
         $asset = $settings->getFaviconAsset();
 
-        if ($asset === null) {
-            return null;
-        }
+        if ($asset === null) return null;
 
         $favicon = CoreSeoGeo::getInstance()->getFavicon();
 
@@ -714,6 +822,8 @@ trait PluginTrait {
 
                 $event->rules['core-seo-geo/redirects'] = 'core-seo-geo/redirects/index';
                 $event->rules['core-seo-geo/redirects/not-found-log'] = 'core-seo-geo/redirects/not-found-log';
+                $event->rules['core-seo-geo/redirects/not-found-log/save'] = 'core-seo-geo/redirects/save-not-found-log-entry';
+                $event->rules['core-seo-geo/redirects/not-found-log/<id:\d+>'] = 'core-seo-geo/redirects/edit-not-found-log-entry';
                 $event->rules['core-seo-geo/redirects/new'] = 'core-seo-geo/redirects/edit';
                 $event->rules['core-seo-geo/redirects/<id:\d+>'] = 'core-seo-geo/redirects/edit';
 

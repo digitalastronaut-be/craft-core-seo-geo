@@ -150,6 +150,25 @@ class StructuredDataMappingService extends Component {
     }
 
     /**
+     * Returns the distinct schema.org type names configured across every mapping - the
+     * free-form types a section's content settings can pick (e.g. `Person`, `WebPage`), as
+     * opposed to `StructuredData::TYPES`' fixed standalone list. Used by
+     * `StructuredData::defineSources()` to add a sidebar source for every type actually
+     * configured, not just the built-in standalone ones.
+     *
+     * @return string[]
+     *
+     * @author      Digitalastronaut
+     * @since       v1.24.0
+     */
+    public function getMappedTypes(): array {
+        return StructuredDataMappingRecord::find()
+            ->select(['type'])
+            ->distinct()
+            ->column();
+    }
+
+    /**
      * Ensures the given entry has one up to date `StructuredData` row for every mapping
      * configured on its section - called from `PluginTrait::registerStructuredDataSync()` on
      * every entry save, the same way `StructuredDataField::afterElementSave()` used to compute

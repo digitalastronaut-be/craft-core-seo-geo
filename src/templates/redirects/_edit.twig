@@ -5,7 +5,9 @@
 {% set title = redirect.id ? 'Edit redirect'|t('core-seo-geo') : 'Add redirect'|t('core-seo-geo') %}
 {% set selectedSubnavItem = 'redirects' %}
 {% set crumbs = [
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
     { label: 'Redirects'|t('core-seo-geo'), url: url('core-seo-geo/redirects') },
+    { label: title },
 ] %}
 {% set fullPageForm = true %}
 
@@ -15,10 +17,13 @@
     {{ redirectInput('core-seo-geo/redirects') }}
 
     <div class="flex-fields">
+        {% set sourceTooltip %}
+            <p>{{ 'The path that should redirect, without a leading slash (e.g. “old-page”, or “^blog/(.+)$” for a regex match below). Query strings are ignored.'|t('core-seo-geo') }}</p>
+        {% endset %}
+
         {{ forms.textField({
             first: true,
-            label: 'Source URI'|t('core-seo-geo'),
-            instructions: 'The path that should redirect, without a leading slash (e.g. “old-page”, or “^blog/(.+)$” for a regex match below). Query strings are ignored.'|t('core-seo-geo'),
+            label: ('Source'|t('core-seo-geo')) ~ '<span class="core-seo-geo-info-icon-wrap"><span class="info"></span><span class="core-seo-geo-info-icon-popup" popover="manual">' ~ sourceTooltip ~ '</span></span>',
             id: 'sourceUri',
             name: 'sourceUri',
             value: redirect.sourceUri,
@@ -28,21 +33,40 @@
             errors: redirect.getErrors('sourceUri'),
         }) }}
 
-        {{ forms.selectizeField({
-            label: 'Match type'|t('core-seo-geo'),
-            instructions: '“Regex” treats the source above as a regular expression (no delimiters needed); its destination can reference capture groups as $1, $2, etc.'|t('core-seo-geo'),
-            id: 'matchType',
-            name: 'matchType',
-            value: redirect.matchType,
-            options: matchTypeOptions,
+        {% set destinationTooltip %}
+            <p>{{ 'A relative path or an absolute URL to send visitors to.'|t('core-seo-geo') }}</p>
+        {% endset %}
+
+        {{ forms.textField({
+            label: ('Destination'|t('core-seo-geo')) ~ '<span class="core-seo-geo-info-icon-wrap"><span class="info"></span><span class="core-seo-geo-info-icon-popup" popover="manual">' ~ destinationTooltip ~ '</span></span>',
+            id: 'destinationUri',
+            name: 'destinationUri',
+            value: redirect.destinationUri,
+            errors: redirect.getErrors('destinationUri'),
             fieldClass: 'width-50',
         }) }}
 
         <hr>
 
+        {% set statusCodeTooltip %}
+            <p>
+                <strong>{{ '301 (Moved Permanently)'|t('core-seo-geo') }}</strong> 
+                {{ 'the destination is this content’s new permanent home; search engines transfer its ranking signals there.'|t('core-seo-geo') }}
+            </p>
+
+            <p>
+                <strong>{{ '302 (Found)'|t('core-seo-geo') }}</strong> 
+                {{ 'a temporary move; search engines keep the original URL indexed.'|t('core-seo-geo') }}
+            </p>
+
+            <p>
+                <strong>{{ '410 (Gone)'|t('core-seo-geo') }}</strong> 
+                {{ 'tells visitors and search engines this content was deliberately removed - it needs no destination.'|t('core-seo-geo') }}
+            </p>
+        {% endset %}
+
         {{ forms.selectizeField({
-            label: 'Status code'|t('core-seo-geo'),
-            instructions: '“Gone” tells visitors and search engines this content was deliberately removed - it needs no destination.'|t('core-seo-geo'),
+            label: ('Status code'|t('core-seo-geo')) ~ '<span class="core-seo-geo-info-icon-wrap"><span class="info"></span><span class="core-seo-geo-info-icon-popup" popover="manual">' ~ statusCodeTooltip ~ '</span></span>',
             id: 'statusCode',
             name: 'statusCode',
             value: redirect.statusCode,
@@ -50,15 +74,60 @@
             fieldClass: 'width-50',
         }) }}
 
-        <div id="destination-field">
-            {{ forms.textField({
-                label: 'Destination'|t('core-seo-geo'),
-                instructions: 'A relative path or an absolute URL to send visitors to.'|t('core-seo-geo'),
-                id: 'destinationUri',
-                name: 'destinationUri',
-                value: redirect.destinationUri,
-                errors: redirect.getErrors('destinationUri'),
-            }) }}
+        {% set matchTypeTooltip %}
+            <p>
+                <strong>{{ 'Exact'|t('core-seo-geo') }}</strong> 
+                {{ 'the source above must match the request path exactly, character for character.'|t('core-seo-geo') }}
+            </p>
+
+            <p>
+                <strong>{{ 'Regex'|t('core-seo-geo') }}</strong> 
+                {{ 'treats the source above as a regular expression (no delimiters needed); its destination can reference capture groups as $1, $2, etc.'|t('core-seo-geo') }}
+            </p>
+        {% endset %}
+
+        {{ forms.selectizeField({
+            label: ('Match type'|t('core-seo-geo')) ~ '<span class="core-seo-geo-info-icon-wrap"><span class="info"></span><span class="core-seo-geo-info-icon-popup" popover="manual">' ~ matchTypeTooltip ~ '</span></span>',
+            id: 'matchType',
+            name: 'matchType',
+            value: redirect.matchType,
+            options: matchTypeOptions,
+            fieldClass: 'width-50',
+        }) }}
+
+        <h2>{{ '404s this solves'|t('core-seo-geo') }}</h2>
+
+        <div class="field">
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'URI'|t('core-seo-geo') }}</th>
+                        {% if isMultiSite %}
+                            <th scope="col">{{ 'Site'|t('core-seo-geo') }}</th>
+                        {% endif %}
+                        <th scope="col">{{ 'Hits'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Last hit'|t('core-seo-geo') }}</th>
+                        <th scope="col">{{ 'Status'|t('core-seo-geo') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in matchedNotFoundLogEntries %}
+                        <tr>
+                            <th scope="row"><a href="{{ row.url }}">{{ row.title }}</a></th>
+                            {% if isMultiSite %}
+                                <td>{{ row.site|raw }}</td>
+                            {% endif %}
+                            <td>{{ row.hits }}</td>
+                            <td>{{ row.lastHit }}</td>
+                            <td>{{ row.status|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if matchedNotFoundLogEntries is empty %}
+                <p class="zilch small">{{ 'No logged 404 matches this redirect’s rule.'|t('core-seo-geo') }}</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -71,21 +140,51 @@
             name: 'enabled',
             on: redirect.enabled ?? true,
         }) }}
-
-        {% if isMultiSite %}
-            {{ forms.selectizeField({
-                label: 'Site'|t('core-seo-geo'),
-                instructions: 'Leave as “All sites” to apply this redirect everywhere.'|t('core-seo-geo'),
-                id: 'siteId',
-                name: 'siteId',
-                value: redirect.siteId ?? '',
-                options: siteOptions,
-                selectizeOptions: {
-                    allowEmptyOption: true,
-                },
-            }) }}
-        {% endif %}
     </div>
+
+    {% if isMultiSite %}
+        {% set allSiteIds = sites|map(site => site.id) %}
+        {% set hasSpecificSites = redirect.siteIds is not empty %}
+        {% set everySiteIndividuallyOn = hasSpecificSites and redirect.siteIds|length == allSiteIds|length %}
+        {% set isAllSites = not hasSpecificSites or everySiteIndividuallyOn %}
+        {% set isMixed = hasSpecificSites and not everySiteIndividuallyOn %}
+        {% set expandButtonLabel = 'Update status for individual sites'|t('core-seo-geo') %}
+
+        {% set expandButtonHtml %}
+            <button type="button" class="expand-status-btn btn" data-icon="ellipsis" title="{{ expandButtonLabel|e('html_attr') }}" aria-expanded="false" aria-label="{{ expandButtonLabel|e('html_attr') }}"></button>
+        {% endset %}
+
+        <fieldset>
+            <legend class="h6">{{ 'Sites'|t('core-seo-geo') }}</legend>
+
+            <div class="meta">
+                {{ forms.lightswitchField({
+                    id: 'allSites',
+                    label: 'Enabled for all sites'|t('core-seo-geo'),
+                    labelAttributes: {style: 'font-weight: bold;'},
+                    on: isAllSites,
+                    indeterminate: isMixed,
+                    headingSuffix: expandButtonHtml,
+                    errors: redirect.getErrors('siteIds'),
+                }) }}
+
+                {% for site in sites %}
+                    {{ forms.lightswitchField({
+                        fieldClass: ['nested', 'site-switch', 'hidden'],
+                        id: 'site' ~ site.id,
+                        name: 'siteIds[' ~ site.id ~ ']',
+                        label: site.getName(),
+                        on: isAllSites or site.id in redirect.siteIds,
+                    }) }}
+                {% endfor %}
+            </div>
+        </fieldset>
+    {% endif %}
+
+    {% if hitChartData %}
+        {% set chartId = redirect.id %}
+        {% include 'core-seo-geo/redirects/_hit-chart.twig' %}
+    {% endif %}
 
     {% if metadataHtml %}
         {{ metadataHtml|raw }}
@@ -99,4 +198,60 @@
 
     $('#statusCode').on('change', coreSeoGeoToggleDestinationField);
     coreSeoGeoToggleDestinationField();
+
+    {% if isMultiSite %}
+        (function() {
+            var $allSitesSwitch = $('#allSites');
+            var $siteFields = $('.site-switch');
+            var $siteSwitches = $siteFields.find('.lightswitch');
+
+            function coreSeoGeoShowField($field) {
+                $field.removeClass('hidden');
+
+                var height = $field.height();
+
+                $field.css({overflow: 'hidden', 'min-height': 'auto'}).height(0).velocity({height: height}, 'fast', function() {
+                    $field.css({overflow: '', height: '', 'min-height': ''});
+                });
+            }
+
+            $('.expand-status-btn').on('click', function() {
+                $(this).remove();
+                $siteFields.each(function() {
+                    coreSeoGeoShowField($(this));
+                });
+            });
+
+            $allSitesSwitch.on('change', function() {
+                var on = $allSitesSwitch.data('lightswitch').on;
+
+                $siteSwitches.each(function() {
+                    var lightswitch = $(this).data('lightswitch');
+
+                    if (on) {
+                        lightswitch.turnOn(true);
+                    } else {
+                        lightswitch.turnOff(true);
+                    }
+                });
+            });
+
+            function coreSeoGeoUpdateAllSitesSwitch() {
+                var states = $siteSwitches.map(function() {
+                    return $(this).data('lightswitch').on;
+                }).get();
+                var allSitesLightswitch = $allSitesSwitch.data('lightswitch');
+
+                if (states.every(function(on) { return on; })) {
+                    allSitesLightswitch.turnOn(true);
+                } else if (states.every(function(on) { return !on; })) {
+                    allSitesLightswitch.turnOff(true);
+                } else {
+                    allSitesLightswitch.turnIndeterminate(true);
+                }
+            }
+
+            $siteSwitches.on('change', coreSeoGeoUpdateAllSitesSwitch);
+        })();
+    {% endif %}
 {% endjs %}

@@ -6,7 +6,7 @@
 {% set docTitle = docTitle ?? (title ~ ' - SEO/GEO') %}
 
 {% set crumbs = [
-    { label: 'SEO/GEO'|t('core-seo-geo'), url: url('core-seo-geo') },
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
 ]|merge(extraCrumbs ?? []) %}
 
 {% if urlFormat is defined %}

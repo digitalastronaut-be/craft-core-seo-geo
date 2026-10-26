@@ -37,7 +37,7 @@ use digitalastronaut\craftcoreseogeo\db\Table;
  * @property bool $sitemapEnabled whether this section (or the global bundle) is included in the
  * sitemap - its index entry and its own sub-sitemap both skip it when `false`
  * @property string|null $llmsTxtTitle the global bundle row's `llms.txt` title for this site -
- * `null` elsewhere, see `LlmsService::getLlmsTxt()`
+ * `null` elsewhere, see `TxtFilesService::getLlmsTxt()`
  * @property string|null $llmsTxtSummary the global bundle row's `llms.txt` summary for this site
  * @property string $dateCreated
  * @property string $dateUpdated

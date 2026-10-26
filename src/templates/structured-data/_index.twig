@@ -1,5 +1,9 @@
 {% extends '_layouts/elementindex' %}
 {% set title = 'Structured Data'|t('core-seo-geo') %}
 {% set selectedSubnavItem = 'structured-data' %}
+{% set crumbs = [
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
+    { label: title },
+] %}
 {% set elementType = 'digitalastronaut\\craftcoreseogeo\\elements\\StructuredData' %}
 {% set canHaveDrafts = true %}

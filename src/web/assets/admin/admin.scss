@@ -582,3 +582,9 @@
 		margin: 0;
 	}
 }
+
+// Sits next to the "Score" label itself while the pane's own FOUC fix (see `PluginTrait::
+// _seoScoreSidebarHtml()`) hides everything else below it.
+.core-seo-geo-score-pane-spinner {
+	margin-inline-start: var(--xs);
+}

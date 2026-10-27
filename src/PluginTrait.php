@@ -397,7 +397,7 @@ trait PluginTrait {
                 /** @var ElementInterface $element */
                 $element = $event->sender;
 
-                foreach ($this->_getSeoFields($element) as $field) $event->html .= $this->_seoScoreSidebarHtml($element, $field);
+                foreach ($this->_getSeoFields($element) as $field) $event->html .= $this->_seoScoreSidebarHtml($element, $field, true);
             }
         );
     }
@@ -447,14 +447,24 @@ trait PluginTrait {
      * resave) queued after this one can't delay the refresh -- this pane only cares about its
      * own score.
      *
+     * While `$applyLoadingDelay` is true, the pane also hides everything past the "Score" label
+     * itself (chip, Refresh button, checklist) behind a small spinner for a fixed 500ms -- same
+     * fix as the structured data mapping editor's own FOUC ({@see
+     * `fields/structured-data/_mappingEditor.twig`}), needed here because this pane's styling
+     * similarly flashes unstyled for a moment on the entry edit page. Only
+     * `registerSeoScoreSidebar()`'s initial full-page render passes `true`; `SeoScoreController`'s
+     * `actionRefresh()`/`actionStatus()` patches leave it `false` since their pane is already
+     * visible on the page -- hiding it again on every poll would just flicker.
+     *
      * @param ElementInterface $element
      * @param SeoField $field
+     * @param bool $applyLoadingDelay
      * @return string
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
      */
-    private function _seoScoreSidebarHtml(ElementInterface $element, SeoField $field): string {
+    private function _seoScoreSidebarHtml(ElementInterface $element, SeoField $field, bool $applyLoadingDelay = false): string {
         /** @var Element $element */
         $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
         $score = $seoScore->getScore($element, (int)$field->id);
@@ -473,8 +483,6 @@ trait PluginTrait {
             'fieldId' => $field->id,
         ]);
 
-        // Hidden while pending -- clicking it again would only queue a second, redundant
-        // `CalculateSeoScore` run on top of the one already in flight.
         $refreshButton = $isPending ? '' : Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
             'type' => 'button',
             'class' => ['btn', 'small'],
@@ -483,19 +491,11 @@ trait PluginTrait {
 
         $status = Html::tag('div', $chip . $refreshButton, ['class' => ['core-seo-geo-score-status']]);
 
-        // Scoped per field so multiple SEO/GEO fields on the same element don't fight over one
-        // shared expand/collapse signal.
         $expandedSignal = "scoreChecklistExpanded{$field->id}";
         $showExpr = "\${$expandedSignal}";
 
         $checklistFields = $seoScore->renderChecklistFields($score, $showExpr);
 
-        // Visually the same "expand-status-btn" markup Craft's own `Element::statusFieldHtml()`
-        // uses for its per-site status disclosure (`data-icon="ellipsis"` draws the icon via the
-        // CP's own icon font, nothing to ship here) - but under our own class, not Craft's: that
-        // widget binds its `expandSiteStatuses()` click handler to every `.expand-status-btn`
-        // inside its container, which includes this sidebar, so reusing its class made this
-        // button toggle Craft's own site-status rows too.
         $expandLabel = Craft::t('core-seo-geo', 'Show check details');
         $ellipsisButton = $checklistFields === '' ? '' : Html::button('', [
             'class' => ['core-seo-geo-expand-btn', 'btn'],
@@ -509,23 +509,42 @@ trait PluginTrait {
             'data-star-on:click' => "{$showExpr} = !{$showExpr}",
         ]);
 
-        // `.meta > .field` for the "Score" row itself (one cell: the chip + Refresh button, no
-        // heading/input split needed since there's no label to put in its own column) - the
-        // checklist rows `$ellipsisButton` toggles open sit as its siblings within the same
-        // `.meta`, each its own single-cell row (see `renderChecklistFields()`).
+        $contentClass = ['core-seo-geo-score-pane-content flex'];
+        if ($applyLoadingDelay) $contentClass[] = 'hidden';
+
+        $spinner = $applyLoadingDelay ? Html::tag(
+            'span', '', ['class' => ['spinner', 'small', 'core-seo-geo-score-pane-spinner']]
+        ) : '';
+
         $scoreField = Html::tag('div',
-            Html::tag('div', Craft::t('core-seo-geo', 'Score') . $ellipsisButton, ['class' => 'heading']) .
-            Html::tag('div', $status, ['class' => 'input']),
+            Html::tag('div', Craft::t('core-seo-geo', 'Score') . $spinner . Html::tag('span', $ellipsisButton, ['class' => $contentClass]), ['class' => 'heading']) .
+            Html::tag('div', $status, ['class' => array_merge(['input'], $contentClass)]),
             ['class' => 'field']
         );
 
+        $checklistWrapper = $checklistFields === '' ? '' : Html::tag('div', $checklistFields, ['class' => $contentClass]);
+
         $html =
             Html::tag('legend', Craft::t('core-seo-geo', 'SEO/GEO'), ['class' => 'h6']) .
-            Html::tag('div', $scoreField . $checklistFields, ['class' => 'meta']);
+            Html::tag('div', $scoreField . $checklistWrapper, ['class' => 'meta']);
 
-        return Html::tag('fieldset', $html, [
+        $paneId = "core-seo-geo-score-pane-{$field->id}";
+
+        $revealScript = $applyLoadingDelay ? Html::tag('script', <<<JS
+            window.setTimeout(function() {
+                var pane = document.getElementById('{$paneId}');
+                if (!pane) return;
+                var spinner = pane.querySelector('.core-seo-geo-score-pane-spinner');
+                if (spinner) spinner.remove();
+                pane.querySelectorAll('.core-seo-geo-score-pane-content').forEach(function(el) {
+                    el.classList.remove('hidden');
+                });
+            }, 1000);
+        JS) : '';
+
+        return Html::tag('fieldset', $html . $revealScript, [
             'class' => ['core-seo-geo-score-pane'],
-            'id' => "core-seo-geo-score-pane-{$field->id}",
+            'id' => $paneId,
             'data-star-signals' => $checklistFields === '' ? null : "{ {$expandedSignal}: false }",
             'data-star-on-interval__duration.2s' => $isPending ? "@get('{$statusUrl}')" : null,
         ]);
@@ -610,10 +629,9 @@ trait PluginTrait {
      */
     private function _markdownSidebarHtml(Entry $entry): string {
         $result = CoreSeoGeo::getInstance()->getMarkdown()->getCachedResult($entry);
-        $stale = $result === null || $result['failureReason'] !== null;
 
         $rows = [
-            Craft::t('core-seo-geo', 'Status') => $this->_markdownStatusHtml($entry, $stale),
+            Craft::t('core-seo-geo', 'Status') => $this->_markdownStatusHtml($entry, $result),
         ];
 
         if ($result !== null) {
@@ -674,14 +692,19 @@ trait PluginTrait {
 
     /**
      * @param Entry $entry
-     * @param bool $stale
+     * @param array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}|null $result
      * @return string
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
      */
-    private function _markdownStatusHtml(Entry $entry, bool $stale): string {
-        $label = Html::tag('span', $stale ? Craft::t('core-seo-geo', 'No content') : Craft::t('core-seo-geo', 'Cached'));
+    private function _markdownStatusHtml(Entry $entry, ?array $result): string {
+        $text = match (true) {
+            $result !== null && $result['failureReason'] === MarkdownService::NO_LLM_CONTENT_REASON => Craft::t('core-seo-geo', 'No content'),
+            $result === null || $result['failureReason'] !== null => Craft::t('core-seo-geo', 'Stale'),
+            default => Craft::t('core-seo-geo', 'Cached'),
+        };
+        $label = Html::tag('span', $text);
 
         $refreshUrl = UrlHelper::actionUrl('core-seo-geo/markdown/refresh', [
             'elementId' => $entry->id,

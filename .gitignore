@@ -5,3 +5,6 @@
 .env
 /node_modules
 /vendor
+/.phpunit.cache
+.phpunit.result.cache
+/.claude

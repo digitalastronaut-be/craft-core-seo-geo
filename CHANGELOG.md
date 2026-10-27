@@ -1,4 +1,5 @@
 # Release Notes for Core SEO/GEO
 
-## 1.0.0
+## v1.0.0-beta
+
 - Initial release

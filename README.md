@@ -1,6 +1,6 @@
 # Core SEO/GEO
 
-![Core SEO/GEO](.github/assets/readme-cover.png)
+![Core SEO/GEO](.github/assets/readme-cover-screenshot.png)
 
 A no-fluff SEO/GEO solution for Craft CMS websites — on-page meta, structured data, sitemaps, redirects, and AI-crawler support, built in as first-class Craft fields and services rather than a single catch-all settings blob.
 

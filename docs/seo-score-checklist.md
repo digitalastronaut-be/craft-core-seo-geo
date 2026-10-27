@@ -27,12 +27,20 @@ feature entirely, and there's exactly one code path to reason about instead of a
 | 4 | Canonical URL is valid | Already validated in `SeoField::validateSeoData()` (skipped if unset — a canonical override is optional). Score check reuses that same `UrlValidator` result rather than re-implementing it. **Warning**, not fail, if it's set but doesn't match the element's own URL — that's sometimes intentional (e.g. a syndicated/duplicate page), so it's surfaced rather than penalized hard. |
 | 5 | Not accidentally de-indexed | ✅ done (`IndexableCheck`). **Not applicable** (not scored either way) if `noindex` is set in `SeoData::$robots` — that's often intentional, not wrong, so there's no failure state, only "applies and passes" or "doesn't apply." Once checks 7-12 exist, this is also where their short-circuiting would hook in (no point scoring a page that's explicitly told not to be indexed), but that's not wired up yet since there's nothing to short-circuit. |
 | 6 | No duplicate title/description | ✅ done (`DuplicateContentCheck`). Fails if either the title or description exactly matches another element's on the same site, read from the denormalized `metaTitle`/`metaDescription` columns on `coreseogeo_seoscores` (added via migration, kept in sync by `SeoScoreService::process()` on every run) rather than scanning the field's own JSON value. **Not applicable** if neither a title nor a description is set yet. |
-| 7 | Page has a `<main>` element | Fetch the element's rendered HTML (its own front-end URL), parse with `Masterminds\HTML5` (already vendored via `craftcms/cms`) into a `DOMDocument`, check for exactly one `<main>`. |
-| 8 | `<main>` has at least one link | `DOMXPath` query `//main//a[@href]` on the same parsed document, count ≥ 1. |
-| 9 | No broken links | Collect every `//a[@href]` on the page (not just inside `<main>` — a broken footer/nav link is still broken), resolve relative URLs against the page's own URL, dedupe, skip `mailto:`/`tel:`/`#`-only anchors, request each remaining unique URL (HEAD, falling back to GET if HEAD isn't allowed) through a shared, TTL-cached result store so links shared across many pages (nav, footer) aren't re-requested per element. 4xx/5xx = broken; timeouts/connection errors = broken; 403/429 = inconclusive, skipped rather than failed (those usually mean "bot-blocked," not "actually broken"). |
-| 10 | Heading levels are structured correctly | Walk `//h1\|//h2\|//h3\|//h4\|//h5\|//h6` in document order, track the current level: fail if more than one `<h1>` exists, fail if any step increases by more than 1 (e.g. `h2` → `h4` with no `h3` between). Decreasing levels (closing a section) is always fine. |
-| 11 | Content images have alt text | *(addition)* `//main//img` with no `alt` attribute, or an empty one, fails this check. Scoped to `<main>` deliberately — decorative images in shared chrome (header/footer) are a template concern, not this entry's content. |
-| 12 | Open Graph / Twitter tags render non-empty | *(addition)* Confirm `og:title`, `og:description`, `og:image`, and `twitter:card` resolve to non-empty values in the rendered `<head>` — catches a template fallback chain that silently resolves to nothing even though checks 1–3 passed. |
+| 7 | Page has a `<main>` element | ✅ done (`HasMainCheck`). Fetches the element's rendered HTML (its own front-end URL) and parses it with `Masterminds\HTML5` (already vendored via `craftcms/cms`) — see `SeoScoreCheckContext::getDocument()`. Fails on zero `<main>` elements, **warning** (not fail) on more than one. **Not applicable** if the page couldn't be fetched/parsed at all (no front-end URL, request failure) — that's a different problem than the template missing a `<main>`. |
+| 8 | `<main>` has at least one link | ✅ done (`MainHasLinkCheck`). `DOMXPath` query against the same parsed document, count ≥ 1. **Not applicable** if there's no document, or no `<main>` (check 7's problem to report, not this one's). |
+| 9 | No broken links | **Not yet built** — the hard one. Collect every `//a[@href]` on the page (not just inside `<main>` — a broken footer/nav link is still broken), resolve relative URLs against the page's own URL, dedupe, skip `mailto:`/`tel:`/`#`-only anchors, request each remaining unique URL (HEAD, falling back to GET if HEAD isn't allowed) through a shared, TTL-cached result store so links shared across many pages (nav, footer) aren't re-requested per element. 4xx/5xx = broken; timeouts/connection errors = broken; 403/429 = inconclusive, skipped rather than failed (those usually mean "bot-blocked," not "actually broken"). Deferred: needs the cache-layer/scope decision below settled first, and is a materially bigger unit of work than 7/8/10–12 (which only ever look at the one already-fetched page). |
+| 10 | Heading levels are structured correctly | ✅ done (`HeadingStructureCheck`). Walks `<h1>`-`<h6>` in document order: fails if more than one `<h1>` exists, fails if any step increases by more than 1 (e.g. `h2` → `h4` with no `h3` between). Decreasing levels (closing a section) is always fine. **Not applicable** if there's no document, or no headings at all. |
+| 11 | Content images have alt text | ✅ done (`ImageAltTextCheck`). `//main//img` with no `alt` attribute, or an empty one, fails this check. Scoped to `<main>` deliberately — decorative images in shared chrome (header/footer) are a template concern, not this entry's content. **Not applicable** if there's no document, or no images inside `<main>`. |
+| 12 | Open Graph / Twitter tags render non-empty | ✅ done (`SocialMetaTagsCheck`). Confirms `og:title`, `og:description`, `og:image`, and `twitter:card` resolve to non-empty values in the rendered `<head>` — catches a template fallback chain that silently resolves to nothing even though checks 1–3 passed. **Not applicable** if there's no document. |
+| 13 | `<main>` has at least 300 words | ✅ done (`MainWordCountCheck`). Concatenates the `textContent` of every `<main>` node, splits on whitespace, fails below 300 words — thin content is a common, otherwise invisible reason a page underperforms even when every other check passes. **Not applicable** if there's no document, or no `<main>` (check 7's problem to report, not this one's). The 300-word floor is a hardcoded constant (`MainWordCountCheck::MIN_WORDS`), not yet a setting — same "not yet configurable" state as the length/dimension thresholds in checks 1–3. |
+
+> **Masterminds\HTML5 namespace gotcha:** it parses every element into the
+> `http://www.w3.org/1999/xhtml` namespace even though the source markup has no `xmlns`, so a
+> plain unprefixed XPath query like `//main` silently matches *nothing* against the returned
+> `DOMDocument`. Every check above queries by `local-name()` instead (e.g.
+> `//*[local-name()="main"]`) — do the same in any future check that walks this document, see
+> `SeoScoreCheckContext::getDocument()`'s docblock.
 
 ### Pending state
 
@@ -63,12 +71,14 @@ steps 4–5.
   uses it — which is arguably correct (it is broken everywhere) but will make a single dead link
   tank a lot of scores at once. Worth deciding before building the cache layer, since it changes
   what's "shared" in the cache.
-- **Where the HTTP request comes from.** An internal loopback request to the element's own
-  `getUrl()` is the simplest option (same approach SEOmatic's sitemap generator and most link
-  checkers use) but needs: a Host header that matches the site, a way to bypass Blitz/page caching
-  for the fetch so it's checking current content, and skipping elements with no front-end URL
-  (disabled/headless). Confirm this works from inside a queue worker in DDEV before committing to
-  it.
+- **Where the HTTP request comes from.** ✅ resolved — `Craft::createGuzzleClient()->get($element
+  ->getUrl())`, the same approach `MarkdownService::_generate()` already uses for the llms.txt
+  feature (see `SeoScoreCheckContext::getDocument()`). No Host-header/base-URL juggling needed --
+  `getUrl()` already returns the fully-qualified absolute URL. Confirmed working from inside an
+  actual queue worker in DDEV (not just a web request): verified via `craft resave/entries` +
+  `craft queue/run` against this project's own entries. Elements with no front-end URL (headless/
+  disabled) are skipped (`getDocument()` returns `null`). No cache-bypass header was needed for
+  this project's setup; revisit if a Blitz-fronted install's checks end up scoring stale content.
 - **Draft/revision saves.** Should a draft queue its own recalculation, or only canonical
   elements? Recommendation: skip entirely for drafts/revisions — queuing a job (and firing a
   request per link) on every autosave while someone is actively typing is wasteful; recalculate
@@ -97,9 +107,12 @@ steps 4–5.
    `Fields::EVENT_REGISTER_FIELD_TYPES` / `Elements::EVENT_REGISTER_ELEMENT_TYPES` registrations,
    so a future check (or a project-specific override) can be added without touching plugin code.
    Shipped so far: `ValidTitleCheck`, `ValidDescriptionCheck`, `SeoImageCheck`, `CanonicalUrlCheck`,
-   `IndexableCheck`, `DuplicateContentCheck` (checks 1-6, every check that doesn't need the
-   element's rendered HTML; checks 7-12 still to come, once their open decisions above are
-   settled).
+   `IndexableCheck`, `DuplicateContentCheck` (checks 1-6), plus `HasMainCheck`, `MainHasLinkCheck`,
+   `MainWordCountCheck`, `HeadingStructureCheck`, `ImageAltTextCheck`, `SocialMetaTagsCheck`
+   (checks 7, 8, 10-13 -- every check that needs the rendered page but not a multi-URL crawl).
+   Check 9 (broken links) is the one still not built -- it's a materially bigger unit of work (a
+   shared, TTL-cached per-URL result store across elements) than the others, which only ever look
+   at the one already-fetched page, and its scope-of-crawl open decision above is still unsettled.
 
 3. **`SeoScoreService`** ✅ done (registered in `ServicesTrait`, same as `StructuredDataService`):
    - `markPending(ElementInterface $element, int $fieldId): void` — upserts the row with
@@ -125,12 +138,17 @@ steps 4–5.
 5. **`CalculateSeoScore extends craft\queue\BaseJob`** ✅ done (holds `elementId`/`siteId`/
    `fieldId` only, re-fetching the element and field value itself rather than taking them as
    constructor objects, since job properties are serialized onto the queue; calls
-   `SeoScoreService::process()`). Still to extend, for checks 7-12: resolve the element's
-   front-end URL (no-op/skip if none); internal request (Guzzle, already a transitive dependency
-   via `craftcms/cms`) to fetch the rendered HTML, per the "where the HTTP request comes from"
-   decision above; parse with `Masterminds\HTML5` into a `DOMDocument`; run those checks against
-   it, including the broken-link check's own TTL-cached per-URL lookups (cache table or Craft's
-   `Craft::$app->getCache()` component, keyed by a hash of the target URL).
+   `SeoScoreService::process()`). ✅ **extended for checks 7, 8, 10-12** -- rather than the job
+   itself fetching/parsing, that landed on `SeoScoreCheckContext::getDocument()` instead: it
+   resolves the element's front-end URL (returns `null`, no-op, if there isn't one), makes the
+   internal request via `Craft::createGuzzleClient()`, and parses the response with
+   `Masterminds\HTML5` into a `DOMDocument` -- fetched at most once per run and shared by every
+   check in that run that calls it, memoized on the context rather than eagerly done by the job,
+   so the request only happens at all when at least one registered+enabled check actually needs
+   it. Still to extend, for check 9 specifically: the broken-link check's own TTL-cached per-URL
+   lookups (cache table or Craft's `Craft::$app->getCache()` component, keyed by a hash of the
+   target URL) -- a different shape of caching than the single-document memoization above, since
+   it needs to dedupe *across* elements, not just within one run.
 
 6. **CP display.**
    - ✅ **Element index column** — `SeoField implements PreviewableFieldInterface`, overriding

@@ -20,10 +20,15 @@ async function showPopup(wrap) {
 
 	popup.showPopover();
 
+	// `offset(0)` deliberately leaves zero gap between `wrap` and `popup` -- an actual gap here
+	// is a dead zone neither element covers, so the pointer crosses it as "left both," firing
+	// `mouseout` and closing the popup before it ever reaches it (impossible to then hover the
+	// popup itself). The visual breathing room between the two instead comes from `popup`'s own
+	// padding, which keeps its content inset without opening a gap the pointer can fall into.
 	const { x, y } = await computePosition(wrap, popup, {
 		strategy: "fixed",
 		placement: "top",
-		middleware: [offset(8), flip(), shift({ padding: 8 })],
+		middleware: [offset(0), flip(), shift({ padding: 8 })],
 	});
 
 	Object.assign(popup.style, { left: `${x}px`, top: `${y}px` });

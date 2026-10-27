@@ -20,8 +20,8 @@ use yii\validators\UrlValidator;
  * Not applicable when no canonical URL override is set -- that's the common case, not a failure.
  * When one is set, re-validates its format (the field itself already blocks saving
  * an invalid one, but this is cheap insurance against data written by another path, e.g. the
- * element API or GraphQL mutations) and notes whether it points somewhere other than the
- * element's own URL -- sometimes intentional, so it's informational rather than a failure.
+ * element API or GraphQL mutations) and warns when it points somewhere other than the element's
+ * own URL -- sometimes intentional, so it's a warning rather than a failure.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -68,23 +68,23 @@ class CanonicalUrlCheck implements SeoScoreCheckInterface {
         $canonicalUrl = $context->seoData->canonicalUrl;
 
         if ($canonicalUrl === null) {
-            return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'No canonical URL override is set.'), false);
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Passed, Craft::t('core-seo-geo', 'No canonical URL override is set.'), false);
         }
 
         $validator = new UrlValidator(['defaultScheme' => 'https']);
 
         if (!$validator->validate($canonicalUrl)) {
-            return new SeoScoreCheckResult(false, Craft::t('core-seo-geo', 'The canonical URL is not a valid URL.'));
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Failed, Craft::t('core-seo-geo', 'The canonical URL is not a valid URL.'));
         }
 
         $elementUrl = $context->element->getUrl();
 
         if ($elementUrl !== null && rtrim($canonicalUrl, '/') !== rtrim($elementUrl, '/')) {
-            return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The canonical URL points elsewhere ({url}), which may be intentional.', [
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Warning, Craft::t('core-seo-geo', 'The canonical URL points elsewhere ({url}), which may be intentional.', [
                 'url' => $canonicalUrl,
             ]));
         }
 
-        return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The canonical URL matches the page\'s own URL.'));
+        return new SeoScoreCheckResult(SeoScoreCheckStatus::Passed, Craft::t('core-seo-geo', 'The canonical URL matches the page\'s own URL.'));
     }
 }

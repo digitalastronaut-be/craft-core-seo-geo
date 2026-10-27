@@ -213,12 +213,22 @@
 	line-height: 1.4;
 	white-space: normal;
 
+	// A selected element-index row (`tr.sel`) redefines these two custom properties to white
+	// (see Craft's own `table.data tbody tr:not(.disabled).sel`) so its own text stays legible
+	// against the dark selection background. This popup is a separate opaque white box, not
+	// part of that selection background, but still sits inside the `tr.sel` in the DOM (its
+	// `popover` top-layer promotion only changes paint order, not CSS inheritance) -- so without
+	// pinning these back, every `-check-label`/`-check-message` that reads them above goes
+	// white-on-white the moment its row is selected.
+	--fg-subtle: var(--gray-550);
+	--light-text-color: var(--gray-600);
+
 	a {
 		text-decoration: underline;
 	}
 
 	p {
-		margin: var(--s) 0 0;
+		margin: 0;
 
 		&:first-child {
 			margin-top: 0;
@@ -237,7 +247,8 @@
 	line-height: 1.6;
 
 	&-percent,
-	&-count {
+	&-count,
+	&-spinner {
 		display: inline-flex;
 		align-items: center;
 		padding: 1px var(--xs);
@@ -254,12 +265,25 @@
 		opacity: 0.85;
 	}
 
+	// The pill `-count` fills for a completed score, holding the CP's own `.spinner.small` (a
+	// fixed-size circle, see `_statusChip()`) centered inside instead of digits -- deliberately
+	// no explicit height here so it still stretches full chip height under `align-items: stretch`
+	// above, same as `-count` does; the spinner's own fixed size then just floats centered within
+	// that stretched box, which is what gives it breathing room on every side rather than sitting
+	// flush against the pill's edges.
+	&-spinner {
+		justify-content: center;
+		padding-inline: var(--m);
+		color: var(--white);
+		opacity: 0.85;
+	}
+
 	&--good {
 		background-color: rgb(from var(--teal-550) r g b / 15%);
 		color: var(--teal-700);
 
 		.core-seo-geo-score-chip-count {
-			background-color: var(--teal-700);
+			background-color: var(--teal-600);
 		}
 	}
 
@@ -268,7 +292,7 @@
 		color: var(--amber-700);
 
 		.core-seo-geo-score-chip-count {
-			background-color: var(--amber-700);
+			background-color: var(--amber-600);
 		}
 	}
 
@@ -277,18 +301,38 @@
 		color: var(--red-700);
 
 		.core-seo-geo-score-chip-count {
-			background-color: var(--red-700);
+			background-color: var(--red-600);
 		}
 	}
 
-	&--none,
-	&--pending {
+	&--none {
 		padding: 1px var(--s);
 		background-color: var(--gray-100);
 		border: 1px solid var(--gray-200);
 		color: var(--gray-600);
 		font-weight: 400;
 		font-style: italic;
+	}
+
+	// Tier colors above are set on the chip itself and inherited by `-percent`, which otherwise
+	// wins over Craft's own `tr.sel td { color: white }` since an inherited value never beats an
+	// element's own `color`.
+	tr.sel &-percent {
+		color: var(--white);
+	}
+
+	// Unlike `--none`, shares the tier chips' percent/count layout (see `-percent`/`-spinner`
+	// above) rather than being a flat label -- `_statusChip()` fills the slots with
+	// "Calculating..." and a spinner instead of a real score.
+	&--pending {
+		background-color: var(--gray-100);
+		color: var(--gray-700);
+		font-weight: 400;
+		font-style: italic;
+
+		.core-seo-geo-score-chip-spinner {
+			background-color: var(--gray-500);
+		}
 	}
 }
 
@@ -305,82 +349,126 @@
 	list-style: none;
 }
 
-.core-seo-geo-score-check {
+// `.core-seo-geo-score-check` is the popup's `<li>` version, `-row` the sidebar's `<div>`
+// version (a sibling of the "Score" field in the same `.meta`, see `renderChecklistFields()`) -
+// same icon/label/message content and layout either way, just the divider placement differs:
+// the popup draws it *between* items (`:last-child` drops the trailing one), while the sidebar
+// draws it on every row's top edge, so it also separates the checklist from the "Score" field
+// above it without the "Score" field needing to know about it.
+.core-seo-geo-score-check,
+.core-seo-geo-score-check-row {
 	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	gap: var(--xs);
-	padding: var(--xs) var(--s);
+	align-items: center;
+	gap: var(--s);
+}
+
+.core-seo-geo-score-check {
+	// Matches `-check-row`'s own block padding -- and, more broadly, the generous `padding-block`
+	// Craft's native `.meta > .field > .heading` rows use -- rather than the cramped `--xs` this
+	// popup version used to carry on its own.
+	padding-block: var(--s);
+	padding-inline: 12px;
 	border-bottom: 1px solid var(--hairline-color);
 
 	&:last-child {
 		border-bottom: none;
 	}
+}
 
-	&.is-invalid {
-		background-color: var(--bg-error);
+// Bled to the pane's full width (same `--neg-padding` trick as `.core-seo-geo-hit-chart-wrapper`
+// below) rather than sitting inset like the "Score" field above it. `--neg-padding` resolves to
+// 24px here (`--xl`), one `.meta`'s own ancestor sets -- `padding-inline` is a flat 12px rather
+// than matching that bleed, so the row sits slightly tighter than the "Score" field above it.
+.core-seo-geo-score-check-row {
+	padding-block: var(--s);
+	padding-inline: 12px;
+	border-top: 1px solid var(--hairline-color);
+}
+
+// Animates the checklist rows' combined height via the CSS-grid auto-size trick (an element
+// can't transition to an unknown "auto" height directly) instead of toggling `display` outright
+// -- the Datastar-safe parallel to the redirect edit page's jQuery + Velocity height animation
+// (see `redirects/_edit.twig`'s `{% js %}` block, `coreSeoGeoShowField()`): this pane's markup
+// gets swapped wholesale by Datastar patches (see `_seoScoreSidebarHtml()`), so a persistent
+// jQuery click listener wouldn't survive a refresh/status patch the way a CSS transition does.
+//
+// The full-bleed `margin-inline` lives here rather than on each `.core-seo-geo-score-check-row`
+// (same `--neg-padding` trick as `.core-seo-geo-hit-chart-wrapper` below, just on this wrapper
+// instead of its children) -- every row carrying its own negative margin inside this grid
+// container made the implicit column track size (and animate) to each row's overflowing width
+// rather than the pane's own width, which showed up as a horizontal jump/clip during the
+// expand/collapse transition. One bleed on the wrapper itself sidesteps that entirely.
+.core-seo-geo-score-checklist-rows {
+	display: grid;
+	grid-template-rows: 0fr;
+	margin-inline: var(--neg-padding);
+	transition: grid-template-rows 0.2s ease;
+
+	&.is-expanded {
+		grid-template-rows: 1fr;
 	}
 }
 
+// `overflow-y: auto` (rather than a flat `hidden`) is what lets the grid row above collapse to
+// `0fr` without its content showing through mid-transition -- `auto` clips exactly like `hidden`
+// does, it just also offers a scrollbar once `max-height` below caps how tall this can get, so a
+// long checklist scrolls internally instead of growing the whole sidebar pane past the page.
+// `overflow-x: visible` leaves it at that axis's default so `.core-seo-geo-score-check-row`'s own
+// full-bleed negative margin (above) still pokes out past this wrapper exactly as it would with
+// no wrapper there at all.
+.core-seo-geo-score-checklist-rows-inner {
+	overflow-x: visible;
+	overflow-y: auto;
+	max-height: 320px;
+	min-height: 0;
+}
+
+// Descendant (not direct-child) selectors throughout - the popup's `<li class="... is-valid">`
+// holds the icon directly, but the sidebar's `.field.nested.is-valid` holds it one level
+// deeper, inside `.heading` (see `renderChecklistFields()`); this way both reach it.
 .core-seo-geo-score-check-icon {
 	flex: 0 0 auto;
-	width: 16px;
-	height: 16px;
-	margin-top: 2px;
-	border-radius: 50%;
-	position: relative;
+	width: 28px;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
 
-	.is-valid > & {
-		background-color: var(--fg-success);
+	// Each state's icon lives in `web/assets/icons/` alongside the field icons (see
+	// `seo-geo-field-icon.svg`) rather than inlined here -- Vite resolves and hashes these the
+	// same way it would any other referenced asset.
+	.is-valid & {
+		background-image: url("../icons/seo-score-passed.svg");
 	}
 
-	.is-invalid > & {
-		background-color: var(--fg-error);
+	.is-warning & {
+		background-image: url("../icons/seo-score-warning.svg");
 	}
 
-	.is-na > & {
-		background-color: var(--gray-300);
+	.is-invalid & {
+		background-image: url("../icons/seo-score-failed.svg");
 	}
 
-	&::after {
-		content: "";
-		position: absolute;
-		top: 50%;
-		left: 50%;
+	.is-na & {
+		background-image: url("../icons/seo-score-na.svg");
 	}
+}
 
-	.is-valid > &::after {
-		width: 7px;
-		height: 4px;
-		margin-top: -3px;
-		margin-left: -4px;
-		border-left: 2px solid var(--white);
-		border-bottom: 2px solid var(--white);
-		transform: rotate(-45deg);
-	}
-
-	.is-invalid > &::after {
-		width: 7px;
-		height: 7px;
-		margin-top: -4px;
-		margin-left: -4px;
-		background:
-			linear-gradient(45deg, transparent 45%, var(--white) 45%, var(--white) 55%, transparent 55%),
-			linear-gradient(-45deg, transparent 45%, var(--white) 45%, var(--white) 55%, transparent 55%);
-	}
-
-	.is-na > &::after {
-		width: 6px;
-		height: 2px;
-		margin-top: -1px;
-		margin-left: -3px;
-		background-color: var(--white);
-	}
+// The label + (for a warning or failure) message sit together in this block so the icon flexes
+// alongside both lines as a unit, vertically centered on the pair rather than lining up with the
+// label alone.
+.core-seo-geo-score-check-text {
+	flex: 1 1 auto;
+	min-width: 0;
 }
 
 .core-seo-geo-score-check-label {
-	flex: 1 1 auto;
+	display: block;
+	font-size: 12px;
 	font-weight: 600;
+	// Same muted tone Craft's native `.meta > .field > .heading` labels use, instead of the
+	// default (near-black) text color.
+	color: var(--fg-subtle);
 
 	.is-na & {
 		font-weight: 400;
@@ -389,8 +477,10 @@
 }
 
 .core-seo-geo-score-check-message {
-	flex: 1 1 100%;
-	margin: var(--xs) 0 0 calc(16px + var(--xs));
+	margin: 0;
+	// Pulled up to sit closer under the label, the same way Craft's own
+	// `.field > .heading + .instructions` tightens that pairing with a negative margin.
+	margin-block-start: -2px;
 	color: var(--light-text-color);
 	font-weight: 400;
 	font-size: 12px;
@@ -432,8 +522,16 @@
 	}
 }
 
-.core-seo-geo-markdown-pane .meta > .data,
-.core-seo-geo-score-pane .meta > .data {
+// Craft's own CP CSS has a blanket `table .lightswitch { margin-block-end: -5px }` (meant to
+// optically align a lightswitch against adjacent *text* in its own editable tables) that
+// applies inside `Craft.VueAdminTable`'s own rendered `<table>` here too, since it targets any
+// `<table>` ancestor. With no text next to it to align against, that negative margin just pulls
+// the switch 5px above center despite the cell's own `vertical-align: middle`.
+#seo-score-checks-vue-admin-table .lightswitch {
+	margin-block-end: 0;
+}
+
+.core-seo-geo-markdown-pane .meta > .data {
 	// Craft's own CP CSS gives every `.meta > .data` row a 44px floor meant for
 	// form-field-sized rows - too tall for a compact, read-heavy pane like this one.
 	min-height: 0;
@@ -463,4 +561,24 @@
 .core-seo-geo-markdown-pane .notice {
 	margin-block-start: 0;
 	margin-inline: var(--neg-padding);
+}
+
+// Same fixed sizing Craft's own `.expand-status-btn` carries (see `Element::statusFieldHtml()`
+// in `vendor/craftcms/cms/src/base/Element.php`) - our own class since reusing theirs made this
+// button also trigger Craft's site-status disclosure (see the comment in `PluginTrait`). Without
+// this, `.btn`'s default sizing (`height`/`min-height: var(--input-height)`, ~44px) makes a
+// plain icon-only button look oversized next to the "Score" label it sits next to.
+.core-seo-geo-expand-btn {
+	height: 1.0625rem;
+	min-height: auto;
+	width: 1.875rem;
+	margin-inline-start: 5px;
+	padding: 0;
+	line-height: 16px;
+	color: var(--text-color);
+	border-radius: var(--small-border-radius);
+
+	&::before {
+		margin: 0;
+	}
 }

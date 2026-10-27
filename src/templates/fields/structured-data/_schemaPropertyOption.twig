@@ -11,8 +11,8 @@
 <li
     class="core-seo-geo-type-option"
     style="--core-seo-geo-depth: {{ depth|default(0) }};"
-    data-on:mousedown="evt.preventDefault()"
-    data-on:click="
+    data-star-on:mousedown="evt.preventDefault()"
+    data-star-on:click="
         if ('{{ value }}' in $properties) {
             window.coreSeoGeoDisposeEditor('{{ templateEditorId }}');
             delete $properties['{{ value }}'];
@@ -23,14 +23,14 @@
         @get('{{ syncPropertyAction }}');
         el.closest('.core-seo-geo-property-selector')?.querySelector('input')?.blur()
     "
-    data-class:sel="'{{ value }}' in $properties"
+    data-star-class:sel="'{{ value }}' in $properties"
 >
     {{ (label ?? value)|raw }}
     {% if tooltip %}
         <span
             class="core-seo-geo-info-icon-wrap"
-            data-on:mousedown="evt.stopPropagation()"
-            data-on:click="evt.stopPropagation()"
+            data-star-on:mousedown="evt.stopPropagation()"
+            data-star-on:click="evt.stopPropagation()"
         >
             <span class="info"></span>
             <span class="core-seo-geo-info-icon-popup" popover="manual">{{ tooltip|raw }}</span>

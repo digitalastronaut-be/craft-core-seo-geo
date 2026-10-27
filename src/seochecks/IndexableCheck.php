@@ -66,12 +66,12 @@ class IndexableCheck implements SeoScoreCheckInterface {
     public function validate(SeoScoreCheckContext $context): SeoScoreCheckResult {
         if (in_array(SeoData::ROBOTS_NOINDEX, $context->seoData->robots, true)) {
             return new SeoScoreCheckResult(
-                true,
+                SeoScoreCheckStatus::Passed,
                 Craft::t('core-seo-geo', 'This page is set to noindex, so it is intentionally excluded from search results.'),
                 false,
             );
         }
 
-        return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'This page is indexable by search engines.'));
+        return new SeoScoreCheckResult(SeoScoreCheckStatus::Passed, Craft::t('core-seo-geo', 'This page is indexable by search engines.'));
     }
 }

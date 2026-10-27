@@ -69,6 +69,21 @@ class Settings extends Model {
     public array $customUrls = [];
 
     /**
+     * Keys ({@see \digitalastronaut\craftcoreseogeo\seochecks\SeoScoreCheckInterface::getKey()})
+     * of the SEO score checks an admin has switched off from `global-seo.twig`'s "SEO Score
+     * Checks" table. Stored as an opt-out list rather than an opt-in one so a check a module
+     * registers later ({@see \digitalastronaut\craftcoreseogeo\services\
+     * SeoScoreService::EVENT_REGISTER_SEO_SCORE_CHECKS}) starts out enabled without needing a
+     * migration. A disabled check is skipped entirely by `SeoScoreService::process()` -- it
+     * contributes no weight and shows no row in an element's checklist, the same as if it had
+     * never been registered.
+     *
+     * @var string[]
+     * @since v1.28.0
+     */
+    public array $disabledSeoScoreChecks = [];
+
+    /**
      * Whether `robots.txt` is served at all. Forced on regardless of this setting whenever
      * `disallowRobots` is active outside dev mode - see `TxtFilesService::getRobotsTxt()`.
      *
@@ -592,6 +607,12 @@ class Settings extends Model {
      * @since       v1.1.0
      */
     public function setAttributes($values, $safeOnly = true): void {
+        if (isset($values['disabledSeoScoreChecks'])) {
+            $values['disabledSeoScoreChecks'] = \is_array($values['disabledSeoScoreChecks'])
+                ? array_values(array_unique(array_map('strval', $values['disabledSeoScoreChecks'])))
+                : [];
+        }
+
         if (isset($values['customUrls']) && \is_array($values['customUrls'])) {
             $values['customUrls'] = array_values(array_filter(array_map(
                 static fn(array $row): array => [

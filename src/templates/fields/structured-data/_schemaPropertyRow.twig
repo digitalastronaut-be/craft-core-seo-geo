@@ -19,7 +19,7 @@
         {% endif %}
     </td>
 
-    <td data-ignore-morph>
+    <td data-star-ignore-morph>
         {{ codeEditor.textarea({
             id: 'core-seo-geo-property-template-' ~ name|kebab,
             name: 'properties[' ~ name ~ '][template]',
@@ -27,7 +27,7 @@
             class: ['text', 'code', 'fullwidth'],
             rows: 1,
             inputAttributes: {
-                data: { bind: 'properties.' ~ name ~ '.template' },
+                data: { 'star-bind': 'properties.' ~ name ~ '.template' },
             },
         }, 'CodeEditor', { theme: 'vs', language: 'twig' }, {
         wrapperClass: 'monaco-editor-background-frame',
@@ -50,7 +50,7 @@
             title="{{ 'Remove'|t('core-seo-geo') }}"
             aria-label="{{ 'Remove'|t('core-seo-geo') }}"
             role="button"
-            data-on:click="window.coreSeoGeoDisposeEditor('{{ templateEditorId }}'); delete $properties['{{ name }}']; @get('{{ syncPropertyAction }}')"
+            data-star-on:click="window.coreSeoGeoDisposeEditor('{{ templateEditorId }}'); delete $properties['{{ name }}']; @get('{{ syncPropertyAction }}')"
         ></a>
     </td>
 </tr>

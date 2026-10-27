@@ -12,6 +12,8 @@
 
 {% set fullPageForm = true %}
 
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') -%}
+
 {% set rowCols = {
     label: {
         heading: 'Label'|t('core-seo-geo'),
@@ -110,7 +112,7 @@
 
         <div class="field width-50">
             <h2>{{ 'Structured data'|t('core-seo-geo') }}</h2>
-            <p class="light">{{ 'Fill these in once to describe this site, its owning organization, and/or the physical business'|t('core-seo-geo') }}</p>
+            <p class="light">{{ 'Fill these in once to describe the site identity'|t('core-seo-geo') }}</p>
             
             <table class="data fullwidth">
                 <thead>
@@ -233,6 +235,56 @@
                 value: settings.referrerPolicy,
                 options: referrerPolicyOptions,
             }) }}
+
+            <hr>
+
+            <div class="field">
+                <h2>{{ 'SEO Score Checks'|t('core-seo-geo') }}</h2>
+                <p class="light">{{ "The checks that make up every entry's SEO/GEO score. Weight is each check's share of the total score; switching a check off drops it from scoring entirely and saves right away. A custom check was registered by a module or another plugin."|t('core-seo-geo') }}</p>
+
+                <div id="seo-score-checks-vue-admin-table"></div>
+            </div>
         {% endnamespace %}
     </div>
 {% endblock %}
+
+{% set seoScoreChecksTableId = 'seo-score-checks-vue-admin-table'|namespaceInputId('settings') %}
+
+{% js %}
+    new Craft.VueAdminTable({
+        container: {{ ('#' ~ seoScoreChecksTableId)|json_encode|raw }},
+        search: true,
+        fullPane: false,
+        perPage: 8,
+        tableDataEndpoint: {{ 'core-seo-geo/content-seo/seo-score-checks-table-data'|json_encode|raw }},
+        emptyMessage: {{ 'No checks are registered.'|t('core-seo-geo')|json_encode|raw }},
+        columns: [
+            { name: 'label', title: {{ 'Check'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'keyHtml', title: {{ 'Key'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'weight', title: {{ 'Weight'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'sourceHtml', title: {{ 'Source'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'enabledHtml', title: {{ 'Status'|t('core-seo-geo')|json_encode|raw }} },
+        ],
+        onCellClicked: function (data, column, event) {
+            if (column.name !== 'enabledHtml') return;
+
+            // Mutates `data` itself (the live row Vue is rendering from, not a copy) rather than
+            // the clicked DOM node directly -- a direct DOM edit would get overwritten the next
+            // time Vue re-renders this cell from `tableData`, since that's what it actually
+            // renders from.
+            var enabled = !data.enabled;
+            data.enabled = enabled;
+            data.enabledHtml = enabled ? data.enabledHtmlOn : data.enabledHtmlOff;
+
+            Craft.sendActionRequest('POST', 'core-seo-geo/content-seo/save-seo-score-check-enabled', {
+                data: { key: data.key, enabled: enabled ? 1 : 0 },
+            }).then(function (response) {
+                Craft.cp.displayNotice(response.data.message);
+            }).catch(function (error) {
+                data.enabled = !enabled;
+                data.enabledHtml = !enabled ? data.enabledHtmlOn : data.enabledHtmlOff;
+                Craft.cp.displayError(error?.response?.data?.message);
+            });
+        },
+    });
+{% endjs %}

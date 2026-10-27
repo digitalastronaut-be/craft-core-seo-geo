@@ -22,6 +22,7 @@ use craft\events\DefineMenuItemsEvent;
 use craft\events\ElementEvent;
 use craft\events\ExceptionEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\events\RegisterElementActionsEvent;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\SectionEvent;
@@ -39,6 +40,7 @@ use craft\web\ErrorHandler;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
 use craft\web\View;
+use digitalastronaut\craftcoreseogeo\elements\actions\RecalculateSeoScore;
 use digitalastronaut\craftcoreseogeo\elements\StructuredData;
 
 use digitalastronaut\craftcoreseogeo\fields\SeoField;
@@ -47,8 +49,14 @@ use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\seochecks\CanonicalUrlCheck;
 use digitalastronaut\craftcoreseogeo\seochecks\DuplicateContentCheck;
+use digitalastronaut\craftcoreseogeo\seochecks\HasMainCheck;
+use digitalastronaut\craftcoreseogeo\seochecks\HeadingStructureCheck;
+use digitalastronaut\craftcoreseogeo\seochecks\ImageAltTextCheck;
 use digitalastronaut\craftcoreseogeo\seochecks\IndexableCheck;
+use digitalastronaut\craftcoreseogeo\seochecks\MainHasLinkCheck;
+use digitalastronaut\craftcoreseogeo\seochecks\MainWordCountCheck;
 use digitalastronaut\craftcoreseogeo\seochecks\SeoImageCheck;
+use digitalastronaut\craftcoreseogeo\seochecks\SocialMetaTagsCheck;
 use digitalastronaut\craftcoreseogeo\seochecks\ValidDescriptionCheck;
 use digitalastronaut\craftcoreseogeo\seochecks\ValidTitleCheck;
 use digitalastronaut\craftcoreseogeo\services\MarkdownService;
@@ -199,6 +207,12 @@ trait PluginTrait {
                 $event->types[] = CanonicalUrlCheck::class;
                 $event->types[] = IndexableCheck::class;
                 $event->types[] = DuplicateContentCheck::class;
+                $event->types[] = HasMainCheck::class;
+                $event->types[] = MainHasLinkCheck::class;
+                $event->types[] = MainWordCountCheck::class;
+                $event->types[] = HeadingStructureCheck::class;
+                $event->types[] = ImageAltTextCheck::class;
+                $event->types[] = SocialMetaTagsCheck::class;
             }
         );
     }
@@ -417,8 +431,21 @@ trait PluginTrait {
 
     /**
      * Shows the same score chip the element index uses ({@see SeoField::getPreviewHtml()}),
-     * next to a "Refresh" button that queues a fresh `CalculateSeoScore` run -- the pane then
-     * shows the pending chip until that job runs, same as it would right after a normal save.
+     * minus its hover popover, next to a "Refresh" button that queues a fresh
+     * `CalculateSeoScore` run -- the pane then shows the pending chip until that job runs, same
+     * as it would right after a normal save. The "Score" label gets its own "..." button instead,
+     * toggling the full checklist open underneath rather than relying on hover.
+     *
+     * While pending, the pane also carries a `data-star-on-interval` that polls
+     * `SeoScoreController::actionStatus()` (a read-only re-render, unlike `actionRefresh()`,
+     * which queues another job every time it's hit) every couple seconds and patches itself in
+     * by ID -- so the chip/checklist pick up the finished score on their own once the queue job
+     * actually runs, with no page reload and no JS of our own. Polling is self-terminating: once
+     * `process()` clears `pending`, this same method renders without the attribute, so the
+     * patched-in pane just stops polling. Scoped to this one pane rather than, say, Craft's own
+     * queue-wide `Craft.cp` job tracking, so an unrelated big queue job (an import, a bulk
+     * resave) queued after this one can't delay the refresh -- this pane only cares about its
+     * own score.
      *
      * @param ElementInterface $element
      * @param SeoField $field
@@ -430,7 +457,9 @@ trait PluginTrait {
     private function _seoScoreSidebarHtml(ElementInterface $element, SeoField $field): string {
         /** @var Element $element */
         $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
-        $chip = $seoScore->renderChip($seoScore->getScore($element, (int)$field->id));
+        $score = $seoScore->getScore($element, (int)$field->id);
+        $chip = $seoScore->renderChipPill($score);
+        $isPending = $score === null || $score->pending;
 
         $refreshUrl = UrlHelper::actionUrl('core-seo-geo/seo-score/refresh', [
             'elementId' => $element->id,
@@ -438,25 +467,67 @@ trait PluginTrait {
             'fieldId' => $field->id,
         ]);
 
-        $button = Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
-            'type' => 'button',
-            'class' => ['btn', 'small'],
-            'data-on:click' => "@get('{$refreshUrl}')",
+        $statusUrl = UrlHelper::actionUrl('core-seo-geo/seo-score/status', [
+            'elementId' => $element->id,
+            'siteId' => $element->siteId,
+            'fieldId' => $field->id,
         ]);
 
-        $status = Html::tag('div', $chip . $button, ['class' => ['core-seo-geo-score-status']]);
+        // Hidden while pending -- clicking it again would only queue a second, redundant
+        // `CalculateSeoScore` run on top of the one already in flight.
+        $refreshButton = $isPending ? '' : Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
+            'type' => 'button',
+            'class' => ['btn', 'small'],
+            'data-star-on:click' => "@get('{$refreshUrl}')",
+        ]);
 
-        $row =
-            Html::tag('dt', Craft::t('core-seo-geo', 'Score'), ['class' => 'heading']) .
-            Html::tag('dd', $status, ['class' => 'value']);
+        $status = Html::tag('div', $chip . $refreshButton, ['class' => ['core-seo-geo-score-status']]);
+
+        // Scoped per field so multiple SEO/GEO fields on the same element don't fight over one
+        // shared expand/collapse signal.
+        $expandedSignal = "scoreChecklistExpanded{$field->id}";
+        $showExpr = "\${$expandedSignal}";
+
+        $checklistFields = $seoScore->renderChecklistFields($score, $showExpr);
+
+        // Visually the same "expand-status-btn" markup Craft's own `Element::statusFieldHtml()`
+        // uses for its per-site status disclosure (`data-icon="ellipsis"` draws the icon via the
+        // CP's own icon font, nothing to ship here) - but under our own class, not Craft's: that
+        // widget binds its `expandSiteStatuses()` click handler to every `.expand-status-btn`
+        // inside its container, which includes this sidebar, so reusing its class made this
+        // button toggle Craft's own site-status rows too.
+        $expandLabel = Craft::t('core-seo-geo', 'Show check details');
+        $ellipsisButton = $checklistFields === '' ? '' : Html::button('', [
+            'class' => ['core-seo-geo-expand-btn', 'btn'],
+            'data' => ['icon' => 'ellipsis'],
+            'title' => $expandLabel,
+            'aria' => [
+                'expanded' => 'false',
+                'label' => $expandLabel,
+            ],
+            'data-star-attr:aria-expanded' => $showExpr,
+            'data-star-on:click' => "{$showExpr} = !{$showExpr}",
+        ]);
+
+        // `.meta > .field` for the "Score" row itself (one cell: the chip + Refresh button, no
+        // heading/input split needed since there's no label to put in its own column) - the
+        // checklist rows `$ellipsisButton` toggles open sit as its siblings within the same
+        // `.meta`, each its own single-cell row (see `renderChecklistFields()`).
+        $scoreField = Html::tag('div',
+            Html::tag('div', Craft::t('core-seo-geo', 'Score') . $ellipsisButton, ['class' => 'heading']) .
+            Html::tag('div', $status, ['class' => 'input']),
+            ['class' => 'field']
+        );
 
         $html =
             Html::tag('legend', Craft::t('core-seo-geo', 'SEO/GEO'), ['class' => 'h6']) .
-            Html::tag('dl', Html::tag('div', $row, ['class' => 'data']), ['class' => 'meta']);
+            Html::tag('div', $scoreField . $checklistFields, ['class' => 'meta']);
 
         return Html::tag('fieldset', $html, [
             'class' => ['core-seo-geo-score-pane'],
             'id' => "core-seo-geo-score-pane-{$field->id}",
+            'data-star-signals' => $checklistFields === '' ? null : "{ {$expandedSignal}: false }",
+            'data-star-on-interval__duration.2s' => $isPending ? "@get('{$statusUrl}')" : null,
         ]);
     }
 
@@ -476,6 +547,33 @@ trait PluginTrait {
                 if (!$element instanceof Entry || $element->uri === null) return;
 
                 $event->html .= $this->_markdownSidebarHtml($element);
+            }
+        );
+    }
+
+    /**
+     * Adds `RecalculateSeoScore` to the Entries element index's bulk actions, the same way
+     * `EVENT_AFTER_SAVE_ELEMENT` already queues one on every normal save (see
+     * `registerSeoScoreCalculation()`) -- for when the content hasn't changed but the score
+     * should be recalculated anyway (a disabled check got re-enabled in settings, say), without
+     * resaving every entry by hand to trigger it.
+     *
+     * Registered on `Entry::class` unconditionally rather than only for sections that actually
+     * have an `SeoField` somewhere in their layout -- `actions()` is called per `$source` with no
+     * sample element to check that against, so there's no cheap way to tell up front. Entries
+     * with nothing to recalculate are simply skipped over by `performAction()` instead.
+     *
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.29.0
+     */
+    protected function registerSeoScoreElementAction(): void {
+        Event::on(
+            Entry::class,
+            Entry::EVENT_REGISTER_ACTIONS,
+            function(RegisterElementActionsEvent $event) {
+                $event->actions[] = RecalculateSeoScore::class;
             }
         );
     }
@@ -593,10 +691,15 @@ trait PluginTrait {
         $button = Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
             'type' => 'button',
             'class' => ['btn', 'small'],
-            // Datastar's `on` plugin requires the colon form (`data-on:click`) - its
+            // Datastar's `on` plugin requires the colon form (`data-star-on:click`) - its
             // dataset-based attribute scan splits on the first `:` to find the plugin
-            // name, so a `data-on-click` attribute (hyphen) would never match it.
-            'data-on:click' => "@get('{$refreshUrl}')",
+            // name, so a `data-star-on-click` attribute (hyphen) would never match it.
+            // The `star-` segment is this plugin's aliased Datastar prefix (see
+            // `vendor/VERSION.md`), not the plain `data-on:click` Datastar ships by default -
+            // Craft's own control panel markup uses bare `data-*` attributes for unrelated
+            // purposes (e.g. `data-attr` on every element index table cell), which collide with
+            // Datastar's default prefix.
+            'data-star-on:click' => "@get('{$refreshUrl}')",
         ]);
 
         return Html::tag('div', $label . $button, [
@@ -999,6 +1102,7 @@ trait PluginTrait {
         $this->registerSeoScoreSidebar();
         $this->registerMarkdownSidebar();
         $this->registerEntryActionMenuItem();
+        $this->registerSeoScoreElementAction();
     }
 
     /**

@@ -15,9 +15,9 @@ use Craft;
 /**
  * Class ValidTitleCheck
  *
- * Fails when the resolved meta title is empty. A title outside the recommended length still
- * passes -- it's noted in the message, not scored as a failure (see the "binary pass/fail"
- * decision on `SeoScoreCheckResult`).
+ * Fails when the resolved meta title is empty. A title outside the recommended length is a
+ * warning rather than a failure -- it still earns the check's full weight, but the message
+ * surfaces in the CP so it doesn't go unnoticed.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -70,19 +70,19 @@ class ValidTitleCheck implements SeoScoreCheckInterface {
         $title = $context->seoData->metaTitle;
 
         if ($title === null || trim($title) === '') {
-            return new SeoScoreCheckResult(false, Craft::t('core-seo-geo', 'No meta title is set.'));
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Failed, Craft::t('core-seo-geo', 'No meta title is set.'));
         }
 
         $length = mb_strlen($title);
 
         if ($length < self::MIN_LENGTH || $length > self::MAX_LENGTH) {
-            return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The meta title is {length} characters. {min} to {max} is recommended.', [
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Warning, Craft::t('core-seo-geo', 'The meta title is {length} characters. {min} to {max} is recommended.', [
                 'length' => $length,
                 'min' => self::MIN_LENGTH,
                 'max' => self::MAX_LENGTH,
             ]));
         }
 
-        return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The meta title is set and a good length.'));
+        return new SeoScoreCheckResult(SeoScoreCheckStatus::Passed, Craft::t('core-seo-geo', 'The meta title is set and a good length.'));
     }
 }

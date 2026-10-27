@@ -38,14 +38,14 @@
 
 <div
     class="flex-fields core-seo-geo-structured-data-settings hidden"
-    data-signals="{
+    data-star-signals="{
         typeSearch: '',
         propertySearch: '',
         type: '{{ type|default('') }}',
         properties: {{ properties|default({})|json_encode(constant('JSON_FORCE_OBJECT')) }}
     }">
 
-    <input type="hidden" name="type" data-bind:type>
+    <input type="hidden" name="type" data-star-bind:type>
 
     <div class="field">
         <div class="heading">

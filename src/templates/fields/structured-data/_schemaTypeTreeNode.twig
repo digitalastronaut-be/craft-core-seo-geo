@@ -11,15 +11,15 @@
 {% set depthStyle = '--core-seo-geo-depth: ' ~ depth ~ ';' %}
 
 <li class="core-seo-geo-type-node{{ hasChildren ? '' : ' core-seo-geo-type-leaf' }}">
-    {% if hasChildren %}<details{{ (forceOpen or node.name in expandedTypes) ? ' open' : '' }}><summary style="{{ depthStyle }}" data-on:mousedown="evt.preventDefault()">
+    {% if hasChildren %}<details{{ (forceOpen or node.name in expandedTypes) ? ' open' : '' }}><summary style="{{ depthStyle }}" data-star-on:mousedown="evt.preventDefault()">
         <span class="core-seo-geo-type-chevron">{{ iconSvg('circle-chevron-right') }}</span>
     {% endif %}
         <span
             role="option"
             class="core-seo-geo-type-option{{ node.isMatch ? '' : ' core-seo-geo-type-context' }}"
             {% if not hasChildren %}style="{{ depthStyle }}"{% endif %}
-            data-on:mousedown="evt.preventDefault()"
-            data-on:click="
+            data-star-on:mousedown="evt.preventDefault()"
+            data-star-on:click="
                 evt.preventDefault();
                 window.coreSeoGeoDisposeAllPropertyEditors();
                 $type = '{{ node.name }}';
@@ -29,7 +29,7 @@
                 @get('{{ clearRowsAction }}');
                 setTimeout(() => el.closest('.core-seo-geo-structured-data-settings')?.querySelector('.core-seo-geo-property-selector input')?.focus())
             "
-            data-class:sel="$type === '{{ node.name }}'"
+            data-star-class:sel="$type === '{{ node.name }}'"
         >{{ node.label|raw }}</span>
     {% if hasChildren %}</summary>
         <ul class="core-seo-geo-type-children">

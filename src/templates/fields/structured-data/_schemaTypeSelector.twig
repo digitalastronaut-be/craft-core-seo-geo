@@ -9,8 +9,8 @@
         id="core-seo-geo-type-search"
         class="clearable text fullwidth"
         placeholder="{{ 'Search schema types'|t('app') }}"
-        data-bind:search
-        data-on:input__debounce.300ms="@get('{{ searchTypesAction }}')"
+        data-star-bind:search
+        data-star-on:input__debounce.300ms="@get('{{ searchTypesAction }}')"
     >
 
     {% include 'core-seo-geo/fields/structured-data/_schemaTypeSelectorOptions.twig' with {

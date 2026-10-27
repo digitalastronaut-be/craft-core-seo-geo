@@ -25,17 +25,19 @@ namespace digitalastronaut\craftcoreseogeo\seochecks;
  */
 final class SeoScoreCheckResult {
     /**
-     * @param bool $valid whether the check passed
-     * @param string $message a human-readable explanation of the result, shown in the CP
+     * @param SeoScoreCheckStatus $status the outcome tier -- `Warning` still earns the check's
+     * full weight, same as `Passed`; only `Failed` doesn't (see {@see SeoScoreCheckStatus})
+     * @param string $message a human-readable explanation of the result, shown in the CP for
+     * anything other than `Passed`
      * @param bool $applicable whether this check applies at all for the element checked (e.g. a
      * canonical URL check is not applicable when no canonical override is set). A non-applicable
-     * result is excluded from the score entirely -- it's neither a pass nor a fail.
+     * result is excluded from the score entirely -- it's neither a pass, a warning, nor a fail.
      *
      * @author      Digitalastronaut
      * @since       v1.0.4
      */
     public function __construct(
-        public readonly bool $valid,
+        public readonly SeoScoreCheckStatus $status,
         public readonly string $message,
         public readonly bool $applicable = true,
     ) {

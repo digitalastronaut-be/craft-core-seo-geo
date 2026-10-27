@@ -10,9 +10,9 @@
         class="clearable text fullwidth"
         autocomplete="off"
         placeholder="{{ 'Search schema properties'|t('app') }}"
-        data-show="$type"
-        data-bind:property-search
-        data-on:input__debounce.300ms="@get('{{ searchPropertiesAction }}')"
+        data-star-show="$type"
+        data-star-bind:property-search
+        data-star-on:input__debounce.300ms="@get('{{ searchPropertiesAction }}')"
     >
 
     {% include 'core-seo-geo/fields/structured-data/_schemaPropertiesSelectorOptions.twig' with {

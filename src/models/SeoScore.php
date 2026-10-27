@@ -42,9 +42,10 @@ class SeoScore extends Model {
     public bool $pending = false;
 
     /**
-     * @var array<int, array{key: string, label: string, weight: int, valid: bool, applicable: bool, message: string}>
+     * @var array<int, array{key: string, label: string, weight: int, status: string, applicable: bool, message: string}>
      * the per-check breakdown from the last completed run, oldest-registered-check first. Empty
-     * if the row predates this column or hasn't been calculated yet.
+     * if the row predates this column or hasn't been calculated yet. `status` is one of
+     * {@see \digitalastronaut\craftcoreseogeo\seochecks\SeoScoreCheckStatus}'s backing values.
      *
      * @since v1.0.6
      */

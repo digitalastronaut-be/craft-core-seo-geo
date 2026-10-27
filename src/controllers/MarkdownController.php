@@ -71,7 +71,7 @@ class MarkdownController extends Controller {
     /**
      * Forces a fresh fetch + conversion of `$elementId`'s Markdown, bypassing the cache,
      * then patches the CP sidebar's `.core-seo-geo-markdown-pane` with the result via
-     * Datastar - the "Refresh" button's `data-on-click` target.
+     * Datastar - the "Refresh" button's `data-star-on:click` target.
      *
      * @param int $elementId
      * @param int $siteId

@@ -78,7 +78,7 @@ class DuplicateContentCheck implements SeoScoreCheckInterface {
 
         if (!$hasTitle && !$hasDescription) {
             return new SeoScoreCheckResult(
-                true,
+                SeoScoreCheckStatus::Passed,
                 Craft::t('core-seo-geo', 'No title or description is set yet to check for duplicates.'),
                 false,
             );
@@ -89,18 +89,18 @@ class DuplicateContentCheck implements SeoScoreCheckInterface {
         $duplicateDescription = $hasDescription && $this->_isDuplicate($siteId, $element->id, 'metaDescription', $description);
 
         if ($duplicateTitle && $duplicateDescription) {
-            return new SeoScoreCheckResult(false, Craft::t('core-seo-geo', 'Both the meta title and description are already used by another page on this site.'));
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Failed, Craft::t('core-seo-geo', 'Both the meta title and description are already used by another page on this site.'));
         }
 
         if ($duplicateTitle) {
-            return new SeoScoreCheckResult(false, Craft::t('core-seo-geo', 'The meta title is already used by another page on this site.'));
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Failed, Craft::t('core-seo-geo', 'The meta title is already used by another page on this site.'));
         }
 
         if ($duplicateDescription) {
-            return new SeoScoreCheckResult(false, Craft::t('core-seo-geo', 'The meta description is already used by another page on this site.'));
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Failed, Craft::t('core-seo-geo', 'The meta description is already used by another page on this site.'));
         }
 
-        return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The meta title and description are unique on this site.'));
+        return new SeoScoreCheckResult(SeoScoreCheckStatus::Passed, Craft::t('core-seo-geo', 'The meta title and description are unique on this site.'));
     }
 
     // Private Methods

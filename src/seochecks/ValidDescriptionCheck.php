@@ -16,8 +16,8 @@ use Craft;
  * Class ValidDescriptionCheck
  *
  * Fails when the resolved meta description is empty. A description outside the recommended
- * length still passes -- it's noted in the message, not scored as a failure (see the "binary
- * pass/fail" decision on `SeoScoreCheckResult`).
+ * length is a warning rather than a failure -- it still earns the check's full weight, but the
+ * message surfaces in the CP so it doesn't go unnoticed.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -70,19 +70,19 @@ class ValidDescriptionCheck implements SeoScoreCheckInterface {
         $description = $context->seoData->metaDescription;
 
         if ($description === null || trim($description) === '') {
-            return new SeoScoreCheckResult(false, Craft::t('core-seo-geo', 'No meta description is set.'));
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Failed, Craft::t('core-seo-geo', 'No meta description is set.'));
         }
 
         $length = mb_strlen($description);
 
         if ($length < self::MIN_LENGTH || $length > self::MAX_LENGTH) {
-            return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The meta description is {length} characters. {min} to {max} is recommended.', [
+            return new SeoScoreCheckResult(SeoScoreCheckStatus::Warning, Craft::t('core-seo-geo', 'The meta description is {length} characters. {min} to {max} is recommended.', [
                 'length' => $length,
                 'min' => self::MIN_LENGTH,
                 'max' => self::MAX_LENGTH,
             ]));
         }
 
-        return new SeoScoreCheckResult(true, Craft::t('core-seo-geo', 'The meta description is set and a good length.'));
+        return new SeoScoreCheckResult(SeoScoreCheckStatus::Passed, Craft::t('core-seo-geo', 'The meta description is set and a good length.'));
     }
 }

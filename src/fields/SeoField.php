@@ -303,9 +303,9 @@ class SeoField extends Field implements PreviewableFieldInterface {
     /**
      * Shows the element's stored SEO score as a colored "passed/applicable" chip in the element
      * index, when this field is added as a table attribute. The chip markup itself lives on
-     * `SeoScoreService::renderChip()` so the entry edit page's SEO/GEO sidebar pane
-     * ({@see \digitalastronaut\craftcoreseogeo\PluginTrait::_seoScoreSidebarHtml()}) can show the
-     * exact same chip rather than duplicating this.
+     * `SeoScoreService::renderChip()`, which the entry edit page's SEO/GEO sidebar pane
+     * ({@see \digitalastronaut\craftcoreseogeo\PluginTrait::_seoScoreSidebarHtml()}) also builds
+     * on via that service's `renderChipPill()`/`renderChecklist()`, rather than duplicating this.
      *
      * @param mixed $value
      * @param ElementInterface $element
@@ -315,9 +315,11 @@ class SeoField extends Field implements PreviewableFieldInterface {
      * @since       v1.0.4
      */
     public function getPreviewHtml(mixed $value, ElementInterface $element): string {
-        $score = CoreSeoGeo::getInstance()->getSeoScore()->getScore($element, (int)$this->id);
+        /** @var Element $element */
+        $seoScore = CoreSeoGeo::getInstance()->getSeoScore();
+        $score = $seoScore->getScore($element, (int)$this->id);
 
-        return CoreSeoGeo::getInstance()->getSeoScore()->renderChip($score);
+        return $seoScore->renderChip($score, (int)$element->id, (int)$element->siteId, (int)$this->id);
     }
 
     /**

@@ -12,6 +12,7 @@ namespace digitalastronaut\craftcoreseogeo\controllers;
 
 use Craft;
 use craft\enums\Color;
+use craft\helpers\AdminTable;
 use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\helpers\Json;
@@ -24,6 +25,7 @@ use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\records\ContentSeo;
 use digitalastronaut\craftcoreseogeo\records\StructuredDataMapping;
+use digitalastronaut\craftcoreseogeo\seochecks\SeoScoreCheckInterface;
 use digitalastronaut\craftcoreseogeo\services\GlobalStructuredDataService;
 use digitalastronaut\craftcoreseogeo\services\TxtFilesService;
 
@@ -515,6 +517,139 @@ class ContentSeoController extends Controller {
     }
 
     /**
+     * Builds `actionSeoScoreChecksTableData()`'s row shape for the given checks -- usually a
+     * single page of {@see SeoScoreService::EVENT_REGISTER_SEO_SCORE_CHECKS}'s full list (the
+     * plugin's own built-in checks plus any a module/other plugin has added via that event),
+     * already filtered/sliced by that method before reaching here, so HTML only gets built for
+     * rows actually being returned. `label`/`keyHtml`/`sourceHtml`/`enabledHtml` are all
+     * pre-rendered raw HTML, like every other non-slot `Craft.VueAdminTable` cell in this plugin
+     * (see `_contentSeoTableRows()`) -- deliberately *not* the special `__slot:handle` column
+     * (wraps a `handle` value in `<code>` tags) its shape would otherwise fit: that column
+     * desyncs from the rest of its own row once `search` filters the table down to fewer rows
+     * (reproduced manually -- filtering to the "main" checks showed the right label/weight per
+     * row but the *wrong* key next to them, stale from the unfiltered row at that same index),
+     * so it's plain `keyHtml` instead, which filters correctly along with every other column
+     * here. `enabledHtml`'s lightswitch posts its own toggle immediately via
+     * `actionSaveSeoScoreCheckEnabled()` (`global-seo.twig`'s `onCellClicked` handler) rather
+     * than through this page's "Save" button -- this table's rows are Vue-rendered outside that
+     * `<form>`, so there's nothing for a plain submitted lightswitch to ride along with.
+     *
+     * @param SeoScoreCheckInterface[] $checks
+     * @return array<int, array{id: string, key: string, label: string, keyHtml: string, weight: int, sourceHtml: string, enabledHtml: string}>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.28.0
+     */
+    private function _seoScoreCheckRows(array $checks): array {
+        $disabledChecks = CoreSeoGeo::getInstance()->getSettings()->disabledSeoScoreChecks;
+        $rows = [];
+
+        foreach ($checks as $check) {
+            $isBuiltIn = str_starts_with($check::class, 'digitalastronaut\\craftcoreseogeo\\seochecks\\');
+            $enabled = !in_array($check->getKey(), $disabledChecks, true);
+
+            $rows[] = [
+                // `id`, same value as `key` -- every check's key is already a unique identifier,
+                // this just gives `Craft.VueAdminTable`'s underlying `vuetable2` a `track-by`-
+                // able row id (its own default), quieting its "define a unique row identifier"
+                // console warning, same as every other `Craft.VueAdminTable` row in this plugin.
+                'id' => $check->getKey(),
+                // `key` (plain) feeds the toggle request; `keyHtml` is what the "Key" column
+                // actually displays -- see this method's own docblock for why that's a plain
+                // pre-rendered column rather than the `__slot:handle` special one.
+                'key' => $check->getKey(),
+                // `Craft.VueAdminTable` renders every non-slot cell's value as raw HTML, not
+                // escaped text (see `_contentSeoTableRows()`'s own docblock) -- `getLabel()`
+                // strings like "Has a <main> element" would otherwise render as an actual,
+                // content-swallowing `<main>` tag rather than the literal text.
+                'label' => Html::encode($check->getLabel()),
+                'keyHtml' => Html::tag('code', Html::encode($check->getKey())),
+                'weight' => $check->getWeight(),
+                'sourceHtml' => Cp::statusLabelHtml([
+                    'color' => $isBuiltIn ? Color::Gray : Color::Teal,
+                    'label' => $isBuiltIn ? Craft::t('core-seo-geo', 'Built-in') : Craft::t('core-seo-geo', 'Custom'),
+                ]),
+                // `enabled` and the two pre-rendered strings let `global-seo.twig`'s
+                // `onCellClicked` handler flip the lightswitch by mutating this exact row object
+                // (Vue's own `v-for` hands callbacks the live reactive item, not a copy) rather
+                // than touching the rendered DOM directly -- a direct DOM edit would get
+                // clobbered the next time Vue re-renders this cell from `tableData`, since that's
+                // what it actually renders from. `enabledHtml` is the one the `enabledHtml`
+                // column displays; `enabledHtmlOn`/`enabledHtmlOff` are what it gets reassigned
+                // to, so the click handler never has to rebuild this markup itself.
+                'enabled' => $enabled,
+                'enabledHtml' => $this->_seoScoreCheckLightswitchHtml($check->getKey(), $enabled),
+                'enabledHtmlOn' => $this->_seoScoreCheckLightswitchHtml($check->getKey(), true),
+                'enabledHtmlOff' => $this->_seoScoreCheckLightswitchHtml($check->getKey(), false),
+            ];
+        }
+
+        return $rows;
+    }
+
+    /**
+     * The static (non-JS-enhanced) markup `_includes/forms/lightswitch.twig` renders for a
+     * *labeled*, unnamed lightswitch -- `.lightswitch-outer-container` wrapping a visually-
+     * hidden `Check for X. Uncheck for Y.` description (same `'app'` category source strings the
+     * macro itself pulls those two sentences from, read by screen readers via `aria-describedby`
+     * -- `role="switch"` plus a couple of flanking spans otherwise has no accessible name at all)
+     * and `.lightswitch-inner-container`, holding the "Disabled"/"Enabled" spans either side of
+     * the switch itself. Both labels render unconditionally, same as the macro -- Craft's own CP
+     * CSS only ever styles their spacing/alignment (`[data-toggle=on]`/`[data-toggle=off]`), it
+     * doesn't hide either one based on state, so the switch's position/color is what actually
+     * carries the on/off signal, the two labels are just always-visible anchors for it.
+     *
+     * No `name` attribute on the switch itself (so no hidden input, unlike the macro's own
+     * output) since this one doesn't submit with a form at all -- `global-seo.twig`'s
+     * `onCellClicked` handler toggles the `on` class/`aria-checked` itself and posts the change
+     * via `actionSaveSeoScoreCheckEnabled()`. Deliberately not `Craft.ui.createLightswitch()`-
+     * built client-side instead: that API builds a switch from scratch rather than enhancing
+     * existing markup, which would fight `Craft.VueAdminTable`'s own re-rendering of this cell on
+     * every search/reload.
+     *
+     * @param string $key the check's key, scoping the description span's `id` so it's unique
+     * across every lightswitch this method renders on the same page
+     * @param bool $enabled
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.31.0
+     */
+    private function _seoScoreCheckLightswitchHtml(string $key, bool $enabled): string {
+        $onLabel = Craft::t('core-seo-geo', 'Enabled');
+        $offLabel = Craft::t('core-seo-geo', 'Disabled');
+        $descriptionId = Html::id("seo-score-check-{$key}-desc");
+
+        $switch = Html::tag(
+            'button',
+            Html::tag('div', Html::tag('div', '', ['class' => 'handle']), ['class' => 'lightswitch-container']),
+            [
+                'type' => 'button',
+                'role' => 'switch',
+                'class' => array_filter(['lightswitch', 'small', $enabled ? 'on' : null]),
+                'aria' => [
+                    'checked' => $enabled ? 'true' : 'false',
+                    'describedby' => $descriptionId,
+                ],
+            ],
+        );
+
+        $description = implode(' ', [
+            Craft::t('app', 'Check for {onLabel}.', ['onLabel' => $onLabel]),
+            Craft::t('app', 'Uncheck for {offLabel}.', ['offLabel' => $offLabel]),
+        ]);
+
+        return Html::tag('div', implode('', [
+            Html::tag('span', $description, ['id' => $descriptionId, 'class' => 'visually-hidden']),
+            Html::tag('div', implode('', [
+                Html::tag('span', $offLabel, ['data-toggle' => 'off', 'aria-hidden' => 'true']),
+                $switch,
+                Html::tag('span', $onLabel, ['data-toggle' => 'on', 'aria-hidden' => 'true']),
+            ]), ['class' => 'lightswitch-inner-container']),
+        ]), ['class' => 'lightswitch-outer-container']);
+    }
+
+    /**
      * Persists the title/description block config, robots directives, and fallback image posted
      * from `global-seo.twig` into the posted site's global bundle row, plus the plugin-wide
      * settings (hreflang, favicon, sitemap generation, custom sitemap URLs) posted alongside them
@@ -557,6 +692,95 @@ class ContentSeoController extends Controller {
         $this->setSuccessFlash(Craft::t('core-seo-geo', 'SEO/GEO settings saved.'));
 
         return $this->redirectToPostedUrl();
+    }
+
+    /**
+     * JSON data for `global-seo.twig`'s "SEO Score Checks" `Craft.VueAdminTable` -- its
+     * `tableDataEndpoint`, switched over from a plain `tableData` array once the checklist grew
+     * past a size worth showing (and fetching) all at once. `getRegisteredChecks()` isn't a DB
+     * query like `getTableDataForSite()`'s own rows are, so `page`/`per_page`/`search` are
+     * applied by hand over the in-memory array here rather than SQL `LIMIT`/`WHERE` -- filtering
+     * and slicing the raw checks *before* `_seoScoreCheckRows()` builds their HTML, so that work
+     * only happens for the one page of rows actually being returned.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.31.0
+     */
+    public function actionSeoScoreChecksTableData(): Response {
+        $this->requireAcceptsJson();
+
+        $request = Craft::$app->getRequest();
+        $page = (int)$request->getParam('page', 1);
+        $limit = (int)$request->getParam('per_page', 8);
+        $searchTerm = (string)$request->getParam('search', '');
+
+        $checks = CoreSeoGeo::getInstance()->getSeoScore()->getRegisteredChecks();
+
+        if ($searchTerm !== '') {
+            $needle = mb_strtolower($searchTerm);
+            $checks = array_values(array_filter(
+                $checks,
+                static fn(SeoScoreCheckInterface $check): bool => str_contains(mb_strtolower($check->getLabel()), $needle)
+                    || str_contains(mb_strtolower($check->getKey()), $needle),
+            ));
+        }
+
+        $total = count($checks);
+        $pageChecks = array_slice($checks, ($page - 1) * $limit, $limit);
+
+        return $this->asSuccess(data: [
+            'pagination' => AdminTable::paginationLinks($page, $total, $limit),
+            'data' => $this->_seoScoreCheckRows($pageChecks),
+        ]);
+    }
+
+    /**
+     * Toggles one SEO score check on/off, posted the instant `global-seo.twig`'s "SEO Score
+     * Checks" `Craft.VueAdminTable` lightswitch is clicked rather than batched with the rest of
+     * that page's fields -- unlike every other field on that page, this table's rows are
+     * Vue-rendered outside the surrounding `<form>` (same as every other `Craft.VueAdminTable`
+     * in this plugin: Redirects, Content SEO -- none of them post form fields), so there's no
+     * "Save" button for it to ride along with. Updates `Settings::$disabledSeoScoreChecks`
+     * directly for the one key in the request, rather than `actionSaveGlobal()`'s old approach
+     * of rebuilding the whole opt-out list from every registered check's posted state at once.
+     *
+     * @return Response
+     * @throws NotFoundHttpException if no registered check has the posted key
+     *
+     * @author      Digitalastronaut
+     * @since       v1.31.0
+     */
+    public function actionSaveSeoScoreCheckEnabled(): Response {
+        $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
+        $request = Craft::$app->getRequest();
+        $key = (string)$request->getRequiredBodyParam('key');
+        $enabled = (bool)$request->getBodyParam('enabled', false);
+
+        $registeredKeys = array_map(
+            static fn($check): string => $check->getKey(),
+            CoreSeoGeo::getInstance()->getSeoScore()->getRegisteredChecks(),
+        );
+
+        if (!in_array($key, $registeredKeys, true)) {
+            throw new NotFoundHttpException(Craft::t('core-seo-geo', 'No SEO score check is registered with the key "{key}".', [
+                'key' => $key,
+            ]));
+        }
+
+        $disabledChecks = CoreSeoGeo::getInstance()->getSettings()->disabledSeoScoreChecks;
+        $disabledChecks = $enabled
+            ? array_values(array_diff($disabledChecks, [$key]))
+            : array_values(array_unique([...$disabledChecks, $key]));
+
+        if (!CoreSeoGeo::getInstance()->savePartialSettings(['disabledSeoScoreChecks' => $disabledChecks])) {
+            return $this->asFailure(Craft::t('core-seo-geo', "Couldn't update the check."));
+        }
+
+        return $this->asSuccess(Craft::t('core-seo-geo', 'Check updated.'));
     }
 
     /**

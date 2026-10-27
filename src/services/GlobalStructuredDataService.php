@@ -40,7 +40,7 @@ use digitalastronaut\craftcoreseogeo\models\structureddata\WebsiteData;
  * `Organization` and `LocalBusiness` each get their own real, native `craft\fields\Addresses`
  * field (`ADDRESS_FIELD_HANDLES`) - but neither field lives on `StructuredData`'s own field
  * layout. Both live on one shared "Business Addresses" global set instead (created by
- * `m261024_100000_add_business_address_global_set`), so an address never clutters a
+ * `Install::_createBusinessAddressGlobalSet()`), so an address never clutters a
  * `coreseogeo_structureddata` row and never shows up on a `StructuredData` element's own edit
  * screen - this service just points `CustomField` at whichever of the two fields the current
  * type needs, against that global set rather than against the `StructuredData` element.
@@ -89,7 +89,7 @@ class GlobalStructuredDataService extends Component {
     ];
 
     /**
-     * @var string The handle of the global set `m261024_100000_add_business_address_global_set`
+     * @var string The handle of the global set `Install::_createBusinessAddressGlobalSet()`
      * creates to hold `ADDRESS_FIELD_HANDLES`' two fields. Literal here (and in that migration)
      * rather than one shared constant - a migration shouldn't depend on application code that
      * might later change out from under it.
@@ -197,8 +197,8 @@ class GlobalStructuredDataService extends Component {
 
     /**
      * The shared "Business Addresses" global set for the given site -
-     * `m261024_100000_add_business_address_global_set` creates it, so `null` here means that
-     * migration hasn't run yet.
+     * `Install::_createBusinessAddressGlobalSet()` creates it, so `null` here means the plugin
+     * hasn't finished installing yet.
      *
      * @param int $siteId
      * @return GlobalSet|null

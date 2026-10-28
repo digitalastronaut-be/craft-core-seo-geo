@@ -542,7 +542,12 @@ trait PluginTrait {
             }, 1000);
         JS) : '';
 
-        return Html::tag('fieldset', $html . $revealScript, [
+        // Prepended, not appended -- Craft's own CP CSS zeroes `.meta`'s bottom margin via
+        // `.meta:last-child{margin-block-end:0!important}` (see `cp.css`), which only matches
+        // while `.meta` actually *is* the fieldset's last element child. A trailing `<script>`
+        // (however invisible) breaks that match and lets `.details .meta`'s own
+        // `margin-block-end: var(--spacing)` show back up as empty space under the pane.
+        return Html::tag('fieldset', $revealScript . $html, [
             'class' => ['core-seo-geo-score-pane'],
             'id' => $paneId,
             'data-star-signals' => $checklistFields === '' ? null : "{ {$expandedSignal}: false }",

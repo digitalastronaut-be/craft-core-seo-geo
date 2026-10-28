@@ -352,9 +352,11 @@
 // `.core-seo-geo-score-check` is the popup's `<li>` version, `-row` the sidebar's `<div>`
 // version (a sibling of the "Score" field in the same `.meta`, see `renderChecklistFields()`) -
 // same icon/label/message content and layout either way, just the divider placement differs:
-// the popup draws it *between* items (`:last-child` drops the trailing one), while the sidebar
-// draws it on every row's top edge, so it also separates the checklist from the "Score" field
-// above it without the "Score" field needing to know about it.
+// the popup draws it *between* items (`:first-child` drops the leading one), while the sidebar
+// draws it on every row's top edge too, except the first -- that leading divider is drawn by the
+// "Score" `.field` itself instead (its own `border-bottom` below, shown only while the checklist
+// is expanded), so there's exactly one hairline between the two, not two stacked on top of each
+// other.
 .core-seo-geo-score-check,
 .core-seo-geo-score-check-row {
 	display: flex;
@@ -368,10 +370,10 @@
 	// popup version used to carry on its own.
 	padding-block: var(--s);
 	padding-inline: 12px;
-	border-bottom: 1px solid var(--hairline-color);
+	border-top: 1px solid var(--hairline-color);
 
-	&:last-child {
-		border-bottom: none;
+	&:first-child {
+		border-top: none !important;
 	}
 }
 
@@ -383,6 +385,12 @@
 	padding-block: var(--s);
 	padding-inline: 12px;
 	border-top: 1px solid var(--hairline-color);
+
+	// Otherwise doubles up with the "Score" `.field`'s own `border-bottom` right above it (see
+	// below), since that one shows at the exact same time this row's top edge does.
+	&:first-child {
+		border-top: none;
+	}
 }
 
 // Animates the checklist rows' combined height via the CSS-grid auto-size trick (an element
@@ -400,6 +408,21 @@
 // expand/collapse transition. One bleed on the wrapper itself sidesteps that entirely.
 .core-seo-geo-score-checklist-rows {
 	display: grid;
+	// Without an explicit column, the grid's single implicit column track sizes to its item's
+	// max-content width (shrink-to-fit) rather than the container's full width -- invisible
+	// while any row's message text is long enough to force it wide, but once every check passes
+	// (no messages, just short labels, see `_checkItemHtml()`) the whole checklist narrows to fit
+	// the longest label instead of spanning the pane like `.core-seo-geo-score-check-row`'s own
+	// full-bleed margin assumes it does.
+	//
+	// A percentage column only resolves against a *definite* width, though, and this element is
+	// itself a flex item of `.core-seo-geo-score-pane-content.flex` (Craft's own `.flex` utility,
+	// see `cp.css`) -- whose children default to `flex: 0 1 auto` and so never grow to fill that
+	// row's main axis. Without `flex` below forcing this item to claim the full row width first,
+	// `100%` here has nothing definite to resolve against and silently falls back to the same
+	// shrink-to-fit behavior it's meant to replace.
+	flex: 1 1 auto;
+	grid-template-columns: 100%;
 	grid-template-rows: 0fr;
 	margin-inline: var(--neg-padding);
 	transition: grid-template-rows 0.2s ease;
@@ -419,7 +442,7 @@
 .core-seo-geo-score-checklist-rows-inner {
 	overflow-x: visible;
 	overflow-y: auto;
-	max-height: 320px;
+	max-height: 260px;
 	min-height: 0;
 }
 
@@ -545,6 +568,15 @@
 	}
 }
 
+// The "Score" field has no border of its own (it's the first row in the `.meta`, see
+// `PluginTrait::_seoScoreSidebarHtml()`), so with the checklist disclosure open underneath it,
+// the two runs together with no seam between them. `:has()` reaches across to the checklist
+// wrapper's own `.is-expanded` state (toggled by Datastar, see `renderChecklistFields()`) rather
+// than this needing any markup/JS of its own.
+.field:has(+ .core-seo-geo-score-pane-content .core-seo-geo-score-checklist-rows.is-expanded) {
+	border-bottom: 1px solid var(--hairline-color);
+}
+
 // The "Status"/"Score" row's label (or chip) and Refresh button, pushed to opposite ends of the row.
 .core-seo-geo-markdown-status,
 .core-seo-geo-score-status {
@@ -570,6 +602,7 @@
 // plain icon-only button look oversized next to the "Score" label it sits next to.
 .core-seo-geo-expand-btn {
 	height: 1.0625rem;
+	max-height: 1.0625rem;
 	min-height: auto;
 	width: 1.875rem;
 	margin-inline-start: 5px;

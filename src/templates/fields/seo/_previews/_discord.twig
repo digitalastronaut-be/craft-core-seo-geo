@@ -1,0 +1,29 @@
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var previewUrl string|null #}
+{# @var imageUrl string #}
+
+{% set domain = previewUrl ? (previewUrl|replace({'https://': '', 'http://': ''})|split('/')[0]|replace({'www.': ''})) : null %}
+{% set siteLabel = domain ? (domain|split('.')[0]|replace({'-': ' '})|title) : null %}
+
+<div class="core-seo-geo-preview-discord">
+    <div class="core-seo-geo-preview-discord-embed">
+        <div class="core-seo-geo-preview-discord-site{{ siteLabel ? '' : ' is-empty' }}">
+            {{ siteLabel ?: 'Your Site Name'|t('core-seo-geo') }}
+        </div>
+
+        <a
+            class="core-seo-geo-preview-discord-title{{ value.metaTitle ? '' : ' is-empty' }}"
+            {% if previewUrl %}href="{{ previewUrl }}" target="_blank" rel="noopener"{% endif %}
+        >
+            {{ value.metaTitle ?: 'Add a title to see how it will look'|t('core-seo-geo') }}
+        </a>
+
+        <div class="core-seo-geo-preview-discord-description{{ value.metaDescription ? '' : ' is-empty' }}">
+            {{ value.metaDescription ?: 'Add a description to see how it will look'|t('core-seo-geo') }}
+        </div>
+
+        <div class="core-seo-geo-preview-discord-image-wrap">
+            <img class="core-seo-geo-preview-discord-image" src="{{ imageUrl }}" alt="">
+        </div>
+    </div>
+</div>

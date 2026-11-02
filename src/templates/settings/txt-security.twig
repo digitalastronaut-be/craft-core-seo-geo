@@ -19,21 +19,6 @@
 
     {% namespace 'settings' %}
         <div class="flex-fields">
-            {{ forms.lightswitchField({
-                label: 'Serve security.txt'|t('core-seo-geo'),
-                instructions: "Served at both /.well-known/security.txt (what RFC 9116 prefers) and /security.txt (kept for older tooling). Contact and Expires are both required by the spec - the file won't actually be served until at least one Contact and an Expires date are set, even with this on. [View security.txt]({url}) · Spec: [RFC 9116]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/security/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-security-txt',
-                name: 'enableSecurityTxt',
-                on: settings.enableSecurityTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-
-            <hr>
-
             {{ forms.editableTableField({
                 label: 'Contact'|t('core-seo-geo'),
                 instructions: 'Required. At least one way for a security researcher to reach you - e.g. “mailto:security@example.com” or “https://example.com/report”.'|t('core-seo-geo'),
@@ -49,7 +34,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.securityTxtContacts,
+                rows: securityTxtContacts,
             }) }}
 
             {{ forms.dateTimeField({
@@ -57,7 +42,7 @@
                 instructions: 'Required. When this file should be considered stale. The spec recommends staying within a year, to encourage keeping it current.'|t('core-seo-geo'),
                 id: 'security-txt-expires',
                 name: 'securityTxtExpires',
-                value: settings.securityTxtExpires,
+                value: securityTxtExpires,
                 fieldClass: 'width-50',
             }) }}
 
@@ -78,7 +63,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.securityTxtEncryption,
+                rows: securityTxtEncryption,
             }) }}
 
             {{ forms.editableTableField({
@@ -96,7 +81,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.securityTxtAcknowledgments,
+                rows: securityTxtAcknowledgments,
             }) }}
 
             {{ forms.textField({
@@ -104,7 +89,7 @@
                 instructions: 'Comma-separated language codes the security team can respond in, e.g. “en, nl”.'|t('core-seo-geo'),
                 id: 'security-txt-preferred-languages',
                 name: 'securityTxtPreferredLanguages',
-                value: settings.securityTxtPreferredLanguages,
+                value: securityTxtPreferredLanguages,
                 fieldClass: 'width-50',
             }) }}
 
@@ -123,7 +108,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.securityTxtPolicy,
+                rows: securityTxtPolicy,
             }) }}
 
             {{ forms.editableTableField({
@@ -141,7 +126,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.securityTxtHiring,
+                rows: securityTxtHiring,
             }) }}
 
             {{ codeEditor.textareaField({
@@ -149,7 +134,7 @@
                 instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
                 id: 'security-txt-extra',
                 name: 'securityTxtExtra',
-                value: settings.securityTxtExtra,
+                value: securityTxtExtra,
                 class: ['code'],
                 rows: 4,
             }, 'CodeEditor', {
@@ -186,4 +171,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/security/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve security.txt'|t('core-seo-geo'),
+                instructions: "Served at both /.well-known/security.txt (what RFC 9116 prefers) and /security.txt (kept for older tooling). Contact and Expires are both required by the spec - the file won't actually be served until at least one Contact and an Expires date are set, even with this on."|t('core-seo-geo'),
+                id: 'enable-security-txt',
+                name: 'enableSecurityTxt',
+                on: settings.enableSecurityTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'security.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'RFC 9116'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

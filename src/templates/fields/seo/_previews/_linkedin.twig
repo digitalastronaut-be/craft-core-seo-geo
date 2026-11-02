@@ -1,0 +1,22 @@
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var previewUrl string|null #}
+{# @var imageUrl string #}
+
+{% set domain = previewUrl ? (previewUrl|replace({'https://': '', 'http://': ''})|split('/')[0]|replace({'www.': ''})) : null %}
+
+<div class="core-seo-geo-preview-linkedin">
+    <div class="core-seo-geo-preview-linkedin-image-wrap">
+        <img class="core-seo-geo-preview-linkedin-image" src="{{ imageUrl }}" alt="">
+    </div>
+
+    <div class="core-seo-geo-preview-linkedin-body">
+        <a
+            class="core-seo-geo-preview-linkedin-title{{ value.metaTitle ? '' : ' is-empty' }}"
+            {% if previewUrl %}href="{{ previewUrl }}" target="_blank" rel="noopener"{% endif %}
+        >
+            {{ value.metaTitle ?: 'Add a title to see how it will look'|t('core-seo-geo') }}
+        </a>
+
+        <div class="core-seo-geo-preview-linkedin-domain">{{ domain ?: 'your-domain.com'|t('core-seo-geo') }}</div>
+    </div>
+</div>

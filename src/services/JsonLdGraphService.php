@@ -145,7 +145,7 @@ class JsonLdGraphService extends Component {
         foreach (StructuredDataElement::TYPES as $type) {
             $element = $globalStructuredData->getElement($type, $site->id);
 
-            if ($element !== null) $this->_addStructuredDataElement($element, $site->getBaseUrl());
+            if ($element !== null && $element->enabled) $this->_addStructuredDataElement($element, $site->getBaseUrl());
         }
     }
 

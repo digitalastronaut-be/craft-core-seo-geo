@@ -25,7 +25,10 @@ use yii\web\Response;
  * Class MarkdownController
  *
  * Serves an entry's Markdown representation at its own URL plus `.md`. Generation and
- * caching are handled by `MarkdownService`.
+ * caching are handled by `MarkdownService`. The route itself isn't even registered when
+ * `Settings::$enableMarkdown` is off ({@see \digitalastronaut\craftcoreseogeo\PluginTrait::
+ * registerSiteUrlRules()}); `actionRender()` additionally 404s per-entry when the entry's own
+ * section has opted out via `ContentSeo::$markdownEnabled`.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -55,6 +58,11 @@ class MarkdownController extends Controller {
 
         if (!$entry) {
             throw new NotFoundHttpException("No entry found for URI \"{$uri}\".");
+        }
+
+        $sectionHandle = $entry->getSection()?->handle;
+        if ($sectionHandle !== null && !CoreSeoGeo::getInstance()->getContentSeo()->isMarkdownEnabled($sectionHandle, $siteId)) {
+            throw new NotFoundHttpException('Markdown generation is disabled for this entry\'s section.');
         }
 
         $markdown = CoreSeoGeo::getInstance()->getMarkdown()->getMarkdownForElement($entry);

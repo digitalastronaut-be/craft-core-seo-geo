@@ -49,6 +49,16 @@ class HasMainCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks the rendered page for exactly one <main> element. Not applicable if the page can\'t be fetched. Fails if there\'s none; passes with a warning if there\'s more than one.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.30.0
      */
     public function getWeight(): int {

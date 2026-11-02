@@ -19,21 +19,6 @@
 
     {% namespace 'settings' %}
         <div class="flex-fields">
-            {{ forms.lightswitchField({
-                label: 'Serve humans.txt'|t('core-seo-geo'),
-                instructions: "Off by default - there's nothing useful to serve until the fields below are filled in. [View humans.txt]({url}) · Spec: [humanstxt.org]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/humans/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-humans-txt',
-                name: 'enableHumansTxt',
-                on: settings.enableHumansTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-
-            <hr>
-
             {% set humansPersonCols = {
                 role: {
                     heading: 'Role'|t('core-seo-geo'),
@@ -67,7 +52,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: humansPersonCols,
-                rows: settings.humansTxtTeam,
+                rows: humansTxtTeam,
             }) }}
 
             {{ forms.editableTableField({
@@ -80,7 +65,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: humansPersonCols,
-                rows: settings.humansTxtThanks,
+                rows: humansTxtThanks,
             }) }}
 
             <hr>
@@ -90,7 +75,7 @@
                 instructions: 'technologies/stack used to build this website.'|t('core-seo-geo'),
                 id: 'humans-txt-standards',
                 name: 'humansTxtStandards',
-                value: settings.humansTxtStandards,
+                value: humansTxtStandards,
                 fieldClass: 'width-50',
             }) }}
 
@@ -99,7 +84,7 @@
                 instructions: 'The last time this site\'s design/templates changed.'|t('core-seo-geo'),
                 id: 'humans-txt-last-updated',
                 name: 'humansTxtLastUpdated',
-                value: settings.humansTxtLastUpdated,
+                value: humansTxtLastUpdated,
                 fieldClass: 'width-50',
             }) }}
 
@@ -108,7 +93,7 @@
                 instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
                 id: 'humans-txt-extra',
                 name: 'humansTxtExtra',
-                value: settings.humansTxtExtra,
+                value: humansTxtExtra,
                 class: ['code'],
                 rows: 4,
             }, 'CodeEditor', {
@@ -145,4 +130,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/humans/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve humans.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until the fields below are filled in."|t('core-seo-geo'),
+                id: 'enable-humans-txt',
+                name: 'enableHumansTxt',
+                on: settings.enableHumansTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'humans.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'humanstxt.org'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

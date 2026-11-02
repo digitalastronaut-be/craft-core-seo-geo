@@ -16,11 +16,15 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\elements\Entry;
+use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\helpers\Json;
+use craft\helpers\UrlHelper;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 use digitalastronaut\craftcoreseogeo\models\SeoData;
+use digitalastronaut\craftcoreseogeo\services\ContentSeoService;
+use digitalastronaut\craftcoreseogeo\web\assets\images\ImagesAssetBundle;
 
 use yii\db\Schema;
 use yii\validators\UrlValidator;
@@ -28,16 +32,95 @@ use yii\validators\UrlValidator;
 /**
  * Class SeoField
  *
- * Has no settings of its own any more - the title/description block config it builds its CP
- * input from (and resolves its meta title/description against) comes from the
- * `coreseogeo_seodata` row for the element's section, falling back to the site's global bundle
- * row when the section has none of its own. See {@see _resolveFormatRows()}.
+ * The title/description block config it builds its CP input from (and resolves its meta
+ * title/description against) comes from the `coreseogeo_seodata` row for the element's section,
+ * falling back to the site's global bundle row when the section has none of its own - not from
+ * this field's own settings. See {@see _resolveFormatRows()}. Its own settings are which input
+ * sections {@see getSettingsHtml()} lets editors see at all - see {@see $enabledInputFields} -
+ * and, within the social preview section, which platform tabs are offered - see
+ * {@see $enabledPreviewPlatforms}.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
  * @since       v1.0.0
  */
 class SeoField extends Field implements PreviewableFieldInterface {
+    /**
+     * @since v1.5.0
+     */
+    public const string PREVIEW_GOOGLE = 'google';
+    public const string PREVIEW_FACEBOOK = 'facebook';
+    public const string PREVIEW_TWITTER = 'twitter';
+    public const string PREVIEW_LINKEDIN = 'linkedin';
+    public const string PREVIEW_WHATSAPP = 'whatsapp';
+    public const string PREVIEW_MESSENGER = 'messenger';
+    public const string PREVIEW_DISCORD = 'discord';
+
+    /**
+     * Every platform `_previews.twig` can show a preview tab for, in display order - the single
+     * list both this field's settings checkboxes and the component's own tab list filter
+     * against, so neither can drift out of sync with the other.
+     *
+     * @since v1.5.0
+     */
+    public const array PREVIEW_PLATFORMS = [
+        self::PREVIEW_GOOGLE,
+        self::PREVIEW_FACEBOOK,
+        self::PREVIEW_TWITTER,
+        self::PREVIEW_LINKEDIN,
+        self::PREVIEW_WHATSAPP,
+        self::PREVIEW_MESSENGER,
+        self::PREVIEW_DISCORD,
+    ];
+
+    /**
+     * Which of {@see PREVIEW_PLATFORMS} this field instance shows a preview tab for. Defaults to
+     * every platform, so a field instance saved before this setting existed keeps showing every
+     * tab it already did.
+     *
+     * @since v1.5.0
+     */
+    public array $enabledPreviewPlatforms = self::PREVIEW_PLATFORMS;
+
+    /**
+     * @since v1.38.0
+     */
+    public const string FIELD_IMAGE = 'image';
+    public const string FIELD_TITLE = 'title';
+    public const string FIELD_DESCRIPTION = 'description';
+    public const string FIELD_CANONICAL_URL = 'canonicalUrl';
+    public const string FIELD_ROBOTS = 'robots';
+    public const string FIELD_EXCLUDE_FROM_SITEMAP = 'excludeFromSitemap';
+    public const string FIELD_PREVIEWS = 'previews';
+
+    /**
+     * Every input section `_input.twig` can show or hide, in display order - the single list
+     * both this field's settings checkboxes and the input template filter against, so neither
+     * can drift out of sync with the other.
+     *
+     * @since v1.38.0
+     */
+    public const array INPUT_FIELDS = [
+        self::FIELD_IMAGE,
+        self::FIELD_TITLE,
+        self::FIELD_DESCRIPTION,
+        self::FIELD_CANONICAL_URL,
+        self::FIELD_ROBOTS,
+        self::FIELD_EXCLUDE_FROM_SITEMAP,
+        self::FIELD_PREVIEWS,
+    ];
+
+    /**
+     * Which of {@see INPUT_FIELDS} this field instance's input renders at all - e.g. leaving only
+     * {@see FIELD_TITLE} and {@see FIELD_DESCRIPTION} enabled restricts editors to just those two,
+     * or only {@see FIELD_PREVIEWS} to just the social preview. Defaults to every section, so a
+     * field instance saved before this setting existed keeps showing every section it already
+     * did.
+     *
+     * @since v1.38.0
+     */
+    public array $enabledInputFields = self::INPUT_FIELDS;
+
     /**
      * Drops the settings this field used to have (`titleFormatRows`/`descriptionFormatRows`/
      * `showCanonicalField`) before they'd otherwise be assigned onto properties that no longer
@@ -179,6 +262,105 @@ class SeoField extends Field implements PreviewableFieldInterface {
     }
 
     /**
+     * Display label for each of {@see PREVIEW_PLATFORMS}, keyed the same way - the single place
+     * both this field's settings checkboxes ({@see getSettingsHtml()}) and `_previews.twig`'s own
+     * tab list read their labels from.
+     *
+     * @return array<string, string>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.5.0
+     */
+    public static function getPreviewPlatformLabels(): array {
+        return [
+            self::PREVIEW_GOOGLE => Craft::t('core-seo-geo', 'Google'),
+            self::PREVIEW_FACEBOOK => Craft::t('core-seo-geo', 'Facebook'),
+            self::PREVIEW_TWITTER => Craft::t('core-seo-geo', 'X'),
+            self::PREVIEW_LINKEDIN => Craft::t('core-seo-geo', 'LinkedIn'),
+            self::PREVIEW_WHATSAPP => Craft::t('core-seo-geo', 'WhatsApp'),
+            self::PREVIEW_MESSENGER => Craft::t('core-seo-geo', 'Messenger'),
+            self::PREVIEW_DISCORD => Craft::t('core-seo-geo', 'Discord'),
+        ];
+    }
+
+    /**
+     * Display label for each of {@see INPUT_FIELDS}, keyed the same way - the single place both
+     * this field's settings checkboxes ({@see getSettingsHtml()}) and `_input.twig`'s own section
+     * guards read their labels/keys from.
+     *
+     * @return array<string, string>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.38.0
+     */
+    public static function getInputFieldLabels(): array {
+        return [
+            self::FIELD_IMAGE => Craft::t('core-seo-geo', 'Image'),
+            self::FIELD_TITLE => Craft::t('core-seo-geo', 'Title'),
+            self::FIELD_DESCRIPTION => Craft::t('core-seo-geo', 'Description'),
+            self::FIELD_CANONICAL_URL => Craft::t('core-seo-geo', 'Canonical URL'),
+            self::FIELD_ROBOTS => Craft::t('core-seo-geo', 'Robots/AI Visibility'),
+            self::FIELD_EXCLUDE_FROM_SITEMAP => Craft::t('core-seo-geo', 'Exclude from sitemap'),
+            self::FIELD_PREVIEWS => Craft::t('core-seo-geo', 'Social preview'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
+     * @since       v1.5.0
+     */
+    public function getSettingsHtml(): ?string {
+        $fieldLabels = self::getInputFieldLabels();
+        $previewLabels = self::getPreviewPlatformLabels();
+
+        return
+            Cp::checkboxGroupFieldHtml([
+                'label' => Craft::t('core-seo-geo', 'Enabled Fields'),
+                'instructions' => Craft::t('core-seo-geo', 'Which of these sections should editors see on this field?'),
+                'name' => 'enabledInputFields',
+                'options' => array_map(
+                    static fn(string $field, string $label): array => ['label' => $label, 'value' => $field],
+                    array_keys($fieldLabels),
+                    $fieldLabels,
+                ),
+                'values' => $this->enabledInputFields,
+            ]) .
+            Cp::checkboxGroupFieldHtml([
+                'label' => Craft::t('core-seo-geo', 'Enabled Previews'),
+                'instructions' => Craft::t('core-seo-geo', 'Which social preview tabs should editors be able to select on this field?'),
+                'name' => 'enabledPreviewPlatforms',
+                'options' => array_map(
+                    static fn(string $platform, string $label): array => ['label' => $label, 'value' => $platform],
+                    array_keys($previewLabels),
+                    $previewLabels,
+                ),
+                'values' => $this->enabledPreviewPlatforms,
+            ]);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Requires at least one of {@see PREVIEW_PLATFORMS}/{@see INPUT_FIELDS} to stay enabled -
+     * with none, the field's previews pane would have no tabs left to show, or the input would
+     * have nothing left to render at all.
+     *
+     * @author      Digitalastronaut
+     * @since       v1.5.0
+     */
+    protected function defineRules(): array {
+        $rules = parent::defineRules();
+
+        $rules[] = [['enabledPreviewPlatforms', 'enabledInputFields'], 'required'];
+        $rules[] = [['enabledPreviewPlatforms'], 'in', 'range' => self::PREVIEW_PLATFORMS, 'allowArray' => true];
+        $rules[] = [['enabledInputFields'], 'in', 'range' => self::INPUT_FIELDS, 'allowArray' => true];
+
+        return $rules;
+    }
+
+    /**
      * @inheritdoc
      *
      * @author      Digitalastronaut
@@ -203,6 +385,7 @@ class SeoField extends Field implements PreviewableFieldInterface {
             'robots' => self::normalizeRobots($value['robots'] ?? []),
             // `imageId` is the pre-rename key: existing stored/posted content may still use it.
             'image' => $this->_normalizeAssetId($value['image'] ?? $value['imageId'] ?? null),
+            'excludeFromSitemap' => self::normalizeExcludeFromSitemap($value['excludeFromSitemap'] ?? null),
         ]);
     }
 
@@ -332,8 +515,36 @@ class SeoField extends Field implements PreviewableFieldInterface {
         $view = Craft::$app->getView();
         $id = $view->namespaceInputId(Html::id($this->handle));
 
+        $contentSeo = CoreSeoGeo::getInstance()->getContentSeo();
+        $siteId = (int)($element?->siteId ?? Craft::$app->getSites()->getCurrentSite()->id);
+        $sectionHandle = $element instanceof Entry ? $element->getSection()?->handle : null;
+
         $image = $value instanceof SeoData ? $value->getImage()->one() : null;
+        // No image of its own - resolve the same section-then-global fallback the live meta tags
+        // and the SEO Score check already use, so the editor can see why those show an image
+        // when this field's own chooser doesn't.
+        $fallbackImage = null;
+        $fallbackSource = null;
+
+        if ($image === null) {
+            $sectionRow = $sectionHandle !== null ? $contentSeo->getRowForSection($sectionHandle, $siteId) : null;
+
+            $fallbackImage = $contentSeo->getFallbackImage($element);
+            if ($fallbackImage !== null) $fallbackSource = $sectionRow?->getImageAsset() ? 'content' : 'global';
+        }
+
+        // Same fallback the live meta tags, sitemap, llms.txt, and the SEO Score "Indexable"
+        // check all already apply when this field's own robots list is left empty.
+        $fallbackRobots = $value instanceof SeoData && $value->robots === []
+            ? $contentSeo->getFallbackRobots($element)
+            : [];
+
+        $sitemapWarning = self::_sitemapWarning($contentSeo, $sectionHandle, $siteId);
+
         [$titleFormatRows, $descriptionFormatRows] = self::_resolveFormatRows($element);
+
+        $faviconAsset = CoreSeoGeo::getInstance()->getSettings()->getFaviconAsset();
+        $imagesBundle = $view->registerAssetBundle(ImagesAssetBundle::class);
 
         return $view->renderTemplate('core-seo-geo/fields/seo/_input', [
             'field' => $this,
@@ -342,10 +553,19 @@ class SeoField extends Field implements PreviewableFieldInterface {
             'value' => $value,
             'element' => $element,
             'image' => $image,
+            'fallbackImage' => $fallbackImage,
+            'fallbackSource' => $fallbackSource,
+            'fallbackRobots' => $fallbackRobots,
+            'sitemapWarning' => $sitemapWarning,
             'titleFormatRows' => $titleFormatRows,
             'descriptionFormatRows' => $descriptionFormatRows,
             'titleRowValues' => self::_matchPostedRows($titleFormatRows, $value instanceof SeoData ? $value->titleRows : null),
             'descriptionRowValues' => self::_matchPostedRows($descriptionFormatRows, $value instanceof SeoData ? $value->descriptionRows : null),
+            // For the Google card in `_previews.twig` - reuses the same asset/service pair
+            // `PluginTrait::_getFaviconTags()` uses for the real `<link rel="icon">` tag.
+            'faviconUrl' => $faviconAsset ? CoreSeoGeo::getInstance()->getFavicon()->getFaviconPngUrl($faviconAsset) : null,
+            // Placeholder shown by the social cards in `_previews.twig` when no image is set.
+            'noImageUrl' => "{$imagesBundle->baseUrl}/no-image.png",
         ]);
     }
 
@@ -381,6 +601,25 @@ class SeoField extends Field implements PreviewableFieldInterface {
     }
 
     /**
+     * Public (and static) so `SitemapService` can parse a posted/stored `excludeFromSitemap`
+     * value straight off an element's raw, not-yet-normalized field data too, without going
+     * through `normalizeValue()` - see `SitemapService::_rawExcludeFromSitemap()`. `null` (the
+     * field was never rendered/posted at all, e.g. a value set programmatically or saved before
+     * this setting existed) defaults to `false`, matching {@see SeoData::$excludeFromSitemap}'s
+     * own default - unlike the lightswitch's own "on" posting the literal string `'1'`, which
+     * this correctly reads as `true` via `_isTruthy()`.
+     *
+     * @param mixed $value
+     * @return bool
+     *
+     * @author      Digitalastronaut
+     * @since       v1.37.0
+     */
+    public static function normalizeExcludeFromSitemap(mixed $value): bool {
+        return $value !== null && self::_isTruthy($value);
+    }
+
+    /**
      * Normalizes a posted element-select value into a single asset ID. The input posts a plain
      * scalar since it's configured as a single selection, but an array is tolerated too in case
      * that ever changes.
@@ -394,6 +633,50 @@ class SeoField extends Field implements PreviewableFieldInterface {
         if (\is_array($value)) $value = reset($value) ?: null;
 
         return is_numeric($value) ? (int)$value : null;
+    }
+
+    /**
+     * Tells the editor when the "Exclude from sitemap" switch has no effect either way right
+     * now, because a setting above it - sitewide or for this element's own section - already
+     * decides the outcome, rather than leaving them to notice only by checking the sitemap
+     * itself, or to find out from static instructions that may no longer match the site's
+     * actual current configuration. Links to the setting that's overriding this one, but only
+     * for an admin - every settings page this could point to requires admin access
+     * ({@see \digitalastronaut\craftcoreseogeo\controllers\ContentSeoController::beforeAction()}),
+     * so a non-admin editor gets the same explanation with no dead link to a page they can't
+     * open.
+     *
+     * @param ContentSeoService $contentSeo
+     * @param string|null $sectionHandle the element's own section handle, or `null` when it has
+     * none (not an `Entry`, or an `Entry` with none) - never excluded at the section level then
+     * @param int $siteId
+     * @return string|null
+     *
+     * @author      Digitalastronaut
+     * @since       v1.37.0
+     */
+    private static function _sitemapWarning(ContentSeoService $contentSeo, ?string $sectionHandle, int $siteId): ?string {
+        $isAdmin = Craft::$app->getUser()->getIsAdmin();
+
+        if (!CoreSeoGeo::getInstance()->getSettings()->enableSitemap) {
+            return $isAdmin
+                ? Craft::t('core-seo-geo', 'Sitemap generation is currently [disabled globally]({url})', [
+                    'url' => UrlHelper::cpUrl('core-seo-geo/settings/global-seo') . '#sitemap',
+                ])
+                : Craft::t('core-seo-geo', 'Sitemap generation is currently disabled globally');
+        }
+
+        if ($sectionHandle !== null && !$contentSeo->isSitemapEnabled($sectionHandle, $siteId)) {
+            return $isAdmin
+                ? Craft::t('core-seo-geo', 'Sitemap generation is currently [disabled for this section]({url})', [
+                    'url' => UrlHelper::cpUrl("core-seo-geo/settings/content-seo/{$sectionHandle}", [
+                        'site' => Craft::$app->getSites()->getSiteById($siteId)?->handle,
+                    ]),
+                ])
+                : Craft::t('core-seo-geo', 'Sitemap generation is currently disabled for this section');
+        }
+
+        return null;
     }
 
     /**

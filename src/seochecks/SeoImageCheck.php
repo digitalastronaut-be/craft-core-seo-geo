@@ -58,6 +58,19 @@ class SeoImageCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks that an SEO image is set, after falling back to the section or site-wide default. No image fails; an image with no alt text, or smaller than {minWidth}x{minHeight}px, passes with a warning.', [
+            'minWidth' => self::MIN_WIDTH,
+            'minHeight' => self::MIN_HEIGHT,
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.0.4
      */
     public function getWeight(): int {

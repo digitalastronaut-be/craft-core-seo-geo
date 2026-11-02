@@ -1,6 +1,8 @@
 {% extends 'core-seo-geo/settings/_layout.twig' %}
 
 {% import '_includes/forms.twig' as forms %}
+{% import 'core-seo-geo/settings/_macros.twig' as macros %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
 
 {% set selectedSubnavItem = 'global-seo' %}
 {% set title = 'Website'|t('core-seo-geo') %}
@@ -22,12 +24,12 @@
         <div class="flex-fields">
             {{ forms.textField({
                 label: 'Name'|t('core-seo-geo'),
-                instructions: "The site's public-facing name."|t('core-seo-geo'),
                 id: 'name',
                 name: 'name',
                 value: model.name,
                 required: true,
                 errors: model.getErrors('name'),
+                fieldClass: 'width-50',
             }) }}
 
             {{ forms.autosuggestField({
@@ -37,14 +39,62 @@
                 value: model.url,
                 suggestions: [site.getBaseUrl()],
                 errors: model.getErrors('url'),
+                fieldClass: 'width-50',
             }) }}
 
             {{ forms.textareaField({
                 label: 'Description'|t('core-seo-geo'),
+                instructions: 'A short description of the site.'|t('core-seo-geo'),
                 id: 'description',
                 name: 'description',
                 value: model.description,
+                errors: model.getErrors('description'),
+                rows: 3,
+            }) }}
+
+            {{ forms.selectizeField({
+                label: macros.labelTip('Language'|t('core-seo-geo'), "The site's primary language."|t('core-seo-geo')),
+                id: 'inLanguage',
+                name: 'inLanguage',
+                value: model.inLanguage,
+                options: craft.cp.getLanguageOptions(true),
+                errors: model.getErrors('inLanguage'),
+                fieldClass: 'width-50',
             }) }}
         </div>
     {% endnamespace %}
+
+    <hr>
+
+    {% namespace 'settings' %}
+        {{ codeEditor.textareaField({
+            label: 'Additional Properties'|t('core-seo-geo'),
+            instructions: 'A JSON object of extra schema.org `WebSite` properties - merged into the generated object last, overriding any matching key. An escape hatch for anything the fields above don\'t cover.'|t('core-seo-geo'),
+            id: 'additionalProperties',
+            name: 'additionalProperties',
+            value: model.additionalProperties,
+            errors: model.getErrors('additionalProperties'),
+            class: ['code'],
+            rows: 6,
+        }, 'CodeEditor', {
+            theme: 'vs',
+            language: 'json',
+            lineNumbers: 'on',
+            lineNumbersMinChars: 3,
+            lineDecorationsWidth: 16,
+        }, {
+            wrapperClass: 'monaco-editor-background-frame',
+        }) }}
+    {% endnamespace %}
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: enabled,
+        }) }}
+    </div>
 {% endblock %}

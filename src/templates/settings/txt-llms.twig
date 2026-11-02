@@ -21,23 +21,6 @@
     {{ redirectInput('core-seo-geo/settings/txt/llms?site=' ~ site.handle) }}
 
     <div class="flex-fields">
-        {% namespace 'settings' %}
-            {{ forms.lightswitchField({
-                label: 'Serve llms.txt'|t('core-seo-geo'),
-                instructions: "Off by default - there's nothing useful to serve until a title/summary is set below and/or the site has eligible content. [View llms.txt]({url}) · Spec: [llmstxt.org]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/llms/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-llms-txt',
-                name: 'enableLlmsTxt',
-                on: settings.enableLlmsTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-        {% endnamespace %}
-
-        <hr>
-
         {{ forms.textField({
             label: 'Title'|t('core-seo-geo'),
             instructions: 'The `# Title` line llms.txt opens with, for this site. Falls back to the site\'s own name when left blank.'|t('core-seo-geo'),
@@ -79,4 +62,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/llms/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve llms.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until a title/summary is set below and/or the site has eligible content."|t('core-seo-geo'),
+                id: 'enable-llms-txt',
+                name: 'enableLlmsTxt',
+                on: settings.enableLlmsTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'llms.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'llmstxt.org'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

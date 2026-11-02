@@ -18,8 +18,6 @@
     {{ hiddenInput('siteId', site.id) }}
     {{ redirectInput('core-seo-geo/settings/global/person?site=' ~ site.handle) }}
 
-    <p class="light">{{ "Describes a person behind this site - a personal site's owner, or a company blog's author - shown to search engines and AI assistants on every page. Leave every field empty to stop sending this object."|t('core-seo-geo') }}</p>
-
     {% namespace 'settings' %}
         <div class="flex-fields">
             {{ forms.textField({
@@ -107,4 +105,15 @@
             }) }}
         </div>
     {% endnamespace %}
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: enabled,
+        }) }}
+    </div>
 {% endblock %}

@@ -54,6 +54,16 @@ class DuplicateContentCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks whether the meta title or description exactly matches another page\'s on the same site. Not applicable when neither is set. Fails if the title, the description, or both are already in use elsewhere.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.0.5
      */
     public function getWeight(): int {

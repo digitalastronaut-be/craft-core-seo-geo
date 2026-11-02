@@ -1,0 +1,3 @@
+{% macro labelTip(label, tip) %}
+    {{- label }} <span class="info">{{ tip|md|raw }}</span>
+{%- endmacro %}

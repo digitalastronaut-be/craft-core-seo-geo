@@ -56,6 +56,18 @@ class MainWordCountCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Counts the words of text under the page\'s <main> element. Not applicable if the page can\'t be fetched or has no <main>. Fails if the count is below {min} words.', [
+            'min' => self::MIN_WORDS,
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.31.0
      */
     public function getWeight(): int {

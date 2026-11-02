@@ -29,12 +29,21 @@
     },
 } %}
 
+{% set tabs = {
+    general: { label: 'General'|t('core-seo-geo'), url: '#general' },
+    overview: { label: 'Overview'|t('core-seo-geo'), url: '#overview' },
+    appearance: { label: 'Appearance'|t('core-seo-geo'), url: '#appearance' },
+    sitemap: { label: 'Sitemap'|t('core-seo-geo'), url: '#sitemap' },
+    markdown: { label: 'Markdown'|t('core-seo-geo'), url: '#markdown' },
+    'seo-score': { label: 'SEO Score'|t('core-seo-geo'), url: '#seo-score' },
+} %}
+
 {% block content %}
     {{ actionInput('core-seo-geo/content-seo/save-global') }}
     {{ hiddenInput('siteId', site.id) }}
     {{ redirectInput('core-seo-geo/settings/global-seo?site=' ~ site.handle) }}
 
-    <div class="flex-fields">
+    <div id="general" class="flex-fields">
         {{ forms.elementSelectField({
             id: 'image',
             name: 'image',
@@ -88,6 +97,19 @@
 
         <hr>
 
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Hreflang Tags'|t('core-seo-geo'),
+                instructions: 'Automatically render `<link rel="alternate" hreflang>` tags for an entry’s other localized versions, based on the sites it’s enabled in.'|t('core-seo-geo'),
+                name: 'enableHreflang',
+                on: settings.enableHreflang,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div id="overview" class="flex-fields hidden">
         <div class="field width-50">
             <h2>{{ 'Text files'|t('core-seo-geo') }}</h2>
             <p class="light">{{ 'The plain-text files search engines and AI crawlers look for at a few fixed URLs.'|t('core-seo-geo') }}</p>
@@ -113,7 +135,7 @@
         <div class="field width-50">
             <h2>{{ 'Structured data'|t('core-seo-geo') }}</h2>
             <p class="light">{{ 'Fill these in once to describe the site identity'|t('core-seo-geo') }}</p>
-            
+
             <table class="data fullwidth">
                 <thead>
                     <tr>
@@ -131,21 +153,10 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <hr>
-
+    <div id="appearance" class="flex-fields hidden">
         {% namespace 'settings' %}
-            {{ forms.lightswitchField({
-                label: 'Hreflang Tags'|t('core-seo-geo'),
-                instructions: 'Automatically render `<link rel="alternate" hreflang>` tags for an entry’s other localized versions, based on the sites it’s enabled in.'|t('core-seo-geo'),
-                name: 'enableHreflang',
-                on: settings.enableHreflang,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-
-            <hr>
-
             {% set rasterFaviconCriteria = {kind: 'image', filename: ['*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif']} %}
 
             {% set faviconAsset = settings.getFaviconAsset() %}
@@ -166,6 +177,27 @@
 
             <hr>
 
+            {{ forms.colorField({
+                label: 'Theme Color'|t('core-seo-geo'),
+                instructions: "Tints the mobile browser's address bar and PWA app-switcher card. Also used as manifest.webmanifest's theme_color/background_color."|t('core-seo-geo'),
+                id: 'theme-color',
+                name: 'themeColor',
+                value: settings.themeColor,
+            }) }}
+
+            {{ forms.selectizeField({
+                label: 'Referrer Policy'|t('core-seo-geo'),
+                instructions: 'Controls how much referrer data browsers send to other sites when a visitor clicks an outbound link.'|t('core-seo-geo'),
+                id: 'referrer-policy',
+                name: 'referrerPolicy',
+                value: settings.referrerPolicy,
+                options: referrerPolicyOptions,
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div id="sitemap" class="flex-fields hidden">
+        {% namespace 'settings' %}
             {{ forms.lightswitchField({
                 label: 'Sitemap generation'|t('core-seo-geo'),
                 instructions: "Serve sitemap.xml and its sub-sitemaps. Inaccessible on any environment with Disallow Robots enabled, regardless of this setting. [View sitemap.xml]({url})"|t('core-seo-geo', {
@@ -212,38 +244,29 @@
             {% if unresolvedRoutesWarning is not null %}
                 {{ unresolvedRoutesWarning|raw }}
             {% endif %}
+        {% endnamespace %}
+    </div>
 
-            <hr>
-
-            <div class="field">
-                <h2>{{ 'Miscellaneous'|t('core-seo-geo') }}</h2>
-            </div>
-
-            {{ forms.colorField({
-                label: 'Theme Color'|t('core-seo-geo'),
-                instructions: "Tints the mobile browser's address bar and PWA app-switcher card. Also used as manifest.webmanifest's theme_color/background_color."|t('core-seo-geo'),
-                id: 'theme-color',
-                name: 'themeColor',
-                value: settings.themeColor,
+    <div id="markdown" class="flex-fields hidden">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Markdown page variants'|t('core-seo-geo'),
+                instructions: "Serve every entry's Markdown representation at its own URL plus .md, and show the Markdown sidebar pane on the entry edit page. A section can still opt back out on its own even while this stays on."|t('core-seo-geo'),
+                id: 'enableMarkdown',
+                name: 'enableMarkdown',
+                on: settings.enableMarkdown,
+                disabled: not allowAdminChanges,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
             }) }}
+        {% endnamespace %}
+    </div>
 
-            {{ forms.selectizeField({
-                label: 'Referrer Policy'|t('core-seo-geo'),
-                instructions: 'Controls how much referrer data browsers send to other sites when a visitor clicks an outbound link.'|t('core-seo-geo'),
-                id: 'referrer-policy',
-                name: 'referrerPolicy',
-                value: settings.referrerPolicy,
-                options: referrerPolicyOptions,
-            }) }}
+    <div id="seo-score" class="hidden">
+        {% namespace 'settings' %}
+            <p class="light">{{ "The checks that make up every entry's SEO/GEO score. Weight is each check's share of the total score; switching a check off drops it from scoring entirely and saves right away. A custom check was registered by a module or another plugin."|t('core-seo-geo') }}</p>
 
-            <hr>
-
-            <div class="field">
-                <h2>{{ 'SEO Score Checks'|t('core-seo-geo') }}</h2>
-                <p class="light">{{ "The checks that make up every entry's SEO/GEO score. Weight is each check's share of the total score; switching a check off drops it from scoring entirely and saves right away. A custom check was registered by a module or another plugin."|t('core-seo-geo') }}</p>
-
-                <div id="seo-score-checks-vue-admin-table"></div>
-            </div>
+            <div id="seo-score-checks-vue-admin-table"></div>
         {% endnamespace %}
     </div>
 {% endblock %}

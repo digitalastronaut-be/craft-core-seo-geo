@@ -14,6 +14,7 @@ use Craft;
 
 use craft\base\Element;
 use craft\base\ElementInterface;
+use craft\base\Field;
 use craft\controllers\ElementsController;
 use craft\db\Table as CraftTable;
 use craft\elements\Entry;
@@ -556,6 +557,12 @@ trait PluginTrait {
     }
 
     /**
+     * Skips the pane entirely (rather than, say, rendering it disabled) when the Markdown
+     * feature is off - either sitewide (`Settings::$enableMarkdown`) or for the entry's own
+     * section (`ContentSeo::$markdownEnabled`) - matching `MarkdownController::actionRender()`
+     * 404ing on the same two checks, so the sidebar never advertises a pane whose own URL
+     * wouldn't resolve.
+     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -569,6 +576,10 @@ trait PluginTrait {
                 $element = $event->sender;
 
                 if (!$element instanceof Entry || $element->uri === null) return;
+                if (!CoreSeoGeo::getInstance()->getSettings()->enableMarkdown) return;
+
+                $sectionHandle = $element->getSection()?->handle;
+                if ($sectionHandle !== null && !CoreSeoGeo::getInstance()->getContentSeo()->isMarkdownEnabled($sectionHandle, $element->siteId)) return;
 
                 $event->html .= $this->_markdownSidebarHtml($element);
             }
@@ -686,7 +697,7 @@ trait PluginTrait {
      * @since       v1.0.6
      */
     private function _noLlmContentNoticeHtml(): string {
-        $message = Craft::t('core-seo-geo', 'This page has no **`{% llmContent %}`** blocks yet');
+        $message = Craft::t('core-seo-geo', 'This page has no **`{% llmContent %}`** blocks');
 
         return Html::tag('p',
             Html::tag('span', '', ['class' => 'icon', 'aria' => ['hidden' => 'true']]) .
@@ -814,6 +825,63 @@ trait PluginTrait {
     }
 
     /**
+     * Adds the same "SEO/GEO settings" item {@see registerEntryActionMenuItem()} adds to the
+     * entry edit page's own action menu to a `SeoField`'s field-level context menu instead (the
+     * "..." button next to the field's label, {@see \craft\fieldlayoutelements\CustomField::
+     * actionMenuItems()}), so it's reachable right from the field too. `Field::
+     * actionMenuItems()` fires for the field instance alone, with no element passed in, so this
+     * reuses `registerEntryActionMenuItem()`'s own `Craft::$app->controller->element` trick to
+     * recover the entry actually being edited (and, through it, its section) rather than
+     * `$event->sender`, which is the field.
+     *
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.34.0
+     */
+    protected function registerFieldActionMenuItem(): void {
+        Event::on(
+            Field::class,
+            Field::EVENT_DEFINE_ACTION_MENU_ITEMS,
+            function(DefineMenuItemsEvent $event) {
+                if (!$event->sender instanceof SeoField) return;
+
+                $entry = Craft::$app->controller instanceof ElementsController
+                    ? Craft::$app->controller->element
+                    : null;
+
+                if (!$entry instanceof Entry) return;
+
+                $section = $entry->getSection();
+
+                if ($section === null || !Craft::$app->getUser()->getIsAdmin()) return;
+
+                $item = [
+                    'icon' => '@digitalastronaut/craftcoreseogeo/web/assets/icons/seo-geo-field-icon.svg',
+                    'label' => Craft::t('core-seo-geo', 'SEO/GEO settings'),
+                    'url' => UrlHelper::cpUrl("core-seo-geo/settings/content-seo/{$section->handle}", [
+                        'site' => $entry->getSite()->handle,
+                    ]),
+                ];
+
+                $fieldSettingsIndex = null;
+                foreach ($event->items as $i => $existing) {
+                    if (($existing['label'] ?? null) === Craft::t('app', 'Field settings')) {
+                        $fieldSettingsIndex = $i;
+                        break;
+                    }
+                }
+
+                if ($fieldSettingsIndex !== null) {
+                    array_splice($event->items, $fieldSettingsIndex + 1, 0, [$item]);
+                } else {
+                    array_unshift($event->items, $item);
+                }
+            }
+        );
+    }
+
+    /**
      * @return void
      *
      * @author      Digitalastronaut
@@ -931,6 +999,12 @@ trait PluginTrait {
      *   can still fetch a public URL even when every page on it carries a noindex header -
      *   robots directives govern indexing, not access - so relying on the header alone while
      *   still serving the file would leave a staging site's full URL inventory enumerable.
+     * - `<slug>.md` is skipped entirely the same way when `enableMarkdown` is off - every `.md`
+     *   URL then falls through to Craft's normal routing, which 404s since no entry actually has
+     *   that URI. A section's own `markdownEnabled` toggle can't be checked here, though - unlike
+     *   the sitemap routes above, this one rule covers every section at once, so that check
+     *   happens per-request inside `MarkdownController::actionRender()` once the entry (and so its
+     *   section) is known.
      * - `robots.txt` inverts that: `disallowRobots` *forces* it to register rather than removing
      *   it, since a disallowed environment still needs to actively say "stay out" - a missing
      *   file (or a 404) is commonly read by crawlers as "no restrictions", the opposite of what
@@ -947,13 +1021,17 @@ trait PluginTrait {
      */
     protected function registerSiteUrlRules(): void {
         $settings = CoreSeoGeo::getInstance()->getSettings();
+        $txtContent = CoreSeoGeo::getInstance()->getTxtFiles()->getContent();
         $robotsDisallowed = Craft::$app->getConfig()->getGeneral()->disallowRobots && !App::devMode();
 
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-            function(RegisterUrlRulesEvent $event) use ($settings, $robotsDisallowed) {
-                $event->rules['<slug:[^.]+\.md>'] = 'core-seo-geo/markdown/render';
+            function(RegisterUrlRulesEvent $event) use ($settings, $txtContent, $robotsDisallowed) {
+                if ($settings->enableMarkdown) {
+                    $event->rules['<slug:[^.]+\.md>'] = 'core-seo-geo/markdown/render';
+                }
+
                 $event->rules['manifest.webmanifest'] = 'core-seo-geo/favicon/manifest';
 
                 if (!$robotsDisallowed && $settings->enableSitemap) {
@@ -961,7 +1039,7 @@ trait PluginTrait {
                     $event->rules['sitemap-<group:[\w-]+\.xml>'] = 'core-seo-geo/sitemap/group';
                 }
 
-                if ($robotsDisallowed || $settings->enableRobotsTxt) $event->rules['robots.txt'] = 'core-seo-geo/txt-files/robots';
+                if ($robotsDisallowed || $txtContent->enableRobotsTxt) $event->rules['robots.txt'] = 'core-seo-geo/txt-files/robots';
 
                 foreach ([
                     'enableHumansTxt' => ['humans.txt' => 'core-seo-geo/txt-files/humans'],
@@ -1087,11 +1165,13 @@ trait PluginTrait {
             : [];
 
         $image = $seo->getImage()->one() ?? CoreSeoGeo::getInstance()->getContentSeo()->getFallbackImage($element);
+        $robots = $seo->robots !== [] ? $seo->robots : CoreSeoGeo::getInstance()->getContentSeo()->getFallbackRobots($element);
 
         return Craft::$app->getView()->renderTemplate('core-seo-geo/meta/_tags', [
             'seo' => $seo,
             'element' => $element,
             'image' => $image,
+            'robots' => $robots,
             'hreflangAlternates' => $hreflangAlternates,
             'favicon' => $this->_getFaviconTags($settings),
             'settings' => $settings,
@@ -1130,6 +1210,7 @@ trait PluginTrait {
         $this->registerSeoScoreSidebar();
         $this->registerMarkdownSidebar();
         $this->registerEntryActionMenuItem();
+        $this->registerFieldActionMenuItem();
         $this->registerSeoScoreElementAction();
     }
 
@@ -1144,7 +1225,10 @@ trait PluginTrait {
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function(RegisterUrlRulesEvent $event) {
-                $event->rules['core-seo-geo'] = ['template' => 'core-seo-geo/structured-data/_index.twig'];
+                // The bare route is the CP nav item's own link target (see CoreSeoGeo::getCpNavItem()),
+                // so it goes to Global settings, same as 'core-seo-geo/settings' below - Structured
+                // Data keeps its own distinct route.
+                $event->rules['core-seo-geo'] = 'core-seo-geo/content-seo/global';
                 $event->rules['core-seo-geo/structured-data'] = ['template' => 'core-seo-geo/structured-data/_index.twig'];
                 $event->rules['core-seo-geo/structured-data/<elementId:\d+>'] = 'elements/edit';
 

@@ -1,0 +1,56 @@
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var previewUrl string|null #}
+{# @var faviconUrl string|null #}
+
+{% set domain = null %}
+{% set pathSegments = [] %}
+
+{% set scheme = 'https://' %}
+
+{% if previewUrl %}
+    {% set scheme = previewUrl starts with 'http://' ? 'http://' : 'https://' %}
+    {% set withoutScheme = previewUrl|replace({'https://': '', 'http://': ''}) %}
+    {% set withoutQuery = withoutScheme|split('?')[0] %}
+    {% set withoutHash = withoutQuery|split('#')[0] %}
+    {% set segments = withoutHash|split('/')|filter(s => s is not empty) %}
+    {% set domain = (segments[0] ?? null)|replace({'www.': ''}) %}
+    {% set pathSegments = segments|slice(1) %}
+{% endif %}
+
+<div class="core-seo-geo-preview-google">
+    <div class="core-seo-geo-preview-google-header">
+        {% if faviconUrl %}
+            <img class="core-seo-geo-preview-google-favicon" src="{{ faviconUrl }}" alt="" width="30" height="30">
+        {% else %}
+            <span class="core-seo-geo-preview-google-favicon core-seo-geo-preview-google-favicon--placeholder"></span>
+        {% endif %}
+
+        <div class="core-seo-geo-preview-google-header-text">
+            <div class="core-seo-geo-preview-google-domain{{ domain ? '' : ' is-empty' }}">
+                {{ domain ?: 'your-domain.com'|t('core-seo-geo') }}
+            </div>
+
+            <div class="core-seo-geo-preview-google-breadcrumb">
+                {% if domain %}
+                    {{- scheme }}{{ domain -}}
+                    {%- for segment in pathSegments -%}
+                        <span class="core-seo-geo-preview-google-separator">›</span>{{- segment -}}
+                    {%- endfor -%}
+                {% else %}
+                    <span class="is-empty">{{ (scheme ~ 'your-domain.com')|t('core-seo-geo') }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <a
+        class="core-seo-geo-preview-google-title{{ value.metaTitle ? '' : ' is-empty' }}"
+        {% if previewUrl %}href="{{ previewUrl }}" target="_blank" rel="noopener"{% endif %}
+    >
+        {{ value.metaTitle ?: 'Add a title to see how it will look'|t('core-seo-geo') }}
+    </a>
+
+    <div class="core-seo-geo-preview-google-description{{ value.metaDescription ? '' : ' is-empty' }}">
+        {{ value.metaDescription ?: 'Add a description to see how it will look'|t('core-seo-geo') }}
+    </div>
+</div>

@@ -1,0 +1,20 @@
+{% macro fields(model) %}
+    {% import '_includes/forms.twig' as forms %}
+
+    {{ forms.editableTableField({
+        label: 'Contact Points'|t('core-seo-geo'),
+        instructions: 'One row per contact channel - a contact type (e.g. "customer service", "sales"), with a telephone and/or email.'|t('core-seo-geo'),
+        id: 'contactPoints',
+        name: 'contactPoints',
+        addRowLabel: 'Add a contact point'|t('core-seo-geo'),
+        allowAdd: true,
+        allowReorder: true,
+        allowDelete: true,
+        cols: {
+            contactType: { heading: 'Contact Type'|t('core-seo-geo'), type: 'singleline' },
+            telephone: { heading: 'Telephone'|t('core-seo-geo'), type: 'singleline' },
+            email: { heading: 'Email'|t('core-seo-geo'), type: 'email' },
+        },
+        rows: model.contactPoints,
+    }) }}
+{% endmacro %}

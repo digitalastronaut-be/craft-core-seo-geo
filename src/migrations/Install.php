@@ -10,19 +10,12 @@
 
 namespace digitalastronaut\craftcoreseogeo\migrations;
 
-use Craft;
 use craft\db\Migration;
 use craft\db\Table as CraftTable;
-use craft\elements\GlobalSet;
-use craft\fields\Addresses;
-use craft\fieldlayoutelements\CustomField;
-use craft\models\FieldLayout;
-use craft\models\FieldLayoutTab;
 
 use digitalastronaut\craftcoreseogeo\db\Table;
 use digitalastronaut\craftcoreseogeo\records\Redirect;
 use digitalastronaut\craftcoreseogeo\records\TrackingScript;
-use digitalastronaut\craftcoreseogeo\services\GlobalStructuredDataService;
 
 /**
  * Class Install
@@ -32,24 +25,6 @@ use digitalastronaut\craftcoreseogeo\services\GlobalStructuredDataService;
  * @since       v1.0.0
  */
 class Install extends Migration {
-    /**
-     * @see GlobalStructuredDataService::ADDRESS_GLOBAL_SET_HANDLE
-     * @since v1.0.0
-     */
-    private const string ADDRESS_GLOBAL_SET_HANDLE = 'coreSeoGeoBusinessAddresses';
-
-    /**
-     * @see GlobalStructuredDataService::ADDRESS_FIELD_HANDLES
-     * @since v1.0.0
-     */
-    private const string ORGANIZATION_ADDRESS_FIELD_HANDLE = 'organizationAddress';
-
-    /**
-     * @see GlobalStructuredDataService::ADDRESS_FIELD_HANDLES
-     * @since v1.0.0
-     */
-    private const string LOCAL_BUSINESS_ADDRESS_FIELD_HANDLE = 'localBusinessAddress';
-
     /**
      * @inheritdoc
      *
@@ -126,6 +101,7 @@ class Install extends Migration {
             'canonicalConfig' => $this->json(),
             'imageId' => $this->integer(),
             'sitemapEnabled' => $this->boolean()->notNull()->defaultValue(true),
+            'markdownEnabled' => $this->boolean()->notNull()->defaultValue(true),
             'llmsTxtTitle' => $this->string(),
             'llmsTxtSummary' => $this->text(),
             'dateCreated' => $this->dateTime()->notNull(),
@@ -212,7 +188,46 @@ class Install extends Migration {
         $this->addForeignKey(null, Table::METRICS, ['siteId'], CraftTable::SITES, ['id'], 'CASCADE', null);
         $this->createIndex(null, Table::METRICS, ['type', 'entityId', 'siteId', 'timestamp'], true);
 
-        $this->_createBusinessAddressGlobalSet();
+        $this->createTable(Table::TXTFILECONTENT, [
+            'id' => $this->primaryKey(),
+            'enableRobotsTxt' => $this->boolean()->notNull()->defaultValue(true),
+            'robotsTxtDisallowCp' => $this->boolean()->notNull()->defaultValue(true),
+            'robotsTxtBlockedBots' => $this->json(),
+            'robotsTxtRules' => $this->json(),
+            'robotsTxtExtra' => $this->text(),
+            'humansTxtTeam' => $this->json(),
+            'humansTxtThanks' => $this->json(),
+            'humansTxtStandards' => $this->string(),
+            'humansTxtLastUpdated' => $this->date(),
+            'humansTxtExtra' => $this->text(),
+            'adsTxtRecords' => $this->json(),
+            'adsTxtOwnerDomain' => $this->string(),
+            'adsTxtManagerDomains' => $this->json(),
+            'adsTxtContacts' => $this->json(),
+            'adsTxtSubdomains' => $this->json(),
+            'adsTxtExtra' => $this->text(),
+            'securityTxtContacts' => $this->json(),
+            'securityTxtExpires' => $this->dateTime(),
+            'securityTxtEncryption' => $this->json(),
+            'securityTxtAcknowledgments' => $this->json(),
+            'securityTxtPreferredLanguages' => $this->string(),
+            'securityTxtPolicy' => $this->json(),
+            'securityTxtHiring' => $this->json(),
+            'securityTxtExtra' => $this->text(),
+            'trustTxtBelongTo' => $this->json(),
+            'trustTxtControl' => $this->json(),
+            'trustTxtMember' => $this->json(),
+            'trustTxtSocial' => $this->json(),
+            'trustTxtContact' => $this->json(),
+            'trustTxtDisclosure' => $this->json(),
+            'trustTxtCredential' => $this->json(),
+            'trustTxtCopyright' => $this->json(),
+            'trustTxtDataTrainingAllowed' => $this->string(),
+            'trustTxtExtra' => $this->text(),
+            'dateCreated' => $this->dateTime()->notNull(),
+            'dateUpdated' => $this->dateTime()->notNull(),
+            'uid' => $this->uid(),
+        ]);
 
         return true;
     }
@@ -224,8 +239,6 @@ class Install extends Migration {
      * @since       v1.0.0
      */
     public function safeDown(): bool {
-        $this->_dropBusinessAddressGlobalSet();
-
         $this->dropTableIfExists(Table::STRUCTUREDDATA);
         $this->dropTableIfExists(Table::SEOSCORE);
         $this->dropTableIfExists(Table::SEODATA);
@@ -235,78 +248,8 @@ class Install extends Migration {
         $this->dropTableIfExists(Table::REDIRECTS);
         $this->dropTableIfExists(Table::NOTFOUNDLOG);
         $this->dropTableIfExists(Table::METRICS);
+        $this->dropTableIfExists(Table::TXTFILECONTENT);
 
         return true;
-    }
-
-    /**
-     * Creates the "Business Addresses" global set behind the Organization/LocalBusiness
-     * settings pages' postal addresses - two real, native `craft\fields\Addresses` fields
-     * (`organizationAddress`, `localBusinessAddress`), each on the same global set rather than
-     * on `StructuredData` itself. See {@see GlobalStructuredDataService} for how they're used.
-     *
-     * @return void
-     *
-     * @author      Digitalastronaut
-     * @since       v1.0.0
-     */
-    private function _createBusinessAddressGlobalSet(): void {
-        $fieldsService = Craft::$app->getFields();
-        $globalsService = Craft::$app->getGlobals();
-
-        $organizationField = Craft::createObject([
-            'class' => Addresses::class,
-            'name' => 'Organization Address',
-            'handle' => self::ORGANIZATION_ADDRESS_FIELD_HANDLE,
-            'minAddresses' => 0,
-            'maxAddresses' => 1,
-            'viewMode' => Addresses::VIEW_MODE_CARDS,
-        ]);
-        $fieldsService->saveField($organizationField);
-
-        $localBusinessField = Craft::createObject([
-            'class' => Addresses::class,
-            'name' => 'Local Business Address',
-            'handle' => self::LOCAL_BUSINESS_ADDRESS_FIELD_HANDLE,
-            'minAddresses' => 0,
-            'maxAddresses' => 1,
-            'viewMode' => Addresses::VIEW_MODE_CARDS,
-        ]);
-        $fieldsService->saveField($localBusinessField);
-
-        $globalSet = new GlobalSet([
-            'name' => 'Business Addresses',
-            'handle' => self::ADDRESS_GLOBAL_SET_HANDLE,
-        ]);
-
-        $layout = new FieldLayout(['type' => GlobalSet::class]);
-        $tab = new FieldLayoutTab(['layout' => $layout, 'name' => 'Content']);
-        $tab->setElements([
-            new CustomField($organizationField),
-            new CustomField($localBusinessField),
-        ]);
-        $layout->setTabs([$tab]);
-        $globalSet->setFieldLayout($layout);
-
-        $globalsService->saveSet($globalSet);
-    }
-
-    /**
-     * @return void
-     *
-     * @author      Digitalastronaut
-     * @since       v1.0.0
-     */
-    private function _dropBusinessAddressGlobalSet(): void {
-        $globalsService = Craft::$app->getGlobals();
-        $fieldsService = Craft::$app->getFields();
-
-        $globalSet = $globalsService->getSetByHandle(self::ADDRESS_GLOBAL_SET_HANDLE);
-        if ($globalSet !== null) $globalsService->deleteSet($globalSet);
-
-        foreach ([self::ORGANIZATION_ADDRESS_FIELD_HANDLE, self::LOCAL_BUSINESS_ADDRESS_FIELD_HANDLE] as $handle) {
-            $field = $fieldsService->getFieldByHandle($handle);
-            if ($field !== null) $fieldsService->deleteField($field);
-        }
     }
 }

@@ -63,20 +63,6 @@ class StructuredData extends Element {
     ];
 
     /**
-     * @param string $type a `TYPES` constant
-     * @return bool whether a standalone row of this type gets a postal address - see
-     * `GlobalStructuredDataService::getAddress()`. Not a real field on this element at all: the
-     * `Address` is a separately-owned element (`primaryOwnerId` pointed at this row, no
-     * `fieldId`) that `GlobalStructuredDataService` manages directly, rather than something
-     * added to this element's own field layout.
-     *
-     * @since v1.5.0
-     */
-    public static function typeHasAddress(string $type): bool {
-        return in_array($type, [self::TYPE_ORGANIZATION, self::TYPE_LOCAL_BUSINESS], true);
-    }
-
-    /**
      * @var string Which of `TYPES` this object represents.
      *
      * @since v1.0.0
@@ -291,7 +277,8 @@ class StructuredData extends Element {
      * nothing here for an editor to configure, just the field mapping (when this row is
      * field-backed) and the computed JSON-LD, both read-only - so no designer route is
      * registered for it. A standalone `Organization`/`LocalBusiness` row's postal address isn't
-     * here either - see `typeHasAddress()`.
+     * here either - it's plain properties on its settings-page model (`sourceData`), the same as
+     * every other built-in field.
      *
      * @return FieldLayout[]
      *

@@ -19,21 +19,6 @@
 
     {% namespace 'settings' %}
         <div class="flex-fields">
-            {{ forms.lightswitchField({
-                label: 'Serve ads.txt'|t('core-seo-geo'),
-                instructions: "Off by default - there's nothing useful to serve until at least one authorized seller record is added below. [View ads.txt]({url}) · Spec: [IAB Tech Lab ads.txt v1.0.3]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/ads/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-ads-txt',
-                name: 'enableAdsTxt',
-                on: settings.enableAdsTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-
-            <hr>
-
             {{ forms.editableTableField({
                 label: 'Authorized Sellers'|t('core-seo-geo'),
                 instructions: 'Who\'s authorized to sell this site\'s ad inventory - the ad system\'s domain, your account ID with them, and whether you control that account directly or via a reseller. Certification Authority ID is optional.'|t('core-seo-geo'),
@@ -66,7 +51,7 @@
                         width: '25%',
                     },
                 },
-                rows: settings.adsTxtRecords,
+                rows: adsTxtRecords,
             }) }}
 
             <hr>
@@ -76,7 +61,7 @@
                 instructions: 'The domain of the entity that owns this site, when that\'s a different legal entity than the one selling the ads.'|t('core-seo-geo'),
                 id: 'ads-txt-owner-domain',
                 name: 'adsTxtOwnerDomain',
-                value: settings.adsTxtOwnerDomain,
+                value: adsTxtOwnerDomain,
                 fieldClass: 'width-50',
             }) }}
 
@@ -101,7 +86,7 @@
                         width: '30%',
                     },
                 },
-                rows: settings.adsTxtManagerDomains,
+                rows: adsTxtManagerDomains,
             }) }}
 
             {{ forms.editableTableField({
@@ -119,7 +104,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.adsTxtContacts,
+                rows: adsTxtContacts,
             }) }}
 
             {{ forms.editableTableField({
@@ -137,7 +122,7 @@
                         type: 'singleline',
                     },
                 },
-                rows: settings.adsTxtSubdomains,
+                rows: adsTxtSubdomains,
             }) }}
 
             {{ codeEditor.textareaField({
@@ -145,7 +130,7 @@
                 instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
                 id: 'ads-txt-extra',
                 name: 'adsTxtExtra',
-                value: settings.adsTxtExtra,
+                value: adsTxtExtra,
                 class: ['code'],
                 rows: 4,
             }, 'CodeEditor', {
@@ -182,4 +167,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/ads/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve ads.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until at least one authorized seller record is added below."|t('core-seo-geo'),
+                id: 'enable-ads-txt',
+                name: 'enableAdsTxt',
+                on: settings.enableAdsTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'ads.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'IAB Tech Lab ads.txt v1.0.3'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

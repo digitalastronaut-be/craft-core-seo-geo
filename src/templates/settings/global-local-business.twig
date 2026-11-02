@@ -1,6 +1,8 @@
 {% extends 'core-seo-geo/settings/_layout.twig' %}
 
 {% import '_includes/forms.twig' as forms %}
+{% import 'core-seo-geo/settings/_address.twig' as address %}
+{% import 'core-seo-geo/settings/_contactPoints.twig' as contactPoints %}
 
 {% set selectedSubnavItem = 'global-seo' %}
 {% set title = 'Local Business'|t('core-seo-geo') %}
@@ -17,8 +19,6 @@
     {{ hiddenInput('type', 'local-business') }}
     {{ hiddenInput('siteId', site.id) }}
     {{ redirectInput('core-seo-geo/settings/global/local-business?site=' ~ site.handle) }}
-
-    <p class="light">{{ "Describes a physical business people visit - storefront, office, clinic, restaurant, ... - shown to search engines and AI assistants on every page. Leave every field empty to stop sending this object."|t('core-seo-geo') }}</p>
 
     {% namespace 'settings' %}
         <div class="flex-fields">
@@ -67,25 +67,6 @@
             <hr>
 
             {{ forms.textField({
-                label: 'Email'|t('core-seo-geo'),
-                id: 'email',
-                name: 'email',
-                type: 'email',
-                value: model.email,
-                errors: model.getErrors('email'),
-                fieldClass: 'width-50',
-            }) }}
-
-            {{ forms.textField({
-                label: 'Telephone'|t('core-seo-geo'),
-                id: 'telephone',
-                name: 'telephone',
-                value: model.telephone,
-                errors: model.getErrors('telephone'),
-                fieldClass: 'width-50',
-            }) }}
-
-            {{ forms.textField({
                 label: 'Price Range'|t('core-seo-geo'),
                 instructions: 'A short indicator such as `$`, `$$`, or `€10-€30`.'|t('core-seo-geo'),
                 id: 'priceRange',
@@ -117,15 +98,25 @@
 
     <hr>
 
-    <p class="light">{{ "Latitude/longitude, set from the address's own edit panel, becomes this business's map location."|t('core-seo-geo') }}</p>
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ contactPoints.fields(model) }}
+        </div>
+    {% endnamespace %}
 
-    <div class="flex-fields">
-        {{ addressFieldHtml|raw }}
+    <hr>
 
-        {% namespace 'settings' %}
+    {% namespace 'settings' %}
+        {{ address.fields(model) }}
+    {% endnamespace %}
+
+    <hr>
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
             {{ forms.editableTableField({
                 label: 'Social Profiles'|t('core-seo-geo'),
-                instructions: 'Links to this business\'s profiles elsewhere (Google Business Profile, Facebook, Instagram, ...).'|t('core-seo-geo'),
+                instructions: 'Links to this business\'s profiles elsewhere (Google Business Profile, Facebook, Instagram).'|t('core-seo-geo'),
                 id: 'sameAs',
                 name: 'sameAs',
                 addRowLabel: 'Add a profile'|t('core-seo-geo'),
@@ -138,6 +129,17 @@
                 rows: model.sameAs,
                 fieldClass: 'width-50',
             }) }}
-        {% endnamespace %}
+        </div>
+    {% endnamespace %}
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: enabled,
+        }) }}
     </div>
 {% endblock %}

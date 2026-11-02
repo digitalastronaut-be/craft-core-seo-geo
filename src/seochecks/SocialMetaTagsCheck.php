@@ -54,6 +54,16 @@ class SocialMetaTagsCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks that og:title, og:description, og:image, and twitter:card all resolve to a non-empty value in the rendered <head>. Not applicable if the page can\'t be fetched. Fails if any of those tags is missing or empty, naming which ones.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.30.0
      */
     public function getWeight(): int {

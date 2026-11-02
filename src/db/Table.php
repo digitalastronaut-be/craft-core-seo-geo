@@ -64,4 +64,9 @@ abstract class Table {
      * @since v1.20.0
      */
     public const string METRICS = '{{%coreseogeo_metrics}}';
+
+    /**
+     * @since v1.32.0
+     */
+    public const string TXTFILECONTENT = '{{%coreseogeo_txtfilecontent}}';
 }

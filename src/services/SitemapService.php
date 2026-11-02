@@ -385,7 +385,7 @@ class SitemapService extends Component {
      */
     private function _urlsForQuery(ElementQuery $query, int $siteId): Generator {
         foreach ($query->each() as $element) {
-            if ($this->_isNoIndex($element)) {
+            if ($this->_isNoIndex($element) || $this->_isSitemapExcluded($element)) {
                 continue;
             }
 
@@ -485,10 +485,57 @@ class SitemapService extends Component {
     private function _rawRobots(ElementInterface $element, SeoField $field): array {
         $raw = $element->getBehavior('customFields')->{$field->handle};
 
-        if ($raw instanceof SeoData) return $raw->robots;
+        if ($raw instanceof SeoData) {
+            $robots = $raw->robots;
+        } else {
+            if (is_string($raw)) $raw = Json::decodeIfJson($raw);
+            $robots = SeoField::normalizeRobots(\is_array($raw) ? ($raw['robots'] ?? []) : []);
+        }
+
+        return $robots !== [] ? $robots : CoreSeoGeo::getInstance()->getContentSeo()->getFallbackRobots($element);
+    }
+
+    /**
+     * The per-entry, field-level sitemap exclusion layer - on top of the global
+     * ({@see \digitalastronaut\craftcoreseogeo\models\Settings::$enableSitemap}, checked before
+     * this service runs at all) and content-level
+     * ({@see \digitalastronaut\craftcoreseogeo\services\ContentSeoService::isSitemapEnabled()},
+     * checked in `getGroups()` before a section's query ever runs) toggles. An element with no
+     * `SeoField` on its layout at all is never excluded here - absence of the field is not an
+     * exclusion signal, same rule `_isNoIndex()` follows.
+     *
+     * @param ElementInterface $element
+     * @return bool
+     *
+     * @author      Digitalastronaut
+     * @since       v1.37.0
+     */
+    private function _isSitemapExcluded(ElementInterface $element): bool {
+        foreach (SeoField::getFieldsOn($element) as $field) {
+            if ($this->_rawExcludeFromSitemap($element, $field)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ElementInterface $element
+     * @param SeoField $field
+     * @return bool
+     *
+     * @author      Digitalastronaut
+     * @since       v1.37.0
+     */
+    private function _rawExcludeFromSitemap(ElementInterface $element, SeoField $field): bool {
+        $raw = $element->getBehavior('customFields')->{$field->handle};
+
+        if ($raw instanceof SeoData) return $raw->excludeFromSitemap;
+
         if (is_string($raw)) $raw = Json::decodeIfJson($raw);
 
-        return SeoField::normalizeRobots(\is_array($raw) ? ($raw['robots'] ?? []) : []);
+        return SeoField::normalizeExcludeFromSitemap(\is_array($raw) ? ($raw['excludeFromSitemap'] ?? null) : null);
     }
 
     /**

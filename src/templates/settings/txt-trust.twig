@@ -33,21 +33,6 @@
 
     {% namespace 'settings' %}
         <div class="flex-fields">
-            {{ forms.lightswitchField({
-                label: 'Serve trust.txt'|t('core-seo-geo'),
-                instructions: "Off by default - there's nothing useful to serve until at least one field below is filled in. Note: trust.txt is a far less formal, less universally adopted spec than the other files here (no RFC, maintained by a single organization). [View trust.txt]({url}) · Spec: [journallist.net]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/trust/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-trust-txt',
-                name: 'enableTrustTxt',
-                on: settings.enableTrustTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-
-            <hr>
-
             {{ forms.editableTableField({
                 label: 'Belongs To'|t('core-seo-geo'),
                 instructions: 'Domain(s) of the organization/network this site belongs to.'|t('core-seo-geo'),
@@ -58,7 +43,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustDomainCols,
-                rows: settings.trustTxtBelongTo,
+                rows: trustTxtBelongTo,
             }) }}
 
             {{ forms.editableTableField({
@@ -71,7 +56,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustDomainCols,
-                rows: settings.trustTxtControl,
+                rows: trustTxtControl,
             }) }}
 
             {{ forms.editableTableField({
@@ -84,7 +69,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustDomainCols,
-                rows: settings.trustTxtMember,
+                rows: trustTxtMember,
             }) }}
 
             <hr>
@@ -99,7 +84,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustUrlCols,
-                rows: settings.trustTxtSocial,
+                rows: trustTxtSocial,
             }) }}
 
             {{ forms.editableTableField({
@@ -112,7 +97,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustUrlCols,
-                rows: settings.trustTxtContact,
+                rows: trustTxtContact,
             }) }}
 
             {{ forms.editableTableField({
@@ -125,7 +110,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustUrlCols,
-                rows: settings.trustTxtDisclosure,
+                rows: trustTxtDisclosure,
             }) }}
 
             {{ forms.editableTableField({
@@ -138,7 +123,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustUrlCols,
-                rows: settings.trustTxtCredential,
+                rows: trustTxtCredential,
             }) }}
 
             {{ forms.editableTableField({
@@ -151,7 +136,7 @@
                 allowReorder: true,
                 allowDelete: true,
                 cols: trustUrlCols,
-                rows: settings.trustTxtCopyright,
+                rows: trustTxtCopyright,
             }) }}
 
             <hr>
@@ -161,7 +146,7 @@
                 instructions: 'Whether this organization permits its content to be used for AI training, at the organizational level - separate from the per-page "noai" directive in the SEO/GEO field. Leave as "Not asserted" to omit the line entirely.'|t('core-seo-geo'),
                 id: 'trust-txt-data-training-allowed',
                 name: 'trustTxtDataTrainingAllowed',
-                value: settings.trustTxtDataTrainingAllowed,
+                value: trustTxtDataTrainingAllowed,
                 options: trustTxtDataTrainingAllowedOptions,
                 fieldClass: 'width-50',
             }) }}
@@ -171,7 +156,7 @@
                 instructions: 'Appended verbatim to the end of the generated file.'|t('core-seo-geo'),
                 id: 'trust-txt-extra',
                 name: 'trustTxtExtra',
-                value: settings.trustTxtExtra,
+                value: trustTxtExtra,
                 class: ['code'],
                 rows: 4,
             }, 'CodeEditor', {
@@ -208,4 +193,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/trust/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve trust.txt'|t('core-seo-geo'),
+                instructions: "Off by default - there's nothing useful to serve until at least one field below is filled in. Note: trust.txt is a far less formal, less universally adopted spec than the other files here (no RFC, maintained by a single organization)."|t('core-seo-geo'),
+                id: 'enable-trust-txt',
+                name: 'enableTrustTxt',
+                on: settings.enableTrustTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'trust.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'journallist.net'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

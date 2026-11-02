@@ -45,7 +45,7 @@ A no-fluff SEO/GEO solution for Craft CMS websites — on-page meta, structured 
 
 ## Requirements
 
-This plugin requires Craft CMS 5.11.0 or later, and PHP 8.2 or later.
+This plugin requires Craft CMS 5.11.0 or later, and PHP 8.3 or later.
 
 ## Installation
 

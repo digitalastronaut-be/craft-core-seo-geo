@@ -128,10 +128,32 @@
 
         {{ forms.lightswitchField({
             label: 'Sitemap generation'|t('core-seo-geo'),
-            instructions: "Include this section's entries in the sitemap: both its own sub-sitemap and its index entry. Disabling this only affects this section - it's independent of the plugin-wide sitemap setting."|t('core-seo-geo'),
+            instructions: "Include this section's entries in the sitemap: both its own sub-sitemap and its index entry."|t('core-seo-geo'),
+            warning: not sitemapEnabledSitewide
+                ? 'Sitemap generation is currently disabled [sitewide]({url}).'|t('core-seo-geo', {
+                    url: url('core-seo-geo/settings/global-seo', {site: site.handle}) ~ '#sitemap',
+                })
+                : null,
             id: 'sitemapEnabled',
             name: 'sitemapEnabled',
             on: sitemapEnabled,
+            onLabel: 'Enabled'|t('core-seo-geo'),
+            offLabel: 'Disabled'|t('core-seo-geo'),
+        }) }}
+
+        <h2>{{ 'Markdown settings'|t('core-seo-geo') }}</h2>
+
+        {{ forms.lightswitchField({
+            label: 'Markdown page variants'|t('core-seo-geo'),
+            instructions: "Serve this section's entries at their own URL plus .md, and show the Markdown sidebar pane on their edit page."|t('core-seo-geo'),
+            warning: not markdownEnabledSitewide
+                ? 'Markdown generation is currently disabled [sitewide]({url}).'|t('core-seo-geo', {
+                    url: url('core-seo-geo/settings/global-seo', {site: site.handle}) ~ '#markdown',
+                })
+                : null,
+            id: 'markdownEnabled',
+            name: 'markdownEnabled',
+            on: markdownEnabled,
             onLabel: 'Enabled'|t('core-seo-geo'),
             offLabel: 'Disabled'|t('core-seo-geo'),
         }) }}

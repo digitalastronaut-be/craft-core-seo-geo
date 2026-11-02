@@ -12,11 +12,12 @@ namespace digitalastronaut\craftcoreseogeo\controllers;
 
 use Craft;
 use craft\helpers\Cp;
+use craft\helpers\Json;
 use craft\models\Site;
 use craft\web\Controller;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
-use digitalastronaut\craftcoreseogeo\models\Settings;
+use digitalastronaut\craftcoreseogeo\records\TxtFileContent;
 use digitalastronaut\craftcoreseogeo\services\TxtFilesService;
 
 use yii\web\ForbiddenHttpException;
@@ -100,11 +101,13 @@ class TxtFilesController extends Controller {
 
     /**
      * Persists whatever `settings[...]` fields were posted from one of the `txt-<slug>.twig`
-     * pages. Every one of the five files' settings lives directly on the plugin's own
-     * `Settings` model (none of them are per-site or involve a separate record), so there's
-     * nothing type-specific about saving - unlike `actionEdit()`'s per-type extra template
-     * variables, this one action covers all five without needing to know which page posted to
-     * it.
+     * pages: this plugin's cross-cutting settings (unrelated to any one generated file) still go
+     * to the plugin's own `Settings` model (`CoreSeoGeo::savePartialSettings()`), while every
+     * field that's actually one of these files' own content - `robots.txt` included - goes to
+     * the single global `TxtFileContent` row (`TxtFilesService::saveContent()`) instead - see
+     * that record's own docblock for why. Neither save needs to know which page posted to it:
+     * every field name is unique across both destinations, and each save only touches the keys
+     * actually present in `$posted`.
      *
      * @return Response|null
      *
@@ -114,9 +117,12 @@ class TxtFilesController extends Controller {
     public function actionSave(): ?Response {
         $this->requirePostRequest();
 
-        $saved = CoreSeoGeo::getInstance()->savePartialSettings($this->_arrayBodyParam('settings'));
+        $posted = $this->_arrayBodyParam('settings');
 
-        if (!$saved) {
+        $settingsSaved = CoreSeoGeo::getInstance()->savePartialSettings($posted);
+        $contentSaved = CoreSeoGeo::getInstance()->getTxtFiles()->saveContent($posted);
+
+        if (!$settingsSaved || !$contentSaved) {
             $this->setFailFlash(Craft::t('core-seo-geo', "Couldn't save the settings."));
 
             return null;
@@ -252,7 +258,9 @@ class TxtFilesController extends Controller {
 
     /**
      * The per-type template variables `actionEdit()` needs on top of `settings` - whatever a
-     * given page's fields require that isn't just a `Settings` property it can read directly.
+     * given page's fields require that isn't just a `Settings` property it can read directly,
+     * which for every type but `llms`/`llms-full` is the decoded `TxtFileContent` fields that
+     * page's own form edits.
      *
      * @param string $type
      * @param Site $site
@@ -263,29 +271,64 @@ class TxtFilesController extends Controller {
      */
     private function _extraVars(string $type, Site $site): array {
         $txtFiles = CoreSeoGeo::getInstance()->getTxtFiles();
+        $content = $txtFiles->getContent();
 
         return match ($type) {
             'robots' => [
                 'cpTrigger' => Craft::$app->getConfig()->getGeneral()->cpTrigger,
-                'robotsRuleTypeOptions' => Settings::getRobotsRuleTypeOptions(),
+                'robotsRuleTypeOptions' => TxtFileContent::getRobotsRuleTypeOptions(),
                 'knownAiBotOptions' => array_map(
                     static fn(string $bot): array => ['label' => $bot, 'value' => $bot],
                     CoreSeoGeo::getInstance()->getBotDetection()->getKnownBots(),
                 ),
+                'enableRobotsTxt' => $content->enableRobotsTxt,
+                'robotsTxtDisallowCp' => $content->robotsTxtDisallowCp,
+                'robotsTxtBlockedBots' => $this->_decodeJson($content->robotsTxtBlockedBots),
+                'robotsTxtRules' => $this->_decodeJson($content->robotsTxtRules),
+                'robotsTxtExtra' => $content->robotsTxtExtra,
                 'robotsTxtPreview' => $txtFiles->getRobotsTxt($site->id),
             ],
             'humans' => [
+                'humansTxtTeam' => $this->_decodeJson($content->humansTxtTeam),
+                'humansTxtThanks' => $this->_decodeJson($content->humansTxtThanks),
+                'humansTxtStandards' => $content->humansTxtStandards,
+                'humansTxtLastUpdated' => $content->humansTxtLastUpdated,
+                'humansTxtExtra' => $content->humansTxtExtra,
                 'humansTxtPreview' => $txtFiles->getHumansTxt(),
             ],
             'ads' => [
-                'adsTxtRelationshipOptions' => Settings::getAdsTxtRelationshipOptions(),
+                'adsTxtRelationshipOptions' => TxtFileContent::getAdsTxtRelationshipOptions(),
+                'adsTxtRecords' => $this->_decodeJson($content->adsTxtRecords),
+                'adsTxtOwnerDomain' => $content->adsTxtOwnerDomain,
+                'adsTxtManagerDomains' => $this->_decodeJson($content->adsTxtManagerDomains),
+                'adsTxtContacts' => $this->_decodeJson($content->adsTxtContacts),
+                'adsTxtSubdomains' => $this->_decodeJson($content->adsTxtSubdomains),
+                'adsTxtExtra' => $content->adsTxtExtra,
                 'adsTxtPreview' => $txtFiles->getAdsTxt(),
             ],
             'security' => [
+                'securityTxtContacts' => $this->_decodeJson($content->securityTxtContacts),
+                'securityTxtExpires' => $content->securityTxtExpires,
+                'securityTxtEncryption' => $this->_decodeJson($content->securityTxtEncryption),
+                'securityTxtAcknowledgments' => $this->_decodeJson($content->securityTxtAcknowledgments),
+                'securityTxtPreferredLanguages' => $content->securityTxtPreferredLanguages,
+                'securityTxtPolicy' => $this->_decodeJson($content->securityTxtPolicy),
+                'securityTxtHiring' => $this->_decodeJson($content->securityTxtHiring),
+                'securityTxtExtra' => $content->securityTxtExtra,
                 'securityTxtPreview' => $txtFiles->getSecurityTxt($site->id),
             ],
             'trust' => [
-                'trustTxtDataTrainingAllowedOptions' => Settings::getTrustTxtDataTrainingAllowedOptions(),
+                'trustTxtDataTrainingAllowedOptions' => TxtFileContent::getTrustTxtDataTrainingAllowedOptions(),
+                'trustTxtBelongTo' => $this->_decodeJson($content->trustTxtBelongTo),
+                'trustTxtControl' => $this->_decodeJson($content->trustTxtControl),
+                'trustTxtMember' => $this->_decodeJson($content->trustTxtMember),
+                'trustTxtSocial' => $this->_decodeJson($content->trustTxtSocial),
+                'trustTxtContact' => $this->_decodeJson($content->trustTxtContact),
+                'trustTxtDisclosure' => $this->_decodeJson($content->trustTxtDisclosure),
+                'trustTxtCredential' => $this->_decodeJson($content->trustTxtCredential),
+                'trustTxtCopyright' => $this->_decodeJson($content->trustTxtCopyright),
+                'trustTxtDataTrainingAllowed' => $content->trustTxtDataTrainingAllowed,
+                'trustTxtExtra' => $content->trustTxtExtra,
                 'trustTxtPreview' => $txtFiles->getTrustTxt(),
             ],
             'llms' => [
@@ -297,6 +340,22 @@ class TxtFilesController extends Controller {
             ],
             default => [],
         };
+    }
+
+    /**
+     * Decodes one of `TxtFileContent`'s JSON-encoded columns back into its row array for an
+     * `editableTable` field's `rows` - `[]` for `null`. Same helper
+     * `ContentSeoController::_decodeConfig()` has, kept local for the same reason
+     * `_arrayBodyParam()` below is.
+     *
+     * @param string|null $json
+     * @return array
+     *
+     * @author      Digitalastronaut
+     * @since       v1.32.0
+     */
+    private function _decodeJson(?string $json): array {
+        return $json !== null ? Json::decode($json) : [];
     }
 
     /**

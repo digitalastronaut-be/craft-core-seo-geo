@@ -17,25 +17,6 @@
     {{ actionInput('core-seo-geo/txt-files/save') }}
     {{ redirectInput('core-seo-geo/settings/txt/llms-full') }}
 
-    {% namespace 'settings' %}
-        <div class="flex-fields">
-            {{ forms.lightswitchField({
-                label: 'Serve llms-full.txt'|t('core-seo-geo'),
-                instructions: "The full-content companion to llms.txt: every eligible page's full Markdown, concatenated, instead of just a link and a description. Independent of llms.txt's own toggle - this one can produce a large file on a big site. Uses the same Title/Summary configured on the llms.txt settings page. [View llms-full.txt]({url}) · Spec: [llmstxt.org]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/llms-full/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-llms-full-txt',
-                name: 'enableLlmsFullTxt',
-                on: settings.enableLlmsFullTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-        </div>
-    {% endnamespace %}
-
-    <hr>
-
     {{ codeEditor.textareaField({
         label: 'Preview'|t('core-seo-geo'),
         instructions: 'The llms-full.txt that would be served right now for the current site. Generating this fetches every eligible page\'s own Markdown (cached after the first time), so it can take a moment on a cold cache.'|t('core-seo-geo'),
@@ -55,4 +36,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/llms-full/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve llms-full.txt'|t('core-seo-geo'),
+                instructions: "The full-content companion to llms.txt: every eligible page's full Markdown, concatenated, instead of just a link and a description. Independent of llms.txt's own toggle - this one can produce a large file on a big site. Uses the same Title/Summary configured on the llms.txt settings page."|t('core-seo-geo'),
+                id: 'enable-llms-full-txt',
+                name: 'enableLlmsFullTxt',
+                on: settings.enableLlmsFullTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'llms-full.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'llmstxt.org'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

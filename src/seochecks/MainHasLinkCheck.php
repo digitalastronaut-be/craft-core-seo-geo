@@ -49,6 +49,16 @@ class MainHasLinkCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks that the page\'s <main> element has at least one outgoing link. Not applicable if the page can\'t be fetched or has no <main>. Fails if <main> has no links at all.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.30.0
      */
     public function getWeight(): int {

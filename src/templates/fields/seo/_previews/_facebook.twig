@@ -1,0 +1,26 @@
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var previewUrl string|null #}
+{# @var imageUrl string #}
+
+{% set domain = previewUrl ? (previewUrl|replace({'https://': '', 'http://': ''})|split('/')[0]|replace({'www.': ''})) : null %}
+
+<div class="core-seo-geo-preview-facebook">
+    <div class="core-seo-geo-preview-facebook-image-wrap">
+        <img class="core-seo-geo-preview-facebook-image" src="{{ imageUrl }}" alt="">
+    </div>
+
+    <div class="core-seo-geo-preview-facebook-body">
+        <div class="core-seo-geo-preview-facebook-domain">{{ (domain ?: 'YOUR-DOMAIN.COM'|t('core-seo-geo'))|upper }}</div>
+
+        <a
+            class="core-seo-geo-preview-facebook-title{{ value.metaTitle ? '' : ' is-empty' }}"
+            {% if previewUrl %}href="{{ previewUrl }}" target="_blank" rel="noopener"{% endif %}
+        >
+            {{ value.metaTitle ?: 'Add a title to see how it will look'|t('core-seo-geo') }}
+        </a>
+
+        <div class="core-seo-geo-preview-facebook-description{{ value.metaDescription ? '' : ' is-empty' }}">
+            {{ value.metaDescription ?: 'Add a description to see how it will look'|t('core-seo-geo') }}
+        </div>
+    </div>
+</div>

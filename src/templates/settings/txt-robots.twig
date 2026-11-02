@@ -20,26 +20,13 @@
     {% namespace 'settings' %}
         <div class="flex-fields">
             {{ forms.lightswitchField({
-                label: 'Serve robots.txt'|t('core-seo-geo'),
-                instructions: "Forced on regardless of this setting whenever this environment has Disallow Robots enabled - a disallowed environment always needs robots.txt to actively block crawlers. [View robots.txt]({url}) · Spec: [RFC 9309]({specUrl})"|t('core-seo-geo', {
-                    url: actionUrl('core-seo-geo/robots/index'),
-                    specUrl: specUrl,
-                }),
-                id: 'enable-robots-txt',
-                name: 'enableRobotsTxt',
-                on: settings.enableRobotsTxt,
-                onLabel: 'Enabled'|t('core-seo-geo'),
-                offLabel: 'Disabled'|t('core-seo-geo'),
-            }) }}
-
-            {{ forms.lightswitchField({
                 label: 'Disallow the control panel'|t('core-seo-geo'),
                 instructions: 'Adds `Disallow: /{trigger}/` to the default group.'|t('core-seo-geo', {
                     trigger: craft.app.config.general.cpTrigger,
                 }),
                 id: 'robots-txt-disallow-cp',
                 name: 'robotsTxtDisallowCp',
-                on: settings.robotsTxtDisallowCp,
+                on: robotsTxtDisallowCp,
                 onLabel: 'Enabled'|t('core-seo-geo'),
                 offLabel: 'Disabled'|t('core-seo-geo'),
             }) }}
@@ -52,7 +39,7 @@
                 id: 'robots-txt-blocked-bots',
                 name: 'robotsTxtBlockedBots',
                 multi: true,
-                values: settings.robotsTxtBlockedBots,
+                values: robotsTxtBlockedBots,
                 options: knownAiBotOptions,
             }) }}
 
@@ -85,7 +72,7 @@
                         width: '35%',
                     },
                 },
-                rows: settings.robotsTxtRules,
+                rows: robotsTxtRules,
             }) }}
 
             {{ codeEditor.textareaField({
@@ -93,7 +80,7 @@
                 instructions: 'Appended verbatim to the end of the generated file - an escape hatch for anything the fields above don\'t cover.'|t('core-seo-geo'),
                 id: 'robots-txt-extra',
                 name: 'robotsTxtExtra',
-                value: settings.robotsTxtExtra,
+                value: robotsTxtExtra,
                 class: ['code'],
                 rows: 4,
             }, 'CodeEditor', {
@@ -130,4 +117,34 @@
         wrapperClass: 'monaco-editor-background-frame',
         displayLanguageIcon: false,
     }) }}
+{% endblock %}
+
+{% block details %}
+    {% set txtViewUrl = actionUrl('core-seo-geo/robots/index') %}
+
+    <div class="meta">
+        {% namespace 'settings' %}
+            {{ forms.lightswitchField({
+                label: 'Serve robots.txt'|t('core-seo-geo'),
+                instructions: 'Forced on regardless of this setting whenever this environment has Disallow Robots enabled - a disallowed environment always needs robots.txt to actively block crawlers.'|t('core-seo-geo'),
+                id: 'enable-robots-txt',
+                name: 'enableRobotsTxt',
+                on: enableRobotsTxt,
+                onLabel: 'Enabled'|t('core-seo-geo'),
+                offLabel: 'Disabled'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div class="meta read-only">
+        <div class="data">
+            <div class="heading">{{ 'View'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ txtViewUrl }}" target="_blank" rel="noopener">{{ 'robots.txt'|t('core-seo-geo') }}</a></div>
+        </div>
+
+        <div class="data">
+            <div class="heading">{{ 'Spec'|t('core-seo-geo') }}</div>
+            <div class="value"><a href="{{ specUrl }}" target="_blank" rel="noopener">{{ 'RFC 9309'|t('core-seo-geo') }}</a></div>
+        </div>
+    </div>
 {% endblock %}

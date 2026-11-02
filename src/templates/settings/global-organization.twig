@@ -1,6 +1,9 @@
 {% extends 'core-seo-geo/settings/_layout.twig' %}
 
 {% import '_includes/forms.twig' as forms %}
+{% import 'core-seo-geo/settings/_address.twig' as address %}
+{% import 'core-seo-geo/settings/_contactPoints.twig' as contactPoints %}
+{% import 'codeeditor/codeEditor' as codeEditor %}
 
 {% set selectedSubnavItem = 'global-seo' %}
 {% set title = 'Organization'|t('core-seo-geo') %}
@@ -33,6 +36,19 @@
                 selectionLabel: 'Choose a logo'|t('core-seo-geo'),
             }) }}
 
+            {{ forms.elementSelectField({
+                id: 'image',
+                name: 'image',
+                label: 'Image'|t('core-seo-geo'),
+                instructions: 'A general representative image (a storefront, team photo, ...), as opposed to the logo above.'|t('core-seo-geo'),
+                elementType: 'craft\\elements\\Asset',
+                elements: model.getImageAsset() ? [model.getImageAsset()] : [],
+                criteria: { kind: 'image' },
+                single: true,
+                viewMode: 'thumbs',
+                selectionLabel: 'Choose an image'|t('core-seo-geo'),
+            }) }}
+
             <hr>
 
             {{ forms.textField({
@@ -56,6 +72,15 @@
                 fieldClass: 'width-50',
             }) }}
 
+            {{ forms.textField({
+                label: 'Slogan'|t('core-seo-geo'),
+                id: 'slogan',
+                name: 'slogan',
+                value: model.slogan,
+                errors: model.getErrors('slogan'),
+                fieldClass: 'width-50',
+            }) }}
+
             {{ forms.autosuggestField({
                 label: 'Website URL'|t('core-seo-geo'),
                 id: 'url',
@@ -63,27 +88,48 @@
                 value: model.url,
                 suggestions: [site.getBaseUrl()],
                 errors: model.getErrors('url'),
+                fieldClass: 'width-50',
             }) }}
 
+            {{ forms.textareaField({
+                label: 'Description'|t('core-seo-geo'),
+                instructions: 'A short description of the organization.'|t('core-seo-geo'),
+                id: 'description',
+                name: 'description',
+                value: model.description,
+                errors: model.getErrors('description'),
+                rows: 3,
+            }) }}
 
             <hr>
 
             {{ forms.textField({
-                label: 'Email'|t('core-seo-geo'),
-                id: 'email',
-                name: 'email',
-                type: 'email',
-                value: model.email,
-                errors: model.getErrors('email'),
+                label: 'Founding Date'|t('core-seo-geo'),
+                instructions: 'e.g. `2008-01-01`, or just a year.'|t('core-seo-geo'),
+                id: 'foundingDate',
+                name: 'foundingDate',
+                value: model.foundingDate,
+                errors: model.getErrors('foundingDate'),
                 fieldClass: 'width-50',
             }) }}
 
             {{ forms.textField({
-                label: 'Telephone'|t('core-seo-geo'),
-                id: 'telephone',
-                name: 'telephone',
-                value: model.telephone,
-                errors: model.getErrors('telephone'),
+                label: 'VAT ID'|t('core-seo-geo'),
+                instructions: 'The VAT registration number.'|t('core-seo-geo'),
+                id: 'vatID',
+                name: 'vatID',
+                value: model.vatID,
+                errors: model.getErrors('vatID'),
+                fieldClass: 'width-50',
+            }) }}
+
+            {{ forms.textField({
+                label: 'Tax ID'|t('core-seo-geo'),
+                instructions: 'A national tax identification number.'|t('core-seo-geo'),
+                id: 'taxID',
+                name: 'taxID',
+                value: model.taxID,
+                errors: model.getErrors('taxID'),
                 fieldClass: 'width-50',
             }) }}
         </div>
@@ -91,10 +137,22 @@
 
     <hr>
 
-    <div class="flex-fields">
-        {{ addressFieldHtml|raw }}
+    {% namespace 'settings' %}
+        <div class="flex-fields">
+            {{ contactPoints.fields(model) }}
+        </div>
+    {% endnamespace %}
 
-        {% namespace 'settings' %}
+    <hr>
+
+    {% namespace 'settings' %}
+        {{ address.fields(model) }}
+    {% endnamespace %}
+
+    <hr>
+
+    {% namespace 'settings' %}
+        <div class="flex-fields">
             {{ forms.editableTableField({
                 label: 'Social Profiles'|t('core-seo-geo'),
                 instructions: 'Links to this organization\'s profiles elsewhere (LinkedIn, Facebook, Instagram, Wikipedia, ...), used to help search engines and AI assistants connect them to this site.'|t('core-seo-geo'),
@@ -110,6 +168,40 @@
                 rows: model.sameAs,
                 fieldClass: 'width-50',
             }) }}
-        {% endnamespace %}
+        </div>
+    {% endnamespace %}
+
+    <hr>
+
+    {% namespace 'settings' %}
+        {{ codeEditor.textareaField({
+            label: 'Additional Properties'|t('core-seo-geo'),
+            instructions: 'A JSON object of extra schema.org `Organization` properties - merged into the generated object last, overriding any matching key. An escape hatch for anything the fields above don\'t cover.'|t('core-seo-geo'),
+            id: 'additionalProperties',
+            name: 'additionalProperties',
+            value: model.additionalProperties,
+            errors: model.getErrors('additionalProperties'),
+            class: ['code'],
+            rows: 6,
+        }, 'CodeEditor', {
+            theme: 'vs',
+            language: 'json',
+            lineNumbers: 'on',
+            lineNumbersMinChars: 3,
+            lineDecorationsWidth: 16,
+        }, {
+            wrapperClass: 'monaco-editor-background-frame',
+        }) }}
+    {% endnamespace %}
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: enabled,
+        }) }}
     </div>
 {% endblock %}

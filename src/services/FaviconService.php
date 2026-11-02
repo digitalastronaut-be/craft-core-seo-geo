@@ -35,7 +35,9 @@ class FaviconService extends Component {
      * @since       v1.0.9
      */
     public function getFaviconPngUrl(Asset $asset): string {
-        return $asset->getUrl(['width' => 32, 'height' => 32, 'format' => 'png']);
+        // Rendered well above the 16-28px it's ever displayed at (browser tab, CP preview)
+        // so downscaling - not the source asset's own resolution - determines sharpness.
+        return $asset->getUrl(['width' => 64, 'height' => 64, 'format' => 'png']);
     }
 
     /**

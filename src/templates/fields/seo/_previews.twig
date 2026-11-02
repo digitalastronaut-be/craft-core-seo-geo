@@ -1,0 +1,51 @@
+{# @var field \digitalastronaut\craftcoreseogeo\fields\SeoField #}
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var element \craft\base\ElementInterface|null #}
+{# @var image \craft\elements\Asset|null #}
+{# @var fallbackImage \craft\elements\Asset|null the section/global image this field would fall back to if left empty #}
+{# @var id string #}
+{# @var faviconUrl string|null #}
+{# @var noImageUrl string #}
+{# @var solo bool|null set when this is the only section `_input.twig` is rendering - bleeds the
+   pane's own top padding away instead of leaving it as blank space above the preview's own
+   top border/background #}
+
+{% set previewUrl = value.canonicalUrl ?: (element and element.url ? element.url : null) %}
+{% set imageUrl = (image ?: fallbackImage) ? (image ?: fallbackImage).getUrl({width: 1200, height: 630, mode: 'crop'}) : noImageUrl %}
+
+{% set previewTabSignal = 'seoPreviewTab_' ~ (id|replace({'-': '_', ':': '_', '.': '_'})) %}
+
+{% set developedPlatforms = field.getPreviewPlatformLabels()|keys %}
+{% set platforms = field.getPreviewPlatformLabels()|filter((label, key) => key in field.enabledPreviewPlatforms) %}
+{% set defaultPlatform = platforms|keys|first ?: 'google' %}
+
+<div 
+    class="core-seo-geo-previews{{ solo ? ' core-seo-geo-previews--solo' : '' }}" 
+    data-star-signals="{ {{ previewTabSignal }}: '{{ defaultPlatform }}' }"
+>
+    <div class="core-seo-geo-previews-tabs" role="tablist">
+        {% for key, label in platforms %}
+            <button
+                type="button"
+                class="core-seo-geo-previews-tab"
+                title="{{ label }}"
+                data-star-class:core-seo-geo-previews-tab--active="${{ previewTabSignal }} == '{{ key }}'"
+                data-star-on:click="${{ previewTabSignal }} = '{{ key }}'"
+            >
+                {{ svg('@digitalastronaut/craftcoreseogeo/web/assets/icons/' ~ key ~ '.svg') }}
+            </button>
+        {% endfor %}
+    </div>
+
+    <div class="core-seo-geo-previews-panels">
+        {% for key, label in platforms %}
+            {% set template = key in developedPlatforms
+                ? 'core-seo-geo/fields/seo/_previews/_' ~ key ~ '.twig'
+                : 'core-seo-geo/fields/seo/_previews/_coming_soon.twig' %}
+
+            <div class="core-seo-geo-previews-panel" style="display: none;" data-star-show="${{ previewTabSignal }} == '{{ key }}'">
+                {% include template with { label: label } %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

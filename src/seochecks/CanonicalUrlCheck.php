@@ -52,6 +52,16 @@ class CanonicalUrlCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Not applicable when no canonical URL override is set. When one is set, fails if it isn\'t a valid URL, and passes with a warning if it points somewhere other than the page\'s own URL.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.0.4
      */
     public function getWeight(): int {

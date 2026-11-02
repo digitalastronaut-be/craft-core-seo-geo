@@ -15,11 +15,9 @@ namespace digitalastronaut\craftcoreseogeo\models\structureddata;
  *
  * The settings-page form model behind the global `LocalBusiness` structured data object.
  * `LocalBusiness` is schema.org's own specialization of `Organization` (it adds opening hours
- * and a price range on top of the same name/address/contact fields) so this model extends
- * `OrganizationData` rather than duplicating those fields, and layers its own on top in
- * `toProperties()`. Its map location (`geo`) isn't a field here, same reasoning as
- * `OrganizationData`'s address - it comes from the owning element's real `Addresses` field,
- * which `GlobalStructuredDataService::save()` folds in.
+ * and a price range on top of the same name/address/contact/map-location fields) so this model
+ * extends `OrganizationData` rather than duplicating those fields, and layers its own on top in
+ * `toProperties()`.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -59,6 +57,14 @@ class LocalBusinessData extends OrganizationData {
 
         if ($this->priceRange !== null && $this->priceRange !== '') {
             $properties['priceRange'] = $this->priceRange;
+        }
+
+        if ($this->latitude !== null && $this->latitude !== '' && $this->longitude !== null && $this->longitude !== '') {
+            $properties['geo'] = [
+                '@type' => 'GeoCoordinates',
+                'latitude' => (float)$this->latitude,
+                'longitude' => (float)$this->longitude,
+            ];
         }
 
         $openingHours = $this->_openingHoursSpecifications();

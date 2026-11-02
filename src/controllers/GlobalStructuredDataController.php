@@ -16,6 +16,7 @@ use craft\helpers\Cp;
 use craft\web\Controller;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
+use digitalastronaut\craftcoreseogeo\models\structureddata\StructuredDataFormModel;
 
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -54,13 +55,24 @@ class GlobalStructuredDataController extends Controller {
      * The settings page for one built-in type, on the currently-selected site.
      *
      * @param string $type the URL slug, e.g. `organization` - see `GlobalStructuredDataService::TYPE_SLUGS`
+     * @param StructuredDataFormModel|null $model The invalid, posted model to redisplay - passed
+     * back via `actionSave()`'s `setRouteParams()` call after a failed save, so the user's own
+     * input and validation errors survive the redirect-free re-render instead of being replaced
+     * by a fresh lookup. Typed as the plain interface (a single nullable named type) rather than
+     * `(Model&StructuredDataFormModel)|null` - Yii's web `Controller::bindActionParams()`
+     * rejects that as an "invalid" param: its union-type filter only recognizes built-in types
+     * among a union's members, and neither an intersection member nor the already-live object
+     * `$model` holds is one, so it falls through to failure instead of the permissive
+     * pass-through a single non-builtin named type gets.
+     * @param bool|null $enabled The posted "Enabled" lightswitch state to redisplay alongside
+     * `$model` after a failed save - same reasoning as `$model`.
      * @return Response
      * @throws ForbiddenHttpException if the current user can't edit any site
      * @throws NotFoundHttpException if `$type` isn't a recognized slug
      *
      * @since v1.5.0
      */
-    public function actionEdit(string $type): Response {
+    public function actionEdit(string $type, ?StructuredDataFormModel $model = null, ?bool $enabled = null): Response {
         $site = Cp::requestedSite();
 
         if ($site === null) {
@@ -78,8 +90,8 @@ class GlobalStructuredDataController extends Controller {
 
         return $this->renderTemplate("core-seo-geo/settings/global-{$type}.twig", [
             'site' => $site,
-            'model' => $service->getModel($structuredType, $site->id),
-            'addressFieldHtml' => $service->getAddressFieldHtml($structuredType, $site->id),
+            'model' => $model ?? $service->getModel($structuredType, $site->id),
+            'enabled' => $enabled ?? $service->getElement($structuredType, $site->id)?->enabled ?? true,
         ]);
     }
 
@@ -113,15 +125,14 @@ class GlobalStructuredDataController extends Controller {
         }
 
         $model = $service->getModel($structuredType, $siteId);
+        $enabled = (bool)$request->getBodyParam('enabled', false);
 
         Craft::configure($model, $this->_normalizeArrayAttributes($model, $this->_arrayBodyParam('settings')));
 
-        if (!$model->validate() || !$service->save($structuredType, $siteId, $model)) {
-            $this->setFailFlash(Craft::t('core-seo-geo', "Couldn't save the {type} settings.", [
+        if (!$model->validate() || !$service->save($structuredType, $siteId, $model, $enabled)) {
+            return $this->asFailure(Craft::t('core-seo-geo', "Couldn't save the {type} settings.", [
                 'type' => $service->getTypeLabel($structuredType),
-            ]));
-
-            return null;
+            ]), routeParams: ['model' => $model, 'enabled' => $enabled]);
         }
 
         $this->setSuccessFlash(Craft::t('core-seo-geo', '{type} settings saved.', [

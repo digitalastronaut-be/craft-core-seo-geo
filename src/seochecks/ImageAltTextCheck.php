@@ -49,6 +49,16 @@ class ImageAltTextCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks every <img> inside the page\'s <main> element for a non-empty alt attribute. Decorative images in shared chrome (header/footer) are out of scope. Not applicable if the page can\'t be fetched or <main> has no images. Fails if any image inside <main> is missing alt text.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.30.0
      */
     public function getWeight(): int {

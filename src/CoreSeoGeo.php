@@ -55,6 +55,9 @@ class CoreSeoGeo extends Plugin {
         $item = parent::getCpNavItem();
 
         $item['label'] = $this->getSettings()->pluginName ?: Craft::t('core-seo-geo', 'SEO/GEO');
+        // Must be the plugin's root handle, not a specific subnav page's URL - Craft's own
+        // Cp::nav() only marks this item (and thus the whole subnav) selected when the current
+        // path is this URL or starts with "{$url}/", so every subnav page needs to nest under it.
         $item['url'] = 'core-seo-geo';
         $item['icon'] = '@digitalastronaut/craftcoreseogeo/web/assets/icons/seo-geo-field-icon.svg';
         $item['subnav'] = [

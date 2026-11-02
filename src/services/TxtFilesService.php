@@ -13,12 +13,16 @@ namespace digitalastronaut\craftcoreseogeo\services;
 use Craft;
 use craft\base\Component;
 use craft\helpers\App;
+use craft\helpers\Db;
+use craft\helpers\DateTimeHelper;
+use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\models\Site;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
+use digitalastronaut\craftcoreseogeo\db\Table;
 use digitalastronaut\craftcoreseogeo\models\SeoData;
-use digitalastronaut\craftcoreseogeo\models\Settings;
+use digitalastronaut\craftcoreseogeo\records\TxtFileContent;
 
 use yii\caching\TagDependency;
 
@@ -32,6 +36,10 @@ use yii\caching\TagDependency;
  * here since none of the generation logic is actually shared work worth separating - every
  * `get*Txt()` method below is independent of every other, grouped only by the fact that they're
  * all small, settings-driven text generators with no component of their own to justify.
+ *
+ * `getContent()`/`saveContent()` own the single global `TxtFileContent` row that every one of
+ * these files (`robots.txt` included) reads its own content from - see that record's own
+ * docblock for why this content lives in the database rather than on `Settings`/project config.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -53,6 +61,20 @@ class TxtFilesService extends Component {
 
     private const string CACHE_TAG_LLMS = 'core-seo-geo-llms';
     private const string CACHE_TAG_LLMS_FULL = 'core-seo-geo-llms-full';
+
+    /**
+     * @var bool|null memoized {@see _tableExists()} result
+     *
+     * @since v1.32.0
+     */
+    private ?bool $_tableExists = null;
+
+    /**
+     * @var TxtFileContent|null memoized {@see getContent()} result
+     *
+     * @since v1.33.0
+     */
+    private ?TxtFileContent $_content = null;
 
     /**
      * @param string $slug
@@ -84,15 +106,15 @@ class TxtFilesService extends Component {
             return "User-agent: *\nDisallow: /\n";
         }
 
-        $settings = CoreSeoGeo::getInstance()->getSettings();
+        $content = $this->getContent();
         $groups = [];
 
-        if ($settings->robotsTxtDisallowCp) {
+        if ($content->robotsTxtDisallowCp) {
             $groups['*'][] = "Disallow: /{$generalConfig->cpTrigger}/";
         }
 
-        foreach ($settings->robotsTxtRules as $rule) {
-            $directive = ($rule['type'] ?? Settings::ROBOTS_RULE_DISALLOW) === Settings::ROBOTS_RULE_ALLOW
+        foreach ($this->_decodeRows($content->robotsTxtRules) as $rule) {
+            $directive = ($rule['type'] ?? TxtFileContent::ROBOTS_RULE_DISALLOW) === TxtFileContent::ROBOTS_RULE_ALLOW
                 ? 'Allow'
                 : 'Disallow';
             $userAgent = ($rule['userAgent'] ?? '') !== '' ? $rule['userAgent'] : '*';
@@ -114,19 +136,19 @@ class TxtFilesService extends Component {
             $lines[] = '';
         }
 
-        foreach ($settings->robotsTxtBlockedBots as $bot) {
+        foreach ($this->_decodeRows($content->robotsTxtBlockedBots) as $bot) {
             $lines[] = "User-agent: {$bot}";
             $lines[] = 'Disallow: /';
             $lines[] = '';
         }
 
-        if ($settings->enableSitemap) {
+        if (CoreSeoGeo::getInstance()->getSettings()->enableSitemap) {
             $lines[] = 'Sitemap: ' . UrlHelper::siteUrl('sitemap.xml', null, null, $siteId);
             $lines[] = '';
         }
 
-        if (trim((string)$settings->robotsTxtExtra) !== '') {
-            $lines[] = trim($settings->robotsTxtExtra);
+        if (trim((string)$content->robotsTxtExtra) !== '') {
+            $lines[] = trim($content->robotsTxtExtra);
         }
 
         return rtrim(implode("\n", $lines)) . "\n";
@@ -146,33 +168,39 @@ class TxtFilesService extends Component {
      * @since       v1.11.0
      */
     public function getHumansTxt(): string {
-        $settings = CoreSeoGeo::getInstance()->getSettings();
+        $content = $this->getContent();
+        $team = $this->_decodeRows($content->humansTxtTeam);
+        $thanks = $this->_decodeRows($content->humansTxtThanks);
         $sections = [];
 
-        if ($settings->humansTxtTeam !== []) {
-            $sections[] = "/* TEAM */\n\n" . $this->_renderHumansTxtPeople($settings->humansTxtTeam);
+        if ($team !== []) {
+            $sections[] = "/* TEAM */\n\n" . $this->_renderHumansTxtPeople($team);
         }
 
-        if ($settings->humansTxtThanks !== []) {
-            $sections[] = "/* THANKS */\n\n" . $this->_renderHumansTxtPeople($settings->humansTxtThanks);
+        if ($thanks !== []) {
+            $sections[] = "/* THANKS */\n\n" . $this->_renderHumansTxtPeople($thanks);
         }
 
         $siteLines = [];
 
-        if ($settings->humansTxtLastUpdated !== null) {
-            $siteLines[] = "Last update: {$settings->humansTxtLastUpdated}";
+        // Read directly rather than through `DateTimeHelper::toDateTime()`: the column already
+        // holds a plain `Y-m-d` calendar date with no time-of-day meaning, and round-tripping a
+        // bare date string through that helper assumes midnight UTC, then converts to the app's
+        // configured timezone - shifting the date itself back a day for anyone west of UTC.
+        if ($content->humansTxtLastUpdated !== null) {
+            $siteLines[] = "Last update: {$content->humansTxtLastUpdated}";
         }
 
-        if (trim((string)$settings->humansTxtStandards) !== '') {
-            $siteLines[] = 'Standards: ' . trim($settings->humansTxtStandards);
+        if (trim((string)$content->humansTxtStandards) !== '') {
+            $siteLines[] = 'Standards: ' . trim($content->humansTxtStandards);
         }
 
         if ($siteLines !== []) {
             $sections[] = "/* SITE */\n\n    " . implode("\n    ", $siteLines);
         }
 
-        if (trim((string)$settings->humansTxtExtra) !== '') {
-            $sections[] = trim($settings->humansTxtExtra);
+        if (trim((string)$content->humansTxtExtra) !== '') {
+            $sections[] = trim($content->humansTxtExtra);
         }
 
         if ($sections === []) return '';
@@ -194,13 +222,15 @@ class TxtFilesService extends Component {
      * @since       v1.12.0
      */
     public function getAdsTxt(): string {
-        $settings = CoreSeoGeo::getInstance()->getSettings();
+        $content = $this->getContent();
         $blocks = [];
 
-        if ($settings->adsTxtRecords !== []) {
+        $records = $this->_decodeRows($content->adsTxtRecords);
+
+        if ($records !== []) {
             $lines = [];
 
-            foreach ($settings->adsTxtRecords as $record) {
+            foreach ($records as $record) {
                 $parts = [
                     $record['domain'] ?? '',
                     $record['accountId'] ?? '',
@@ -219,11 +249,11 @@ class TxtFilesService extends Component {
 
         $variableLines = [];
 
-        if (($settings->adsTxtOwnerDomain ?? '') !== '') {
-            $variableLines[] = "OWNERDOMAIN={$settings->adsTxtOwnerDomain}";
+        if (($content->adsTxtOwnerDomain ?? '') !== '') {
+            $variableLines[] = "OWNERDOMAIN={$content->adsTxtOwnerDomain}";
         }
 
-        foreach ($settings->adsTxtManagerDomains as $manager) {
+        foreach ($this->_decodeRows($content->adsTxtManagerDomains) as $manager) {
             $value = ($manager['country'] ?? '') !== ''
                 ? "{$manager['domain']}, {$manager['country']}"
                 : $manager['domain'];
@@ -231,11 +261,11 @@ class TxtFilesService extends Component {
             $variableLines[] = "MANAGERDOMAIN={$value}";
         }
 
-        foreach ($settings->adsTxtContacts as $contact) {
+        foreach ($this->_decodeRows($content->adsTxtContacts) as $contact) {
             $variableLines[] = "CONTACT={$contact['value']}";
         }
 
-        foreach ($settings->adsTxtSubdomains as $subdomain) {
+        foreach ($this->_decodeRows($content->adsTxtSubdomains) as $subdomain) {
             $variableLines[] = "SUBDOMAIN={$subdomain['value']}";
         }
 
@@ -243,8 +273,8 @@ class TxtFilesService extends Component {
             $blocks[] = implode("\n", $variableLines);
         }
 
-        if (trim((string)$settings->adsTxtExtra) !== '') {
-            $blocks[] = trim($settings->adsTxtExtra);
+        if (trim((string)$content->adsTxtExtra) !== '') {
+            $blocks[] = trim($content->adsTxtExtra);
         }
 
         if ($blocks === []) return '';
@@ -265,46 +295,48 @@ class TxtFilesService extends Component {
      * @since       v1.13.0
      */
     public function getSecurityTxt(int $siteId): string {
-        $settings = CoreSeoGeo::getInstance()->getSettings();
+        $content = $this->getContent();
+        $contacts = $this->_decodeRows($content->securityTxtContacts);
+        $expires = DateTimeHelper::toDateTime($content->securityTxtExpires) ?: null;
 
-        if ($settings->securityTxtContacts === [] || $settings->securityTxtExpires === null) {
+        if ($contacts === [] || $expires === null) {
             return '';
         }
 
         $lines = [];
 
-        foreach ($settings->securityTxtContacts as $contact) {
+        foreach ($contacts as $contact) {
             $lines[] = "Contact: {$contact['value']}";
         }
 
-        $lines[] = "Expires: {$settings->securityTxtExpires}";
+        $lines[] = 'Expires: ' . $expires->format(\DateTime::ATOM);
 
-        foreach ($settings->securityTxtEncryption as $row) {
+        foreach ($this->_decodeRows($content->securityTxtEncryption) as $row) {
             $lines[] = "Encryption: {$row['value']}";
         }
 
-        foreach ($settings->securityTxtAcknowledgments as $row) {
+        foreach ($this->_decodeRows($content->securityTxtAcknowledgments) as $row) {
             $lines[] = "Acknowledgments: {$row['value']}";
         }
 
-        if (($settings->securityTxtPreferredLanguages ?? '') !== '') {
-            $lines[] = "Preferred-Languages: {$settings->securityTxtPreferredLanguages}";
+        if (($content->securityTxtPreferredLanguages ?? '') !== '') {
+            $lines[] = "Preferred-Languages: {$content->securityTxtPreferredLanguages}";
         }
 
         foreach ($this->getSecurityTxtCanonicalUrls($siteId) as $url) {
             $lines[] = "Canonical: {$url}";
         }
 
-        foreach ($settings->securityTxtPolicy as $row) {
+        foreach ($this->_decodeRows($content->securityTxtPolicy) as $row) {
             $lines[] = "Policy: {$row['value']}";
         }
 
-        foreach ($settings->securityTxtHiring as $row) {
+        foreach ($this->_decodeRows($content->securityTxtHiring) as $row) {
             $lines[] = "Hiring: {$row['value']}";
         }
 
-        if (trim((string)$settings->securityTxtExtra) !== '') {
-            foreach (preg_split('/\r\n|\r|\n/', trim($settings->securityTxtExtra)) as $extraLine) {
+        if (trim((string)$content->securityTxtExtra) !== '') {
+            foreach (preg_split('/\r\n|\r|\n/', trim($content->securityTxtExtra)) as $extraLine) {
                 $lines[] = $extraLine;
             }
         }
@@ -348,47 +380,47 @@ class TxtFilesService extends Component {
      * @since       v1.14.0
      */
     public function getTrustTxt(): string {
-        $settings = CoreSeoGeo::getInstance()->getSettings();
+        $content = $this->getContent();
         $lines = [];
 
-        foreach ($settings->trustTxtBelongTo as $row) {
+        foreach ($this->_decodeRows($content->trustTxtBelongTo) as $row) {
             $lines[] = "belongto={$row['value']}";
         }
 
-        foreach ($settings->trustTxtControl as $row) {
+        foreach ($this->_decodeRows($content->trustTxtControl) as $row) {
             $lines[] = "control={$row['value']}";
         }
 
-        foreach ($settings->trustTxtMember as $row) {
+        foreach ($this->_decodeRows($content->trustTxtMember) as $row) {
             $lines[] = "member={$row['value']}";
         }
 
-        foreach ($settings->trustTxtSocial as $row) {
+        foreach ($this->_decodeRows($content->trustTxtSocial) as $row) {
             $lines[] = "social={$row['value']}";
         }
 
-        foreach ($settings->trustTxtContact as $row) {
+        foreach ($this->_decodeRows($content->trustTxtContact) as $row) {
             $lines[] = "contact={$row['value']}";
         }
 
-        foreach ($settings->trustTxtDisclosure as $row) {
+        foreach ($this->_decodeRows($content->trustTxtDisclosure) as $row) {
             $lines[] = "disclosure={$row['value']}";
         }
 
-        foreach ($settings->trustTxtCredential as $row) {
+        foreach ($this->_decodeRows($content->trustTxtCredential) as $row) {
             $lines[] = "credential={$row['value']}";
         }
 
-        foreach ($settings->trustTxtCopyright as $row) {
+        foreach ($this->_decodeRows($content->trustTxtCopyright) as $row) {
             $lines[] = "copyright={$row['value']}";
         }
 
-        if ($settings->trustTxtDataTrainingAllowed !== null) {
-            $lines[] = "datatrainingallowed={$settings->trustTxtDataTrainingAllowed}";
+        if ($content->trustTxtDataTrainingAllowed !== null) {
+            $lines[] = "datatrainingallowed={$content->trustTxtDataTrainingAllowed}";
         }
 
-        if (trim((string)$settings->trustTxtExtra) !== '') {
-            $lines[] = trim($settings->trustTxtExtra);
+        if (trim((string)$content->trustTxtExtra) !== '') {
+            $lines[] = trim($content->trustTxtExtra);
         }
 
         if ($lines === []) return '';
@@ -536,7 +568,9 @@ class TxtFilesService extends Component {
             foreach ($query->each() as $element) {
                 $seo = $contentSeo->resolveSeoData($element);
                 if ($seo === null) continue;
-                if (array_intersect($seo->robots, [SeoData::ROBOTS_NOINDEX, SeoData::ROBOTS_NOAI]) !== []) continue;
+
+                $robots = $seo->robots !== [] ? $seo->robots : $contentSeo->getFallbackRobots($element);
+                if (array_intersect($robots, [SeoData::ROBOTS_NOINDEX, SeoData::ROBOTS_NOAI]) !== []) continue;
 
                 $url = $element->getUrl();
                 if ($url === null) continue;
@@ -633,6 +667,222 @@ class TxtFilesService extends Component {
             static fn(array $alternate): string => "[{$alternate['label']}]({$alternate['url']})",
             $alternates,
         ));
+    }
+
+    /**
+     * The single global `TxtFileContent` row holding every one of these files' content - a
+     * fresh, unsaved record (every column at its column/`init()` default) when the table
+     * doesn't exist yet or no row has been saved. There's never more than one row, so this is a
+     * get-or-new lookup rather than a get-or-create one - `saveContent()` is the only thing that
+     * ever actually inserts it.
+     *
+     * Memoized per request: `PluginTrait::registerSiteUrlRules()` now reads `$enableRobotsTxt`
+     * off this row on every single request (to decide whether to register the `robots.txt` URL
+     * rule at all), so without memoizing, a request that goes on to actually serve one of these
+     * files - or render one of their settings pages - would query this row twice over.
+     *
+     * @return TxtFileContent
+     *
+     * @author      Digitalastronaut
+     * @since       v1.32.0
+     */
+    public function getContent(): TxtFileContent {
+        if (isset($this->_content)) return $this->_content;
+
+        if (!$this->_tableExists()) return $this->_content = new TxtFileContent();
+
+        return $this->_content = TxtFileContent::find()->one() ?? new TxtFileContent();
+    }
+
+    /**
+     * Persists whatever of `humans.txt`/`ads.txt`/`security.txt`/`trust.txt`'s content fields
+     * were posted from one of the `txt-<slug>.twig` pages into the single global
+     * `TxtFileContent` row, creating it on first save. Each page posts only its own fields under
+     * the shared `settings[...]` namespace alongside the `Settings`-model fields
+     * `TxtFilesController::actionSave()` hands to `CoreSeoGeo::savePartialSettings()` separately
+     * - unlike that project-config save, a DB record update only touches the columns actually
+     * assigned here, so (unlike `Settings`) there's no need to merge over the row's current
+     * values first.
+     *
+     * @param array $posted this one page's posted `settings[...]` fields
+     * @return bool whether the save succeeded
+     *
+     * @author      Digitalastronaut
+     * @since       v1.32.0
+     */
+    public function saveContent(array $posted): bool {
+        if (!$this->_tableExists()) return false;
+
+        $content = $this->getContent();
+
+        if (array_key_exists('enableRobotsTxt', $posted)) {
+            $content->enableRobotsTxt = (bool)$posted['enableRobotsTxt'];
+        }
+
+        if (array_key_exists('robotsTxtDisallowCp', $posted)) {
+            $content->robotsTxtDisallowCp = (bool)$posted['robotsTxtDisallowCp'];
+        }
+
+        // A multiselect - its hidden fallback posts `''` (not `[]`) when nothing's selected.
+        if (array_key_exists('robotsTxtBlockedBots', $posted)) {
+            $content->robotsTxtBlockedBots = Json::encode(
+                \is_array($posted['robotsTxtBlockedBots']) ? array_values($posted['robotsTxtBlockedBots']) : [],
+            );
+        }
+
+        if (array_key_exists('robotsTxtRules', $posted)) {
+            $content->robotsTxtRules = Json::encode(\is_array($posted['robotsTxtRules'])
+                ? array_values(array_filter(array_map(
+                    fn(array $row): array => [
+                        'path' => trim((string)($row['path'] ?? '')),
+                        'type' => ($row['type'] ?? TxtFileContent::ROBOTS_RULE_DISALLOW) === TxtFileContent::ROBOTS_RULE_ALLOW
+                            ? TxtFileContent::ROBOTS_RULE_ALLOW
+                            : TxtFileContent::ROBOTS_RULE_DISALLOW,
+                        'userAgent' => trim((string)($row['userAgent'] ?? '')) ?: '*',
+                    ],
+                    $posted['robotsTxtRules'],
+                ), static fn(array $row): bool => $row['path'] !== ''))
+                : []);
+        }
+
+        if (array_key_exists('robotsTxtExtra', $posted)) {
+            $content->robotsTxtExtra = trim((string)$posted['robotsTxtExtra']) ?: null;
+        }
+
+        if (array_key_exists('humansTxtTeam', $posted)) {
+            $content->humansTxtTeam = Json::encode($this->_normalizeHumansTxtPersonRows($posted['humansTxtTeam']));
+        }
+
+        if (array_key_exists('humansTxtThanks', $posted)) {
+            $content->humansTxtThanks = Json::encode($this->_normalizeHumansTxtPersonRows($posted['humansTxtThanks']));
+        }
+
+        if (array_key_exists('humansTxtStandards', $posted)) {
+            $content->humansTxtStandards = trim((string)$posted['humansTxtStandards']) ?: null;
+        }
+
+        if (array_key_exists('humansTxtLastUpdated', $posted)) {
+            // A plain calendar date with no time-of-day meaning - formatted directly rather than
+            // through `Db::prepareDateForDb()`, which converts to UTC and would shift the date
+            // itself back a day for anyone west of UTC.
+            $date = DateTimeHelper::toDateTime($posted['humansTxtLastUpdated']) ?: null;
+            $content->humansTxtLastUpdated = $date?->format('Y-m-d');
+        }
+
+        if (array_key_exists('humansTxtExtra', $posted)) {
+            $content->humansTxtExtra = trim((string)$posted['humansTxtExtra']) ?: null;
+        }
+
+        if (array_key_exists('adsTxtRecords', $posted)) {
+            $content->adsTxtRecords = Json::encode(\is_array($posted['adsTxtRecords'])
+                ? array_values(array_filter(array_map(
+                    fn(array $row): array => [
+                        'domain' => $this->_cleanAdsTxtDomain((string)($row['domain'] ?? '')),
+                        'accountId' => trim((string)($row['accountId'] ?? '')),
+                        'relationship' => ($row['relationship'] ?? TxtFileContent::ADS_RELATIONSHIP_DIRECT) === TxtFileContent::ADS_RELATIONSHIP_RESELLER
+                            ? TxtFileContent::ADS_RELATIONSHIP_RESELLER
+                            : TxtFileContent::ADS_RELATIONSHIP_DIRECT,
+                        'certAuthorityId' => trim((string)($row['certAuthorityId'] ?? '')),
+                    ],
+                    $posted['adsTxtRecords'],
+                ), static fn(array $row): bool => $row['domain'] !== '' && $row['accountId'] !== ''))
+                : []);
+        }
+
+        if (array_key_exists('adsTxtOwnerDomain', $posted)) {
+            $content->adsTxtOwnerDomain = $this->_cleanAdsTxtDomain((string)$posted['adsTxtOwnerDomain']) ?: null;
+        }
+
+        if (array_key_exists('adsTxtManagerDomains', $posted)) {
+            $content->adsTxtManagerDomains = Json::encode(\is_array($posted['adsTxtManagerDomains'])
+                ? array_values(array_filter(array_map(
+                    fn(array $row): array => [
+                        'domain' => $this->_cleanAdsTxtDomain((string)($row['domain'] ?? '')),
+                        'country' => strtoupper(trim((string)($row['country'] ?? ''))),
+                    ],
+                    $posted['adsTxtManagerDomains'],
+                ), static fn(array $row): bool => $row['domain'] !== ''))
+                : []);
+        }
+
+        if (array_key_exists('adsTxtContacts', $posted)) {
+            $content->adsTxtContacts = Json::encode($this->_normalizeSingleValueRows($posted['adsTxtContacts']));
+        }
+
+        if (array_key_exists('adsTxtSubdomains', $posted)) {
+            $content->adsTxtSubdomains = Json::encode(\is_array($posted['adsTxtSubdomains'])
+                ? array_values(array_filter(array_map(
+                    fn(array $row): array => ['value' => $this->_cleanAdsTxtDomain((string)($row['value'] ?? ''))],
+                    $posted['adsTxtSubdomains'],
+                ), static fn(array $row): bool => $row['value'] !== ''))
+                : []);
+        }
+
+        if (array_key_exists('adsTxtExtra', $posted)) {
+            $content->adsTxtExtra = trim((string)$posted['adsTxtExtra']) ?: null;
+        }
+
+        if (array_key_exists('securityTxtContacts', $posted)) {
+            $content->securityTxtContacts = Json::encode($this->_normalizeSingleValueRows($posted['securityTxtContacts']));
+        }
+
+        if (array_key_exists('securityTxtExpires', $posted)) {
+            $date = DateTimeHelper::toDateTime($posted['securityTxtExpires']) ?: null;
+            $content->securityTxtExpires = $date !== null ? Db::prepareDateForDb($date) : null;
+        }
+
+        if (array_key_exists('securityTxtEncryption', $posted)) {
+            $content->securityTxtEncryption = Json::encode($this->_normalizeSingleValueRows($posted['securityTxtEncryption']));
+        }
+
+        if (array_key_exists('securityTxtAcknowledgments', $posted)) {
+            $content->securityTxtAcknowledgments = Json::encode($this->_normalizeSingleValueRows($posted['securityTxtAcknowledgments']));
+        }
+
+        if (array_key_exists('securityTxtPreferredLanguages', $posted)) {
+            $content->securityTxtPreferredLanguages = trim((string)$posted['securityTxtPreferredLanguages']) ?: null;
+        }
+
+        if (array_key_exists('securityTxtPolicy', $posted)) {
+            $content->securityTxtPolicy = Json::encode($this->_normalizeSingleValueRows($posted['securityTxtPolicy']));
+        }
+
+        if (array_key_exists('securityTxtHiring', $posted)) {
+            $content->securityTxtHiring = Json::encode($this->_normalizeSingleValueRows($posted['securityTxtHiring']));
+        }
+
+        if (array_key_exists('securityTxtExtra', $posted)) {
+            $content->securityTxtExtra = trim((string)$posted['securityTxtExtra']) ?: null;
+        }
+
+        foreach (['trustTxtBelongTo', 'trustTxtControl', 'trustTxtMember'] as $domainField) {
+            if (array_key_exists($domainField, $posted)) {
+                $content->$domainField = Json::encode(\is_array($posted[$domainField])
+                    ? array_values(array_filter(array_map(
+                        fn(array $row): array => ['value' => $this->_cleanAdsTxtDomain((string)($row['value'] ?? ''))],
+                        $posted[$domainField],
+                    ), static fn(array $row): bool => $row['value'] !== ''))
+                    : []);
+            }
+        }
+
+        foreach (['trustTxtSocial', 'trustTxtContact', 'trustTxtDisclosure', 'trustTxtCredential', 'trustTxtCopyright'] as $urlField) {
+            if (array_key_exists($urlField, $posted)) {
+                $content->$urlField = Json::encode($this->_normalizeSingleValueRows($posted[$urlField]));
+            }
+        }
+
+        if (array_key_exists('trustTxtDataTrainingAllowed', $posted)) {
+            $content->trustTxtDataTrainingAllowed = $posted['trustTxtDataTrainingAllowed'] === 'yes' || $posted['trustTxtDataTrainingAllowed'] === 'no'
+                ? $posted['trustTxtDataTrainingAllowed']
+                : null;
+        }
+
+        if (array_key_exists('trustTxtExtra', $posted)) {
+            $content->trustTxtExtra = trim((string)$posted['trustTxtExtra']) ?: null;
+        }
+
+        return $content->save();
     }
 
     /**
@@ -736,9 +986,9 @@ class TxtFilesService extends Component {
     }
 
     /**
-     * Renders a list of credited people - `Settings::$humansTxtTeam`/`$humansTxtThanks`, same
-     * row shape either way - as the indented `<role>: <name>` blocks shared by both the TEAM
-     * and THANKS sections, one blank line between people.
+     * Renders a list of credited people - `TxtFileContent::$humansTxtTeam`/`$humansTxtThanks`,
+     * same row shape either way - as the indented `<role>: <name>` blocks shared by both the
+     * TEAM and THANKS sections, one blank line between people.
      *
      * @param array<int, array{role: string, name: string, contact: string, from: string}> $people
      * @return string
@@ -765,5 +1015,95 @@ class TxtFilesService extends Component {
         }
 
         return rtrim(implode("\n", $lines));
+    }
+
+    /**
+     * Decodes one of `TxtFileContent`'s JSON-encoded columns back into its row array - `[]` for
+     * `null` (an unsaved column, or a brand new record from `getContent()`).
+     *
+     * @param string|null $json
+     * @return array
+     *
+     * @author      Digitalastronaut
+     * @since       v1.32.0
+     */
+    private function _decodeRows(?string $json): array {
+        return $json !== null ? Json::decode($json) : [];
+    }
+
+    /**
+     * Normalizes a posted `humansTxtTeam`/`humansTxtThanks` editable table - both are a list of
+     * credited people with the same row shape, only the section header they end up under
+     * differs ({@see getHumansTxt()}). Rows with no name are dropped entirely; a row with a name
+     * but nothing else is still kept.
+     *
+     * @param mixed $value
+     * @return array<int, array{role: string, name: string, contact: string, from: string}>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.11.0
+     */
+    private function _normalizeHumansTxtPersonRows(mixed $value): array {
+        if (!\is_array($value)) return [];
+
+        return array_values(array_filter(array_map(
+            static fn(array $row): array => [
+                'role' => trim((string)($row['role'] ?? '')),
+                'name' => trim((string)($row['name'] ?? '')),
+                'contact' => trim((string)($row['contact'] ?? '')),
+                'from' => trim((string)($row['from'] ?? '')),
+            ],
+            $value,
+        ), static fn(array $row): bool => $row['name'] !== ''));
+    }
+
+    /**
+     * Strips a pasted scheme/path off an ads.txt domain value (`https://google.com/` ->
+     * `google.com`) and lowercases it - the spec's domain fields are compared case-insensitively
+     * but conventionally serialized lowercase, and pasting a full URL instead of a bare domain
+     * is the single most common mistake when copying these values from an ad network's docs.
+     *
+     * @param string $domain
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.12.0
+     */
+    private function _cleanAdsTxtDomain(string $domain): string {
+        $domain = trim($domain);
+        $domain = preg_replace('#^[a-z][a-z0-9+.-]*://#i', '', $domain) ?? $domain;
+        $domain = explode('/', $domain, 2)[0];
+
+        return strtolower($domain);
+    }
+
+    /**
+     * Normalizes a posted single-column editable table (`{value: string}` rows) - the shape
+     * shared by `adsTxtContacts` and every repeatable `security.txt`/`trust.txt` field. Rows
+     * with an empty value are dropped.
+     *
+     * @param mixed $value
+     * @return array<int, array{value: string}>
+     *
+     * @author      Digitalastronaut
+     * @since       v1.13.0
+     */
+    private function _normalizeSingleValueRows(mixed $value): array {
+        if (!\is_array($value)) return [];
+
+        return array_values(array_filter(array_map(
+            static fn(array $row): array => ['value' => trim((string)($row['value'] ?? ''))],
+            $value,
+        ), static fn(array $row): bool => $row['value'] !== ''));
+    }
+
+    /**
+     * @return bool
+     *
+     * @author      Digitalastronaut
+     * @since       v1.32.0
+     */
+    private function _tableExists(): bool {
+        return $this->_tableExists ??= Craft::$app->getDb()->tableExists(Table::TXTFILECONTENT);
     }
 }

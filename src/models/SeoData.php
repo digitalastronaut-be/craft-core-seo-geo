@@ -74,6 +74,24 @@ class SeoData extends Model {
     public array $robots = [];
 
     /**
+     * Whether this entry should be left out of the sitemap - an additional, per-entry exclusion
+     * layer on top of the global ({@see \digitalastronaut\craftcoreseogeo\models\Settings::$enableSitemap})
+     * and content-level ({@see \digitalastronaut\craftcoreseogeo\records\ContentSeo::$sitemapEnabled})
+     * toggles. Like those two, this only ever removes an entry that would otherwise be
+     * included - turning it off can't force an entry back in when the site or its section has
+     * sitemap generation disabled. Defaults to `false` so an entry never silently drops out of
+     * the sitemap just because it predates this setting. Named (and defaulted) the other way
+     * around from the other two levels on purpose: those are coarse, rarely-touched feature
+     * toggles ("is this mechanism switched on"), where "enabled" is the natural default framing.
+     * This one's a frequent, per-entry editorial decision - the same shape as the `robots`
+     * field's `noindex` option right next to it in the CP - so an opt-out framing ("exclude this
+     * one") reads far more naturally than an inverted "include" switch that defaults to on.
+     *
+     * @since v1.37.0
+     */
+    public bool $excludeFromSitemap = false;
+
+    /**
      * @return AssetQuery
      *
      * @since v1.0.0
@@ -107,12 +125,13 @@ class SeoData extends Model {
      * @since       v1.0.0
      */
     public function isEmpty(): bool {
-        return 
-            $this->metaTitle === null && 
-            $this->metaDescription === null && 
-            $this->canonicalUrl === null && 
-            $this->robots === [] && 
-            $this->_imageId === null;
+        return
+            $this->metaTitle === null &&
+            $this->metaDescription === null &&
+            $this->canonicalUrl === null &&
+            $this->robots === [] &&
+            $this->_imageId === null &&
+            $this->excludeFromSitemap === false;
     }
 
     /**

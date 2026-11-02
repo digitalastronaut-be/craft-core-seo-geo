@@ -1,6 +1,7 @@
 {# @var seo \digitalastronaut\craftcoreseogeo\models\SeoData #}
 {# @var element \craft\base\ElementInterface #}
 {# @var image \craft\elements\Asset|null #}
+{# @var robots string[] seo.robots, falling back to the section/global config when empty #}
 {# @var hreflangAlternates array<int, array{language: string, url: string}> #}
 {# @var favicon array{pngUrl: string, faviconIcoUrl: string|null, appleTouchIconUrl: string, manifestUrl: string}|null #}
 {# @var settings \digitalastronaut\craftcoreseogeo\models\Settings #}
@@ -8,7 +9,7 @@
 {% set title = seo.metaTitle ?? element.title ?? null %}
 {% set description = seo.metaDescription %}
 {% set canonicalUrl = seo.canonicalUrl ?? element.url ?? null %}
-{% set robotsContent = seo.robots|join(', ') %}
+{% set robotsContent = robots|join(', ') %}
 {% set siteName = craft.app.sites.currentSite.name %}
 {% set locale = element.site.language|replace({'-': '_'}) %}
 

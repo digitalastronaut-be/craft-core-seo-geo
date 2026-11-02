@@ -158,6 +158,9 @@ class ContentSeoController extends Controller {
             'robots' => $this->_decodeConfig($row?->robots),
             'robotsOptions' => SeoField::getRobotsOptions(),
             'sitemapEnabled' => $row?->sitemapEnabled ?? true,
+            'sitemapEnabledSitewide' => CoreSeoGeo::getInstance()->getSettings()->enableSitemap,
+            'markdownEnabled' => $row?->markdownEnabled ?? true,
+            'markdownEnabledSitewide' => CoreSeoGeo::getInstance()->getSettings()->enableMarkdown,
             'image' => $row?->getImageAsset(),
             'mappingRows' => $this->_mappingTableRows(
                 CoreSeoGeo::getInstance()->getStructuredDataMappings()->getRowsForSection($sectionHandle),
@@ -334,10 +337,11 @@ class ContentSeoController extends Controller {
     }
 
     /**
-     * Persists the title/description block config, robots directives, and sitemap toggle posted
-     * from `content-seo-section.twig`. Posted alongside the form's own `titleConfig`/
-     * `descriptionConfig`/`robots`/`sitemapEnabled` fields by hidden `sectionHandle`/`siteId`
-     * inputs, since neither is otherwise part of the row's own editable config.
+     * Persists the title/description block config, robots directives, and sitemap/Markdown
+     * toggles posted from `content-seo-section.twig`. Posted alongside the form's own
+     * `titleConfig`/`descriptionConfig`/`robots`/`sitemapEnabled`/`markdownEnabled` fields by
+     * hidden `sectionHandle`/`siteId` inputs, since neither is otherwise part of the row's own
+     * editable config.
      *
      * @return Response|null
      * @throws BadRequestHttpException if `sectionHandle` or `siteId` wasn't posted
@@ -368,6 +372,7 @@ class ContentSeoController extends Controller {
             $this->_arrayBodyParam('descriptionConfig'),
             $this->_arrayBodyParam('robots'),
             (bool)$request->getBodyParam('sitemapEnabled', true),
+            (bool)$request->getBodyParam('markdownEnabled', true),
             $this->_assetIdBodyParam('image'),
         );
 
@@ -421,10 +426,10 @@ class ContentSeoController extends Controller {
     /**
      * Builds `global-seo.twig`'s "Business & Website Info" table: one row per built-in
      * standalone type ({@see \digitalastronaut\craftcoreseogeo\services\
-     * GlobalStructuredDataService::TYPE_SLUGS}), with its settings page URL and the same
-     * "Configured"/"Not configured" status label `content-seo.twig`'s own table uses
-     * ({@see _configStatusHtml()}), for whether it's currently configured (and enabled) for the
-     * given site.
+     * GlobalStructuredDataService::TYPE_SLUGS}), with its settings page URL and an
+     * "Enabled"/"Disabled" status label ({@see _onOffStatusHtml()}) reflecting the type's own
+     * lightswitch (its saved element's `enabled` flag) for the given site - unset entirely
+     * (no element saved yet) counts as disabled, same as an explicitly disabled one.
      *
      * @param int $siteId
      * @return array<int, array{slug: string, label: string, url: string, statusHtml: string}>
@@ -443,7 +448,11 @@ class ContentSeoController extends Controller {
                 'slug' => $slug,
                 'label' => $service->getTypeLabel($type),
                 'url' => UrlHelper::cpUrl("core-seo-geo/settings/global/{$slug}", ['site' => Craft::$app->getSites()->getSiteById($siteId)?->handle]),
-                'statusHtml' => $this->_configStatusHtml($element !== null && $element->enabled),
+                'statusHtml' => $this->_onOffStatusHtml(
+                    $element !== null && $element->enabled,
+                    Craft::t('core-seo-geo', 'Enabled'),
+                    Craft::t('core-seo-geo', 'Disabled'),
+                ),
             ];
         }
 
@@ -463,12 +472,13 @@ class ContentSeoController extends Controller {
      */
     private function _txtFileRows(int $siteId): array {
         $settings = CoreSeoGeo::getInstance()->getSettings();
+        $txtContent = CoreSeoGeo::getInstance()->getTxtFiles()->getContent();
         $rows = [];
 
         foreach (TxtFilesService::TYPE_SLUGS as $slug => $label) {
             $statusHtml = match ($slug) {
                 'robots' => $this->_onOffStatusHtml(
-                    $settings->enableRobotsTxt,
+                    $txtContent->enableRobotsTxt,
                     Craft::t('core-seo-geo', 'Enabled'),
                     Craft::t('core-seo-geo', 'Disabled'),
                 ),
@@ -561,8 +571,10 @@ class ContentSeoController extends Controller {
                 // `Craft.VueAdminTable` renders every non-slot cell's value as raw HTML, not
                 // escaped text (see `_contentSeoTableRows()`'s own docblock) -- `getLabel()`
                 // strings like "Has a <main> element" would otherwise render as an actual,
-                // content-swallowing `<main>` tag rather than the literal text.
-                'label' => Html::encode($check->getLabel()),
+                // content-swallowing `<main>` tag rather than the literal text. The info icon
+                // after it surfaces `getDescription()` as a hover/focus popover -- see
+                // `_seoScoreCheckDescriptionTooltipHtml()`'s own docblock.
+                'label' => Html::encode($check->getLabel()) . ' ' . $this->_seoScoreCheckDescriptionTooltipHtml($check->getDescription()),
                 'keyHtml' => Html::tag('code', Html::encode($check->getKey())),
                 'weight' => $check->getWeight(),
                 'sourceHtml' => Cp::statusLabelHtml([
@@ -647,6 +659,38 @@ class ContentSeoController extends Controller {
                 Html::tag('span', $onLabel, ['data-toggle' => 'on', 'aria-hidden' => 'true']),
             ]), ['class' => 'lightswitch-inner-container']),
         ]), ['class' => 'lightswitch-outer-container']);
+    }
+
+    /**
+     * The same `.core-seo-geo-info-icon-wrap`/`tooltips.js` hover-popover already used for the
+     * structured-data and redirects forms (and, as `.core-seo-geo-score-chip`'s popup, by
+     * `SeoScoreService::renderChip()`) -- a plain `.info` icon triggering a `popover="manual"`
+     * span that `tooltips.js` shows/hides on hover/focus and positions with floating-ui, rather
+     * than a native `title` attribute or Craft's own `<craft-tooltip>`, so every CP tooltip in
+     * this plugin looks and behaves the same way. `tabindex="0"` on the wrap, same as
+     * `renderChip()`'s, since this icon (unlike the structured-data/redirects ones, which
+     * decorate an already-focusable label/input) is the only focusable thing here. Rebuilt from
+     * scratch by `Craft.VueAdminTable` on every search/reload same as every other cell in this
+     * row -- fine here, unlike the lightswitch cell, since this popover carries no state to
+     * preserve between renders.
+     *
+     * @param string $description
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    private function _seoScoreCheckDescriptionTooltipHtml(string $description): string {
+        return Html::tag('span', implode('', [
+            Html::tag('span', '', ['class' => 'info']),
+            Html::tag('span', Html::encode($description), [
+                'class' => 'core-seo-geo-info-icon-popup',
+                'popover' => 'manual',
+            ]),
+        ]), [
+            'class' => 'core-seo-geo-info-icon-wrap',
+            'tabindex' => '0',
+        ]);
     }
 
     /**
@@ -858,7 +902,7 @@ class ContentSeoController extends Controller {
     /**
      * Builds one `Craft.VueAdminTable` row per section for `actionTableData()`'s JSON
      * response. `title`/`url` feed the `__slot:title` column; `titleStatus`/`description`/
-     * `sitemap` are pre-rendered status-label HTML ({@see _configStatusHtml()}/{@see
+     * `sitemap`/`markdown` are pre-rendered status-label HTML ({@see _configStatusHtml()}/{@see
      * _onOffStatusHtml()}) since the admin table renders every non-slot cell's value as raw
      * HTML, not escaped text. `robots` and `mappings` are comma-joined, HTML-encoded text,
      * falling back to `&ndash;` when there's nothing configured.
@@ -885,6 +929,11 @@ class ContentSeoController extends Controller {
                 'description' => $this->_configStatusHtml($this->_decodeConfig($row->descriptionConfig) !== []),
                 'sitemap' => $this->_onOffStatusHtml(
                     $row->sitemapEnabled,
+                    Craft::t('core-seo-geo', 'On'),
+                    Craft::t('core-seo-geo', 'Off'),
+                ),
+                'markdown' => $this->_onOffStatusHtml(
+                    $row->markdownEnabled,
                     Craft::t('core-seo-geo', 'On'),
                     Craft::t('core-seo-geo', 'Off'),
                 ),

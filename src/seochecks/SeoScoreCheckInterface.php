@@ -35,6 +35,17 @@ interface SeoScoreCheckInterface {
     public function getLabel(): string;
 
     /**
+     * A longer explanation of what this check looks at and the messages it can return, shown as
+     * a tooltip next to the check's label on the global SEO settings page.
+     *
+     * @return string
+     *
+     * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string;
+
+    /**
      * @return int
      *
      * @author      Digitalastronaut

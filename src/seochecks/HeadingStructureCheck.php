@@ -49,6 +49,16 @@ class HeadingStructureCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Walks the page\'s <h1>-<h6> elements in order. Not applicable if the page can\'t be fetched or has no headings. Fails if more than one <h1> exists, or if any heading level is skipped (e.g. <h2> straight to <h4>).');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.30.0
      */
     public function getWeight(): int {

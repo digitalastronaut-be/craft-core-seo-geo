@@ -179,6 +179,8 @@ class ContentSeoService extends Component {
      * @param array $robots
      * @param bool $sitemapEnabled whether this section should keep appearing in the sitemap -
      * see {@see isSitemapEnabled()}
+     * @param bool $markdownEnabled whether this section's entries should keep serving a Markdown
+     * representation - see {@see isMarkdownEnabled()}
      * @param int|null $imageId the fallback social image a `SeoField`'s own per-entry image falls
      * back to when it's left empty - see {@see getFallbackImage()}
      * @return bool whether the save succeeded
@@ -186,7 +188,7 @@ class ContentSeoService extends Component {
      * @author      Digitalastronaut
      * @since       v1.1.0
      */
-    public function saveSectionConfig(Section $section, int $siteId, array $titleConfig, array $descriptionConfig, array $robots, bool $sitemapEnabled = true, ?int $imageId = null): bool {
+    public function saveSectionConfig(Section $section, int $siteId, array $titleConfig, array $descriptionConfig, array $robots, bool $sitemapEnabled = true, bool $markdownEnabled = true, ?int $imageId = null): bool {
         if (!$this->_tableExists()) return false;
 
         $record = ContentSeoRecord::findOne(['sectionHandle' => $section->handle, 'siteId' => $siteId])
@@ -197,6 +199,7 @@ class ContentSeoService extends Component {
         $record->descriptionConfig = Json::encode(self::_ensureRowIds($descriptionConfig));
         $record->robots = Json::encode($robots);
         $record->sitemapEnabled = $sitemapEnabled;
+        $record->markdownEnabled = $markdownEnabled;
         $record->imageId = $imageId;
 
         return $record->save();
@@ -384,6 +387,25 @@ class ContentSeoService extends Component {
     }
 
     /**
+     * Whether the given section's entries should still serve a Markdown representation (their
+     * own URL plus `.md`, and the entry edit page's Markdown sidebar pane) - the toggle set from
+     * that section's own Content SEO settings page (`content-seo-section.twig`). Defaults to
+     * `true` when there's no row to check - the table doesn't exist yet, or the section has no
+     * row for this site - matching the toggle's own on-by-default behaviour. Used by
+     * `MarkdownController::actionRender()` and `PluginTrait::registerMarkdownSidebar()`.
+     *
+     * @param string $sectionHandle
+     * @param int $siteId
+     * @return bool
+     *
+     * @author      Digitalastronaut
+     * @since       v1.39.0
+     */
+    public function isMarkdownEnabled(string $sectionHandle, int $siteId): bool {
+        return $this->getRowForSection($sectionHandle, $siteId)?->markdownEnabled ?? true;
+    }
+
+    /**
      * Resolves the fallback social image a `SeoField`'s own per-entry image should fall back to
      * when it's left empty: the element's own section row's image first, falling back to the
      * site's global bundle row's image, the same two-step chain
@@ -406,6 +428,46 @@ class ContentSeoService extends Component {
         $sectionRow = $sectionHandle !== null ? $this->getRowForSection($sectionHandle, $siteId) : null;
 
         return $sectionRow?->getImageAsset() ?? $this->getGlobalRow($siteId)?->getImageAsset();
+    }
+
+    /**
+     * Resolves the fallback robots directives a `SeoField`'s own per-entry robots list should
+     * fall back to when it's left empty: the element's own section row's robots config first,
+     * falling back to the site's global bundle row's robots config, the same two-step chain
+     * {@see getFallbackImage()} uses for the social image. An element with no section (not an
+     * `Entry`, or an `Entry` with none) goes straight to the global row.
+     *
+     * @param ElementInterface|null $element
+     * @return string[]
+     *
+     * @author      Digitalastronaut
+     * @since       v1.36.0
+     */
+    public function getFallbackRobots(?ElementInterface $element): array {
+        if (!$this->_tableExists()) return [];
+
+        $siteId = (int)($element?->siteId ?? Craft::$app->getSites()->getCurrentSite()->id);
+        $sectionHandle = $element instanceof Entry ? $element->getSection()?->handle : null;
+
+        $sectionRow = $sectionHandle !== null ? $this->getRowForSection($sectionHandle, $siteId) : null;
+        $robots = self::_decodeRobots($sectionRow?->robots);
+
+        // Section row has nothing configured of its own (same "empty means fall through" rule
+        // `_resolveFormatRows()` uses for the title/description config) - fall back to global.
+        if ($robots === []) $robots = self::_decodeRobots($this->getGlobalRow($siteId)?->robots);
+
+        return $robots;
+    }
+
+    /**
+     * @param string|null $json
+     * @return string[]
+     *
+     * @author      Digitalastronaut
+     * @since       v1.36.0
+     */
+    private static function _decodeRobots(?string $json): array {
+        return $json !== null ? SeoField::normalizeRobots(Json::decode($json)) : [];
     }
 
     /**

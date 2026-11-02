@@ -1,0 +1,49 @@
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var previewUrl string|null #}
+{# @var imageUrl string #}
+{# @var faviconUrl string|null #}
+
+{% set domain = previewUrl ? (previewUrl|replace({'https://': '', 'http://': ''})|split('/')[0]|replace({'www.': ''})) : null %}
+
+<div class="core-seo-geo-preview-whatsapp">
+    <div class="core-seo-geo-preview-whatsapp-image-wrap">
+        <img class="core-seo-geo-preview-whatsapp-image" src="{{ imageUrl }}" alt="">
+    </div>
+
+    <div class="core-seo-geo-preview-whatsapp-body">
+        <a
+            class="core-seo-geo-preview-whatsapp-title{{ value.metaTitle ? '' : ' is-empty' }}"
+            {% if previewUrl %}href="{{ previewUrl }}" target="_blank" rel="noopener"{% endif %}
+        >
+            {{ value.metaTitle ?: 'Add a title to see how it will look'|t('core-seo-geo') }}
+        </a>
+
+        <div class="core-seo-geo-preview-whatsapp-description{{ value.metaDescription ? '' : ' is-empty' }}">
+            {{ value.metaDescription ?: 'Add a description to see how it will look'|t('core-seo-geo') }}
+        </div>
+
+        <div class="core-seo-geo-preview-whatsapp-domain{{ domain ? '' : ' is-empty' }}">
+            <span class="core-seo-geo-preview-whatsapp-domain-text">
+                {{ svg('@digitalastronaut/craftcoreseogeo/web/assets/icons/link.svg')|attr({
+                    class: 'core-seo-geo-preview-whatsapp-domain-icon',
+                    'aria-hidden': 'true',
+                }) }}
+                {{ domain ?: 'your-domain.com'|t('core-seo-geo') }}
+            </span>
+
+            {% if faviconUrl %}
+                <img class="core-seo-geo-preview-whatsapp-favicon" src="{{ faviconUrl }}" alt="">
+            {% else %}
+                <span class="core-seo-geo-preview-whatsapp-favicon core-seo-geo-preview-whatsapp-favicon--placeholder"></span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="core-seo-geo-preview-whatsapp-footer">
+        <span class="core-seo-geo-preview-whatsapp-time">12:00</span>
+        {{ svg('@digitalastronaut/craftcoreseogeo/web/assets/icons/double-check.svg')|attr({
+            class: 'core-seo-geo-preview-whatsapp-ticks',
+            'aria-hidden': 'true',
+        }) }}
+    </div>
+</div>

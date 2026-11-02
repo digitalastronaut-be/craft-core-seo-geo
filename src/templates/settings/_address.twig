@@ -1,0 +1,96 @@
+{% macro fields(model) %}
+    {% import '_includes/forms.twig' as forms %}
+    {% import 'core-seo-geo/settings/_macros.twig' as macros %}
+
+    <div class="field">
+        <div class="heading">
+            <label>{{ 'Address'|t('core-seo-geo') }}</label>
+        </div>
+
+        <div class="pane hairline mt-0">
+            <div class="flex-fields">
+                {{ forms.textField({
+                    label: 'Street Address'|t('core-seo-geo'),
+                    id: 'streetAddress',
+                    name: 'streetAddress',
+                    value: model.streetAddress,
+                    errors: model.getErrors('streetAddress'),
+                    fieldClass: 'width-50',
+                }) }}
+
+                {{ forms.textField({
+                    label: macros.labelTip('Extended Address'|t('core-seo-geo'), 'An apartment/suite number, C/O, or other address extension.'|t('core-seo-geo')),
+                    id: 'extendedAddress',
+                    name: 'extendedAddress',
+                    value: model.extendedAddress,
+                    errors: model.getErrors('extendedAddress'),
+                    fieldClass: 'width-50',
+                }) }}
+
+                {{ forms.textField({
+                    label: macros.labelTip('PO Box Number'|t('core-seo-geo'), 'For PO box addresses.'|t('core-seo-geo')),
+                    id: 'postOfficeBoxNumber',
+                    name: 'postOfficeBoxNumber',
+                    value: model.postOfficeBoxNumber,
+                    errors: model.getErrors('postOfficeBoxNumber'),
+                    fieldClass: 'width-50',
+                }) }}
+
+                {{ forms.textField({
+                    label: 'City'|t('core-seo-geo'),
+                    id: 'addressLocality',
+                    name: 'addressLocality',
+                    value: model.addressLocality,
+                    errors: model.getErrors('addressLocality'),
+                    fieldClass: 'width-50',
+                }) }}
+
+                {{ forms.textField({
+                    label: macros.labelTip('Region'|t('core-seo-geo'), 'State, province, or other region.'|t('core-seo-geo')),
+                    id: 'addressRegion',
+                    name: 'addressRegion',
+                    value: model.addressRegion,
+                    errors: model.getErrors('addressRegion'),
+                    fieldClass: 'width-50',
+                }) }}
+
+                {{ forms.textField({
+                    label: 'Postal Code'|t('core-seo-geo'),
+                    id: 'postalCode',
+                    name: 'postalCode',
+                    value: model.postalCode,
+                    errors: model.getErrors('postalCode'),
+                    fieldClass: 'width-25',
+                }) }}
+
+                {{ forms.selectizeField({
+                    label: 'Country'|t('core-seo-geo'),
+                    id: 'addressCountry',
+                    name: 'addressCountry',
+                    value: model.addressCountry,
+                    options: craft.app.addresses.getCountryList(),
+                    errors: model.getErrors('addressCountry'),
+                    fieldClass: 'width-25',
+                }) }}
+
+                {{ forms.textField({
+                    label: macros.labelTip('Latitude'|t('core-seo-geo'), 'Used together with longitude to pinpoint this address on a map.'|t('core-seo-geo')),
+                    id: 'latitude',
+                    name: 'latitude',
+                    value: model.latitude,
+                    errors: model.getErrors('latitude'),
+                    fieldClass: 'width-50',
+                }) }}
+
+                {{ forms.textField({
+                    label: 'Longitude'|t('core-seo-geo'),
+                    id: 'longitude',
+                    name: 'longitude',
+                    value: model.longitude,
+                    errors: model.getErrors('longitude'),
+                    fieldClass: 'width-50',
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

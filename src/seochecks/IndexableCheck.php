@@ -12,6 +12,7 @@ namespace digitalastronaut\craftcoreseogeo\seochecks;
 
 use Craft;
 
+use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 use digitalastronaut\craftcoreseogeo\models\SeoData;
 
 /**
@@ -51,6 +52,16 @@ class IndexableCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks whether the page is set to noindex. There\'s no failure state: a noindexed page is excluded from the score entirely rather than scored either way, since that\'s often deliberate.');
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.0.5
      */
     public function getWeight(): int {
@@ -64,7 +75,11 @@ class IndexableCheck implements SeoScoreCheckInterface {
      * @since       v1.0.5
      */
     public function validate(SeoScoreCheckContext $context): SeoScoreCheckResult {
-        if (in_array(SeoData::ROBOTS_NOINDEX, $context->seoData->robots, true)) {
+        $robots = $context->seoData->robots !== []
+            ? $context->seoData->robots
+            : CoreSeoGeo::getInstance()->getContentSeo()->getFallbackRobots($context->element);
+
+        if (in_array(SeoData::ROBOTS_NOINDEX, $robots, true)) {
             return new SeoScoreCheckResult(
                 SeoScoreCheckStatus::Passed,
                 Craft::t('core-seo-geo', 'This page is set to noindex, so it is intentionally excluded from search results.'),

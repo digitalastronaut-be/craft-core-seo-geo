@@ -1,0 +1,28 @@
+{# @var value \digitalastronaut\craftcoreseogeo\models\SeoData #}
+{# @var previewUrl string|null #}
+{# @var imageUrl string #}
+
+{% set domain = previewUrl ? (previewUrl|replace({'https://': '', 'http://': ''})|split('/')[0]|replace({'www.': ''})) : null %}
+
+<div class="core-seo-geo-preview-messenger-wrap">
+    <div class="core-seo-geo-preview-messenger">
+        <a
+            class="core-seo-geo-preview-messenger-link{{ previewUrl ? '' : ' is-empty' }}"
+            {% if previewUrl %}href="{{ previewUrl }}" target="_blank" rel="noopener"{% endif %}
+        >
+            {{ previewUrl ?: ('https://' ~ (domain ?: 'your-domain.com'|t('core-seo-geo')) ~ '/') }}
+        </a>
+
+        <div class="core-seo-geo-preview-messenger-image-wrap">
+            <img class="core-seo-geo-preview-messenger-image" src="{{ imageUrl }}" alt="">
+        </div>
+
+        <div class="core-seo-geo-preview-messenger-domain{{ domain ? '' : ' is-empty' }}">
+            {{ domain ?: 'your-domain.com'|t('core-seo-geo') }}
+        </div>
+    </div>
+
+    <div class="core-seo-geo-preview-messenger-timestamp">
+        {{ 'Sent 30 minutes ago'|t('core-seo-geo') }}
+    </div>
+</div>

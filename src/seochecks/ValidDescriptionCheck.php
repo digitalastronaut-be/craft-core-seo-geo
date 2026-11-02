@@ -54,6 +54,19 @@ class ValidDescriptionCheck implements SeoScoreCheckInterface {
      * @inheritdoc
      *
      * @author      Digitalastronaut
+     * @since       v1.35.0
+     */
+    public function getDescription(): string {
+        return Craft::t('core-seo-geo', 'Checks that the resolved meta description is set and {min} to {max} characters long. An empty description fails; one outside that range passes with a warning.', [
+            'min' => self::MIN_LENGTH,
+            'max' => self::MAX_LENGTH,
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @author      Digitalastronaut
      * @since       v1.0.4
      */
     public function getWeight(): int {

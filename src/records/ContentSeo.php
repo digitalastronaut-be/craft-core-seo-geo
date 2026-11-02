@@ -36,6 +36,9 @@ use digitalastronaut\craftcoreseogeo\db\Table;
  * back to when it's left empty - see `getImageAsset()`
  * @property bool $sitemapEnabled whether this section (or the global bundle) is included in the
  * sitemap - its index entry and its own sub-sitemap both skip it when `false`
+ * @property bool $markdownEnabled whether this section's entries serve a Markdown representation
+ * (their own URL plus `.md`, and the entry edit page's Markdown sidebar pane) - see
+ * {@see \digitalastronaut\craftcoreseogeo\services\ContentSeoService::isMarkdownEnabled()}
  * @property string|null $llmsTxtTitle the global bundle row's `llms.txt` title for this site -
  * `null` elsewhere, see `TxtFilesService::getLlmsTxt()`
  * @property string|null $llmsTxtSummary the global bundle row's `llms.txt` summary for this site

@@ -4,6 +4,10 @@
 {# @var id string #}
 {# @var name string #}
 {# @var image \craft\elements\Asset|null #}
+{# @var fallbackImage \craft\elements\Asset|null the section/global image this field would fall back to if left empty #}
+{# @var fallbackRobots string[] the section/global robots directives this field would fall back to if left empty #}
+{# @var sitemapWarning string|null set when the "Exclude from sitemap" switch below currently has no effect either way, because the site or this section already has sitemap generation disabled #}
+{# @var fallbackSource string|null 'content' or 'global', where fallbackImage came from #}
 {# @var titleFormatRows array<int, array{rowId: string, label: string, template: string, editable: bool}> #}
 {# @var descriptionFormatRows array<int, array{rowId: string, label: string, template: string, editable: bool}> #}
 {# @var titleRowValues array<int, string|null> posted/stored override text per titleFormatRows row, same keys #}
@@ -11,23 +15,47 @@
 
 {% import '_includes/forms.twig' as forms %}
 
-<div class="pane hairline">
-    <div class="flex-fields">
-        {{ forms.elementSelectField({
-            id: "#{id}-image",
-            name: "#{name}[image]",
-            label: 'Image'|t('core-seo-geo'),
-            elementType: 'craft\\elements\\Asset',
-            elements: image ? [image] : [],
-            criteria: {kind: 'image'},
-            single: true,
-            viewMode: 'thumbs',
-            fieldClass: 'width-25',
-            selectionLabel: 'Choose an image'|t('core-seo-geo'),
-        }) }}
+{% set enabledFields = field.enabledInputFields %}
+{% set showImage = 'image' in enabledFields %}
+{% set showTitle = 'title' in enabledFields and titleFormatRows is not empty %}
+{% set showDescription = 'description' in enabledFields and descriptionFormatRows is not empty %}
+{% set showCanonicalUrl = 'canonicalUrl' in enabledFields %}
+{% set showRobots = 'robots' in enabledFields %}
+{% set showExcludeFromSitemap = 'excludeFromSitemap' in enabledFields %}
+{% set showPreviews = 'previews' in enabledFields %}
+{% set showTextColumn = showTitle or showDescription or showCanonicalUrl or showRobots or showExcludeFromSitemap %}
 
-        <div class="field width-75">
-            {% if titleFormatRows is not empty %}
+<div class="pane hairline" style="overflow: hidden;">
+    <div class="flex-fields core-seo-geo-flex-fields">
+        {% if showImage %}
+            <div class="{{ showTextColumn ? 'width-25' : 'width-100' }}">
+                {{ forms.elementSelectField({
+                    id: "#{id}-image",
+                    name: "#{name}[image]",
+                    label: 'Image'|t('core-seo-geo'),
+                    elementType: 'craft\\elements\\Asset',
+                    elements: image ? [image] : [],
+                    criteria: {kind: 'image'},
+                    single: true,
+                    viewMode: 'thumbs',
+                    selectionLabel: 'Choose an image'|t('core-seo-geo'),
+                    fieldAttributes: {style: 'margin-bottom: 12px;'},
+                    tip: (not image and fallbackImage) ? (fallbackSource == 'content'
+                        ? 'Inherited from content'|t('core-seo-geo')
+                        : 'Inherited from global'|t('core-seo-geo')) : null,
+                }) }}
+
+                {% if not image and fallbackImage %}
+                    <div style="margin-top: var(--s); opacity: 0.6;">
+                        {{ elementChip(fallbackImage, {size: 'large', showLabel: true, showStatus: false, autoReload: false}) }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if showTextColumn %}
+        <div class="field {{ showImage ? 'width-75' : 'width-100' }}">
+            {% if showTitle %}
                 <div class="field">
                     <div class="heading">
                         <label>{{ 'Title'|t('core-seo-geo') }}</label>
@@ -55,7 +83,7 @@
                 </div>
             {% endif %}
 
-            {% if descriptionFormatRows is not empty %}
+            {% if showDescription %}
                 <div class="field">
                     <div class="heading">
                         <label>{{ 'Description'|t('core-seo-geo') }}</label>
@@ -83,22 +111,52 @@
                 </div>
             {% endif %}
 
-            {{ forms.textField({
-                id: "#{id}-canonicalUrl",
-                name: "#{name}[canonicalUrl]",
-                label: 'Canonical URL'|t('core-seo-geo'),
-                value: value.canonicalUrl,
-                type: 'url',
-            }) }}
+            {% if showCanonicalUrl %}
+                {{ forms.textField({
+                    id: "#{id}-canonicalUrl",
+                    name: "#{name}[canonicalUrl]",
+                    label: 'Canonical URL'|t('core-seo-geo'),
+                    value: value.canonicalUrl,
+                    placeholder: element and element.url ? element.url : null,
+                    type: 'url',
+                }) }}
+            {% endif %}
 
-            {{ forms.selectizeField({
-                id: "#{id}-robots",
-                name: "#{name}[robots]",
-                multi: true,
-                label: 'Robots/AI Visibility'|t('core-seo-geo'),
-                values: value.robots,
-                options: field.getRobotsOptions(),
-            }) }}
+            {% if showRobots %}
+                {% set fallbackRobotsLabel = field.getRobotsOptions()
+                    |filter(o => o.value is defined and o.value in fallbackRobots)
+                    |map(o => o.label)
+                    |join(', ') %}
+
+                {{ forms.selectizeField({
+                    id: "#{id}-robots",
+                    name: "#{name}[robots]",
+                    multi: true,
+                    label: 'Robots/AI Visibility'|t('core-seo-geo'),
+                    values: value.robots,
+                    options: field.getRobotsOptions(),
+                    selectizeOptions: fallbackRobotsLabel ? {placeholder: fallbackRobotsLabel} : {},
+                }) }}
+            {% endif %}
+
+            {% if showExcludeFromSitemap %}
+                {{ forms.lightswitchField({
+                    id: "#{id}-excludeFromSitemap",
+                    name: "#{name}[excludeFromSitemap]",
+                    label: 'Exclude from sitemap'|t('core-seo-geo'),
+                    warning: sitemapWarning,
+                    on: value.excludeFromSitemap,
+                    onLabel: 'Excluded'|t('core-seo-geo'),
+                    offLabel: 'Included'|t('core-seo-geo'),
+                }) }}
+            {% endif %}
         </div>
+        {% endif %}
+
+        {% if showPreviews %}
+            {% include "core-seo-geo/fields/seo/_previews.twig" with {
+                solo: not showImage and not showTextColumn,
+            } %}
+        {% endif %}
     </div>
 </div>

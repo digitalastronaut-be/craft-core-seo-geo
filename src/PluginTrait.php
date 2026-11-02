@@ -21,6 +21,7 @@ use craft\elements\Entry;
 use craft\events\DefineHtmlEvent;
 use craft\events\DefineMenuItemsEvent;
 use craft\events\ElementEvent;
+use craft\events\EntryTypeEvent;
 use craft\events\ExceptionEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterElementActionsEvent;
@@ -132,6 +133,7 @@ trait PluginTrait {
         $this->registerSeoScoreCalculation();
         $this->registerContentSeoSync();
         $this->registerStructuredDataSync();
+        $this->registerMarkdownGeneration();
         $this->registerRedirectUriChangeHandling();
     }
 
@@ -244,6 +246,12 @@ trait PluginTrait {
     }
 
     /**
+     * Also cleans up `coreseogeo_structured_data_mappings` rows for a deleted entry type - there's
+     * no foreign key to cascade this (same reasoning as `ContentSeoService::
+     * deleteRowsForSection()`'s own docblock: a mapping's `entryTypeHandle` is a plain string,
+     * not a reference to the - by then gone - entry type's ID), so it's handled explicitly here,
+     * mirroring `registerContentSeoSync()`'s own `EVENT_AFTER_DELETE_SECTION` handler.
+     *
      * @return void
      *
      * @author      Digitalastronaut
@@ -259,6 +267,57 @@ trait PluginTrait {
                 if (!$element instanceof Entry || $element->getIsRevision()) return;
 
                 CoreSeoGeo::getInstance()->getStructuredDataMappings()->syncEntry($element);
+            }
+        );
+
+        Event::on(
+            Entries::class,
+            Entries::EVENT_AFTER_DELETE_ENTRY_TYPE,
+            function(EntryTypeEvent $event) {
+                CoreSeoGeo::getInstance()->getStructuredDataMappings()->deleteRowsForEntryType($event->entryType->handle);
+            }
+        );
+    }
+
+    /**
+     * Queues a fresh `GenerateMarkdown` job on every entry save, so the cached Markdown behind
+     * `.md` stays in step with the entry's actual content instead of only refreshing whenever a
+     * bot happens to request it next (which could be showing stale content for a long while
+     * between bot crawls). Gated the same way `MarkdownController::actionRender()` 404s -
+     * sitewide `Settings::$enableMarkdown` first, then the entry's own section's
+     * `ContentSeo::$markdownEnabled` - so a disabled entry never burns a queue job it'll just
+     * throw away.
+     *
+     * Skips drafts and revisions like `registerSeoScoreCalculation()` does, for the same
+     * reason: neither has a meaningful front-end URL of its own to fetch.
+     *
+     * Calls `markPending()` before `queueRefresh()`, same order `registerSeoScoreCalculation()`
+     * uses for its own job - so the Markdown sidebar pane's very next render (the one on the
+     * post-save redirect back to the entry) already shows "Calculating..." and starts polling,
+     * rather than a stale result that only catches up once something else happens to patch the
+     * pane in.
+     *
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    protected function registerMarkdownGeneration(): void {
+        Event::on(
+            Elements::class,
+            Elements::EVENT_AFTER_SAVE_ELEMENT,
+            function(ElementEvent $event) {
+                $element = $event->element;
+
+                if (!$element instanceof Entry || $element->getIsDraft() || $element->getIsRevision()) return;
+                if (!CoreSeoGeo::getInstance()->getSettings()->enableMarkdown) return;
+
+                $sectionHandle = $element->getSection()?->handle;
+                if ($sectionHandle !== null && !CoreSeoGeo::getInstance()->getContentSeo()->isMarkdownEnabled($sectionHandle, $element->siteId)) return;
+
+                $markdown = CoreSeoGeo::getInstance()->getMarkdown();
+                $markdown->markPending($element);
+                $markdown->queueRefresh($element);
             }
         );
     }
@@ -581,7 +640,7 @@ trait PluginTrait {
                 $sectionHandle = $element->getSection()?->handle;
                 if ($sectionHandle !== null && !CoreSeoGeo::getInstance()->getContentSeo()->isMarkdownEnabled($sectionHandle, $element->siteId)) return;
 
-                $event->html .= $this->_markdownSidebarHtml($element);
+                $event->html .= $this->_markdownSidebarHtml($element, true);
             }
         );
     }
@@ -615,8 +674,9 @@ trait PluginTrait {
 
     /**
      * Renders the "Markdown" sidebar pane for `$entry` - called both from the sidebar
-     * itself (`registerMarkdownSidebar()`) and by `MarkdownController::actionRefresh()`,
-     * which patches the same markup back in via Datastar after a manual refresh.
+     * itself (`registerMarkdownSidebar()`) and by `MarkdownController::actionRefresh()`/
+     * `actionStatus()`, which patch the same markup back in via Datastar after a manual
+     * refresh, or while polling one already in flight.
      *
      * @param Entry $entry
      * @return string
@@ -629,58 +689,93 @@ trait PluginTrait {
     }
 
     /**
-     * Builds the pane's rows by hand rather than via `Cp::metadataHtml()` - the "Status"
-     * row needs a live Refresh button, which that helper has no way to carry. Mirrors
-     * `Cp::metadataHtml()`'s own `dl.meta` / `dt.heading` / `dd.value` markup (deliberately
-     * *not* `.read-only` - that variant drops the panel's background/shadow, and this pane
-     * is meant to look like the "nice white panel" CP uses for other sidebar metadata, not
-     * the plain inline list). `admin.scss` carries a small `.heading` override alongside it -
-     * see the comment there for why it's needed.
-     *
      * @param Entry $entry
+     * @param bool $applyLoadingDelay
      * @return string
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
      */
-    private function _markdownSidebarHtml(Entry $entry): string {
-        $result = CoreSeoGeo::getInstance()->getMarkdown()->getCachedResult($entry);
+    private function _markdownSidebarHtml(Entry $entry, bool $applyLoadingDelay = false): string {
+        $markdown = CoreSeoGeo::getInstance()->getMarkdown();
+        $result = $markdown->getCachedResult($entry);
+        $isPending = $markdown->isPending($entry);
 
-        $rows = [
-            Craft::t('core-seo-geo', 'Status') => $this->_markdownStatusHtml($entry, $result),
+        $contentClass = ['core-seo-geo-markdown-pane-content'];
+        if ($applyLoadingDelay) $contentClass[] = 'hidden';
+
+        $spinner = $applyLoadingDelay ? Html::tag(
+            'span', '', ['class' => ['spinner', 'small', 'core-seo-geo-markdown-pane-spinner']]
+        ) : '';
+
+        $defs = [
+            Html::tag('div',
+                Html::tag('dt', Html::encode(Craft::t('core-seo-geo', 'Status')) . $spinner, ['class' => 'heading']) .
+                Html::tag('dd', $this->_markdownStatusHtml($entry, $result, $isPending), ['class' => array_merge(['input'], $contentClass)]),
+                ['class' => 'field']
+            ),
         ];
 
-        if ($result !== null) {
-            $rows[Craft::t('core-seo-geo', 'Generated')] = Html::encode(
-                Craft::$app->getFormatter()->asRelativeTime($result['date'])
+        $extraRows = [];
+
+        if (!$isPending) {
+            if ($result !== null) {
+                $extraRows[Craft::t('core-seo-geo', 'Generated')] = Html::encode(
+                    Craft::$app->getFormatter()->asRelativeTime($result['date'])
+                );
+            }
+
+            if ($result !== null && $result['failureReason'] === null && !empty($result['htmlTokens'])) {
+                $extraRows[Craft::t('core-seo-geo', 'Token savings')] = $this->_tokenSavingsHtml(
+                    $result['htmlTokens'],
+                    MarkdownService::estimateTokens($result['markdown']),
+                );
+            }
+        }
+
+        foreach ($extraRows as $label => $value) {
+            $defs[] = Html::tag('div',
+                Html::tag('div', Html::encode($label), ['class' => 'heading']) .
+                Html::tag('div', $value, ['class' => 'input']),
+                ['class' => array_merge(['field'], $contentClass)]
             );
         }
 
-        if ($result !== null && $result['failureReason'] === null && !empty($result['htmlTokens'])) {
-            $rows[Craft::t('core-seo-geo', 'Token savings')] = $this->_tokenSavingsHtml(
-                $result['htmlTokens'],
-                MarkdownService::estimateTokens($result['markdown']),
-            );
+        $content = Html::tag('dl', implode('', $defs), ['class' => ['meta']]);
+
+        if (!$isPending && $result !== null && $result['failureReason'] === MarkdownService::NO_LLM_CONTENT_REASON) {
+            $content .= Html::tag('div', $this->_noLlmContentNoticeHtml(), ['class' => $contentClass]);
         }
 
-        $defs = [];
-        foreach ($rows as $label => $value) {
-            $defs[] =
-                Html::beginTag('div', ['class' => 'data']) .
-                Html::tag('dt', Html::encode($label), ['class' => 'heading']) .
-                Html::tag('dd', $value, ['class' => 'value']) .
-                Html::endTag('div');
-        }
+        $paneId = 'core-seo-geo-markdown-pane';
+
+        $revealScript = $applyLoadingDelay ? Html::tag('script', <<<JS
+            window.setTimeout(function() {
+                var pane = document.getElementById('{$paneId}');
+                if (!pane) return;
+                var spinner = pane.querySelector('.core-seo-geo-markdown-pane-spinner');
+                if (spinner) spinner.remove();
+                pane.querySelectorAll('.core-seo-geo-markdown-pane-content').forEach(function(el) {
+                    el.classList.remove('hidden');
+                });
+            }, 1000);
+        JS) : '';
+
+        $statusUrl = UrlHelper::actionUrl('core-seo-geo/markdown/status', [
+            'elementId' => $entry->id,
+            'siteId' => $entry->siteId,
+        ]);
 
         $html =
+            $revealScript .
             Html::tag('legend', Craft::t('core-seo-geo', 'Markdown'), ['class' => 'h6']) .
-            Html::tag('dl', implode('', $defs), ['class' => ['meta']]);
+            $content;
 
-        if ($result !== null && $result['failureReason'] === MarkdownService::NO_LLM_CONTENT_REASON) {
-            $html .= $this->_noLlmContentNoticeHtml();
-        }
-
-        return Html::tag('fieldset', $html, ['class' => ['core-seo-geo-markdown-pane']]);
+        return Html::tag('fieldset', $html, [
+            'class' => ['core-seo-geo-markdown-pane'],
+            'id' => $paneId,
+            'data-star-on-interval__duration.2s' => $isPending ? "@get('{$statusUrl}')" : null,
+        ]);
     }
 
     /**
@@ -707,15 +802,21 @@ trait PluginTrait {
     }
 
     /**
+     * While `$isPending`, drops the Refresh button entirely - same reasoning as
+     * `_seoScoreSidebarHtml()`'s own `$refreshButton`: there's already a `GenerateMarkdown` job
+     * queued or running, so a second click would just queue a redundant one.
+     *
      * @param Entry $entry
      * @param array{markdown: string, failureReason: string|null, date: int, htmlTokens: int|null}|null $result
+     * @param bool $isPending
      * @return string
      *
      * @author      Digitalastronaut
      * @since       v1.0.6
      */
-    private function _markdownStatusHtml(Entry $entry, ?array $result): string {
+    private function _markdownStatusHtml(Entry $entry, ?array $result, bool $isPending): string {
         $text = match (true) {
+            $isPending => Craft::t('core-seo-geo', 'Generating...'),
             $result !== null && $result['failureReason'] === MarkdownService::NO_LLM_CONTENT_REASON => Craft::t('core-seo-geo', 'No content'),
             $result === null || $result['failureReason'] !== null => Craft::t('core-seo-geo', 'Stale'),
             default => Craft::t('core-seo-geo', 'Cached'),
@@ -727,7 +828,7 @@ trait PluginTrait {
             'siteId' => $entry->siteId,
         ]);
 
-        $button = Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
+        $button = $isPending ? '' : Html::tag('button', Craft::t('core-seo-geo', 'Refresh'), [
             'type' => 'button',
             'class' => ['btn', 'small'],
             // Datastar's `on` plugin requires the colon form (`data-star-on:click`) - its
@@ -1230,6 +1331,10 @@ trait PluginTrait {
                 // Data keeps its own distinct route.
                 $event->rules['core-seo-geo'] = 'core-seo-geo/content-seo/global';
                 $event->rules['core-seo-geo/structured-data'] = ['template' => 'core-seo-geo/structured-data/_index.twig'];
+                $event->rules['core-seo-geo/structured-data/mappings'] = 'core-seo-geo/structured-data-mappings/index';
+                $event->rules['core-seo-geo/structured-data/mappings/<entryTypeHandle:[\w]+>'] = 'core-seo-geo/structured-data-mappings/entry-type';
+                $event->rules['core-seo-geo/structured-data/mappings/<entryTypeHandle:[\w]+>/new'] = 'core-seo-geo/structured-data-mappings/edit-mapping';
+                $event->rules['core-seo-geo/structured-data/mappings/<entryTypeHandle:[\w]+>/<mappingId:\d+>'] = 'core-seo-geo/structured-data-mappings/edit-mapping';
                 $event->rules['core-seo-geo/structured-data/<elementId:\d+>'] = 'elements/edit';
 
                 $event->rules['core-seo-geo/sitemap'] = ['template' => 'core-seo-geo/sitemap/_index.twig'];
@@ -1244,8 +1349,6 @@ trait PluginTrait {
                 $event->rules['core-seo-geo/settings'] = 'core-seo-geo/content-seo/global';
                 $event->rules['core-seo-geo/settings/content-seo'] = 'core-seo-geo/content-seo/index';
                 $event->rules['core-seo-geo/settings/content-seo/<sectionHandle:[\w]+>'] = 'core-seo-geo/content-seo/section';
-                $event->rules['core-seo-geo/settings/content-seo/<sectionHandle:[\w]+>/mappings/new'] = 'core-seo-geo/content-seo/edit-mapping';
-                $event->rules['core-seo-geo/settings/content-seo/<sectionHandle:[\w]+>/mappings/<mappingId:\d+>'] = 'core-seo-geo/content-seo/edit-mapping';
                 $event->rules['core-seo-geo/settings/global-seo'] = 'core-seo-geo/content-seo/global';
                 $event->rules['core-seo-geo/settings/global/<type:organization|website|local\-business|person>'] = 'core-seo-geo/global-structured-data/edit';
                 $event->rules['core-seo-geo/settings/txt/robots'] = ['route' => 'core-seo-geo/txt-files/edit', 'params' => ['type' => 'robots']];

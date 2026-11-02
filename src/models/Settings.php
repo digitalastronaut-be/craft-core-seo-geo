@@ -190,6 +190,22 @@ class Settings extends Model {
     public string $referrerPolicy = self::REFERRER_NO_REFERRER_WHEN_DOWNGRADE;
 
     /**
+     * The site's own @username, rendered as `<meta name="twitter:site">` -- the account Twitter
+     * Cards attribute the site itself to, independent of whichever account authored a given
+     * page (`$twitterCreatorHandle`).
+     *
+     * @since v1.42.0
+     */
+    public ?string $twitterSiteHandle = null;
+
+    /**
+     * The default page-author @username, rendered as `<meta name="twitter:creator">` when set.
+     *
+     * @since v1.42.0
+     */
+    public ?string $twitterCreatorHandle = null;
+
+    /**
      * @return array<int, array{label: string, value: string}>
      *
      * @author      Digitalastronaut
@@ -282,6 +298,12 @@ class Settings extends Model {
                 : [];
         }
 
+        foreach (['twitterSiteHandle', 'twitterCreatorHandle'] as $handleAttribute) {
+            if (isset($values[$handleAttribute])) {
+                $values[$handleAttribute] = self::_normalizeTwitterHandle($values[$handleAttribute]);
+            }
+        }
+
         if (isset($values['customUrls']) && \is_array($values['customUrls'])) {
             $values['customUrls'] = array_values(array_filter(array_map(
                 static fn(array $row): array => [
@@ -296,5 +318,21 @@ class Settings extends Model {
         }
 
         parent::setAttributes($values, $safeOnly);
+    }
+
+    /**
+     * Trims a posted Twitter @username down to `null` (when empty) or a single leading `@`
+     * followed by the handle, regardless of whether the admin typed the `@` themselves.
+     *
+     * @param mixed $value
+     * @return string|null
+     *
+     * @author      Digitalastronaut
+     * @since       v1.42.0
+     */
+    private static function _normalizeTwitterHandle(mixed $value): ?string {
+        $handle = ltrim(trim((string)$value), '@');
+
+        return $handle !== '' ? '@' . $handle : null;
     }
 }

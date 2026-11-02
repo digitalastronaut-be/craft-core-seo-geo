@@ -14,6 +14,7 @@ use Craft;
 use craft\base\Component;
 use craft\base\ElementInterface;
 
+use digitalastronaut\craftcoreseogeo\jobs\GenerateMarkdown;
 use digitalastronaut\craftcoreseogeo\twig\ExcludeLlmContentNode;
 use digitalastronaut\craftcoreseogeo\twig\LlmContentNode;
 
@@ -110,6 +111,53 @@ class MarkdownService extends Component {
         $this->_store($element, $result);
 
         return $result;
+    }
+
+    /**
+     * Queues a `GenerateMarkdown` job for `$element`, so the cache is warm by the time a bot (or
+     * anyone else) first requests the Markdown, rather than generating it lazily - and slowly -
+     * on that first hit. Keeps the actual self-fetch + conversion off the save request.
+     *
+     * @param ElementInterface $element
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    public function queueRefresh(ElementInterface $element): void {
+        Craft::$app->getQueue()->push(new GenerateMarkdown([
+            'elementId' => $element->id,
+            'siteId' => $element->getSite()->id,
+        ]));
+    }
+
+    /**
+     * Flags `$element` as having a `GenerateMarkdown` job in flight, so the CP sidebar pane can
+     * show "Calculating..." and poll for the result instead of whatever's (now stale) cached -
+     * mirrors `SeoScoreService::markPending()`. Callers queue the job themselves via
+     * `queueRefresh()`; this just tracks the in-between state for display purposes, same
+     * division of labor as that method and `calculate()`.
+     *
+     * @param ElementInterface $element
+     * @return void
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    public function markPending(ElementInterface $element): void {
+        Craft::$app->getCache()->set($this->_pendingCacheKey($element), true, 0);
+    }
+
+    /**
+     * @param ElementInterface $element
+     * @return bool Whether a `GenerateMarkdown` job for `$element` is queued or running - cleared
+     * the moment `_store()` persists that job's result, success or failure alike.
+     *
+     * @author      Digitalastronaut
+     * @since       v1.0.6
+     */
+    public function isPending(ElementInterface $element): bool {
+        return (bool)Craft::$app->getCache()->get($this->_pendingCacheKey($element));
     }
 
     /**
@@ -239,6 +287,7 @@ class MarkdownService extends Component {
         $dependency->tags[] = self::CACHE_TAG;
 
         Craft::$app->getCache()->set($this->_cacheKey($element), $result, $duration ?? 0, $dependency);
+        Craft::$app->getCache()->delete($this->_pendingCacheKey($element));
     }
 
     /**
@@ -247,6 +296,14 @@ class MarkdownService extends Component {
      */
     private function _cacheKey(ElementInterface $element): array {
         return [self::CACHE_TAG, 'page', $element->id, $element->siteId];
+    }
+
+    /**
+     * @param ElementInterface $element
+     * @return array
+     */
+    private function _pendingCacheKey(ElementInterface $element): array {
+        return [self::CACHE_TAG, 'pending', $element->id, $element->siteId];
     }
 
     /**

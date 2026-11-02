@@ -462,11 +462,12 @@
 }
 
 .core-seo-geo-markdown-pane .meta > .data {
-	min-height: 0;
+	min-height: 44px;
 
 	> .heading {
 		display: flex;
 		align-items: center;
+		border-right: 1px solid var(--hairline-color);
 	}
 }
 
@@ -506,6 +507,12 @@
 // Sits next to the "Score" label itself while the pane's own FOUC fix (see `PluginTrait::
 // _seoScoreSidebarHtml()`) hides everything else below it.
 .core-seo-geo-score-pane-spinner {
+	margin-inline-start: var(--xs);
+}
+
+// Same FOUC fix, next to the "Status" row label instead - see `PluginTrait::
+// _markdownSidebarHtml()`.
+.core-seo-geo-markdown-pane-spinner {
 	margin-inline-start: var(--xs);
 }
 

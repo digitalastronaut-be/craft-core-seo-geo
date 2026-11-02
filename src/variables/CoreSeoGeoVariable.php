@@ -11,6 +11,7 @@
 namespace digitalastronaut\craftcoreseogeo\variables;
 
 use Craft;
+use craft\base\ElementInterface;
 use craft\fieldlayoutelements\Tip;
 
 use yii\base\InvalidArgumentException;
@@ -18,6 +19,7 @@ use yii\base\InvalidArgumentException;
 use Spatie\SchemaOrg\BaseType;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
+use digitalastronaut\craftcoreseogeo\models\SchemaList;
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\services\JsonLdGraphService;
 
@@ -41,8 +43,48 @@ class CoreSeoGeoVariable {
      * @author      Digitalastronaut
      * @since       v1.0.0
      */
-    public function schema(string $type): BaseType {
+    public function createSchema(string $type): BaseType {
         return CoreSeoGeo::getInstance()->getSchemaOrg()->build($type);
+    }
+
+    /**
+     * Looks up the already-computed `StructuredData` row for `$element`/`$type` and rebuilds it
+     * into a `spatie/schema-org` object, so a template composing a bigger structure (e.g. a
+     * `Product`'s `review` list) can reuse an entry's own already-rendered structured data
+     * instead of re-deriving it from that entry's raw fields.
+     *
+     * @param ElementInterface $element
+     * @param string $type a schema.org type name, e.g. `Review`
+     * @return BaseType
+     * @throws InvalidArgumentException if no computed `StructuredData` row of this `$type`
+     * exists for `$element` - never `null`, so a stale/missing mapping fails loudly instead of
+     * silently rendering incomplete structured data
+     *
+     * @see \digitalastronaut\craftcoreseogeo\services\StructuredDataService::getSchema()
+     * @author      Digitalastronaut
+     * @since       v1.40.0
+     */
+    public function getSchema(ElementInterface $element, string $type): BaseType {
+        return CoreSeoGeo::getInstance()->getStructuredData()->getSchema($element, $type);
+    }
+
+    /**
+     * `getSchema()` for every element in `$elements`, wrapped in a `SchemaList` so a template
+     * building a list property can print this bare - no `|json_encode` needed, the same as a
+     * single `createSchema(...)`/`getSchema()` object.
+     *
+     * @param iterable<ElementInterface> $elements
+     * @param string $type a schema.org type name, e.g. `Review`
+     * @return SchemaList
+     * @throws InvalidArgumentException as soon as any element in `$elements` has no computed
+     * `StructuredData` row of this `$type`
+     *
+     * @see \digitalastronaut\craftcoreseogeo\services\StructuredDataService::getSchemas()
+     * @author      Digitalastronaut
+     * @since       v1.40.0
+     */
+    public function getSchemas(iterable $elements, string $type): SchemaList {
+        return CoreSeoGeo::getInstance()->getStructuredData()->getSchemas($elements, $type);
     }
 
     /**

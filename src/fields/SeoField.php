@@ -33,7 +33,7 @@ use yii\validators\UrlValidator;
  * Class SeoField
  *
  * The title/description block config it builds its CP input from (and resolves its meta
- * title/description against) comes from the `coreseogeo_seodata` row for the element's section,
+ * title/description against) comes from the `coreseogeo_seo_data` row for the element's section,
  * falling back to the site's global bundle row when the section has none of its own - not from
  * this field's own settings. See {@see _resolveFormatRows()}. Its own settings are which input
  * sections {@see getSettingsHtml()} lets editors see at all - see {@see $enabledInputFields} -
@@ -783,7 +783,7 @@ class SeoField extends Field implements PreviewableFieldInterface {
 
     /**
      * Resolves the title/description block config an element's `SeoField` input (and its
-     * resolved meta title/description) should be built from: the `coreseogeo_seodata` row for
+     * resolved meta title/description) should be built from: the `coreseogeo_seo_data` row for
      * the element's own section on its site first, falling back - independently per attribute,
      * since a section row can have one config filled in and not the other - to the site's global
      * bundle row. An element with no section (not an `Entry`, or an `Entry` with none) goes

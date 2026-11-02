@@ -23,7 +23,7 @@ use digitalastronaut\craftcoreseogeo\records\SeoScore as SeoScoreRecord;
  * compare yet (and `ValidTitleCheck`/`ValidDescriptionCheck` already flag the emptiness itself).
  * Otherwise fails if either one exactly matches another element's stored value on the same
  * site, read from the denormalized `metaTitle`/`metaDescription` columns on
- * `coreseogeo_seoscores` rather than scanning every element's field value directly.
+ * `coreseogeo_seo_scores` rather than scanning every element's field value directly.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo

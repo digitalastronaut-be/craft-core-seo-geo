@@ -31,7 +31,7 @@ use digitalastronaut\craftcoreseogeo\records\ContentSeo as ContentSeoRecord;
 /**
  * Class ContentSeoService
  *
- * Keeps `coreseogeo_seodata` in sync with the site's actual sections and sites: one row per
+ * Keeps `coreseogeo_seo_data` in sync with the site's actual sections and sites: one row per
  * section per site it has URLs enabled for, plus one global fallback row (`sectionHandle === ''`)
  * per site. A section with no URL on a given site (e.g. a `single` used to hold global
  * header/footer content rather than an actual page) gets no row there - there's no page for its
@@ -525,7 +525,7 @@ class ContentSeoService extends Component {
     // =========================================================================
 
     /**
-     * Whether `coreseogeo_seodata` actually exists yet. Every other public method on this
+     * Whether `coreseogeo_seo_data` actually exists yet. Every other public method on this
      * service bails out (as a no-op) when this is `false`, rather than letting the query fail -
      * this service's `syncSections()` runs unconditionally during this plugin's `init()` (see
      * `PluginTrait::registerContentSeoSync()`), which for a console request includes

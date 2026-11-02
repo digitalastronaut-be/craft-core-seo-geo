@@ -21,7 +21,7 @@ use digitalastronaut\craftcoreseogeo\records\SeoScore as SeoScoreRecord;
 /**
  * Class SeoScore
  *
- * The read-side view of one `coreseogeo_seoscores` row, returned by
+ * The read-side view of one `coreseogeo_seo_scores` row, returned by
  * `SeoScoreService::getScore()`. Kept separate from `SeoScoreRecord` (the Active Record) so
  * columns can be added to the table later without changing what callers of `getScore()` already
  * depend on.

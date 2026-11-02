@@ -3,7 +3,7 @@
 use digitalastronaut\craftcoreseogeo\services\ContentSeoService;
 
 /**
- * Every public method either queries `coreseogeo_seodata` directly or goes through
+ * Every public method either queries `coreseogeo_seo_data` directly or goes through
  * `_tableExists()` (`Craft::$app->getDb()->tableExists()`) first, so none of them run
  * without a booted app/DB -- that's the integration suite's job. Covered here:
  * `_ensureRowIds()`, the one pure, DB-free piece of logic, reached via reflection the same

@@ -18,7 +18,7 @@ use digitalastronaut\craftcoreseogeo\db\Table;
 /**
  * Class TxtFileContent
  *
- * Active record for the `coreseogeo_txtfilecontent` table: a single global row holding the
+ * Active record for the `coreseogeo_txt_file_content` table: a single global row holding the
  * content behind `robots.txt`, `humans.txt`, `ads.txt`, `security.txt` and `trust.txt` - crawler
  * rules, team credits, ad network authorizations, security contacts/expiry, trust signals. This
  * used to live on the plugin's own `Settings` model, persisted into project config - but this

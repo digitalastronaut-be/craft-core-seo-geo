@@ -33,6 +33,7 @@
     general: { label: 'General'|t('core-seo-geo'), url: '#general' },
     overview: { label: 'Overview'|t('core-seo-geo'), url: '#overview' },
     appearance: { label: 'Appearance'|t('core-seo-geo'), url: '#appearance' },
+    socials: { label: 'Socials'|t('core-seo-geo'), url: '#socials' },
     sitemap: { label: 'Sitemap'|t('core-seo-geo'), url: '#sitemap' },
     markdown: { label: 'Markdown'|t('core-seo-geo'), url: '#markdown' },
     'seo-score': { label: 'SEO Score'|t('core-seo-geo'), url: '#seo-score' },
@@ -192,6 +193,28 @@
                 name: 'referrerPolicy',
                 value: settings.referrerPolicy,
                 options: referrerPolicyOptions,
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    <div id="socials" class="flex-fields hidden">
+        {% namespace 'settings' %}
+            {{ forms.textField({
+                label: 'Twitter Site Handle'|t('core-seo-geo'),
+                instructions: 'The site\'s own @username, rendered as `twitter:site`.'|t('core-seo-geo'),
+                id: 'twitter-site-handle',
+                name: 'twitterSiteHandle',
+                value: settings.twitterSiteHandle,
+                placeholder: '@yoursite',
+            }) }}
+
+            {{ forms.textField({
+                label: 'Twitter Creator Handle'|t('core-seo-geo'),
+                instructions: 'The default page-author @username, rendered as `twitter:creator`.'|t('core-seo-geo'),
+                id: 'twitter-creator-handle',
+                name: 'twitterCreatorHandle',
+                value: settings.twitterCreatorHandle,
+                placeholder: '@author',
             }) }}
         {% endnamespace %}
     </div>

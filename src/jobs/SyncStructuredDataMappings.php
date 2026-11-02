@@ -19,11 +19,12 @@ use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 /**
  * Class SyncStructuredDataMappings
  *
- * Recomputes a `StructuredData` row for every entry in `$sectionHandle` against every mapping
+ * Recomputes a `StructuredData` row for every entry of `$entryTypeHandle` against every mapping
  * currently configured for it - pushed by `StructuredDataMappingService::saveMapping()` so a
- * newly added/edited mapping backfills the section's existing entries, rather than only taking
- * effect the next time each entry happens to be resaved. Queued (not run inline) since a section
- * can have many entries across many sites, each needing its own Twig render per mapping.
+ * newly added/edited mapping backfills the entry type's existing entries, rather than only
+ * taking effect the next time each entry happens to be resaved. Queued (not run inline) since an
+ * entry type can have many entries across many sites, each needing its own Twig render per
+ * mapping.
  *
  * @author      Digitalastronaut
  * @package     CoreSeoGeo
@@ -33,7 +34,7 @@ class SyncStructuredDataMappings extends BaseJob {
     /**
      * @since v1.4.0
      */
-    public string $sectionHandle;
+    public string $entryTypeHandle;
 
     /**
      * @inheritdoc
@@ -42,7 +43,7 @@ class SyncStructuredDataMappings extends BaseJob {
      * @since       v1.4.0
      */
     public function execute($queue): void {
-        CoreSeoGeo::getInstance()->getStructuredDataMappings()->syncSection($this->sectionHandle, function(int $step, int $total) use ($queue) {
+        CoreSeoGeo::getInstance()->getStructuredDataMappings()->syncEntryType($this->entryTypeHandle, function(int $step, int $total) use ($queue) {
             $this->setProgress($queue, $total > 0 ? $step / $total : 1);
         });
     }
@@ -54,8 +55,8 @@ class SyncStructuredDataMappings extends BaseJob {
      * @since       v1.4.0
      */
     protected function defaultDescription(): ?string {
-        return Craft::t('core-seo-geo', 'Syncing structured data for "{section}"', [
-            'section' => $this->sectionHandle,
+        return Craft::t('core-seo-geo', 'Syncing structured data for "{entryType}"', [
+            'entryType' => $this->entryTypeHandle,
         ]);
     }
 }

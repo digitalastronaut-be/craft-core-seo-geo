@@ -7,3 +7,7 @@
 ] %}
 {% set elementType = 'digitalastronaut\\craftcoreseogeo\\elements\\StructuredData' %}
 {% set canHaveDrafts = true %}
+
+{% block actionButton %}
+    <a href="{{ url('core-seo-geo/structured-data/mappings') }}" class="btn submit">{{ 'Manage mappings'|t('core-seo-geo') }}</a>
+{% endblock %}

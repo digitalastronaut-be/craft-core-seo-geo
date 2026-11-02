@@ -74,7 +74,7 @@ class StructuredDataQuery extends ElementQuery {
      * `afterPrepare()` below where that alias already exists.
      */
     protected function beforePrepare(): bool {
-        $alias = 'coreseogeo_structureddata';
+        $alias = 'coreseogeo_structured_data';
 
         $this->query->addSelect([
             "$alias.mappingId",
@@ -91,7 +91,7 @@ class StructuredDataQuery extends ElementQuery {
      * @inheritdoc
      */
     protected function afterPrepare(): bool {
-        $alias = 'coreseogeo_structureddata';
+        $alias = 'coreseogeo_structured_data';
         $condition = "[[$alias.id]] = [[elements.id]] AND [[$alias.siteId]] = [[elements_sites.siteId]]";
 
         $this->subQuery->innerJoin([$alias => Table::STRUCTUREDDATA], $condition);

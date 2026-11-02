@@ -81,8 +81,8 @@ class StructuredDataField extends Field {
     /**
      * The Twig/view namespace the type/properties mapping editor's inputs render under - keyed
      * by this field's own class rather than any particular field instance's ID, since
-     * `content-seo-mapping.twig` reuses this same mapping editor UI to edit a
-     * `coreseogeo_structureddatamappings` row, which isn't backed by a field instance at all.
+     * `structured-data/mappings/_mappingEditor.twig` reuses this same mapping editor UI to edit
+     * a `coreseogeo_structured_data_mappings` row, which isn't backed by a field instance at all.
      * `StructuredDataFieldController`'s SSE-patched fragments assume this exact namespace, so
      * every page that includes the editor needs to render it under this same one for their ids
      * to keep matching.

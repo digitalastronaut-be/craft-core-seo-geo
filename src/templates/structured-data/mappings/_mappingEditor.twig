@@ -1,0 +1,66 @@
+{% extends '_layouts/cp.twig' %}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set selectedSubnavItem = 'structured-data' %}
+{% set title = mapping ? 'Edit mapping'|t('core-seo-geo') : 'Create mapping'|t('core-seo-geo') %}
+{% set crumbs = [
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
+    { label: 'Structured Data'|t('core-seo-geo'), url: url('core-seo-geo/structured-data') },
+    { label: 'Mappings'|t('core-seo-geo'), url: url('core-seo-geo/structured-data/mappings') },
+    { label: entryType.name, url: url('core-seo-geo/structured-data/mappings/' ~ entryType.handle) },
+    { label: title },
+] %}
+{% set fullPageForm = true %}
+{% set saveShortcutRedirect = 'core-seo-geo/structured-data/mappings/' ~ entryType.handle ~ '/{id}' %}
+
+{% block content %}
+    {{ actionInput('core-seo-geo/structured-data-mappings/save-mapping') }}
+    {{ redirectInput('core-seo-geo/structured-data/mappings/' ~ entryType.handle) }}
+    {{ hiddenInput('entryTypeHandle', entryType.handle) }}
+    {{ hiddenInput('id', mapping.id ?? '') }}
+
+    {% namespace mappingNamespace %}
+        {% include 'core-seo-geo/fields/structured-data/_mappingEditor.twig' with {
+            type: mapping.type ?? '',
+            typeLabel: typeLabel,
+            typeTree: typeTree,
+            expandedTypes: expandedTypes,
+            properties: mappingProperties,
+            propertyGroups: propertyGroups,
+            propertyTooltips: propertyTooltips,
+            calculatedValueHtml: calculatedValueHtml,
+            previewEntry: previewEntry,
+            jsonLdPreview: jsonLdPreview,
+        } only %}
+    {% endnamespace %}
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+        {{ forms.lightswitchField({
+            label: 'Enabled'|t('core-seo-geo'),
+            id: 'enabled',
+            name: 'enabled',
+            on: mapping.enabled ?? true,
+        }) }}
+
+        {% namespace mappingNamespace %}
+            {{ forms.elementSelectField({
+                id: 'preview-element',
+                name: 'previewElementId',
+                label: 'Preview'|t('core-seo-geo'),
+                instructions: 'Choose an entry to calculate each property\'s value against, for reference. Recalculated on save, not live as you type.'|t('core-seo-geo'),
+                elementType: 'craft\\elements\\Entry',
+                elements: previewEntry ? [previewEntry] : [],
+                criteria: { type: entryType.handle },
+                single: true,
+                selectionLabel: 'Choose an entry'|t('core-seo-geo'),
+            }) }}
+        {% endnamespace %}
+    </div>
+
+    {% if metadataHtml %}
+        {{ metadataHtml|raw }}
+    {% endif %}
+{% endblock %}

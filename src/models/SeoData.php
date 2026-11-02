@@ -53,7 +53,7 @@ class SeoData extends Model {
     ];
 
     /**
-     * Matches `coreseogeo_seoscores.metaTitle`/`.metaDescription` ($this->string(500)) - the
+     * Matches `coreseogeo_seo_scores.metaTitle`/`.metaDescription` ($this->string(500)) - the
      * denormalized copy `SeoScoreService` writes these into. Enforced at save time
      * (`SeoField::validateSeoData()`) so a resolved value that would fail that write can never
      * be saved in the first place.

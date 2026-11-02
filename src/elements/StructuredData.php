@@ -366,9 +366,11 @@ class StructuredData extends Element {
 
         if ($mapping === null) return '';
 
-        return $mapping->label ?? ($mapping->sectionHandle !== ''
-            ? Craft::t('core-seo-geo', '{section} ({type})', ['section' => $mapping->sectionHandle, 'type' => $mapping->type])
-            : $mapping->type);
+        if ($mapping->label !== null) return $mapping->label;
+
+        $entryTypeName = Craft::$app->getEntries()->getEntryTypeByHandle($mapping->entryTypeHandle)?->name ?? $mapping->entryTypeHandle;
+
+        return Craft::t('core-seo-geo', '{entryType} ({type})', ['entryType' => $entryTypeName, 'type' => $mapping->type]);
     }
 
     /**

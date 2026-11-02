@@ -6,8 +6,7 @@
 {# @var propertyGroups array<string, array{label: string, properties: string[]}> #}
 {# @var propertyTooltips array<string, string> #}
 {# @var calculatedValueHtml array<string, string>|null #}
-{# @var previewEntry \craft\elements\Entry|null #}
-{# @var previewEntryCriteria array|null restricts the "Preview Entry" picker, e.g. {section: 'blog'} #}
+{# @var previewEntry \craft\elements\Entry|null the entry chosen in the details sidebar's "Preview Entry" field #}
 {# @var jsonLdPreview string|null the full, pretty-printed JSON-LD rendered against `previewEntry` #}
 
 {% import '_includes/forms.twig' as forms %}
@@ -52,20 +51,6 @@
             <label>{{ "Settings"|t('core-seo-geo') }}</label>
         </div>
         <p class="instructions">{{ "Please configure the correct schema type and properties and then map them to the entry data as needed"|t('core-seo-geo') }}</p>
-
-        <div class="pane hairline">
-            {{ forms.elementSelectField({
-                id: 'preview-element',
-                name: 'previewElementId',
-                label: 'Preview Entry'|t('core-seo-geo'),
-                instructions: 'Choose an entry to calculate each property\'s value against, for reference. Recalculated on save, not live as you type.'|t('core-seo-geo'),
-                elementType: 'craft\\elements\\Entry',
-                elements: previewEntry ? [previewEntry] : [],
-                criteria: previewEntryCriteria|default(null),
-                single: true,
-                selectionLabel: 'Choose an entry'|t('core-seo-geo'),
-            }) }}
-        </div>
 
         <div class="core-seo-geo-structured-data-selectors pane hairline">
             <div class="core-seo-geo-structured-data-selectors-top">

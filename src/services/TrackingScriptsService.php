@@ -17,7 +17,7 @@ use digitalastronaut\craftcoreseogeo\records\TrackingScript;
 /**
  * Class TrackingScriptsService
  *
- * Reads and writes `coreseogeo_trackingscripts` rows - the user-added tracking scripts (GTM,
+ * Reads and writes `coreseogeo_tracking_scripts` rows - the user-added tracking scripts (GTM,
  * Meta Pixel, etc.) rendered into every page's `<head>`/`<body>`.
  *
  * @author      Digitalastronaut

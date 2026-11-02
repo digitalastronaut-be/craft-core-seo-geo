@@ -13,9 +13,12 @@ namespace digitalastronaut\craftcoreseogeo;
 use Craft;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\helpers\UrlHelper;
 
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\services\ServicesTrait;
+
+use yii\web\Response;
 
 /**
  * Class CoreSeoGeo
@@ -32,6 +35,7 @@ class CoreSeoGeo extends Plugin {
 
     public string $schemaVersion = '1.0.0';
     public bool $hasCpSettings = true;
+    public bool $hasReadOnlyCpSettings = true;
     public bool $hasCpSection = true;
 
     /**
@@ -125,12 +129,18 @@ class CoreSeoGeo extends Plugin {
     }
 
     /**
-     * @return string|null
+     * @inheritdoc
+     *
+     * Settings are managed through this plugin's own CP nav subpages, not a dedicated settings
+     * page, so the "Settings" link on Settings > Plugins sends editors straight to the Global
+     * SEO page instead of a blank placeholder.
+     *
+     * @return Response
+     *
+     * @author      Digitalastronaut
+     * @since       v1.41.0
      */
-    protected function settingsHtml(): ?string {
-        return Craft::$app->view->renderTemplate('core-seo-geo/pages/_settings.twig', [
-            'plugin' => $this,
-            'settings' => $this->getSettings(),
-        ]);
+    public function getSettingsResponse(): mixed {
+        return Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('core-seo-geo/settings/global-seo'));
     }
 }

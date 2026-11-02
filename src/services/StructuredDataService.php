@@ -16,6 +16,14 @@ use craft\base\Component;
 use craft\base\ElementInterface;
 use craft\helpers\Json;
 
+use yii\base\InvalidArgumentException;
+
+use Spatie\SchemaOrg\BaseType;
+
+use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
+use digitalastronaut\craftcoreseogeo\elements\StructuredData as StructuredDataElement;
+use digitalastronaut\craftcoreseogeo\models\SchemaList;
+
 /**
  * Class StructuredDataService
  *
@@ -43,7 +51,7 @@ class StructuredDataService extends Component {
      * such as the field settings preview, that wants to surface it rather than only the log.
      * Each surviving result is decoded by `_decodeRenderedProperty()`, which lets a template
      * return a plain string (the common case, e.g. a `name`) or a nested object (e.g.
-     * `craft.coreSeoGeo.schema(...)`) without the template needing to say which; a result
+     * `craft.coreSeoGeo.createSchema(...)`) without the template needing to say which; a result
      * that isn't valid JSON is kept as the plain string it already is.
      *
      * @param ElementInterface $element the element the property templates render against
@@ -68,6 +76,12 @@ class StructuredDataService extends Component {
             try {
                 $rendered = trim($view->renderObjectTemplate($template, $element, ['entry' => $element]));
             } catch (\Throwable $e) {
+                // Twig wraps a non-Twig throwable (e.g. a TypeError from a bad filter argument)
+                // in a RuntimeError whose own message is just "An exception has been thrown
+                // during the rendering of a template (...)." - unwrap to the original cause so
+                // the caller (and the log) gets the actual error instead of that boilerplate.
+                while ($e->getPrevious() !== null) $e = $e->getPrevious();
+
                 Craft::warning("Couldn't render the \"{$property}\" structured data property: {$e->getMessage()}", __METHOD__);
                 if ($errors !== null) $errors[$property] = $e->getMessage();
                 continue;
@@ -99,13 +113,72 @@ class StructuredDataService extends Component {
         ], $data);
     }
 
+    /**
+     * Looks up the already-computed `StructuredData` row for `$element`/`$type` (the same row
+     * `StructuredDataMappingService::syncEntry()` keeps in sync) and rebuilds it into a
+     * `spatie/schema-org` object - so a template composing a bigger structure (e.g. a
+     * `Product`'s `review` list) can reuse an entry's own already-rendered structured data
+     * instead of re-deriving it from that entry's raw fields.
+     *
+     * @param ElementInterface $element
+     * @param string $type a schema.org type name, e.g. `Review`
+     * @return BaseType
+     * @throws InvalidArgumentException if no computed `StructuredData` row of this `$type`
+     * exists for `$element` (in its own site) - never `null`, so a stale/missing mapping fails
+     * loudly instead of silently rendering incomplete structured data
+     *
+     * @author      Digitalastronaut
+     * @since       v1.40.0
+     */
+    public function getSchema(ElementInterface $element, string $type): BaseType {
+        $row = StructuredDataElement::find()
+            ->ownerId($element->id)
+            ->siteId($element->siteId)
+            ->type($type)
+            ->status(null)
+            ->one();
+
+        if ($row === null) {
+            throw new InvalidArgumentException("No computed \"{$type}\" structured data found for element #{$element->id}.");
+        }
+
+        return CoreSeoGeo::getInstance()->getSchemaOrg()->build($type)->addProperties($row->properties);
+    }
+
+    /**
+     * `getSchema()` for every element in `$elements`, each already reduced to a plain array
+     * with its own redundant `@context` stripped - wrapped in a `SchemaList` so a template
+     * building a list property (e.g. a `Product`'s `review`) can print this bare, exactly like
+     * a single `createSchema(...)`/`getSchema()` object, with no `|json_encode` of its own.
+     *
+     * @param iterable<ElementInterface> $elements
+     * @param string $type a schema.org type name, e.g. `Review`
+     * @return SchemaList
+     * @throws InvalidArgumentException as soon as any element in `$elements` has no computed
+     * `StructuredData` row of this `$type` - see `getSchema()`
+     *
+     * @author      Digitalastronaut
+     * @since       v1.40.0
+     */
+    public function getSchemas(iterable $elements, string $type): SchemaList {
+        $schemas = [];
+
+        foreach ($elements as $element) {
+            $data = $this->getSchema($element, $type)->toArray();
+            unset($data['@context']);
+            $schemas[] = $data;
+        }
+
+        return new SchemaList($schemas);
+    }
+
     // Private Methods
     // =========================================================================
 
     /**
      * Decodes one rendered property template's output. Handles three shapes a template can
      * produce: a plain string (the common case, kept as-is), hand-written JSON (an object or
-     * array literal typed directly into the template), and a `craft.coreSeoGeo.schema(...)`
+     * array literal typed directly into the template), and a `craft.coreSeoGeo.createSchema(...)`
      * builder chain, whose nested object needs two corrections before it fits as a property
      * value rather than a document of its own.
      *
@@ -124,12 +197,12 @@ class StructuredDataService extends Component {
     }
 
     /**
-     * A bare `{{ craft.coreSeoGeo.schema(...) }}` doesn't render to JSON: Twig stringifies the
-     * `spatie/schema-org` builder object via PHP's own `__toString()`, which that library
+     * A bare `{{ craft.coreSeoGeo.createSchema(...) }}` doesn't render to JSON: Twig stringifies
+     * the `spatie/schema-org` builder object via PHP's own `__toString()`, which that library
      * defines as `toScript()` - a full `<script type="application/ld+json">...</script>` tag,
      * meant for dropping straight into page HTML, not for nesting inside another object's
      * property. Unwrapping it here, in the one place responsible for interpreting a rendered
-     * property template, keeps the `schema()` builder itself
+     * property template, keeps the `createSchema()` builder itself
      * ({@see SchemaOrgService::build()}) a thin, unmodified pass-through to the library.
      *
      * @param string $rendered

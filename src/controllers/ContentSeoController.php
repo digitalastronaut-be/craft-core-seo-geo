@@ -21,10 +21,8 @@ use craft\web\Controller;
 
 use digitalastronaut\craftcoreseogeo\CoreSeoGeo;
 use digitalastronaut\craftcoreseogeo\fields\SeoField;
-use digitalastronaut\craftcoreseogeo\fields\StructuredDataField;
 use digitalastronaut\craftcoreseogeo\models\Settings;
 use digitalastronaut\craftcoreseogeo\records\ContentSeo;
-use digitalastronaut\craftcoreseogeo\records\StructuredDataMapping;
 use digitalastronaut\craftcoreseogeo\seochecks\SeoScoreCheckInterface;
 use digitalastronaut\craftcoreseogeo\services\GlobalStructuredDataService;
 use digitalastronaut\craftcoreseogeo\services\TxtFilesService;
@@ -38,7 +36,7 @@ use yii\web\Response;
  * Class ContentSeoController
  *
  * The "Content SEO" settings pages: an index listing every section's (plus the global bundle's)
- * `coreseogeo_seodata` row for the currently-selected site, a per-section page for editing one
+ * `coreseogeo_seo_data` row for the currently-selected site, a per-section page for editing one
  * row's title/description block config and robots directives, and the Global SEO/GEO settings
  * page's own title/description config, which is the global bundle row's (`sectionHandle === ''`)
  * counterpart to a section's. `ContentSeoService` is what actually keeps rows in sync as sections
@@ -122,7 +120,7 @@ class ContentSeoController extends Controller {
      * This plugin's own settings page for a single section - not Craft's native section-edit
      * screen (`Section::getCpEditUrl()`), which only covers the section's structure (entry
      * types, URL format, propagation). Renders the title/description config tables and robots
-     * field against the section's current `coreseogeo_seodata` row; posts to
+     * field against the section's current `coreseogeo_seo_data` row; posts to
      * `actionSaveSection()`.
      *
      * @param string $sectionHandle
@@ -162,178 +160,7 @@ class ContentSeoController extends Controller {
             'markdownEnabled' => $row?->markdownEnabled ?? true,
             'markdownEnabledSitewide' => CoreSeoGeo::getInstance()->getSettings()->enableMarkdown,
             'image' => $row?->getImageAsset(),
-            'mappingRows' => $this->_mappingTableRows(
-                CoreSeoGeo::getInstance()->getStructuredDataMappings()->getRowsForSection($sectionHandle),
-            ),
-            'newMappingUrl' => UrlHelper::cpUrl("core-seo-geo/settings/content-seo/{$sectionHandle}/mappings/new", ['site' => $site->handle]),
         ]);
-    }
-
-    /**
-     * The "Create mapping"/"Edit mapping" page for one structured data mapping on this section -
-     * a new, unsaved `StructuredDataMapping` row when `$mappingId` is `null` (the `.../mappings/
-     * new` route), the existing one otherwise. Renders the same type/properties mapping editor
-     * as `StructuredDataField`'s own settings ({@see \digitalastronaut\craftcoreseogeo\fields\
-     * StructuredDataField::settingsNamespace()}); posts to `actionSaveMapping()`.
-     *
-     * @param string $sectionHandle
-     * @param int|null $mappingId
-     * @return Response
-     * @throws ForbiddenHttpException if the current user can't edit any site
-     * @throws NotFoundHttpException if no section has this handle, or no mapping has this ID
-     *
-     * @author      Digitalastronaut
-     * @since       v1.3.0
-     */
-    public function actionEditMapping(string $sectionHandle, ?int $mappingId = null): Response {
-        $site = Cp::requestedSite();
-
-        if ($site === null) {
-            throw new ForbiddenHttpException(Craft::t('core-seo-geo', "You don't have permission to edit any sites."));
-        }
-
-        $section = Craft::$app->getEntries()->getSectionByHandle($sectionHandle);
-
-        if ($section === null) {
-            throw new NotFoundHttpException(Craft::t('core-seo-geo', 'No section exists with the handle "{handle}".', [
-                'handle' => $sectionHandle,
-            ]));
-        }
-
-        $mapping = $mappingId !== null
-            ? CoreSeoGeo::getInstance()->getStructuredDataMappings()->getMappingById($mappingId, $sectionHandle)
-            : null;
-
-        if ($mappingId !== null && $mapping === null) {
-            throw new NotFoundHttpException(Craft::t('core-seo-geo', "No structured data mapping exists with that ID."));
-        }
-
-        $schemaOrg = CoreSeoGeo::getInstance()->getSchemaOrg();
-        $type = $mapping->type ?? '';
-        $properties = $this->_decodeConfig($mapping?->properties);
-        $propertyNames = $schemaOrg->getType($type)['properties'] ?? [];
-        $previewEntry = $mapping?->getPreviewEntry();
-
-        return $this->renderTemplate('core-seo-geo/settings/content-seo-mapping.twig', [
-            'site' => $site,
-            'section' => $section,
-            'mapping' => $mapping,
-            'mappingProperties' => $properties,
-            'mappingNamespace' => StructuredDataField::settingsNamespace(),
-            'typeTree' => $schemaOrg->getTypeTree(),
-            'expandedTypes' => $type !== '' ? $schemaOrg->getPrimaryAncestorPath($type) : [],
-            'typeLabel' => $type !== '' ? ($schemaOrg->getType($type)['label'] ?? $type) : '',
-            'propertyGroups' => $schemaOrg->getGroupedTypeProperties($type),
-            // Covers every property of the type, not just the ones already added - the
-            // picker's dropdown needs a tooltip for anything a user might still pick, not only
-            // what's already in the mapping table below.
-            'propertyTooltips' => $schemaOrg->getPropertyTooltips($propertyNames),
-            'previewEntry' => $previewEntry,
-            'calculatedValueHtml' => StructuredDataField::calculatedValueHtml($properties, $previewEntry),
-            'jsonLdPreview' => StructuredDataField::jsonLdPreview($type, $properties, $previewEntry),
-        ]);
-    }
-
-    /**
-     * Persists the type/properties mapping posted from `content-seo-mapping.twig`, creating a
-     * new `coreseogeo_structureddatamappings` row when no `id` was posted (a brand new mapping)
-     * or updating the posted one otherwise. The posted `type`/`properties`/`previewElementId`
-     * fields themselves are namespaced under `StructuredDataField::settingsNamespace()` - the
-     * same mapping editor UI `StructuredDataField`'s own settings use - so they're read back out
-     * from under that key rather than as plain top-level body params.
-     *
-     * @return Response|null
-     * @throws BadRequestHttpException if `sectionHandle` wasn't posted
-     * @throws NotFoundHttpException if no section has this handle, or the posted `id` doesn't
-     * match an existing mapping for it
-     *
-     * @author      Digitalastronaut
-     * @since       v1.3.0
-     */
-    public function actionSaveMapping(): ?Response {
-        $this->requirePostRequest();
-
-        $request = Craft::$app->getRequest();
-        $sectionHandle = $request->getRequiredBodyParam('sectionHandle');
-        $id = $request->getBodyParam('id');
-
-        $section = Craft::$app->getEntries()->getSectionByHandle($sectionHandle);
-
-        if ($section === null) {
-            throw new NotFoundHttpException(Craft::t('core-seo-geo', 'No section exists with the handle "{handle}".', [
-                'handle' => $sectionHandle,
-            ]));
-        }
-
-        $mappingsService = CoreSeoGeo::getInstance()->getStructuredDataMappings();
-        $mapping = $id ? $mappingsService->getMappingById((int)$id, $sectionHandle) : null;
-
-        if ($id && $mapping === null) {
-            throw new NotFoundHttpException(Craft::t('core-seo-geo', "No structured data mapping exists with that ID."));
-        }
-
-        $scoped = $request->getBodyParam('types', [])[StructuredDataField::settingsNamespaceKey()] ?? [];
-
-        $saved = $mappingsService->saveMapping(
-            $mapping,
-            $sectionHandle,
-            (string)($scoped['type'] ?? ''),
-            is_array($scoped['properties'] ?? null) ? $scoped['properties'] : [],
-            StructuredDataField::normalizePreviewElementId($scoped['previewElementId'] ?? null),
-        );
-
-        if (!$saved) {
-            $this->setFailFlash(Craft::t('core-seo-geo', "Couldn't save the structured data mapping."));
-
-            return null;
-        }
-
-        $this->setSuccessFlash(Craft::t('core-seo-geo', 'Structured data mapping saved.'));
-
-        return $this->redirectToPostedUrl();
-    }
-
-    /**
-     * Deletes one structured data mapping, posted from the delete button in
-     * `content-seo-section.twig`'s mappings table. Ajax-only (the button posts via
-     * `Craft.sendActionRequest()`), so this relies on `asSuccess()`/`asFailure()` for their JSON
-     * responses rather than the flash+redirect pattern the rest of this controller uses.
-     *
-     * @return Response|null
-     * @throws BadRequestHttpException if `sectionHandle` or `id` wasn't posted
-     * @throws NotFoundHttpException if no section has this handle, or the posted `id` doesn't
-     * match an existing mapping for it
-     *
-     * @author      Digitalastronaut
-     * @since       v1.4.0
-     */
-    public function actionDeleteMapping(): ?Response {
-        $this->requirePostRequest();
-
-        $request = Craft::$app->getRequest();
-        $sectionHandle = $request->getRequiredBodyParam('sectionHandle');
-        $id = (int)$request->getRequiredBodyParam('id');
-
-        $section = Craft::$app->getEntries()->getSectionByHandle($sectionHandle);
-
-        if ($section === null) {
-            throw new NotFoundHttpException(Craft::t('core-seo-geo', 'No section exists with the handle "{handle}".', [
-                'handle' => $sectionHandle,
-            ]));
-        }
-
-        $mappingsService = CoreSeoGeo::getInstance()->getStructuredDataMappings();
-        $mapping = $mappingsService->getMappingById($id, $sectionHandle);
-
-        if ($mapping === null) {
-            throw new NotFoundHttpException(Craft::t('core-seo-geo', "No structured data mapping exists with that ID."));
-        }
-
-        if (!$mappingsService->deleteMapping($mapping)) {
-            return $this->asFailure(Craft::t('core-seo-geo', "Couldn't delete the structured data mapping."));
-        }
-
-        return $this->asSuccess(Craft::t('core-seo-geo', 'Structured data mapping deleted.'));
     }
 
     /**
@@ -877,35 +704,12 @@ class ContentSeoController extends Controller {
     }
 
     /**
-     * Builds the display-ready rows for `content-seo-section.twig`'s structured data mappings
-     * table: the schema.org type's own label (falling back to its raw handle when it isn't a
-     * known type) and a comma-joined list of the mapping's configured property names.
-     *
-     * @param StructuredDataMapping[] $mappings
-     * @return array<int, array{id: int, typeLabel: string, propertyNames: string}>
-     *
-     * @author      Digitalastronaut
-     * @since       v1.3.0
-     */
-    private function _mappingTableRows(array $mappings): array {
-        $schemaOrg = CoreSeoGeo::getInstance()->getSchemaOrg();
-
-        return array_map(function(StructuredDataMapping $mapping) use ($schemaOrg): array {
-            return [
-                'id' => $mapping->id,
-                'typeLabel' => $schemaOrg->getType($mapping->type)['label'] ?? $mapping->type,
-                'propertyNames' => implode(', ', array_keys($this->_decodeConfig($mapping->properties))),
-            ];
-        }, $mappings);
-    }
-
-    /**
      * Builds one `Craft.VueAdminTable` row per section for `actionTableData()`'s JSON
      * response. `title`/`url` feed the `__slot:title` column; `titleStatus`/`description`/
      * `sitemap`/`markdown` are pre-rendered status-label HTML ({@see _configStatusHtml()}/{@see
      * _onOffStatusHtml()}) since the admin table renders every non-slot cell's value as raw
-     * HTML, not escaped text. `robots` and `mappings` are comma-joined, HTML-encoded text,
-     * falling back to `&ndash;` when there's nothing configured.
+     * HTML, not escaped text. `robots` is comma-joined, HTML-encoded text, falling back to
+     * `&ndash;` when there's nothing configured.
      *
      * @param ContentSeo[] $rows
      * @return array<int, array<string, mixed>>
@@ -914,12 +718,10 @@ class ContentSeoController extends Controller {
      * @since       v1.25.0
      */
     private function _contentSeoTableRows(array $rows): array {
-        $mappingsService = CoreSeoGeo::getInstance()->getStructuredDataMappings();
         $tableRows = [];
 
         foreach ($rows as $row) {
             $robotsLabels = $this->_robotsLabels($this->_decodeConfig($row->robots));
-            $mappings = $this->_mappingSummaryRows($mappingsService->getRowsForSection($row->sectionHandle));
 
             $tableRows[] = [
                 'id' => $row->id,
@@ -938,10 +740,6 @@ class ContentSeoController extends Controller {
                     Craft::t('core-seo-geo', 'Off'),
                 ),
                 'robots' => $robotsLabels !== [] ? Html::encode(implode(', ', $robotsLabels)) : '&ndash;',
-                'mappings' => $mappings !== [] ? Html::encode(implode(', ', array_map(
-                    static fn(array $mapping): string => "{$mapping['typeLabel']} ({$mapping['propertyCount']})",
-                    $mappings,
-                ))) : '&ndash;',
             ];
         }
 
@@ -1000,24 +798,6 @@ class ContentSeoController extends Controller {
         }
 
         return array_map(static fn(string $value): string => $labels[$value] ?? $value, $values);
-    }
-
-    /**
-     * @param StructuredDataMapping[] $mappings
-     * @return array<int, array{typeLabel: string, propertyCount: int}>
-     *
-     * @author      Digitalastronaut
-     * @since       v1.8.0
-     */
-    private function _mappingSummaryRows(array $mappings): array {
-        $schemaOrg = CoreSeoGeo::getInstance()->getSchemaOrg();
-
-        return array_map(function(StructuredDataMapping $mapping) use ($schemaOrg): array {
-            return [
-                'typeLabel' => $schemaOrg->getType($mapping->type)['label'] ?? $mapping->type,
-                'propertyCount' => count($this->_decodeConfig($mapping->properties)),
-            ];
-        }, $mappings);
     }
 
     /**

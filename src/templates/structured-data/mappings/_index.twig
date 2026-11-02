@@ -1,0 +1,30 @@
+{% extends '_layouts/cp.twig' %}
+
+{% set title = 'Structured Data Mappings'|t('core-seo-geo') %}
+{% set selectedSubnavItem = 'structured-data' %}
+{% set crumbs = [
+    { label: craft.coreSeoGeo.rootLabel(), url: url('core-seo-geo') },
+    { label: 'Structured Data'|t('core-seo-geo'), url: url('core-seo-geo/structured-data') },
+    { label: title },
+] %}
+
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') -%}
+
+{% block content %}
+    <div id="structured-data-mappings-vue-admin-table"></div>
+{% endblock %}
+
+{% js %}
+    new Craft.VueAdminTable({
+        container: '#structured-data-mappings-vue-admin-table',
+        tableDataEndpoint: 'core-seo-geo/structured-data-mappings/table-data',
+        search: true,
+        fullPane: false,
+        emptyMessage: {{ 'No entry types yet.'|t('core-seo-geo')|json_encode|raw }},
+        columns: [
+            { name: '__slot:title', title: {{ 'Entry type'|t('core-seo-geo')|json_encode|raw }}, sortField: true },
+            { name: '__slot:handle', title: {{ 'Handle'|t('core-seo-geo')|json_encode|raw }} },
+            { name: 'mappings', title: {{ 'Mappings'|t('core-seo-geo')|json_encode|raw }} },
+        ],
+    });
+{% endjs %}

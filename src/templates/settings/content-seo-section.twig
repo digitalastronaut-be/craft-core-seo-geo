@@ -86,44 +86,6 @@
             options: robotsOptions,
         }) }}
 
-        <hr>
-
-        <div class="flex flex-justify">
-            <h2 class="mb-0">{{ 'Structured data mappings'|t('core-seo-geo') }}</h2>
-            <a href="{{ newMappingUrl }}" class="btn add icon">{{ 'New mapping'|t('core-seo-geo') }}</a>
-        </div>
-
-        <div class="field">
-            <table id="mappings-table" class="data fullwidth"{% if not mappingRows|length %} style="display: none;"{% endif %}>
-                <thead>
-                    <tr>
-                        <th scope="col">{{ 'Type'|t('core-seo-geo') }}</th>
-                        <th scope="col">{{ 'Properties'|t('core-seo-geo') }}</th>
-                        <td class="thin"></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in mappingRows %}
-                        <tr data-id="{{ row.id }}">
-                            <td>
-                                <a href="{{ url('core-seo-geo/settings/content-seo/' ~ section.handle ~ '/mappings/' ~ row.id) }}">
-                                    {{ row.typeLabel }}
-                                </a>
-                            </td>
-
-                            <td>{{ row.propertyNames|default('') != '' ? row.propertyNames : '–' }}</td>
-
-                            <td class="thin">
-                                <a class="delete icon mapping-delete-btn" title="{{ 'Delete'|t('core-seo-geo') }}" aria-label="{{ 'Delete'|t('core-seo-geo') }}" role="button" data-id="{{ row.id }}"></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <div id="mappings-zilch" class="zilch small"{% if mappingRows|length %} style="display: none;"{% endif %}>{{ 'No structured data mappings yet.'|t('core-seo-geo') }}</div>
-        </div>
-
         <h2>{{ 'Sitemap settings'|t('core-seo-geo') }}</h2>
 
         {{ forms.lightswitchField({
@@ -159,33 +121,3 @@
         }) }}
     </div>
 {% endblock %}
-
-{% js %}
-    $('.mapping-delete-btn').on('click', function() {
-        var $btn = $(this);
-
-        if (!confirm({{ "Are you sure you want to delete this structured data mapping?"|t('core-seo-geo')|json_encode|raw }})) {
-            return;
-        }
-
-        $btn.addClass('loading');
-
-        Craft.sendActionRequest('POST', 'core-seo-geo/content-seo/delete-mapping', {
-            data: {
-                sectionHandle: {{ section.handle|json_encode|raw }},
-                id: $btn.data('id'),
-            },
-        }).then(function(response) {
-            Craft.cp.displayNotice(response.data.message);
-            $btn.closest('tr').remove();
-
-            if (!$('#mappings-table tbody tr').length) {
-                $('#mappings-table').hide();
-                $('#mappings-zilch').show();
-            }
-        }).catch(function(error) {
-            $btn.removeClass('loading');
-            Craft.cp.displayError(error?.response?.data?.message);
-        });
-    });
-{% endjs %}

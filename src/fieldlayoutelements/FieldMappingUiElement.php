@@ -58,17 +58,13 @@ class FieldMappingUiElement extends BaseUiElement {
             ];
         }
 
-        $mappingUrl = $mapping->sectionHandle !== ''
-            ? UrlHelper::cpUrl("core-seo-geo/settings/content-seo/{$mapping->sectionHandle}/mappings/{$mapping->id}")
-            : null;
+        $mappingUrl = UrlHelper::cpUrl("core-seo-geo/structured-data/mappings/{$mapping->entryTypeHandle}/{$mapping->id}");
 
         return Html::tag('div', Cp::editableTableFieldHtml([
             'label' => Craft::t('core-seo-geo', 'Field Mapping'),
-            'instructions' => $mappingUrl !== null
-                ? Craft::t('core-seo-geo', 'How this object\'s properties are computed, for reference. [Edit this mapping]({url}).', [
-                    'url' => $mappingUrl,
-                ])
-                : Craft::t('core-seo-geo', 'How this object\'s properties are computed, for reference.'),
+            'instructions' => Craft::t('core-seo-geo', 'How this object\'s properties are computed, for reference. [Edit this mapping]({url}).', [
+                'url' => $mappingUrl,
+            ]),
             'static' => true,
             'name' => 'fieldMapping',
             'cols' => [

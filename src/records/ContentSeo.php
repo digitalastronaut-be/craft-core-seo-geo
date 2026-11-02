@@ -18,7 +18,7 @@ use digitalastronaut\craftcoreseogeo\db\Table;
 /**
  * Class ContentSeo
  *
- * Active record for the `coreseogeo_seodata` table: one row per section+site, plus one row per
+ * Active record for the `coreseogeo_seo_data` table: one row per section+site, plus one row per
  * site with an empty `sectionHandle` (the global fallback bundle). Holds the title/description
  * block config, robots directives, canonical config, and fallback image that used to live on
  * `SeoField`'s own field settings. `ContentSeoService` owns the sync/query logic; this is a thin

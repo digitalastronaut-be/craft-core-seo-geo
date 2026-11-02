@@ -18,7 +18,7 @@ use digitalastronaut\craftcoreseogeo\db\Table;
 /**
  * Class TrackingScript
  *
- * Active record for the `coreseogeo_trackingscripts` table: one user-added tracking script, e.g.
+ * Active record for the `coreseogeo_tracking_scripts` table: one user-added tracking script, e.g.
  * a Google Tag Manager or Meta Pixel snippet. Each row carries two independent templates - a head
  * script and its paired body script (typically a `<noscript>` fallback) - each with its own
  * injection point (`scriptLocation`/`bodyScriptLocation`), since the two halves of a tracking

@@ -17,7 +17,7 @@ use digitalastronaut\craftcoreseogeo\db\Table;
 /**
  * Class SeoScore
  *
- * Active record for the `coreseogeo_seoscores` table: one row per element+site+field, holding
+ * Active record for the `coreseogeo_seo_scores` table: one row per element+site+field, holding
  * the last computed SEO score and whether a recalculation is currently pending. Thin by design,
  * no business logic here -- `SeoScoreService` owns the scoring logic.
  *

@@ -24,7 +24,7 @@ use yii\web\Response;
 /**
  * Class TrackingScriptsController
  *
- * The "Tracking Scripts" settings page: an index listing every `coreseogeo_trackingscripts` row,
+ * The "Tracking Scripts" settings page: an index listing every `coreseogeo_tracking_scripts` row,
  * and an add/edit page for a single one.
  *
  * @author      Digitalastronaut

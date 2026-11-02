@@ -34,18 +34,19 @@ class Install extends Migration {
     public function safeUp(): bool {
         $this->createTable(Table::STRUCTUREDDATAMAPPINGS, [
             'id' => $this->primaryKey(),
-            'sectionHandle' => $this->string()->notNull()->defaultValue(''),
+            'entryTypeHandle' => $this->string()->notNull()->defaultValue(''),
             'label' => $this->string(),
             'type' => $this->string()->notNull(),
             'properties' => $this->json(),
             'previewElementId' => $this->integer(),
+            'enabled' => $this->boolean()->notNull()->defaultValue(true),
             'sortOrder' => $this->smallInteger()->unsigned(),
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),
             'uid' => $this->uid(),
         ]);
 
-        $this->createIndex(null, Table::STRUCTUREDDATAMAPPINGS, ['sectionHandle']);
+        $this->createIndex(null, Table::STRUCTUREDDATAMAPPINGS, ['entryTypeHandle']);
         $this->addForeignKey(null, Table::STRUCTUREDDATAMAPPINGS, ['previewElementId'], CraftTable::ELEMENTS, ['id'], 'SET NULL', null);
 
         $this->createTable(Table::STRUCTUREDDATA, [

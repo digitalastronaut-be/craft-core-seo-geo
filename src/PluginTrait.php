@@ -129,6 +129,7 @@ trait PluginTrait {
         $this->registerFieldTypes();
         $this->registerElementTypes();
         $this->registerTemplateVariable();
+        $this->registerTwigExtension();
         $this->registerSeoScoreChecks();
         $this->registerSeoScoreCalculation();
         $this->registerContentSeoSync();
@@ -1010,7 +1011,6 @@ trait PluginTrait {
         $this->registerSiteTemplateRoot();
         $this->registerSeoMetaInjection();
         $this->registerTrackingScriptsInjection();
-        $this->registerTwigExtension();
         $this->registerSiteUrlRules();
         $this->registerRedirectHandling();
     }
@@ -1163,6 +1163,13 @@ trait PluginTrait {
      * Registers this plugin's Twig extension (`CoreSeoGeoExtension`), currently the
      * `{% llmContent %}`/`{% excludeLlmContent %}` tags templates use to mark which
      * regions of a page are its Markdown content.
+     *
+     * Called from `registerSharedEvents()`, not just `registerSiteEvents()` - a site
+     * template can be force-rendered outside an actual site request too (e.g. a CP-side
+     * live preview rendering a site template in `View::TEMPLATE_MODE_SITE`), and that
+     * template may still use these tags. Registering unconditionally is harmless: the
+     * tags compile to a pair of inert HTML comment markers (see `LlmContentNode`) with no
+     * dependency on request type.
      *
      * @return void
      *
